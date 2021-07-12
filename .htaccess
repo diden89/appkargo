@@ -1,0 +1,24 @@
+##
+ # @package Merek Dagang
+ # @copyright Noobscript
+ # @author Sikelopes
+ # @version 1.0
+ # @access Publis
+ # @path /merekdagang/.htaccess
+ ## 
+ 
+<FilesMatch "\.(htaccess|htpasswd|ini|phps|fla|psd|log|sh|gif|bmp|frm|bas)$">
+	Order Allow,Deny
+	Deny from all
+</FilesMatch>
+
+<IfModule mod_rewrite.c>
+	RewriteEngine On
+
+	RewriteCond $1 !^(index\.php|vendors|styles|fonts|images|scripts|files)
+	RewriteRule ^(.*)$ index.php/$1 [L]
+</IfModule>
+
+php_value upload_max_filesize 100M
+php_value post_max_size 100M
+php_value max_execution_time 300

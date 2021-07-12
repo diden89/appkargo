@@ -1,0 +1,303 @@
+/*!
+ * @package RAB
+ * @copyright Noobscript
+ * @author Sikelopes
+ * @version 1.0
+ * @access Public
+ * @link /rab_frontend/styles/styles.css
+ */
+
+/*Flat Design*/
+
+.form-control {
+	border-radius: 0 !important;  
+}
+
+.btn {
+	border-radius: 0 !important;  
+}
+
+.card {
+	border-radius: 0 !important;  
+}
+
+.select2-container--default .select2-selection--single {
+	border-radius: 0 !important;  
+}
+
+.modal-content {
+	border-radius: 0 !important;  
+}
+
+.input-group-text {
+	
+}
+
+.list-group-item {
+	border-radius: 0 !important;  
+}
+
+/*Auth Page Style*/
+
+.auth-page {
+	background: #e9ecef;
+}
+
+.login-logo,
+.register-logo {
+	margin-bottom: 0;
+}
+
+/*Form Style*/
+
+.form-control::placeholder {
+	font-size: 0.875rem;
+}
+
+.form-control {
+	font-size: 0.875rem;
+}
+
+/*Body Style*/
+
+.content-wrapper {
+	margin: 3rem 0;
+}
+
+.application-banner {
+	height: 100vh;
+	background-color: #fefefe;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: #666666;
+}
+
+.banner-box {
+	width: 100%;
+	text-align: center;
+}
+
+.banner-img {
+	width: 15rem;
+}
+
+.navbar-badge-left {
+	font-size: .6rem;
+	font-weight: 300;
+	padding: 2px 4px;
+	position: absolute;
+	left: 2px;
+	top: 8px;
+}
+
+.user-panel .image {
+	min-width: 50px !important;
+	min-height: 50px !important;
+	border-radius: 50%;
+	background-size: cover;
+	background-position: center center;
+}
+
+.user-panel .info {
+	font-size: 1.2rem;
+	line-height: 2.4rem;
+}
+
+.banner-text {
+	padding: 1rem;
+	font-size: 1.2rem;
+}
+
+.brand-text {
+	font-size: 1.2rem;
+	font-weight: 500 !important;
+	/*text-transform: uppercase;*/
+	color: #fefefe;
+	margin-top: -5px;
+}
+
+[class*="sidebar-dark-"] .nav-flat .nav-item .nav-treeview>.nav-item>.nav-link,
+[class*="sidebar-dark-"] .nav-flat .nav-item .nav-treeview>.nav-item>.nav-link.active {
+	border-color: rgba(4, 142, 82, 0.9);
+}
+
+
+[class*="sidebar-dark-"] .nav-treeview > .nav-item > .nav-link.active, 
+[class*="sidebar-dark-"] .nav-treeview > .nav-item > .nav-link.active:hover, 
+[class*="sidebar-dark-"] .nav-treeview > .nav-item > .nav-link.active:focus {
+	background-color: #c7f8ff;
+}
+
+
+.nav-tab-merekdagang-link {
+	padding: 0rem .5rem 0rem .1rem;
+	border-bottom: 3px solid #6c757d;
+	margin-right: 2rem;
+	font-size: 1.2rem;
+	color: #6c757d;
+}
+
+.nav-tab-merekdagang-link:focus,
+.nav-tab-merekdagang-link:hover {
+	color: #212529;
+}
+
+.nav-tab-merekdagang-link.active {
+	border-bottom: 3px solid #2CA054;
+	color: #212529;
+	font-weight: 600;
+}
+
+.nav-sidebar .menu-open > .nav-link i.right {
+	-webkit-transform: rotate(-180deg) !important;
+	transform: rotate(-180deg) !important;
+}
+
+.merekdagang-tab-pane {
+	height: 28rem;
+	padding: 1rem;
+	margin: 0;
+	width: 100%;
+}
+
+.sale-container {
+	height: 27rem;
+	overflow: auto;
+	width: 100%;
+}
+
+.sale-transaction-detail {
+	padding: 1rem;
+}
+
+.sale-transaction-detail-table {
+	height: 22rem;
+	overflow: auto;
+}
+
+.adjust-stock-detail-table {
+	height: 15rem;
+	overflow: auto;
+}
+
+.good-receiving-detail-table {
+	height: 10rem;
+	overflow: auto;
+}
+
+.good-issue-detail-table {
+	height: 15rem;
+	overflow: auto;
+}
+
+.good-transfer-detail-table {
+	height: 15rem;
+	overflow: auto;
+}
+
+.data-table-container {
+	width: 100% !important;
+}
+
+.row-merekdagang-button-container {
+	text-align: right;
+}
+
+.select2-container--default .select2-results__option--highlighted[aria-selected],
+.select2-container--default .select2-results__option--highlighted[aria-selected]:hover {
+	background-color: rgba(197, 197, 197, 0.3);
+	color: #000;
+}
+
+.ui-menu {
+	z-index: 1060 !important;
+	max-height: 25rem;
+	overflow-y: auto;
+}
+
+.merekdagang-ul {
+	margin-top: 3px !important;
+}
+
+.item-row {
+	border-bottom: 1px solid #ced4da;
+	padding: 0.5rem;
+}
+
+.modal {
+	z-index: 1060 !important;
+}
+
+.select2 {
+	width: inherit !important;
+}
+
+.form-search .form-group {
+	margin-bottom: .55rem !important;
+}
+
+/*DataTable Custom Style*/
+
+.table th, .table td {
+  	border-top: none;
+}
+
+.table-bordered th, .table-bordered td {
+	border: none; 
+}
+
+.table thead th {
+  border-bottom: 2px solid #17a2b8;
+  background-color: #17a2b8;
+  color: #fefefe;
+}
+
+table.dataTable {
+	border: none;
+}
+
+.table-striped tbody tr {
+	background-color: rgba(0, 0, 0, 0.015);
+}
+
+.info-text {
+	margin: .5rem;
+}
+
+.excel-data-table-container {
+	height: 30rem;
+	overflow: auto;
+}
+
+.modal-body .col-12 {
+	padding: 0 !important;
+}
+
+@media (max-width: 767.98px) {
+	.error-page>.error-content>p {
+		text-align: center;
+	}
+}
+
+
+@media only screen and (max-width: 600px) {
+
+	.application-banner {
+		height: auto;
+		padding: 2rem;
+	}
+
+	.application-banner img {
+		max-width: 6rem;
+	}
+
+	.login-page {
+		height: auto;
+		padding: 2rem;
+	}
+
+	.login-page img {
+		max-width: 6rem;
+	}
+}

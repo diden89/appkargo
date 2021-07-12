@@ -1,0 +1,30 @@
+/*!
+ * @package Jquery-TreeGrid
+ * @copyright Noobscript
+ * @author Sikelopes
+ * @version 1.0
+ * @access Public
+ * @path /jquery_treegrid/css/treegrid.css
+ */
+
+
+.treegrid .treegrid-toolbar .treegrid-limit label {
+	font-weight: normal !important;
+}
+
+.treegrid .treegrid-toolbar .treegrid-limit select {
+	width: inherit !important;
+}
+
+.treegrid .treegrid-container-middle table span.treegrid-cell-parent {
+
+}
+
+.treegrid .treegrid-container-middle table span.treegrid-cell-empty {
+	width: 16px;
+	display: inline-block;
+}
+
+.treegrid .treegrid-container-middle table .treegrid-row-click {
+	background: #FC0;
+}

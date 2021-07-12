@@ -1,0 +1,16 @@
+/*!
+ * @package RAB
+ * @copyright Noobscript
+ * @author andy1t
+ * @version 1.0
+ * @access Public
+ * @link /rab_frontend/vendors/jquery_grid/css/grid.css
+ */
+
+.btn-grid-merekdagang-margin {
+	margin: 0 5px;
+}
+
+.data-table-container {
+	overflow: auto;
+}
