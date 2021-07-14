@@ -26,6 +26,8 @@
   	<link rel="stylesheet" type="text/css" href="<?php echo base_url('vendors/template/login/'); ?>vendor/select2/select2.min.css">
   	<link rel="stylesheet" type="text/css" href="<?php echo base_url('vendors/template/login/'); ?>css/util.css">
     <link rel="stylesheet" type="text/css" href="<?php echo base_url('vendors/template/login/'); ?>css/main.css">
+    <link rel="stylesheet" href="<?php echo get_template_url(); ?>plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+    <link rel="stylesheet" href="<?php echo get_template_url(); ?>plugins/toastr/toastr.min.css">
 
   </head>
   <body >
@@ -98,6 +100,8 @@
     <script src="<?php echo base_url('vendors/jquery_waitme/waitMe.js'); ?>"></script>
     <script src="<?php echo base_url('scripts/scripts.js'); ?>"></script>
     <script src="<?php echo base_url('scripts/auth/auth.js'); ?>"></script>
+    <script src="<?php echo get_template_url(); ?>plugins/sweetalert2/sweetalert2.min.js"></script>
+    <script src="<?php echo get_template_url(); ?>plugins/toastr/toastr.min.js"></script>
     <script >
         $('.js-tilt').tilt({
             scale: 1.1
