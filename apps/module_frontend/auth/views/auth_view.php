@@ -28,13 +28,13 @@
     <link rel="stylesheet" type="text/css" href="<?php echo base_url('vendors/template/login/'); ?>css/main.css">
 
   </head>
-  <body>
+  <body >
     
     <div class="limiter">
-        <div class="container-login100">
+        <div class="container-login100" >
             <div class="wrap-login100">
                 <div class="login100-pic js-tilt" data-tilt>
-                    <img src="<?php echo base_url('images/'); ?>logo.png" alt="IMG">
+                    <img src="<?php echo base_url('images/'); ?>kargo.png" alt="IMG">
                 </div>
 
                 <form id="formLogin" action="#" method="post" autocomplete="off">
