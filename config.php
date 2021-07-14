@@ -5,9 +5,9 @@
  * DO NOT USE NON ALPHA-NUMERIC CHARACTER!
  * ---------------------------------------------------------------
  */
-	$noobs_title = 'Aplikasi RAB';
-	$noobs_title_1 = 'Aplikasi RAB';
-	$noobs_title_2 = 'Selamat Datang di Aplikasi RAB';
+	$noobs_title = 'Aplikasi Kargo';
+	$noobs_title_1 = 'Aplikasi Kargo';
+	$noobs_title_2 = 'Selamat Datang di Aplikasi Kargo';
 
 /*!
  * ---------------------------------------------------------------
@@ -18,7 +18,7 @@
 	$noobs_language = 'id';
 	$noobs_default_controller = 'settings/item_list';
 	$noobs_module_dir = 'module_frontend';
-	$noobs_module_url = 'rab';
+	$noobs_module_url = 'appkargo';
 	
 	switch ($_SERVER['HTTP_HOST'])
 	{
@@ -30,7 +30,7 @@
 					$noobs_db_username[] = 'root';
 					$noobs_db_password[] = 'apolokoa';
 					$noobs_db_pconnect[] = TRUE;
-					$noobs_db_database[] = 'dbrab';
+					$noobs_db_database[] = 'dbkargo';
 					$noobs_db_driver[] = 'mysqli';
 					$noobs_db_active[] = 'default';
 					$noobs_expiration = 0;
