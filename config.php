@@ -16,7 +16,7 @@
  */
 	$noobs_db_start = TRUE;
 	$noobs_language = 'id';
-	$noobs_default_controller = 'settings/item_list';
+	$noobs_default_controller = 'main/main';
 	$noobs_module_dir = 'module_frontend';
 	$noobs_module_url = 'appkargo';
 	

@@ -25,6 +25,7 @@ class Auth extends NOOBS_Controller {
 	{
 		if (isset($_POST['action']) && $_POST['action'] == 'do_login')
 		{
+
 			$post = $this->input->post();
 			$params = json_decode($post['data']);
 			$do_login = $this->validate_login($params);
