@@ -39,7 +39,7 @@
 
                 <form id="formLogin" action="#" method="post" autocomplete="off">
                     <span class="login100-form-title">
-                        Login
+                        Login Applikasi Kargo
                     </span>
 
                     <div class="wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
