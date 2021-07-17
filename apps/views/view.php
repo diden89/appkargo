@@ -52,13 +52,13 @@ $avatar = empty($this->session->userdata('user_img')) ? 'unknown.png' : $this->s
 	</head>
 	<body class="hold-transition sidebar-mini layout-fixed text-sm accent-info">
 		<div class="wrapper">
-			<nav class="main-header navbar navbar-expand navbar-dark navbar-info fixed-top">
+			<nav class="main-header navbar navbar-expand navbar-dark navbar-danger fixed-top">
 				<ul class="navbar-nav">
 					<li class="nav-item">
 						<a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
 					</li>
 				</ul>
-				<ul class="navbar-nav ml-auto">
+				<ul class="navbar-nav ml-auto ">
 					<li class="nav-item" title="Logout">
 						<a class="nav-link" href="<?php echo site_url('auth/do_logout'); ?>">
 							<i class="fas fa-sign-out-alt"></i> Sign Out
@@ -168,6 +168,9 @@ $avatar = empty($this->session->userdata('user_img')) ? 'unknown.png' : $this->s
 		<script src="<?php echo base_url('vendors/jquery_noobsdaterangepicker/js/noobsdaterangepicker.js'); ?>"></script>
 		<script src="<?php echo base_url('scripts/custom_validity.js'); ?>"></script>
 		<script src="<?php echo base_url('scripts/scripts.js'); ?>"></script>
+		<script src="<?php echo base_url('vendors/template/3.0.0/'); ?>plugins/chart.js/Chart.min.js"></script>
+		<script src="<?php echo base_url('vendors/template/3.0.0/'); ?>dist/js/demo.js"></script>
+		<script src="<?php echo base_url('vendors/template/3.0.0/'); ?>dist/js/pages/dashboard3.js"></script>
 		<?php
 			if (isset($source_bot) && count($source_bot) > 0)
 			{
