@@ -68,7 +68,7 @@ $avatar = empty($this->session->userdata('user_img')) ? 'unknown.png' : $this->s
 			</nav>
 			<aside class="main-sidebar sidebar-dark-primary elevation-4 sidebar-dark-info">
 				<a href="<?php echo base_url(); ?>" class="brand-link">
-					<!-- <img src="<?php echo base_url('images/logo.png'); ?>" alt="Brand Logo" class="brand-image"> -->
+					<!-- <img src="<?php// echo base_url('images/logo.png'); ?>" alt="Brand Logo" class="brand-image"> -->
 					<span class="brand-text font-weight-light" style=""><?= NOOBS_TITLE_1 ?></span>
 				</a>
 				<div class="sidebar">
@@ -77,7 +77,7 @@ $avatar = empty($this->session->userdata('user_img')) ? 'unknown.png' : $this->s
 							$backgroud_url = base_url('images/profiles/'.$avatar);
 						?>
 						<div class="image" style="background-image: url('<?= $backgroud_url ?>');">
-							<!-- <img src="<?php echo base_url('images/profiles/'.$avatar); ?>" class="img-circle elevation-2" alt="Avatar pengguna"> -->
+							<!-- <img src="<?php //echo base_url('images/profiles/'.$avatar); ?>" class="img-circle elevation-2" alt="Avatar pengguna"> -->
 						</div>
 						<div class="info">
 							<a href="<?php echo site_url('main/profile'); ?>" class="d-block"><?php echo $this->session->userdata('user_fullname'); ?></a>
