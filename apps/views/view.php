@@ -129,7 +129,7 @@ $avatar = empty($this->session->userdata('user_img')) ? 'unknown.png' : $this->s
 				</section>
 			</div>
 			<footer class="main-footer fixed-bottom">
-				Copyright&copy;2020 <a href="<?php echo base_url(); ?>">RAB App</a> All rights reserved.
+				Copyright&copy;2020 <a href="<?php echo base_url(); ?>">App Kargo</a> All rights reserved.
 				<div class="float-right d-none d-sm-inline-block">Version 1.0.0</div>
 			</footer>
 		</div>
