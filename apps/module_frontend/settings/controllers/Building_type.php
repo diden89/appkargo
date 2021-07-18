@@ -1,12 +1,12 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /*!
- * @package RAB
+ * @package APPKARGO
  * @copyright Noobscript
  * @author Sikelopes
  * @edit Diden89
  * @version 1.0
  * @access Public
- * @path /rab/apps/module_frontend/settings/controllers/Building_type.php
+ * @path /appkargo/apps/module_frontend/settings/controllers/Building_type.php
  */
 
 class Building_type extends NOOBS_Controller

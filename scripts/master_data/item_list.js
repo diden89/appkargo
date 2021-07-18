@@ -1,11 +1,11 @@
 /*!
- * @package RAB
+ * @package APPKARGO
  * @copyright Noobscript
  * @author Sikelopes
  * @edit Diden89
  * @version 1.0
  * @access Public
- * @path /rab_frontend/scripts/settings/similar_letters.js
+ * @path /rab_frontend/scripts/master_data/similar_letters.js
  */
 
 const itemList = {
@@ -14,6 +14,11 @@ const itemList = {
 		const me = this;
 
 		$('#btnSearchItem').click(function(e) {
+			e.preventDefault();
+			me.loadDataItem(this);
+		});
+		$('#btnReloadItem').click(function(e) {
+			$('#txtList').val('')
 			e.preventDefault();
 			me.loadDataItem(this);
 		});
@@ -36,7 +41,7 @@ const itemList = {
 		const $this = $(el);
 
 		$.ajax({
-			url: siteUrl('settings/item_list/load_data_item_list'),
+			url: siteUrl('master_data/item_list/load_data_item_list'),
 			type: 'POST',
 			dataType: 'JSON',
 			data: {
@@ -66,7 +71,9 @@ const itemList = {
 			var price = $.number(item.il_price);
 			body += '<tr>';
 			body += '<td>' + item.no + '</td>';
+			body += '<td>' + item.il_item_code + '</td>';
 			body += '<td>' + item.il_item_name + '</td>';
+			body += '<td>' + item.v_vendor_name + '</td>';
 			body += '<td>' + item.un_name + '</td>';
 			body += '<td>';
 				body += '<div class="btn-group btn-group-sm" role="group" aria-label="Action Button">';
@@ -98,9 +105,9 @@ const itemList = {
 		$.popup({
 			title: title + ' Item',
 			id: 'showItem',
-			size: 'small',
+			size: 'medium',
 			proxy: {
-				url: siteUrl('settings/item_list/load_item_form'),
+				url: siteUrl('master_data/item_list/load_item_form'),
 				params: params
 			},
 			buttons: [{
@@ -115,7 +122,7 @@ const itemList = {
 						const formData = new FormData(form[0]);
 
 						$.ajax({
-							url: siteUrl('settings/item_list/store_data_item'),
+							url: siteUrl('master_data/item_list/store_data_item'),
 							type: 'POST',
 							dataType: 'JSON',
 							data: formData,
@@ -164,7 +171,7 @@ const itemList = {
 		}).then((result) => {
 			if (result.value) {
 				$.ajax({
-					url: siteUrl('settings/item_list/delete_data_item'),
+					url: siteUrl('master_data/item_list/delete_data_item'),
 					type: 'POST',
 					dataType: 'JSON',
 					data: {

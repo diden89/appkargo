@@ -1,17 +1,17 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : local
+ Source Server         : mysql8
  Source Server Type    : MySQL
- Source Server Version : 50650
+ Source Server Version : 80020
  Source Host           : localhost:3306
- Source Schema         : dbrab
+ Source Schema         : dbkargo
 
  Target Server Type    : MySQL
- Target Server Version : 50650
+ Target Server Version : 80020
  File Encoding         : 65001
 
- Date: 28/10/2020 00:19:44
+ Date: 18/07/2021 11:56:51
 */
 
 SET NAMES utf8mb4;
@@ -22,13 +22,13 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 DROP TABLE IF EXISTS `building_type`;
 CREATE TABLE `building_type`  (
-  `bt_id` int(11) NOT NULL AUTO_INCREMENT,
+  `bt_id` int NOT NULL AUTO_INCREMENT,
   `bt_building_type` varchar(255) CHARACTER SET utf16 COLLATE utf16_bin NULL DEFAULT NULL,
   `bt_is_active` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT 'Y',
   `last_user` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `last_datetime` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`bt_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 19 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 18 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of building_type
@@ -42,42 +42,38 @@ INSERT INTO `building_type` VALUES (18, 'Type 105', 'Y', '1', '2020-10-25 10:05:
 -- ----------------------------
 DROP TABLE IF EXISTS `item_list`;
 CREATE TABLE `item_list`  (
-  `il_id` int(11) NOT NULL AUTO_INCREMENT,
+  `il_id` int NOT NULL AUTO_INCREMENT,
   `il_item_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `il_un_id` int(11) NULL DEFAULT NULL,
+  `il_item_code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `il_vendor_id` int NULL DEFAULT NULL,
+  `il_un_id` int NULL DEFAULT NULL,
   `il_is_active` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT 'Y',
   `last_user` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `last_datetime` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`il_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 17 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 16 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of item_list
 -- ----------------------------
-INSERT INTO `item_list` VALUES (8, 'Batu Bata', 1, 'Y', '1', '2020-10-22 01:47:47');
-INSERT INTO `item_list` VALUES (9, 'Kerikil', 14, 'Y', '1', '2020-10-26 19:52:52');
-INSERT INTO `item_list` VALUES (10, 'Semen', 15, 'Y', '1', '2020-10-26 19:57:08');
-INSERT INTO `item_list` VALUES (11, 'Pasir Cor', 14, 'Y', '1', '2020-10-26 19:57:26');
-INSERT INTO `item_list` VALUES (12, 'Besi 6', 5, 'Y', '1', '2020-10-26 19:57:36');
-INSERT INTO `item_list` VALUES (13, 'Besi 10', 5, 'Y', '1', '2020-10-26 19:57:45');
-INSERT INTO `item_list` VALUES (14, 'Pasir Pasang', 14, 'Y', '1', '2020-10-26 19:57:56');
-INSERT INTO `item_list` VALUES (15, 'Kayu 5/7', 5, 'Y', '1', '2020-10-26 19:59:40');
-INSERT INTO `item_list` VALUES (16, 'Besi 8', 5, 'Y', '1', '2020-10-26 19:59:50');
+INSERT INTO `item_list` VALUES (8, 'SB10', 'SB10', 1, 19, 'Y', '1', '2021-07-18 07:59:51');
+INSERT INTO `item_list` VALUES (9, 'SB11', 'SB11', 1, 19, 'Y', '1', '2020-10-26 19:52:52');
+INSERT INTO `item_list` VALUES (10, 'SB12', 'SB12', 1, 19, 'Y', '1', '2020-10-26 19:57:08');
 
 -- ----------------------------
 -- Table structure for item_rab
 -- ----------------------------
 DROP TABLE IF EXISTS `item_rab`;
 CREATE TABLE `item_rab`  (
-  `ir_id` int(11) NOT NULL AUTO_INCREMENT,
+  `ir_id` int NOT NULL AUTO_INCREMENT,
   `ir_item_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `ir_un_id` int(11) NULL DEFAULT NULL,
-  `ir_seq` int(11) NULL DEFAULT NULL,
+  `ir_un_id` int NULL DEFAULT NULL,
+  `ir_seq` int NULL DEFAULT NULL,
   `ir_is_active` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT 'Y',
   `last_user` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `last_datetime` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`ir_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 17 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 16 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of item_rab
@@ -85,29 +81,29 @@ CREATE TABLE `item_rab`  (
 INSERT INTO `item_rab` VALUES (9, 'Pondasi + Sloof', 12, 1, 'Y', '1', '2020-10-23 13:38:42');
 INSERT INTO `item_rab` VALUES (10, 'Tapak Gajah + Kolom', 8, 2, 'Y', '1', '2020-10-23 12:28:07');
 INSERT INTO `item_rab` VALUES (11, 'Ring Balok', 7, 3, 'Y', '1', '2020-10-23 12:28:15');
-INSERT INTO `item_rab` VALUES (12, 'Ring Balok', 7, 4, 'Y', '1', '2020-10-23 12:29:16');
-INSERT INTO `item_rab` VALUES (13, 'Dinding + Plester', 9, 5, 'Y', '1', '2020-10-23 12:29:23');
-INSERT INTO `item_rab` VALUES (14, 'Talang Beton', 7, 6, 'Y', '1', '2020-10-23 12:29:51');
-INSERT INTO `item_rab` VALUES (15, 'Dak', 10, 7, 'Y', '1', '2020-10-23 12:29:57');
-INSERT INTO `item_rab` VALUES (16, 'Atap', 9, 8, 'Y', '1', '2020-10-23 14:38:41');
+INSERT INTO `item_rab` VALUES (12, 'Plafon', 7, 8, 'Y', '1', '2020-10-23 12:29:16');
+INSERT INTO `item_rab` VALUES (13, 'Dinding + Plester', 9, 4, 'Y', '1', '2020-10-23 12:29:23');
+INSERT INTO `item_rab` VALUES (14, 'Talang Beton', 7, 5, 'Y', '1', '2020-10-23 12:29:51');
+INSERT INTO `item_rab` VALUES (15, 'Dak', 10, 6, 'Y', '1', '2020-10-23 12:29:57');
+INSERT INTO `item_rab` VALUES (16, 'Atap', 9, 7, 'Y', '1', '2020-10-23 14:38:41');
 
 -- ----------------------------
 -- Table structure for log_access_group
 -- ----------------------------
 DROP TABLE IF EXISTS `log_access_group`;
 CREATE TABLE `log_access_group`  (
-  `ag_id` int(11) NOT NULL,
-  `ag_ug_id` int(11) NULL DEFAULT NULL,
-  `ag_rm_id` int(11) NULL DEFAULT NULL,
+  `ag_id` int NOT NULL,
+  `ag_ug_id` int NULL DEFAULT NULL,
+  `ag_rm_id` int NULL DEFAULT NULL,
   `ag_is_active` char(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT 'Y',
-  `last_user` int(11) NULL DEFAULT NULL,
+  `last_user` int NULL DEFAULT NULL,
   `last_datetime` datetime(0) NULL DEFAULT NULL,
-  `log_user_id` int(10) UNSIGNED NOT NULL,
+  `log_user_id` int UNSIGNED NOT NULL,
   `log_action` varchar(32) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `log_datetime` datetime(0) NOT NULL,
-  `log_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `log_id` int UNSIGNED NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`log_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 15 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 14 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of log_access_group
@@ -132,37 +128,41 @@ INSERT INTO `log_access_group` VALUES (131, 1, 39, 'Y', 1, '2020-09-26 10:46:30'
 -- ----------------------------
 DROP TABLE IF EXISTS `log_access_menu`;
 CREATE TABLE `log_access_menu`  (
-  `am_id` int(10) UNSIGNED NOT NULL,
-  `am_user_id` int(10) UNSIGNED NOT NULL,
-  `am_menu_id` int(10) UNSIGNED NOT NULL,
+  `am_id` int UNSIGNED NOT NULL,
+  `am_user_id` int UNSIGNED NOT NULL,
+  `am_menu_id` int UNSIGNED NOT NULL,
   `am_is_active` char(1) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'Y',
-  `last_user` int(10) UNSIGNED NOT NULL,
+  `last_user` int UNSIGNED NOT NULL,
   `last_datetime` datetime(0) NOT NULL,
-  `log_user_id` int(10) UNSIGNED NOT NULL,
+  `log_user_id` int UNSIGNED NOT NULL,
   `log_action` varchar(32) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `log_datetime` datetime(0) NOT NULL,
-  `log_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `log_id` int UNSIGNED NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`log_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = COMPACT;
+
+-- ----------------------------
+-- Records of log_access_menu
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for log_access_sub_group
 -- ----------------------------
 DROP TABLE IF EXISTS `log_access_sub_group`;
 CREATE TABLE `log_access_sub_group`  (
-  `asg_id` int(11) NULL DEFAULT NULL,
-  `asg_ug_id` int(11) NULL DEFAULT NULL,
-  `asg_usg_id` int(11) NULL DEFAULT NULL,
-  `asg_rm_id` int(11) NULL DEFAULT NULL,
+  `asg_id` int NULL DEFAULT NULL,
+  `asg_ug_id` int NULL DEFAULT NULL,
+  `asg_usg_id` int NULL DEFAULT NULL,
+  `asg_rm_id` int NULL DEFAULT NULL,
   `asg_is_active` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT 'Y',
-  `last_user` int(11) NULL DEFAULT NULL,
+  `last_user` int NULL DEFAULT NULL,
   `last_datetime` datetime(0) NULL DEFAULT NULL,
-  `log_user_id` int(10) UNSIGNED NOT NULL,
+  `log_user_id` int UNSIGNED NOT NULL,
   `log_action` varchar(32) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `log_datetime` datetime(0) NOT NULL,
-  `log_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `log_id` int UNSIGNED NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`log_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 27 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 26 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of log_access_sub_group
@@ -186,17 +186,17 @@ INSERT INTO `log_access_sub_group` VALUES (19, 1, 1, 39, 'Y', 1, '2020-09-26 19:
 -- ----------------------------
 DROP TABLE IF EXISTS `log_building_type`;
 CREATE TABLE `log_building_type`  (
-  `bt_id` int(11) NOT NULL,
+  `bt_id` int NOT NULL,
   `bt_building_type` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `bt_is_active` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `last_user` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `last_datetime` datetime(0) NULL DEFAULT NULL,
-  `log_user_id` int(11) NULL DEFAULT NULL,
+  `log_user_id` int NULL DEFAULT NULL,
   `log_action` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `log_datetime` datetime(0) NOT NULL,
-  `log_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `log_id` int UNSIGNED NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`log_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 33 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 32 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of log_building_type
@@ -216,61 +216,64 @@ INSERT INTO `log_building_type` VALUES (18, 'Type 105', 'Y', '1', '2020-10-25 10
 -- ----------------------------
 DROP TABLE IF EXISTS `log_item_list`;
 CREATE TABLE `log_item_list`  (
-  `il_id` int(11) NOT NULL,
+  `il_id` int NOT NULL,
   `il_item_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `il_price` decimal(10, 2) NULL DEFAULT NULL,
-  `il_un_id` int(11) NULL DEFAULT NULL,
+  `il_item_code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `il_vendor_id` int NULL DEFAULT NULL,
+  `il_un_id` int NULL DEFAULT NULL,
   `il_is_active` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT 'Y',
-  `last_user` int(11) NULL DEFAULT NULL,
+  `last_user` int NULL DEFAULT NULL,
   `last_datetime` datetime(0) NULL DEFAULT NULL,
-  `log_user_id` int(11) NULL DEFAULT NULL,
+  `log_user_id` int NULL DEFAULT NULL,
   `log_action` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `log_datetime` datetime(0) NOT NULL,
-  `log_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `log_id` int UNSIGNED NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`log_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 20 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 19 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of log_item_list
 -- ----------------------------
-INSERT INTO `log_item_list` VALUES (3, 'tes', 1000000.00, 1, 'Y', 1, '2020-10-22 01:14:35', 1, 'add', '2020-10-22 01:14:35', 1);
-INSERT INTO `log_item_list` VALUES (4, 'asdasdsa', 1000000.00, 1, 'Y', 1, '2020-10-22 01:17:47', 1, 'add', '2020-10-22 01:17:47', 2);
-INSERT INTO `log_item_list` VALUES (5, 'asdasd', 12312.00, 1, 'Y', 1, '2020-10-22 01:21:43', 1, 'add', '2020-10-22 01:21:43', 3);
-INSERT INTO `log_item_list` VALUES (6, 'asada', 100000.00, 1, 'Y', 1, '2020-10-22 01:26:56', 1, 'add', '2020-10-22 01:26:56', 4);
-INSERT INTO `log_item_list` VALUES (7, 'yer', 150000.00, 1, 'Y', 1, '2020-10-22 01:27:19', 1, 'add', '2020-10-22 01:27:19', 5);
-INSERT INTO `log_item_list` VALUES (6, 'asada', 150000.00, 1, 'Y', 1, '2020-10-22 01:34:35', 1, 'edit', '2020-10-22 01:34:35', 6);
-INSERT INTO `log_item_list` VALUES (5, 'toko', 150000.00, 1, 'Y', 1, '2020-10-22 01:34:45', 1, 'edit', '2020-10-22 01:34:45', 7);
-INSERT INTO `log_item_list` VALUES (7, 'yer', 150000.00, 1, 'N', 1, '2020-10-22 01:47:13', 1, 'edit', '2020-10-22 01:47:13', 8);
-INSERT INTO `log_item_list` VALUES (5, 'toko', 150000.00, 1, 'N', 1, '2020-10-22 01:47:15', 1, 'edit', '2020-10-22 01:47:15', 9);
-INSERT INTO `log_item_list` VALUES (3, 'tes', 1000000.00, 1, 'N', 1, '2020-10-22 01:47:18', 1, 'edit', '2020-10-22 01:47:18', 10);
-INSERT INTO `log_item_list` VALUES (8, 'Batu Bata', 400.00, 1, 'Y', 1, '2020-10-22 01:47:47', 1, 'add', '2020-10-22 01:47:47', 11);
-INSERT INTO `log_item_list` VALUES (9, 'Kerikil', NULL, 14, 'Y', 1, '2020-10-26 19:52:52', 1, 'add', '2020-10-26 19:52:52', 12);
-INSERT INTO `log_item_list` VALUES (10, 'Semen', NULL, 15, 'Y', 1, '2020-10-26 19:57:08', 1, 'add', '2020-10-26 19:57:08', 13);
-INSERT INTO `log_item_list` VALUES (11, 'Pasir Cor', NULL, 14, 'Y', 1, '2020-10-26 19:57:26', 1, 'add', '2020-10-26 19:57:26', 14);
-INSERT INTO `log_item_list` VALUES (12, 'Besi 6', NULL, 5, 'Y', 1, '2020-10-26 19:57:36', 1, 'add', '2020-10-26 19:57:36', 15);
-INSERT INTO `log_item_list` VALUES (13, 'Besi 10', NULL, 5, 'Y', 1, '2020-10-26 19:57:45', 1, 'add', '2020-10-26 19:57:45', 16);
-INSERT INTO `log_item_list` VALUES (14, 'Pasir Pasang', NULL, 14, 'Y', 1, '2020-10-26 19:57:56', 1, 'add', '2020-10-26 19:57:56', 17);
-INSERT INTO `log_item_list` VALUES (15, 'Kayu 5/7', NULL, 5, 'Y', 1, '2020-10-26 19:59:40', 1, 'add', '2020-10-26 19:59:40', 18);
-INSERT INTO `log_item_list` VALUES (16, 'Besi 8', NULL, 5, 'Y', 1, '2020-10-26 19:59:50', 1, 'add', '2020-10-26 19:59:50', 19);
+INSERT INTO `log_item_list` VALUES (3, 'tes', NULL, NULL, 1, 'Y', 1, '2020-10-22 01:14:35', 1, 'add', '2020-10-22 01:14:35', 1);
+INSERT INTO `log_item_list` VALUES (4, 'asdasdsa', NULL, NULL, 1, 'Y', 1, '2020-10-22 01:17:47', 1, 'add', '2020-10-22 01:17:47', 2);
+INSERT INTO `log_item_list` VALUES (5, 'asdasd', NULL, NULL, 1, 'Y', 1, '2020-10-22 01:21:43', 1, 'add', '2020-10-22 01:21:43', 3);
+INSERT INTO `log_item_list` VALUES (6, 'asada', NULL, NULL, 1, 'Y', 1, '2020-10-22 01:26:56', 1, 'add', '2020-10-22 01:26:56', 4);
+INSERT INTO `log_item_list` VALUES (7, 'yer', NULL, NULL, 1, 'Y', 1, '2020-10-22 01:27:19', 1, 'add', '2020-10-22 01:27:19', 5);
+INSERT INTO `log_item_list` VALUES (6, 'asada', NULL, NULL, 1, 'Y', 1, '2020-10-22 01:34:35', 1, 'edit', '2020-10-22 01:34:35', 6);
+INSERT INTO `log_item_list` VALUES (5, 'toko', NULL, NULL, 1, 'Y', 1, '2020-10-22 01:34:45', 1, 'edit', '2020-10-22 01:34:45', 7);
+INSERT INTO `log_item_list` VALUES (7, 'yer', NULL, NULL, 1, 'N', 1, '2020-10-22 01:47:13', 1, 'edit', '2020-10-22 01:47:13', 8);
+INSERT INTO `log_item_list` VALUES (5, 'toko', NULL, NULL, 1, 'N', 1, '2020-10-22 01:47:15', 1, 'edit', '2020-10-22 01:47:15', 9);
+INSERT INTO `log_item_list` VALUES (3, 'tes', NULL, NULL, 1, 'N', 1, '2020-10-22 01:47:18', 1, 'edit', '2020-10-22 01:47:18', 10);
+INSERT INTO `log_item_list` VALUES (8, 'Batu Bata', NULL, NULL, 1, 'Y', 1, '2020-10-22 01:47:47', 1, 'add', '2020-10-22 01:47:47', 11);
+INSERT INTO `log_item_list` VALUES (9, 'Kerikil', NULL, NULL, 14, 'Y', 1, '2020-10-26 19:52:52', 1, 'add', '2020-10-26 19:52:52', 12);
+INSERT INTO `log_item_list` VALUES (10, 'Semen', NULL, NULL, 15, 'Y', 1, '2020-10-26 19:57:08', 1, 'add', '2020-10-26 19:57:08', 13);
+INSERT INTO `log_item_list` VALUES (11, 'Pasir Cor', NULL, NULL, 14, 'Y', 1, '2020-10-26 19:57:26', 1, 'add', '2020-10-26 19:57:26', 14);
+INSERT INTO `log_item_list` VALUES (12, 'Besi 6', NULL, NULL, 5, 'Y', 1, '2020-10-26 19:57:36', 1, 'add', '2020-10-26 19:57:36', 15);
+INSERT INTO `log_item_list` VALUES (13, 'Besi 10', NULL, NULL, 5, 'Y', 1, '2020-10-26 19:57:45', 1, 'add', '2020-10-26 19:57:45', 16);
+INSERT INTO `log_item_list` VALUES (14, 'Pasir Pasang', NULL, NULL, 14, 'Y', 1, '2020-10-26 19:57:56', 1, 'add', '2020-10-26 19:57:56', 17);
+INSERT INTO `log_item_list` VALUES (15, 'Kayu 5/7', NULL, NULL, 5, 'Y', 1, '2020-10-26 19:59:40', 1, 'add', '2020-10-26 19:59:40', 18);
+INSERT INTO `log_item_list` VALUES (16, 'Besi 8', NULL, NULL, 5, 'Y', 1, '2020-10-26 19:59:50', 1, 'add', '2020-10-26 19:59:50', 19);
+INSERT INTO `log_item_list` VALUES (8, 'SB10', 'SB1011', 1, 19, 'Y', 1, '2021-07-18 07:58:28', 1, 'edit', '2021-07-18 07:58:28', 20);
+INSERT INTO `log_item_list` VALUES (8, 'SB10', 'SB10', 1, 19, 'Y', 1, '2021-07-18 07:59:51', 1, 'edit', '2021-07-18 07:59:51', 21);
 
 -- ----------------------------
 -- Table structure for log_item_rab
 -- ----------------------------
 DROP TABLE IF EXISTS `log_item_rab`;
 CREATE TABLE `log_item_rab`  (
-  `ir_id` int(11) NOT NULL,
+  `ir_id` int NOT NULL,
   `ir_item_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `ir_un_id` int(11) NULL DEFAULT NULL,
-  `ir_seq` int(11) NULL DEFAULT NULL,
+  `ir_un_id` int NULL DEFAULT NULL,
+  `ir_seq` int NULL DEFAULT NULL,
   `ir_is_active` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT 'Y',
-  `last_user` int(11) NULL DEFAULT NULL,
+  `last_user` int NULL DEFAULT NULL,
   `last_datetime` datetime(0) NULL DEFAULT NULL,
-  `log_user_id` int(11) NULL DEFAULT NULL,
+  `log_user_id` int NULL DEFAULT NULL,
   `log_action` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `log_datetime` datetime(0) NOT NULL,
-  `log_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `log_id` int UNSIGNED NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`log_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 29 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 28 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of log_item_rab
@@ -298,18 +301,18 @@ INSERT INTO `log_item_rab` VALUES (16, 'Atap', 9, 8, 'N', 1, '2020-10-23 14:38:4
 -- ----------------------------
 DROP TABLE IF EXISTS `log_menu_access_group`;
 CREATE TABLE `log_menu_access_group`  (
-  `mag_id` int(11) NOT NULL,
-  `mag_ug_id` int(11) NULL DEFAULT NULL,
-  `mag_rm_id` int(11) NULL DEFAULT NULL,
+  `mag_id` int NOT NULL,
+  `mag_ug_id` int NULL DEFAULT NULL,
+  `mag_rm_id` int NULL DEFAULT NULL,
   `mag_is_active` char(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT 'Y',
-  `last_user` int(11) NULL DEFAULT NULL,
+  `last_user` int NULL DEFAULT NULL,
   `last_datetime` datetime(0) NULL DEFAULT NULL,
-  `log_user_id` int(10) UNSIGNED NOT NULL,
+  `log_user_id` int UNSIGNED NOT NULL,
   `log_action` varchar(32) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `log_datetime` datetime(0) NOT NULL,
-  `log_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `log_id` int UNSIGNED NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`log_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 264 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 308 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of log_menu_access_group
@@ -577,114 +580,375 @@ INSERT INTO `log_menu_access_group` VALUES (144, 1, 51, 'Y', 1, '2020-10-27 10:2
 INSERT INTO `log_menu_access_group` VALUES (149, 1, 56, 'Y', 1, '2020-10-27 10:24:34', 1, 'edit', '2020-10-27 10:24:34', 261);
 INSERT INTO `log_menu_access_group` VALUES (150, 1, 57, 'Y', 1, '2020-10-27 10:24:34', 1, 'edit', '2020-10-27 10:24:34', 262);
 INSERT INTO `log_menu_access_group` VALUES (151, 1, 58, 'Y', 1, '2020-10-27 10:24:34', 1, 'edit', '2020-10-27 10:24:34', 263);
+INSERT INTO `log_menu_access_group` VALUES (145, 1, 52, 'Y', 1, '2020-10-30 01:24:23', 1, 'edit', '2020-10-30 01:24:23', 264);
+INSERT INTO `log_menu_access_group` VALUES (152, 1, 59, 'Y', 1, '2020-10-30 01:24:23', 1, 'edit', '2020-10-30 01:24:23', 265);
+INSERT INTO `log_menu_access_group` VALUES (147, 1, 54, 'Y', 1, '2020-10-30 01:24:23', 1, 'edit', '2020-10-30 01:24:23', 266);
+INSERT INTO `log_menu_access_group` VALUES (146, 1, 53, 'Y', 1, '2020-10-30 01:24:23', 1, 'edit', '2020-10-30 01:24:23', 267);
+INSERT INTO `log_menu_access_group` VALUES (148, 1, 55, 'Y', 1, '2020-10-30 01:24:23', 1, 'edit', '2020-10-30 01:24:23', 268);
+INSERT INTO `log_menu_access_group` VALUES (125, 1, 2, 'Y', 1, '2020-10-30 01:24:23', 1, 'edit', '2020-10-30 01:24:23', 269);
+INSERT INTO `log_menu_access_group` VALUES (126, 1, 36, 'Y', 1, '2020-10-30 01:24:23', 1, 'edit', '2020-10-30 01:24:23', 270);
+INSERT INTO `log_menu_access_group` VALUES (127, 1, 33, 'Y', 1, '2020-10-30 01:24:23', 1, 'edit', '2020-10-30 01:24:23', 271);
+INSERT INTO `log_menu_access_group` VALUES (128, 1, 41, 'Y', 1, '2020-10-30 01:24:23', 1, 'edit', '2020-10-30 01:24:23', 272);
+INSERT INTO `log_menu_access_group` VALUES (136, 1, 44, 'Y', 1, '2020-10-30 01:24:23', 1, 'edit', '2020-10-30 01:24:23', 273);
+INSERT INTO `log_menu_access_group` VALUES (137, 1, 45, 'Y', 1, '2020-10-30 01:24:23', 1, 'edit', '2020-10-30 01:24:23', 274);
+INSERT INTO `log_menu_access_group` VALUES (133, 1, 37, 'Y', 1, '2020-10-30 01:24:23', 1, 'edit', '2020-10-30 01:24:23', 275);
+INSERT INTO `log_menu_access_group` VALUES (3, 1, 3, 'Y', 1, '2020-10-30 01:24:23', 1, 'edit', '2020-10-30 01:24:23', 276);
+INSERT INTO `log_menu_access_group` VALUES (130, 1, 38, 'Y', 1, '2020-10-30 01:24:23', 1, 'edit', '2020-10-30 01:24:23', 277);
+INSERT INTO `log_menu_access_group` VALUES (131, 1, 39, 'Y', 1, '2020-10-30 01:24:23', 1, 'edit', '2020-10-30 01:24:23', 278);
+INSERT INTO `log_menu_access_group` VALUES (142, 1, 49, 'Y', 1, '2020-10-30 01:24:23', 1, 'edit', '2020-10-30 01:24:23', 279);
+INSERT INTO `log_menu_access_group` VALUES (143, 1, 50, 'Y', 1, '2020-10-30 01:24:23', 1, 'edit', '2020-10-30 01:24:23', 280);
+INSERT INTO `log_menu_access_group` VALUES (144, 1, 51, 'Y', 1, '2020-10-30 01:24:23', 1, 'edit', '2020-10-30 01:24:23', 281);
+INSERT INTO `log_menu_access_group` VALUES (149, 1, 56, 'Y', 1, '2020-10-30 01:24:23', 1, 'edit', '2020-10-30 01:24:23', 282);
+INSERT INTO `log_menu_access_group` VALUES (150, 1, 57, 'Y', 1, '2020-10-30 01:24:23', 1, 'edit', '2020-10-30 01:24:23', 283);
+INSERT INTO `log_menu_access_group` VALUES (151, 1, 58, 'Y', 1, '2020-10-30 01:24:23', 1, 'edit', '2020-10-30 01:24:23', 284);
+INSERT INTO `log_menu_access_group` VALUES (153, 1, 60, 'Y', 1, '2020-10-30 01:24:23', 1, 'add', '2020-10-30 01:24:23', 285);
+INSERT INTO `log_menu_access_group` VALUES (145, 1, 52, 'Y', 1, '2021-07-14 10:26:30', 1, 'edit', '2021-07-14 10:26:30', 286);
+INSERT INTO `log_menu_access_group` VALUES (152, 1, 59, 'Y', 1, '2021-07-14 10:26:30', 1, 'edit', '2021-07-14 10:26:30', 287);
+INSERT INTO `log_menu_access_group` VALUES (147, 1, 54, 'Y', 1, '2021-07-14 10:26:30', 1, 'edit', '2021-07-14 10:26:30', 288);
+INSERT INTO `log_menu_access_group` VALUES (146, 1, 53, 'Y', 1, '2021-07-14 10:26:30', 1, 'edit', '2021-07-14 10:26:30', 289);
+INSERT INTO `log_menu_access_group` VALUES (148, 1, 55, 'Y', 1, '2021-07-14 10:26:30', 1, 'edit', '2021-07-14 10:26:30', 290);
+INSERT INTO `log_menu_access_group` VALUES (154, 1, 61, 'Y', 1, '2021-07-14 10:26:30', 1, 'add', '2021-07-14 10:26:30', 291);
+INSERT INTO `log_menu_access_group` VALUES (125, 1, 2, 'Y', 1, '2021-07-14 10:26:30', 1, 'edit', '2021-07-14 10:26:30', 292);
+INSERT INTO `log_menu_access_group` VALUES (126, 1, 36, 'Y', 1, '2021-07-14 10:26:30', 1, 'edit', '2021-07-14 10:26:30', 293);
+INSERT INTO `log_menu_access_group` VALUES (127, 1, 33, 'Y', 1, '2021-07-14 10:26:30', 1, 'edit', '2021-07-14 10:26:30', 294);
+INSERT INTO `log_menu_access_group` VALUES (128, 1, 41, 'Y', 1, '2021-07-14 10:26:30', 1, 'edit', '2021-07-14 10:26:30', 295);
+INSERT INTO `log_menu_access_group` VALUES (136, 1, 44, 'Y', 1, '2021-07-14 10:26:30', 1, 'edit', '2021-07-14 10:26:30', 296);
+INSERT INTO `log_menu_access_group` VALUES (137, 1, 45, 'Y', 1, '2021-07-14 10:26:31', 1, 'edit', '2021-07-14 10:26:31', 297);
+INSERT INTO `log_menu_access_group` VALUES (133, 1, 37, 'Y', 1, '2021-07-14 10:26:31', 1, 'edit', '2021-07-14 10:26:31', 298);
+INSERT INTO `log_menu_access_group` VALUES (3, 1, 3, 'Y', 1, '2021-07-14 10:26:31', 1, 'edit', '2021-07-14 10:26:31', 299);
+INSERT INTO `log_menu_access_group` VALUES (130, 1, 38, 'Y', 1, '2021-07-14 10:26:31', 1, 'edit', '2021-07-14 10:26:31', 300);
+INSERT INTO `log_menu_access_group` VALUES (131, 1, 39, 'Y', 1, '2021-07-14 10:26:31', 1, 'edit', '2021-07-14 10:26:31', 301);
+INSERT INTO `log_menu_access_group` VALUES (142, 1, 49, 'Y', 1, '2021-07-14 10:26:31', 1, 'edit', '2021-07-14 10:26:31', 302);
+INSERT INTO `log_menu_access_group` VALUES (143, 1, 50, 'Y', 1, '2021-07-14 10:26:31', 1, 'edit', '2021-07-14 10:26:31', 303);
+INSERT INTO `log_menu_access_group` VALUES (144, 1, 51, 'Y', 1, '2021-07-14 10:26:31', 1, 'edit', '2021-07-14 10:26:31', 304);
+INSERT INTO `log_menu_access_group` VALUES (149, 1, 56, 'Y', 1, '2021-07-14 10:26:31', 1, 'edit', '2021-07-14 10:26:31', 305);
+INSERT INTO `log_menu_access_group` VALUES (150, 1, 57, 'Y', 1, '2021-07-14 10:26:31', 1, 'edit', '2021-07-14 10:26:31', 306);
+INSERT INTO `log_menu_access_group` VALUES (151, 1, 58, 'Y', 1, '2021-07-14 10:26:31', 1, 'edit', '2021-07-14 10:26:31', 307);
+INSERT INTO `log_menu_access_group` VALUES (153, 1, 60, 'Y', 1, '2021-07-14 10:26:31', 1, 'edit', '2021-07-14 10:26:31', 308);
+INSERT INTO `log_menu_access_group` VALUES (154, 1, 61, 'Y', 1, '2021-07-18 06:33:37', 1, 'edit', '2021-07-18 06:33:37', 309);
+INSERT INTO `log_menu_access_group` VALUES (155, 1, 62, 'Y', 1, '2021-07-18 06:33:37', 1, 'add', '2021-07-18 06:33:37', 310);
+INSERT INTO `log_menu_access_group` VALUES (125, 1, 2, 'Y', 1, '2021-07-18 06:33:37', 1, 'edit', '2021-07-18 06:33:37', 311);
+INSERT INTO `log_menu_access_group` VALUES (126, 1, 36, 'Y', 1, '2021-07-18 06:33:37', 1, 'edit', '2021-07-18 06:33:37', 312);
+INSERT INTO `log_menu_access_group` VALUES (127, 1, 33, 'Y', 1, '2021-07-18 06:33:38', 1, 'edit', '2021-07-18 06:33:38', 313);
+INSERT INTO `log_menu_access_group` VALUES (128, 1, 41, 'Y', 1, '2021-07-18 06:33:38', 1, 'edit', '2021-07-18 06:33:38', 314);
+INSERT INTO `log_menu_access_group` VALUES (136, 1, 44, 'Y', 1, '2021-07-18 06:33:38', 1, 'edit', '2021-07-18 06:33:38', 315);
+INSERT INTO `log_menu_access_group` VALUES (137, 1, 45, 'Y', 1, '2021-07-18 06:33:38', 1, 'edit', '2021-07-18 06:33:38', 316);
+INSERT INTO `log_menu_access_group` VALUES (133, 1, 37, 'Y', 1, '2021-07-18 06:33:38', 1, 'edit', '2021-07-18 06:33:38', 317);
+INSERT INTO `log_menu_access_group` VALUES (3, 1, 3, 'Y', 1, '2021-07-18 06:33:38', 1, 'edit', '2021-07-18 06:33:38', 318);
+INSERT INTO `log_menu_access_group` VALUES (130, 1, 38, 'Y', 1, '2021-07-18 06:33:38', 1, 'edit', '2021-07-18 06:33:38', 319);
+INSERT INTO `log_menu_access_group` VALUES (131, 1, 39, 'Y', 1, '2021-07-18 06:33:38', 1, 'edit', '2021-07-18 06:33:38', 320);
+INSERT INTO `log_menu_access_group` VALUES (142, 1, 49, 'Y', 1, '2021-07-18 06:33:38', 1, 'edit', '2021-07-18 06:33:38', 321);
+INSERT INTO `log_menu_access_group` VALUES (143, 1, 50, 'Y', 1, '2021-07-18 06:33:39', 1, 'edit', '2021-07-18 06:33:39', 322);
+INSERT INTO `log_menu_access_group` VALUES (144, 1, 51, 'Y', 1, '2021-07-18 06:33:39', 1, 'edit', '2021-07-18 06:33:39', 323);
+INSERT INTO `log_menu_access_group` VALUES (149, 1, 56, 'Y', 1, '2021-07-18 06:33:39', 1, 'edit', '2021-07-18 06:33:39', 324);
+INSERT INTO `log_menu_access_group` VALUES (150, 1, 57, 'Y', 1, '2021-07-18 06:33:39', 1, 'edit', '2021-07-18 06:33:39', 325);
+INSERT INTO `log_menu_access_group` VALUES (151, 1, 58, 'Y', 1, '2021-07-18 06:33:39', 1, 'edit', '2021-07-18 06:33:39', 326);
+INSERT INTO `log_menu_access_group` VALUES (153, 1, 60, 'Y', 1, '2021-07-18 06:33:39', 1, 'edit', '2021-07-18 06:33:39', 327);
+INSERT INTO `log_menu_access_group` VALUES (145, 1, 52, 'Y', 1, '2021-07-18 06:33:39', 1, 'edit', '2021-07-18 06:33:39', 328);
+INSERT INTO `log_menu_access_group` VALUES (152, 1, 59, 'Y', 1, '2021-07-18 06:33:39', 1, 'edit', '2021-07-18 06:33:39', 329);
+INSERT INTO `log_menu_access_group` VALUES (147, 1, 54, 'Y', 1, '2021-07-18 06:33:39', 1, 'edit', '2021-07-18 06:33:39', 330);
+INSERT INTO `log_menu_access_group` VALUES (146, 1, 53, 'Y', 1, '2021-07-18 06:33:39', 1, 'edit', '2021-07-18 06:33:39', 331);
+INSERT INTO `log_menu_access_group` VALUES (148, 1, 55, 'Y', 1, '2021-07-18 06:33:39', 1, 'edit', '2021-07-18 06:33:39', 332);
+INSERT INTO `log_menu_access_group` VALUES (154, 1, 61, 'Y', 1, '2021-07-18 06:40:37', 1, 'edit', '2021-07-18 06:40:37', 333);
+INSERT INTO `log_menu_access_group` VALUES (155, 1, 62, 'Y', 1, '2021-07-18 06:40:37', 1, 'edit', '2021-07-18 06:40:37', 334);
+INSERT INTO `log_menu_access_group` VALUES (156, 1, 63, 'Y', 1, '2021-07-18 06:40:37', 1, 'add', '2021-07-18 06:40:37', 335);
+INSERT INTO `log_menu_access_group` VALUES (145, 1, 52, 'Y', 1, '2021-07-18 06:40:37', 1, 'edit', '2021-07-18 06:40:37', 336);
+INSERT INTO `log_menu_access_group` VALUES (152, 1, 59, 'Y', 1, '2021-07-18 06:40:37', 1, 'edit', '2021-07-18 06:40:37', 337);
+INSERT INTO `log_menu_access_group` VALUES (147, 1, 54, 'Y', 1, '2021-07-18 06:40:37', 1, 'edit', '2021-07-18 06:40:37', 338);
+INSERT INTO `log_menu_access_group` VALUES (146, 1, 53, 'Y', 1, '2021-07-18 06:40:37', 1, 'edit', '2021-07-18 06:40:37', 339);
+INSERT INTO `log_menu_access_group` VALUES (148, 1, 55, 'Y', 1, '2021-07-18 06:40:37', 1, 'edit', '2021-07-18 06:40:37', 340);
+INSERT INTO `log_menu_access_group` VALUES (125, 1, 2, 'Y', 1, '2021-07-18 06:40:37', 1, 'edit', '2021-07-18 06:40:37', 341);
+INSERT INTO `log_menu_access_group` VALUES (126, 1, 36, 'Y', 1, '2021-07-18 06:40:37', 1, 'edit', '2021-07-18 06:40:37', 342);
+INSERT INTO `log_menu_access_group` VALUES (127, 1, 33, 'Y', 1, '2021-07-18 06:40:37', 1, 'edit', '2021-07-18 06:40:37', 343);
+INSERT INTO `log_menu_access_group` VALUES (128, 1, 41, 'Y', 1, '2021-07-18 06:40:38', 1, 'edit', '2021-07-18 06:40:38', 344);
+INSERT INTO `log_menu_access_group` VALUES (136, 1, 44, 'Y', 1, '2021-07-18 06:40:38', 1, 'edit', '2021-07-18 06:40:38', 345);
+INSERT INTO `log_menu_access_group` VALUES (137, 1, 45, 'Y', 1, '2021-07-18 06:40:38', 1, 'edit', '2021-07-18 06:40:38', 346);
+INSERT INTO `log_menu_access_group` VALUES (133, 1, 37, 'Y', 1, '2021-07-18 06:40:38', 1, 'edit', '2021-07-18 06:40:38', 347);
+INSERT INTO `log_menu_access_group` VALUES (3, 1, 3, 'Y', 1, '2021-07-18 06:40:38', 1, 'edit', '2021-07-18 06:40:38', 348);
+INSERT INTO `log_menu_access_group` VALUES (130, 1, 38, 'Y', 1, '2021-07-18 06:40:38', 1, 'edit', '2021-07-18 06:40:38', 349);
+INSERT INTO `log_menu_access_group` VALUES (131, 1, 39, 'Y', 1, '2021-07-18 06:40:38', 1, 'edit', '2021-07-18 06:40:38', 350);
+INSERT INTO `log_menu_access_group` VALUES (142, 1, 49, 'Y', 1, '2021-07-18 06:40:38', 1, 'edit', '2021-07-18 06:40:38', 351);
+INSERT INTO `log_menu_access_group` VALUES (143, 1, 50, 'Y', 1, '2021-07-18 06:40:38', 1, 'edit', '2021-07-18 06:40:38', 352);
+INSERT INTO `log_menu_access_group` VALUES (144, 1, 51, 'Y', 1, '2021-07-18 06:40:38', 1, 'edit', '2021-07-18 06:40:38', 353);
+INSERT INTO `log_menu_access_group` VALUES (149, 1, 56, 'Y', 1, '2021-07-18 06:40:38', 1, 'edit', '2021-07-18 06:40:38', 354);
+INSERT INTO `log_menu_access_group` VALUES (150, 1, 57, 'Y', 1, '2021-07-18 06:40:38', 1, 'edit', '2021-07-18 06:40:38', 355);
+INSERT INTO `log_menu_access_group` VALUES (151, 1, 58, 'Y', 1, '2021-07-18 06:40:38', 1, 'edit', '2021-07-18 06:40:38', 356);
+INSERT INTO `log_menu_access_group` VALUES (153, 1, 60, 'Y', 1, '2021-07-18 06:40:39', 1, 'edit', '2021-07-18 06:40:39', 357);
+INSERT INTO `log_menu_access_group` VALUES (154, 1, 61, 'Y', 1, '2021-07-18 06:44:49', 1, 'edit', '2021-07-18 06:44:49', 358);
+INSERT INTO `log_menu_access_group` VALUES (155, 1, 62, 'Y', 1, '2021-07-18 06:44:49', 1, 'edit', '2021-07-18 06:44:49', 359);
+INSERT INTO `log_menu_access_group` VALUES (156, 1, 63, 'Y', 1, '2021-07-18 06:44:49', 1, 'edit', '2021-07-18 06:44:49', 360);
+INSERT INTO `log_menu_access_group` VALUES (157, 1, 64, 'Y', 1, '2021-07-18 06:44:49', 1, 'add', '2021-07-18 06:44:49', 361);
+INSERT INTO `log_menu_access_group` VALUES (145, 1, 52, 'Y', 1, '2021-07-18 06:44:49', 1, 'edit', '2021-07-18 06:44:49', 362);
+INSERT INTO `log_menu_access_group` VALUES (152, 1, 59, 'Y', 1, '2021-07-18 06:44:49', 1, 'edit', '2021-07-18 06:44:49', 363);
+INSERT INTO `log_menu_access_group` VALUES (147, 1, 54, 'Y', 1, '2021-07-18 06:44:50', 1, 'edit', '2021-07-18 06:44:50', 364);
+INSERT INTO `log_menu_access_group` VALUES (146, 1, 53, 'Y', 1, '2021-07-18 06:44:50', 1, 'edit', '2021-07-18 06:44:50', 365);
+INSERT INTO `log_menu_access_group` VALUES (148, 1, 55, 'Y', 1, '2021-07-18 06:44:50', 1, 'edit', '2021-07-18 06:44:50', 366);
+INSERT INTO `log_menu_access_group` VALUES (125, 1, 2, 'Y', 1, '2021-07-18 06:44:50', 1, 'edit', '2021-07-18 06:44:50', 367);
+INSERT INTO `log_menu_access_group` VALUES (126, 1, 36, 'Y', 1, '2021-07-18 06:44:50', 1, 'edit', '2021-07-18 06:44:50', 368);
+INSERT INTO `log_menu_access_group` VALUES (127, 1, 33, 'Y', 1, '2021-07-18 06:44:50', 1, 'edit', '2021-07-18 06:44:50', 369);
+INSERT INTO `log_menu_access_group` VALUES (128, 1, 41, 'Y', 1, '2021-07-18 06:44:50', 1, 'edit', '2021-07-18 06:44:50', 370);
+INSERT INTO `log_menu_access_group` VALUES (136, 1, 44, 'Y', 1, '2021-07-18 06:44:51', 1, 'edit', '2021-07-18 06:44:51', 371);
+INSERT INTO `log_menu_access_group` VALUES (137, 1, 45, 'Y', 1, '2021-07-18 06:44:51', 1, 'edit', '2021-07-18 06:44:51', 372);
+INSERT INTO `log_menu_access_group` VALUES (133, 1, 37, 'Y', 1, '2021-07-18 06:44:51', 1, 'edit', '2021-07-18 06:44:51', 373);
+INSERT INTO `log_menu_access_group` VALUES (3, 1, 3, 'Y', 1, '2021-07-18 06:44:51', 1, 'edit', '2021-07-18 06:44:51', 374);
+INSERT INTO `log_menu_access_group` VALUES (130, 1, 38, 'Y', 1, '2021-07-18 06:44:52', 1, 'edit', '2021-07-18 06:44:52', 375);
+INSERT INTO `log_menu_access_group` VALUES (131, 1, 39, 'Y', 1, '2021-07-18 06:44:52', 1, 'edit', '2021-07-18 06:44:52', 376);
+INSERT INTO `log_menu_access_group` VALUES (142, 1, 49, 'Y', 1, '2021-07-18 06:44:52', 1, 'edit', '2021-07-18 06:44:52', 377);
+INSERT INTO `log_menu_access_group` VALUES (143, 1, 50, 'Y', 1, '2021-07-18 06:44:52', 1, 'edit', '2021-07-18 06:44:52', 378);
+INSERT INTO `log_menu_access_group` VALUES (144, 1, 51, 'Y', 1, '2021-07-18 06:44:52', 1, 'edit', '2021-07-18 06:44:52', 379);
+INSERT INTO `log_menu_access_group` VALUES (149, 1, 56, 'Y', 1, '2021-07-18 06:44:52', 1, 'edit', '2021-07-18 06:44:52', 380);
+INSERT INTO `log_menu_access_group` VALUES (150, 1, 57, 'Y', 1, '2021-07-18 06:44:52', 1, 'edit', '2021-07-18 06:44:52', 381);
+INSERT INTO `log_menu_access_group` VALUES (151, 1, 58, 'Y', 1, '2021-07-18 06:44:52', 1, 'edit', '2021-07-18 06:44:52', 382);
+INSERT INTO `log_menu_access_group` VALUES (153, 1, 60, 'Y', 1, '2021-07-18 06:44:52', 1, 'edit', '2021-07-18 06:44:52', 383);
+INSERT INTO `log_menu_access_group` VALUES (154, 1, 61, 'Y', 1, '2021-07-18 06:47:31', 1, 'edit', '2021-07-18 06:47:31', 384);
+INSERT INTO `log_menu_access_group` VALUES (155, 1, 62, 'Y', 1, '2021-07-18 06:47:31', 1, 'edit', '2021-07-18 06:47:31', 385);
+INSERT INTO `log_menu_access_group` VALUES (156, 1, 63, 'Y', 1, '2021-07-18 06:47:32', 1, 'edit', '2021-07-18 06:47:32', 386);
+INSERT INTO `log_menu_access_group` VALUES (157, 1, 64, 'Y', 1, '2021-07-18 06:47:32', 1, 'edit', '2021-07-18 06:47:32', 387);
+INSERT INTO `log_menu_access_group` VALUES (158, 1, 65, 'Y', 1, '2021-07-18 06:47:32', 1, 'add', '2021-07-18 06:47:32', 388);
+INSERT INTO `log_menu_access_group` VALUES (159, 1, 66, 'Y', 1, '2021-07-18 06:47:32', 1, 'add', '2021-07-18 06:47:32', 389);
+INSERT INTO `log_menu_access_group` VALUES (145, 1, 52, 'Y', 1, '2021-07-18 06:47:32', 1, 'edit', '2021-07-18 06:47:32', 390);
+INSERT INTO `log_menu_access_group` VALUES (152, 1, 59, 'Y', 1, '2021-07-18 06:47:32', 1, 'edit', '2021-07-18 06:47:32', 391);
+INSERT INTO `log_menu_access_group` VALUES (147, 1, 54, 'Y', 1, '2021-07-18 06:47:32', 1, 'edit', '2021-07-18 06:47:32', 392);
+INSERT INTO `log_menu_access_group` VALUES (146, 1, 53, 'Y', 1, '2021-07-18 06:47:32', 1, 'edit', '2021-07-18 06:47:32', 393);
+INSERT INTO `log_menu_access_group` VALUES (148, 1, 55, 'Y', 1, '2021-07-18 06:47:32', 1, 'edit', '2021-07-18 06:47:32', 394);
+INSERT INTO `log_menu_access_group` VALUES (125, 1, 2, 'Y', 1, '2021-07-18 06:47:32', 1, 'edit', '2021-07-18 06:47:32', 395);
+INSERT INTO `log_menu_access_group` VALUES (126, 1, 36, 'Y', 1, '2021-07-18 06:47:32', 1, 'edit', '2021-07-18 06:47:32', 396);
+INSERT INTO `log_menu_access_group` VALUES (127, 1, 33, 'Y', 1, '2021-07-18 06:47:32', 1, 'edit', '2021-07-18 06:47:32', 397);
+INSERT INTO `log_menu_access_group` VALUES (128, 1, 41, 'Y', 1, '2021-07-18 06:47:32', 1, 'edit', '2021-07-18 06:47:32', 398);
+INSERT INTO `log_menu_access_group` VALUES (136, 1, 44, 'Y', 1, '2021-07-18 06:47:33', 1, 'edit', '2021-07-18 06:47:33', 399);
+INSERT INTO `log_menu_access_group` VALUES (137, 1, 45, 'Y', 1, '2021-07-18 06:47:33', 1, 'edit', '2021-07-18 06:47:33', 400);
+INSERT INTO `log_menu_access_group` VALUES (133, 1, 37, 'Y', 1, '2021-07-18 06:47:33', 1, 'edit', '2021-07-18 06:47:33', 401);
+INSERT INTO `log_menu_access_group` VALUES (3, 1, 3, 'Y', 1, '2021-07-18 06:47:33', 1, 'edit', '2021-07-18 06:47:33', 402);
+INSERT INTO `log_menu_access_group` VALUES (130, 1, 38, 'Y', 1, '2021-07-18 06:47:33', 1, 'edit', '2021-07-18 06:47:33', 403);
+INSERT INTO `log_menu_access_group` VALUES (131, 1, 39, 'Y', 1, '2021-07-18 06:47:33', 1, 'edit', '2021-07-18 06:47:33', 404);
+INSERT INTO `log_menu_access_group` VALUES (142, 1, 49, 'Y', 1, '2021-07-18 06:47:33', 1, 'edit', '2021-07-18 06:47:33', 405);
+INSERT INTO `log_menu_access_group` VALUES (143, 1, 50, 'Y', 1, '2021-07-18 06:47:33', 1, 'edit', '2021-07-18 06:47:33', 406);
+INSERT INTO `log_menu_access_group` VALUES (144, 1, 51, 'Y', 1, '2021-07-18 06:47:33', 1, 'edit', '2021-07-18 06:47:33', 407);
+INSERT INTO `log_menu_access_group` VALUES (149, 1, 56, 'Y', 1, '2021-07-18 06:47:33', 1, 'edit', '2021-07-18 06:47:33', 408);
+INSERT INTO `log_menu_access_group` VALUES (150, 1, 57, 'Y', 1, '2021-07-18 06:47:33', 1, 'edit', '2021-07-18 06:47:33', 409);
+INSERT INTO `log_menu_access_group` VALUES (151, 1, 58, 'Y', 1, '2021-07-18 06:47:33', 1, 'edit', '2021-07-18 06:47:33', 410);
+INSERT INTO `log_menu_access_group` VALUES (153, 1, 60, 'Y', 1, '2021-07-18 06:47:34', 1, 'edit', '2021-07-18 06:47:34', 411);
+INSERT INTO `log_menu_access_group` VALUES (154, 1, 61, 'Y', 1, '2021-07-18 07:01:58', 1, 'edit', '2021-07-18 07:01:58', 412);
+INSERT INTO `log_menu_access_group` VALUES (155, 1, 62, 'Y', 1, '2021-07-18 07:01:58', 1, 'edit', '2021-07-18 07:01:58', 413);
+INSERT INTO `log_menu_access_group` VALUES (156, 1, 63, 'Y', 1, '2021-07-18 07:01:58', 1, 'edit', '2021-07-18 07:01:58', 414);
+INSERT INTO `log_menu_access_group` VALUES (157, 1, 64, 'Y', 1, '2021-07-18 07:01:58', 1, 'edit', '2021-07-18 07:01:58', 415);
+INSERT INTO `log_menu_access_group` VALUES (160, 1, 67, 'Y', 1, '2021-07-18 07:01:58', 1, 'add', '2021-07-18 07:01:58', 416);
+INSERT INTO `log_menu_access_group` VALUES (158, 1, 65, 'Y', 1, '2021-07-18 07:01:58', 1, 'edit', '2021-07-18 07:01:58', 417);
+INSERT INTO `log_menu_access_group` VALUES (159, 1, 66, 'Y', 1, '2021-07-18 07:01:58', 1, 'edit', '2021-07-18 07:01:58', 418);
+INSERT INTO `log_menu_access_group` VALUES (145, 1, 52, 'Y', 1, '2021-07-18 07:01:59', 1, 'edit', '2021-07-18 07:01:59', 419);
+INSERT INTO `log_menu_access_group` VALUES (152, 1, 59, 'Y', 1, '2021-07-18 07:01:59', 1, 'edit', '2021-07-18 07:01:59', 420);
+INSERT INTO `log_menu_access_group` VALUES (147, 1, 54, 'Y', 1, '2021-07-18 07:01:59', 1, 'edit', '2021-07-18 07:01:59', 421);
+INSERT INTO `log_menu_access_group` VALUES (146, 1, 53, 'Y', 1, '2021-07-18 07:01:59', 1, 'edit', '2021-07-18 07:01:59', 422);
+INSERT INTO `log_menu_access_group` VALUES (148, 1, 55, 'Y', 1, '2021-07-18 07:01:59', 1, 'edit', '2021-07-18 07:01:59', 423);
+INSERT INTO `log_menu_access_group` VALUES (125, 1, 2, 'Y', 1, '2021-07-18 07:01:59', 1, 'edit', '2021-07-18 07:01:59', 424);
+INSERT INTO `log_menu_access_group` VALUES (126, 1, 36, 'Y', 1, '2021-07-18 07:02:00', 1, 'edit', '2021-07-18 07:02:00', 425);
+INSERT INTO `log_menu_access_group` VALUES (127, 1, 33, 'Y', 1, '2021-07-18 07:02:00', 1, 'edit', '2021-07-18 07:02:00', 426);
+INSERT INTO `log_menu_access_group` VALUES (128, 1, 41, 'Y', 1, '2021-07-18 07:02:00', 1, 'edit', '2021-07-18 07:02:00', 427);
+INSERT INTO `log_menu_access_group` VALUES (136, 1, 44, 'Y', 1, '2021-07-18 07:02:00', 1, 'edit', '2021-07-18 07:02:00', 428);
+INSERT INTO `log_menu_access_group` VALUES (137, 1, 45, 'Y', 1, '2021-07-18 07:02:00', 1, 'edit', '2021-07-18 07:02:00', 429);
+INSERT INTO `log_menu_access_group` VALUES (133, 1, 37, 'Y', 1, '2021-07-18 07:02:00', 1, 'edit', '2021-07-18 07:02:00', 430);
+INSERT INTO `log_menu_access_group` VALUES (3, 1, 3, 'Y', 1, '2021-07-18 07:02:00', 1, 'edit', '2021-07-18 07:02:00', 431);
+INSERT INTO `log_menu_access_group` VALUES (130, 1, 38, 'Y', 1, '2021-07-18 07:02:00', 1, 'edit', '2021-07-18 07:02:00', 432);
+INSERT INTO `log_menu_access_group` VALUES (131, 1, 39, 'Y', 1, '2021-07-18 07:02:00', 1, 'edit', '2021-07-18 07:02:00', 433);
+INSERT INTO `log_menu_access_group` VALUES (142, 1, 49, 'Y', 1, '2021-07-18 07:02:00', 1, 'edit', '2021-07-18 07:02:00', 434);
+INSERT INTO `log_menu_access_group` VALUES (143, 1, 50, 'Y', 1, '2021-07-18 07:02:00', 1, 'edit', '2021-07-18 07:02:00', 435);
+INSERT INTO `log_menu_access_group` VALUES (144, 1, 51, 'Y', 1, '2021-07-18 07:02:00', 1, 'edit', '2021-07-18 07:02:00', 436);
+INSERT INTO `log_menu_access_group` VALUES (149, 1, 56, 'Y', 1, '2021-07-18 07:02:01', 1, 'edit', '2021-07-18 07:02:01', 437);
 
 -- ----------------------------
 -- Table structure for log_menu_access_sub_group
 -- ----------------------------
 DROP TABLE IF EXISTS `log_menu_access_sub_group`;
 CREATE TABLE `log_menu_access_sub_group`  (
-  `masg_id` int(11) NULL DEFAULT NULL,
-  `masg_ug_id` int(11) NULL DEFAULT NULL,
-  `masg_usg_id` int(11) NULL DEFAULT NULL,
-  `masg_rm_id` int(11) NULL DEFAULT NULL,
+  `masg_id` int NULL DEFAULT NULL,
+  `masg_ug_id` int NULL DEFAULT NULL,
+  `masg_usg_id` int NULL DEFAULT NULL,
+  `masg_rm_id` int NULL DEFAULT NULL,
   `masg_is_active` char(1) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT 'Y',
-  `last_user` int(11) NULL DEFAULT NULL,
+  `last_user` int NULL DEFAULT NULL,
   `last_datetime` datetime(0) NULL DEFAULT NULL,
-  `log_user_id` int(10) UNSIGNED NOT NULL,
+  `log_user_id` int UNSIGNED NOT NULL,
   `log_action` varchar(32) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `log_datetime` datetime(0) NOT NULL,
-  `log_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `log_id` int UNSIGNED NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`log_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = COMPACT;
+
+-- ----------------------------
+-- Records of log_menu_access_sub_group
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for log_menu_access_user
 -- ----------------------------
 DROP TABLE IF EXISTS `log_menu_access_user`;
 CREATE TABLE `log_menu_access_user`  (
-  `mau_id` int(10) UNSIGNED NOT NULL,
-  `mau_user_id` int(10) UNSIGNED NOT NULL,
-  `mau_menu_id` int(10) UNSIGNED NOT NULL,
+  `mau_id` int UNSIGNED NOT NULL,
+  `mau_user_id` int UNSIGNED NOT NULL,
+  `mau_menu_id` int UNSIGNED NOT NULL,
   `mau_is_active` char(1) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'Y',
-  `last_user` int(10) UNSIGNED NOT NULL,
+  `last_user` int UNSIGNED NOT NULL,
   `last_datetime` datetime(0) NOT NULL,
-  `log_user_id` int(10) UNSIGNED NOT NULL,
+  `log_user_id` int UNSIGNED NOT NULL,
   `log_action` varchar(32) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `log_datetime` datetime(0) NOT NULL,
-  `log_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `log_id` int UNSIGNED NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`log_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = COMPACT;
+
+-- ----------------------------
+-- Records of log_menu_access_user
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for log_projects
 -- ----------------------------
 DROP TABLE IF EXISTS `log_projects`;
 CREATE TABLE `log_projects`  (
-  `p_id` int(11) NOT NULL,
+  `p_id` int NOT NULL,
   `p_name` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   `p_location` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   `p_is_active` char(1) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT 'Y',
-  `last_user` int(11) NULL DEFAULT NULL,
+  `last_user` int NULL DEFAULT NULL,
   `last_datetime` datetime(0) NULL DEFAULT NULL,
-  `log_user_id` int(10) UNSIGNED NOT NULL,
+  `log_user_id` int UNSIGNED NOT NULL,
   `log_action` varchar(32) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `log_datetime` datetime(0) NOT NULL,
-  `log_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `log_id` int UNSIGNED NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`log_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = COMPACT;
+
+-- ----------------------------
+-- Records of log_projects
+-- ----------------------------
+INSERT INTO `log_projects` VALUES (1, 'Srikandi', 'Jl Delima', 'Y', 1, '2020-10-29 00:41:11', 1, 'add', '2020-10-29 00:41:11', 1);
+INSERT INTO `log_projects` VALUES (2, 'Srikandi', 'Jl Delima', 'Y', 1, '2020-10-29 00:41:20', 1, 'add', '2020-10-29 00:41:20', 2);
+INSERT INTO `log_projects` VALUES (3, 'Perumahan Srikandi', 'Jl Srikandi No 1', 'Y', 1, '2020-10-29 00:41:50', 1, 'add', '2020-10-29 00:41:50', 3);
+INSERT INTO `log_projects` VALUES (4, 'Perumahan Tapung Kampar', 'Kampar', 'Y', 1, '2020-10-29 01:37:31', 1, 'add', '2020-10-29 01:37:31', 4);
+INSERT INTO `log_projects` VALUES (3, 'Perumahan Srikandi 1', 'Jl Srikandi No 1', 'Y', 1, '2020-10-29 02:52:58', 1, 'edit', '2020-10-29 02:52:58', 5);
+INSERT INTO `log_projects` VALUES (3, 'Perumahan Srikandi 1asdasd', 'Jl Srikandi No 1', 'Y', 1, '2020-10-29 02:53:47', 1, 'edit', '2020-10-29 02:53:47', 6);
+INSERT INTO `log_projects` VALUES (3, 'Perumahan Srikandi', 'Jl Srikandi No 1', 'Y', 1, '2020-10-29 03:04:53', 1, 'edit', '2020-10-29 03:04:53', 7);
+INSERT INTO `log_projects` VALUES (5, 'tes', 'tes', 'Y', 1, '2020-10-29 22:53:51', 1, 'add', '2020-10-29 22:53:51', 8);
+INSERT INTO `log_projects` VALUES (5, 'tes', 'tes', 'N', 1, '2020-10-29 22:53:56', 1, 'edit', '2020-10-29 22:53:56', 9);
+INSERT INTO `log_projects` VALUES (5, 'tes', 'tes', 'N', 1, '2020-10-29 22:55:36', 1, 'edit', '2020-10-29 22:55:36', 10);
+
+-- ----------------------------
+-- Table structure for log_projects_sub
+-- ----------------------------
+DROP TABLE IF EXISTS `log_projects_sub`;
+CREATE TABLE `log_projects_sub`  (
+  `ps_id` int NOT NULL,
+  `ps_p_id` int NULL DEFAULT NULL,
+  `ps_bt_id` int NULL DEFAULT NULL,
+  `ps_name` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
+  `ps_is_active` char(1) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT 'Y',
+  `last_user` int NULL DEFAULT NULL,
+  `last_datetime` datetime(0) NULL DEFAULT NULL,
+  `log_user_id` int UNSIGNED NOT NULL,
+  `log_action` varchar(32) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `log_datetime` datetime(0) NOT NULL,
+  `log_id` int UNSIGNED NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`log_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 19 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = COMPACT;
+
+-- ----------------------------
+-- Records of log_projects_sub
+-- ----------------------------
+INSERT INTO `log_projects_sub` VALUES (3, 3, 16, 'A1', 'Y', 1, '2020-10-29 01:45:21', 1, 'add', '2020-10-29 01:45:21', 3);
+INSERT INTO `log_projects_sub` VALUES (4, 4, 16, 'Blok 1', 'Y', 1, '2020-10-29 02:34:50', 1, 'add', '2020-10-29 02:34:50', 4);
+INSERT INTO `log_projects_sub` VALUES (5, 3, 16, 'A2', 'Y', 1, '2020-10-29 02:35:35', 1, 'add', '2020-10-29 02:35:35', 5);
+INSERT INTO `log_projects_sub` VALUES (6, 3, 16, 'A4', 'Y', 1, '2020-10-29 02:37:52', 1, 'add', '2020-10-29 02:37:52', 6);
+INSERT INTO `log_projects_sub` VALUES (7, 4, 17, 'Blok 1', 'Y', 1, '2020-10-29 02:38:06', 1, 'add', '2020-10-29 02:38:06', 7);
+INSERT INTO `log_projects_sub` VALUES (4, 4, 16, 'Blok 1as', 'Y', 1, '2020-10-29 23:02:38', 1, 'edit', '2020-10-29 23:02:38', 8);
+INSERT INTO `log_projects_sub` VALUES (4, 4, 16, 'Blok 1', 'Y', 1, '2020-10-29 23:02:48', 1, 'edit', '2020-10-29 23:02:48', 9);
+INSERT INTO `log_projects_sub` VALUES (8, 3, 16, 'asdsadsa', 'Y', 1, '2020-10-29 23:03:53', 1, 'add', '2020-10-29 23:03:53', 10);
+INSERT INTO `log_projects_sub` VALUES (8, 3, 16, 'asdsadsa', 'N', 1, '2020-10-29 23:03:56', 1, 'edit', '2020-10-29 23:03:56', 11);
+INSERT INTO `log_projects_sub` VALUES (8, 3, 16, 'asdsadsa', 'N', 1, '2020-10-29 23:05:55', 1, 'edit', '2020-10-29 23:05:55', 12);
+INSERT INTO `log_projects_sub` VALUES (8, 3, 16, 'asdsadsa', 'N', 1, '2020-10-29 23:07:13', 1, 'edit', '2020-10-29 23:07:13', 13);
+INSERT INTO `log_projects_sub` VALUES (8, 3, 16, 'asdsadsa', 'N', 1, '2020-10-29 23:10:39', 1, 'edit', '2020-10-29 23:10:39', 14);
+INSERT INTO `log_projects_sub` VALUES (8, 3, 16, 'asdsadsa', 'N', 1, '2020-10-29 23:11:55', 1, 'edit', '2020-10-29 23:11:55', 15);
+INSERT INTO `log_projects_sub` VALUES (8, 3, 16, 'asdsadsa', 'N', 1, '2020-10-29 23:12:22', 1, 'edit', '2020-10-29 23:12:22', 16);
+INSERT INTO `log_projects_sub` VALUES (8, 3, 16, 'asdsadsa', 'N', 1, '2020-10-29 23:13:40', 1, 'edit', '2020-10-29 23:13:40', 17);
+INSERT INTO `log_projects_sub` VALUES (8, 3, 16, 'asdsadsa', 'N', 1, '2020-10-29 23:19:41', 1, 'edit', '2020-10-29 23:19:41', 18);
+INSERT INTO `log_projects_sub` VALUES (8, 3, 16, 'asdsadsa', 'N', 1, '2020-10-29 23:36:37', 1, 'edit', '2020-10-29 23:36:37', 19);
 
 -- ----------------------------
 -- Table structure for log_rab_building
 -- ----------------------------
 DROP TABLE IF EXISTS `log_rab_building`;
 CREATE TABLE `log_rab_building`  (
-  `rb_id` int(11) NOT NULL,
-  `rb_bt_id` int(11) NULL DEFAULT NULL,
-  `rb_rl_id` int(11) NULL DEFAULT NULL,
-  `rb_measure` int(11) NULL DEFAULT NULL,
-  `rb_summary` int(11) NULL DEFAULT NULL,
+  `rb_id` int NOT NULL,
+  `rb_bt_id` int NULL DEFAULT NULL,
+  `rb_rl_id` int NULL DEFAULT NULL,
+  `rb_il_id` int NULL DEFAULT NULL,
+  `rb_measure` int NULL DEFAULT NULL,
+  `rb_summary` int NULL DEFAULT NULL,
   `rb_is_active` char(1) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT 'Y',
-  `last_user` int(11) NULL DEFAULT NULL,
+  `last_user` int NULL DEFAULT NULL,
   `last_datetime` datetime(0) NULL DEFAULT NULL,
-  `log_user_id` int(10) UNSIGNED NOT NULL,
+  `log_user_id` int UNSIGNED NOT NULL,
   `log_action` varchar(32) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `log_datetime` datetime(0) NOT NULL,
-  `log_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `log_id` int UNSIGNED NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`log_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 33 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of log_rab_building
 -- ----------------------------
-INSERT INTO `log_rab_building` VALUES (5, 16, 4, 5454878, 2181951, 'Y', 1, '2020-10-28 00:18:48', 1, 'add', '2020-10-28 00:18:48', 1);
-INSERT INTO `log_rab_building` VALUES (1, 16, 2, 10, 200, 'Y', 1, '2020-10-28 00:18:48', 1, 'edit', '2020-10-28 00:18:48', 2);
-INSERT INTO `log_rab_building` VALUES (2, 16, 3, 15, 894464545, 'Y', 1, '2020-10-28 00:18:48', 1, 'edit', '2020-10-28 00:18:48', 3);
-INSERT INTO `log_rab_building` VALUES (5, 16, 4, 54845, 21938, 'Y', 1, '2020-10-28 00:19:03', 1, 'edit', '2020-10-28 00:19:03', 4);
-INSERT INTO `log_rab_building` VALUES (1, 16, 2, 10, 200, 'Y', 1, '2020-10-28 00:19:03', 1, 'edit', '2020-10-28 00:19:03', 5);
-INSERT INTO `log_rab_building` VALUES (2, 16, 3, 15, 894464545, 'Y', 1, '2020-10-28 00:19:03', 1, 'edit', '2020-10-28 00:19:03', 6);
-INSERT INTO `log_rab_building` VALUES (6, 17, 4, 54548, 21819, 'Y', 1, '2020-10-28 00:19:19', 1, 'add', '2020-10-28 00:19:19', 7);
-INSERT INTO `log_rab_building` VALUES (7, 17, 2, 1254, 137940, 'Y', 1, '2020-10-28 00:19:19', 1, 'add', '2020-10-28 00:19:19', 8);
-INSERT INTO `log_rab_building` VALUES (8, 17, 3, 215, 17200, 'Y', 1, '2020-10-28 00:19:19', 1, 'add', '2020-10-28 00:19:19', 9);
+INSERT INTO `log_rab_building` VALUES (5, 16, 4, NULL, 5454878, 2181951, 'Y', 1, '2020-10-28 00:18:48', 1, 'add', '2020-10-28 00:18:48', 1);
+INSERT INTO `log_rab_building` VALUES (1, 16, 2, NULL, 10, 200, 'Y', 1, '2020-10-28 00:18:48', 1, 'edit', '2020-10-28 00:18:48', 2);
+INSERT INTO `log_rab_building` VALUES (2, 16, 3, NULL, 15, 894464545, 'Y', 1, '2020-10-28 00:18:48', 1, 'edit', '2020-10-28 00:18:48', 3);
+INSERT INTO `log_rab_building` VALUES (5, 16, 4, NULL, 54845, 21938, 'Y', 1, '2020-10-28 00:19:03', 1, 'edit', '2020-10-28 00:19:03', 4);
+INSERT INTO `log_rab_building` VALUES (1, 16, 2, NULL, 10, 200, 'Y', 1, '2020-10-28 00:19:03', 1, 'edit', '2020-10-28 00:19:03', 5);
+INSERT INTO `log_rab_building` VALUES (2, 16, 3, NULL, 15, 894464545, 'Y', 1, '2020-10-28 00:19:03', 1, 'edit', '2020-10-28 00:19:03', 6);
+INSERT INTO `log_rab_building` VALUES (6, 17, 4, NULL, 54548, 21819, 'Y', 1, '2020-10-28 00:19:19', 1, 'add', '2020-10-28 00:19:19', 7);
+INSERT INTO `log_rab_building` VALUES (7, 17, 2, NULL, 1254, 137940, 'Y', 1, '2020-10-28 00:19:19', 1, 'add', '2020-10-28 00:19:19', 8);
+INSERT INTO `log_rab_building` VALUES (8, 17, 3, NULL, 215, 17200, 'Y', 1, '2020-10-28 00:19:19', 1, 'add', '2020-10-28 00:19:19', 9);
+INSERT INTO `log_rab_building` VALUES (5, 16, 4, NULL, 54845, 21938, 'Y', 1, '2020-10-30 00:06:18', 1, 'edit', '2020-10-30 00:06:18', 10);
+INSERT INTO `log_rab_building` VALUES (1, 16, 2, NULL, 10, 200, 'Y', 1, '2020-10-30 00:06:18', 1, 'edit', '2020-10-30 00:06:18', 11);
+INSERT INTO `log_rab_building` VALUES (2, 16, 3, NULL, 12, 960, 'Y', 1, '2020-10-30 00:06:18', 1, 'edit', '2020-10-30 00:06:18', 12);
+INSERT INTO `log_rab_building` VALUES (6, 17, 4, NULL, 54548, 21819, 'Y', 1, '2020-10-30 00:06:34', 1, 'edit', '2020-10-30 00:06:34', 13);
+INSERT INTO `log_rab_building` VALUES (7, 17, 2, NULL, 150, 16500, 'Y', 1, '2020-10-30 00:06:34', 1, 'edit', '2020-10-30 00:06:34', 14);
+INSERT INTO `log_rab_building` VALUES (8, 17, 3, NULL, 20, 1600, 'Y', 1, '2020-10-30 00:06:34', 1, 'edit', '2020-10-30 00:06:34', 15);
+INSERT INTO `log_rab_building` VALUES (5, 16, 4, NULL, 54845, 21938, 'Y', 1, '2020-10-30 00:10:30', 1, 'edit', '2020-10-30 00:10:30', 16);
+INSERT INTO `log_rab_building` VALUES (1, 16, 2, NULL, 10, 200, 'Y', 1, '2020-10-30 00:10:30', 1, 'edit', '2020-10-30 00:10:30', 17);
+INSERT INTO `log_rab_building` VALUES (2, 16, 3, NULL, 12, 960, 'Y', 1, '2020-10-30 00:10:30', 1, 'edit', '2020-10-30 00:10:30', 18);
+INSERT INTO `log_rab_building` VALUES (5, 16, 4, 10, 54845, 21938, 'Y', 1, '2020-10-30 00:11:12', 1, 'edit', '2020-10-30 00:11:12', 19);
+INSERT INTO `log_rab_building` VALUES (1, 16, 2, 8, 10, 200, 'Y', 1, '2020-10-30 00:11:12', 1, 'edit', '2020-10-30 00:11:12', 20);
+INSERT INTO `log_rab_building` VALUES (2, 16, 3, 8, 12, 960, 'Y', 1, '2020-10-30 00:11:12', 1, 'edit', '2020-10-30 00:11:12', 21);
+INSERT INTO `log_rab_building` VALUES (5, 16, 4, 10, 54845, 21938, 'Y', 1, '2020-10-30 00:26:09', 1, 'edit', '2020-10-30 00:26:09', 22);
+INSERT INTO `log_rab_building` VALUES (1, 16, 2, 8, 10, 200, 'Y', 1, '2020-10-30 00:26:09', 1, 'edit', '2020-10-30 00:26:09', 23);
+INSERT INTO `log_rab_building` VALUES (9, 16, 5, 10, 120, 12, 'Y', 1, '2020-10-30 00:26:09', 1, 'add', '2020-10-30 00:26:09', 24);
+INSERT INTO `log_rab_building` VALUES (10, 16, 6, 9, 120, 2, 'Y', 1, '2020-10-30 00:26:09', 1, 'add', '2020-10-30 00:26:09', 25);
+INSERT INTO `log_rab_building` VALUES (2, 16, 3, 8, 12, 960, 'Y', 1, '2020-10-30 00:26:09', 1, 'edit', '2020-10-30 00:26:09', 26);
+INSERT INTO `log_rab_building` VALUES (11, 16, 7, 10, 240, 96, 'Y', 1, '2020-10-30 00:26:09', 1, 'add', '2020-10-30 00:26:09', 27);
+INSERT INTO `log_rab_building` VALUES (5, 16, 4, 10, 60, 24, 'Y', 1, '2020-10-30 00:26:44', 1, 'edit', '2020-10-30 00:26:44', 28);
+INSERT INTO `log_rab_building` VALUES (1, 16, 2, 8, 10, 200, 'Y', 1, '2020-10-30 00:26:44', 1, 'edit', '2020-10-30 00:26:44', 29);
+INSERT INTO `log_rab_building` VALUES (9, 16, 5, 10, 120, 12, 'Y', 1, '2020-10-30 00:26:44', 1, 'edit', '2020-10-30 00:26:44', 30);
+INSERT INTO `log_rab_building` VALUES (10, 16, 6, 9, 120, 2, 'Y', 1, '2020-10-30 00:26:44', 1, 'edit', '2020-10-30 00:26:44', 31);
+INSERT INTO `log_rab_building` VALUES (2, 16, 3, 8, 12, 960, 'Y', 1, '2020-10-30 00:26:44', 1, 'edit', '2020-10-30 00:26:44', 32);
+INSERT INTO `log_rab_building` VALUES (11, 16, 7, 10, 240, 96, 'Y', 1, '2020-10-30 00:26:44', 1, 'edit', '2020-10-30 00:26:44', 33);
 
 -- ----------------------------
 -- Table structure for log_rab_list
 -- ----------------------------
 DROP TABLE IF EXISTS `log_rab_list`;
 CREATE TABLE `log_rab_list`  (
-  `rl_id` int(11) NOT NULL,
-  `rl_ir_id` int(11) NULL DEFAULT NULL,
-  `rl_il_id` int(11) NULL DEFAULT NULL,
-  `rl_un_id` int(11) NULL DEFAULT NULL,
+  `rl_id` int NOT NULL,
+  `rl_ir_id` int NULL DEFAULT NULL,
+  `rl_il_id` int NULL DEFAULT NULL,
+  `rl_un_id` int NULL DEFAULT NULL,
   `rl_volume` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `rl_is_active` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT 'Y',
-  `last_user` int(11) NULL DEFAULT NULL,
+  `last_user` int NULL DEFAULT NULL,
   `last_datetime` datetime(0) NULL DEFAULT NULL,
-  `log_user_id` int(11) NULL DEFAULT NULL,
+  `log_user_id` int NULL DEFAULT NULL,
   `log_action` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `log_datetime` datetime(0) NOT NULL,
-  `log_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `log_id` int UNSIGNED NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`log_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of log_rab_list
@@ -698,28 +962,31 @@ INSERT INTO `log_rab_list` VALUES (2, 10, 8, 13, '110', 'Y', 1, '2020-10-26 20:2
 INSERT INTO `log_rab_list` VALUES (2, 10, 8, 15, '110', 'Y', 1, '2020-10-26 20:21:09', 1, 'edit', '2020-10-26 20:21:09', 7);
 INSERT INTO `log_rab_list` VALUES (2, 10, 8, 13, '110', 'Y', 1, '2020-10-26 20:36:11', 1, 'edit', '2020-10-26 20:36:11', 8);
 INSERT INTO `log_rab_list` VALUES (4, 9, 10, 14, '0.4', 'Y', 1, '2020-10-26 20:36:16', 1, 'edit', '2020-10-26 20:36:16', 9);
+INSERT INTO `log_rab_list` VALUES (5, 11, 10, 15, '0.1', 'Y', 1, '2020-10-30 00:21:41', 1, 'add', '2020-10-30 00:21:41', 10);
+INSERT INTO `log_rab_list` VALUES (6, 11, 9, 14, '0.015', 'Y', 1, '2020-10-30 00:24:52', 1, 'add', '2020-10-30 00:24:52', 11);
+INSERT INTO `log_rab_list` VALUES (7, 13, 10, 15, '0.4', 'Y', 1, '2020-10-30 00:25:33', 1, 'add', '2020-10-30 00:25:33', 12);
 
 -- ----------------------------
 -- Table structure for log_ref_menu
 -- ----------------------------
 DROP TABLE IF EXISTS `log_ref_menu`;
 CREATE TABLE `log_ref_menu`  (
-  `rm_id` int(11) NOT NULL,
-  `rm_parent_id` int(10) UNSIGNED NULL DEFAULT NULL,
+  `rm_id` int NOT NULL,
+  `rm_parent_id` int UNSIGNED NULL DEFAULT NULL,
   `rm_caption` varchar(32) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `rm_description` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   `rm_url` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   `rm_icon` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
-  `rm_sequence` int(10) UNSIGNED NOT NULL DEFAULT 1,
+  `rm_sequence` int UNSIGNED NOT NULL DEFAULT 1,
   `rm_is_active` char(1) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'Y',
-  `last_user` int(10) UNSIGNED NOT NULL,
+  `last_user` int UNSIGNED NOT NULL,
   `last_datetime` datetime(0) NOT NULL,
-  `log_user_id` int(10) UNSIGNED NOT NULL,
+  `log_user_id` int UNSIGNED NOT NULL,
   `log_action` varchar(32) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `log_datetime` datetime(0) NULL DEFAULT NULL,
-  `log_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `log_id` int UNSIGNED NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`log_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 34 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 36 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of log_ref_menu
@@ -751,23 +1018,51 @@ INSERT INTO `log_ref_menu` VALUES (55, 54, 'Item RAB', 'Item Data RAB', 'master_
 INSERT INTO `log_ref_menu` VALUES (57, NULL, 'Projects', 'Projects', NULL, 'fas fa-paint-roller', 3, 'Y', 1, '2020-10-27 10:02:22', 1, 'add', '2020-10-27 10:02:22', 31);
 INSERT INTO `log_ref_menu` VALUES (58, 57, 'Projects Data', 'Projects Data', 'projects/projects_data', 'fas fa-hard-hat', 1, 'Y', 1, '2020-10-27 10:08:04', 1, 'add', '2020-10-27 10:08:04', 32);
 INSERT INTO `log_ref_menu` VALUES (59, 52, 'RAB Building', 'RAB Building', 'master_data/rab_building', 'fas fa-ruler-combined', 3, 'Y', 1, '2020-10-27 10:24:24', 1, 'add', '2020-10-27 10:24:24', 33);
+INSERT INTO `log_ref_menu` VALUES (60, 57, 'Material Consumption', 'Material Consumption', 'projects/material_consumption', 'fas fa-pencil-ruler', 2, 'Y', 1, '2020-10-30 01:24:12', 1, 'add', '2020-10-30 01:24:12', 34);
+INSERT INTO `log_ref_menu` VALUES (61, NULL, 'Dashboard', NULL, 'main/main', 'fas fa-home', 1, 'Y', 1, '2021-07-14 10:26:19', 1, 'add', '2021-07-14 10:26:19', 35);
+INSERT INTO `log_ref_menu` VALUES (52, NULL, 'RAB Config', 'RAB Config', NULL, 'fas fa-briefcase', 2, 'Y', 1, '2021-07-14 10:27:03', 1, 'edit', '2021-07-14 10:27:03', 36);
+INSERT INTO `log_ref_menu` VALUES (52, NULL, 'SO/DO', 'SO/DO', NULL, 'fas fa-briefcase', 2, 'Y', 1, '2021-07-18 06:22:12', 1, 'edit', '2021-07-18 06:22:12', 37);
+INSERT INTO `log_ref_menu` VALUES (52, NULL, 'SO/DO', 'SO/DO', NULL, 'fas fa-clipboard', 2, 'Y', 1, '2021-07-18 06:26:06', 1, 'edit', '2021-07-18 06:26:06', 38);
+INSERT INTO `log_ref_menu` VALUES (59, 52, 'Sales Order', 'Sales Order', 'master_data/rab_building', 'fas fa-sort-amount-down-alt', 3, 'Y', 1, '2021-07-18 06:27:28', 1, 'edit', '2021-07-18 06:27:28', 39);
+INSERT INTO `log_ref_menu` VALUES (52, NULL, 'Transaksi', 'Transaksi', NULL, 'fas fa-clipboard', 2, 'Y', 1, '2021-07-18 06:28:38', 1, 'edit', '2021-07-18 06:28:38', 40);
+INSERT INTO `log_ref_menu` VALUES (59, 52, 'Sales Order', 'Sales Order', NULL, 'fas fa-sort-amount-down-alt', 3, 'Y', 1, '2021-07-18 06:29:21', 1, 'edit', '2021-07-18 06:29:21', 41);
+INSERT INTO `log_ref_menu` VALUES (54, 52, 'Delivery Order', 'Delivery Order', 'settings/rab_template', 'fas fa-sort-amount-up-alt', 4, 'Y', 1, '2021-07-18 06:30:02', 1, 'edit', '2021-07-18 06:30:02', 42);
+INSERT INTO `log_ref_menu` VALUES (52, NULL, 'Transaksi', 'Transaksi', NULL, 'fas fa-clipboard', 3, 'Y', 1, '2021-07-18 06:31:07', 1, 'edit', '2021-07-18 06:31:07', 43);
+INSERT INTO `log_ref_menu` VALUES (52, NULL, 'Transaksi', 'Transaksi', NULL, 'fas fa-clipboard', 4, 'Y', 1, '2021-07-18 06:31:12', 1, 'edit', '2021-07-18 06:31:12', 44);
+INSERT INTO `log_ref_menu` VALUES (52, NULL, 'Transaksi', 'Transaksi', NULL, 'fas fa-clipboard', 5, 'Y', 1, '2021-07-18 06:31:15', 1, 'edit', '2021-07-18 06:31:15', 45);
+INSERT INTO `log_ref_menu` VALUES (62, NULL, 'Master Data', 'Master Data', NULL, 'fas fa-book', 2, 'Y', 1, '2021-07-18 06:33:25', 1, 'add', '2021-07-18 06:33:25', 46);
+INSERT INTO `log_ref_menu` VALUES (52, NULL, 'Transaksi', 'Transaksi', NULL, 'fas fa-clipboard', 3, 'Y', 1, '2021-07-18 06:34:15', 1, 'edit', '2021-07-18 06:34:15', 47);
+INSERT INTO `log_ref_menu` VALUES (2, NULL, 'Settings', 'Settings', NULL, 'fas fa-cogs', 4, 'Y', 1, '2021-07-18 06:34:22', 1, 'edit', '2021-07-18 06:34:22', 48);
+INSERT INTO `log_ref_menu` VALUES (57, NULL, 'Projects', 'Projects', NULL, 'fas fa-paint-roller', 5, 'Y', 1, '2021-07-18 06:34:29', 1, 'edit', '2021-07-18 06:34:29', 49);
+INSERT INTO `log_ref_menu` VALUES (63, 62, 'Daftar Item', 'Daftar Item', 'master_data/daftar_item', 'fas fa-box', 1, 'Y', 1, '2021-07-18 06:39:37', 1, 'add', '2021-07-18 06:39:37', 50);
+INSERT INTO `log_ref_menu` VALUES (64, 62, 'Vendor', 'Vendor', 'master_data/vendor', 'fas fa-user-friends', 2, 'Y', 1, '2021-07-18 06:44:41', 1, 'add', '2021-07-18 06:44:41', 51);
+INSERT INTO `log_ref_menu` VALUES (65, 62, 'Kendaraan', 'Kendaraan', 'master_data/kendaraan', 'fas fa-ship-fast', 3, 'Y', 1, '2021-07-18 06:46:18', 1, 'add', '2021-07-18 06:46:18', 52);
+INSERT INTO `log_ref_menu` VALUES (66, 62, 'Pengemudi', 'Pengemudi', 'master_data/pengemudi', 'fas fa-users', 4, 'Y', 1, '2021-07-18 06:47:20', 1, 'add', '2021-07-18 06:47:20', 53);
+INSERT INTO `log_ref_menu` VALUES (65, 62, 'Kendaraan', 'Kendaraan', 'master_data/kendaraan', 'fas fa-truck-moving', 3, 'Y', 1, '2021-07-18 06:48:04', 1, 'edit', '2021-07-18 06:48:04', 54);
+INSERT INTO `log_ref_menu` VALUES (57, NULL, 'Projects', 'Projects', NULL, 'fas fa-paint-roller', 5, 'N', 1, '2021-07-18 06:48:40', 1, 'edit', '2021-07-18 06:48:40', 55);
+INSERT INTO `log_ref_menu` VALUES (2, NULL, 'Pengaturan', 'Pengaturan', NULL, 'fas fa-cogs', 4, 'Y', 1, '2021-07-18 06:49:23', 1, 'edit', '2021-07-18 06:49:23', 56);
+INSERT INTO `log_ref_menu` VALUES (67, NULL, 'Pelanggan', 'Pelanggan', 'master_data/pelanggan', 'fas fa-user-check', 3, 'Y', 1, '2021-07-18 07:01:08', 1, 'add', '2021-07-18 07:01:08', 57);
+INSERT INTO `log_ref_menu` VALUES (67, 62, 'Pelanggan', 'Pelanggan', 'master_data/pelanggan', 'fas fa-user-check', 3, 'Y', 1, '2021-07-18 07:01:21', 1, 'edit', '2021-07-18 07:01:21', 58);
+INSERT INTO `log_ref_menu` VALUES (65, 62, 'Kendaraan', 'Kendaraan', 'master_data/kendaraan', 'fas fa-truck-moving', 4, 'Y', 1, '2021-07-18 07:01:42', 1, 'edit', '2021-07-18 07:01:42', 59);
+INSERT INTO `log_ref_menu` VALUES (66, 62, 'Pengemudi', 'Pengemudi', 'master_data/pengemudi', 'fas fa-users', 5, 'Y', 1, '2021-07-18 07:01:51', 1, 'edit', '2021-07-18 07:01:51', 60);
+INSERT INTO `log_ref_menu` VALUES (63, 62, 'Daftar Item', 'Daftar Item', 'master_data/item_list', 'fas fa-box', 1, 'Y', 1, '2021-07-18 07:21:36', 1, 'edit', '2021-07-18 07:21:36', 61);
 
 -- ----------------------------
 -- Table structure for log_unit
 -- ----------------------------
 DROP TABLE IF EXISTS `log_unit`;
 CREATE TABLE `log_unit`  (
-  `un_id` int(11) NOT NULL,
+  `un_id` int NOT NULL,
   `un_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `un_is_active` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `last_user` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `last_datetime` datetime(0) NULL DEFAULT NULL,
-  `log_user_id` int(11) NULL DEFAULT NULL,
+  `log_user_id` int NULL DEFAULT NULL,
   `log_action` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `log_datetime` datetime(0) NOT NULL,
-  `log_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `log_id` int UNSIGNED NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`log_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 31 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 30 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of log_unit
@@ -808,7 +1103,7 @@ INSERT INTO `log_unit` VALUES (18, 'Set', 'Y', '1', '2020-10-26 19:53:57', 1, 'e
 -- ----------------------------
 DROP TABLE IF EXISTS `log_user_detail`;
 CREATE TABLE `log_user_detail`  (
-  `ud_id` int(10) UNSIGNED NOT NULL,
+  `ud_id` int UNSIGNED NOT NULL,
   `ud_username` varchar(32) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `ud_password` varchar(64) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `ud_fullname` varchar(64) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
@@ -818,77 +1113,110 @@ CREATE TABLE `log_user_detail`  (
   `ud_img_filename` varchar(64) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   `ud_img_ori` varchar(64) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   `ud_is_active` char(1) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'Y',
-  `ud_sub_group` int(10) UNSIGNED NOT NULL DEFAULT 3,
+  `ud_sub_group` int UNSIGNED NOT NULL DEFAULT 3,
   `ud_notif_flag` char(1) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT 'Y',
-  `last_user` int(10) UNSIGNED NOT NULL,
+  `last_user` int UNSIGNED NOT NULL,
   `last_datetime` datetime(0) NOT NULL,
-  `log_user_id` int(10) UNSIGNED NOT NULL,
+  `log_user_id` int UNSIGNED NOT NULL,
   `log_action` varchar(32) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `log_datetime` datetime(0) NOT NULL,
-  `log_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `log_id` int UNSIGNED NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`log_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of log_user_detail
 -- ----------------------------
 INSERT INTO `log_user_detail` VALUES (1, 'admin', '2b9d2a9db155ff51d4574bc2482b510e0946487b', 'Administrator', '2020-06-18', 'pekanbaru', 'admin@localhost.com', 'c084c8c887804ebde68e108f9fa560d1.png', 'logo.png', 'Y', 1, 'Y', 1, '2020-10-22 02:10:20', 1, 'edit', '2020-10-22 02:10:20', 5);
+INSERT INTO `log_user_detail` VALUES (1, 'admin', '05962b1a8d2e2153db9c2facf89504532b901aa6', 'Administrator', '2020-06-18', 'pekanbaru', 'admin@localhost.com', '759c6f3d09241a1f33bc9e99951a30aa.PNG', 'avatar.PNG', 'Y', 1, 'Y', 1, '2021-07-18 00:11:08', 1, 'edit', '2021-07-18 00:11:08', 6);
 
 -- ----------------------------
 -- Table structure for log_user_group
 -- ----------------------------
 DROP TABLE IF EXISTS `log_user_group`;
 CREATE TABLE `log_user_group`  (
-  `ug_id` int(10) UNSIGNED NOT NULL,
+  `ug_id` int UNSIGNED NOT NULL,
   `ug_caption` varchar(32) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `ug_description` varchar(128) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `ug_is_active` char(1) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'Y',
-  `last_user` int(10) UNSIGNED NOT NULL,
+  `last_user` int UNSIGNED NOT NULL,
   `last_datetime` datetime(0) NOT NULL,
-  `log_user_id` int(10) UNSIGNED NOT NULL,
+  `log_user_id` int UNSIGNED NOT NULL,
   `log_action` varchar(32) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `log_datetime` datetime(0) NOT NULL,
-  `log_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `log_id` int UNSIGNED NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`log_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = COMPACT;
+
+-- ----------------------------
+-- Records of log_user_group
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for log_user_sub_group
 -- ----------------------------
 DROP TABLE IF EXISTS `log_user_sub_group`;
 CREATE TABLE `log_user_sub_group`  (
-  `usg_id` int(10) UNSIGNED NOT NULL,
+  `usg_id` int UNSIGNED NOT NULL,
   `usg_caption` varchar(32) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `usg_description` varchar(128) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `usg_is_active` char(1) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'Y',
-  `usg_group` int(10) UNSIGNED NOT NULL,
-  `last_user` int(10) UNSIGNED NOT NULL,
+  `usg_group` int UNSIGNED NOT NULL,
+  `last_user` int UNSIGNED NOT NULL,
   `last_datetime` datetime(0) NOT NULL,
-  `log_user_id` int(10) UNSIGNED NOT NULL,
+  `log_user_id` int UNSIGNED NOT NULL,
   `log_action` varchar(32) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `log_datetime` datetime(0) NOT NULL,
-  `log_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `log_id` int UNSIGNED NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`log_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = COMPACT;
+
+-- ----------------------------
+-- Records of log_user_sub_group
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for log_vendor
+-- ----------------------------
+DROP TABLE IF EXISTS `log_vendor`;
+CREATE TABLE `log_vendor`  (
+  `v_id` int NOT NULL,
+  `v_vendor_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `v_vendor_add` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL,
+  `v_vendor_phone` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `v_vendor_email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `v_is_active` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT 'Y',
+  `last_user` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `last_datetime` datetime(0) NULL DEFAULT NULL,
+  `log_user_id` int UNSIGNED NOT NULL,
+  `log_action` varchar(32) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `log_datetime` datetime(0) NOT NULL,
+  `log_id` int UNSIGNED NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`log_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of log_vendor
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for menu_access_group
 -- ----------------------------
 DROP TABLE IF EXISTS `menu_access_group`;
 CREATE TABLE `menu_access_group`  (
-  `mag_id` int(11) NOT NULL AUTO_INCREMENT,
-  `mag_ug_id` int(11) NULL DEFAULT NULL,
-  `mag_rm_id` int(11) NULL DEFAULT NULL,
+  `mag_id` int NOT NULL AUTO_INCREMENT,
+  `mag_ug_id` int NULL DEFAULT NULL,
+  `mag_rm_id` int NULL DEFAULT NULL,
   `mag_is_active` char(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT 'Y',
-  `last_user` int(11) NULL DEFAULT NULL,
+  `last_user` int NULL DEFAULT NULL,
   `last_datetime` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`mag_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 153 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 155 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of menu_access_group
 -- ----------------------------
-INSERT INTO `menu_access_group` VALUES (3, 1, 3, 'Y', 1, '2020-10-27 10:24:33');
+INSERT INTO `menu_access_group` VALUES (3, 1, 3, 'Y', 1, '2021-07-18 07:02:00');
 INSERT INTO `menu_access_group` VALUES (92, 2, 1, 'Y', 1, '2020-09-23 18:05:01');
 INSERT INTO `menu_access_group` VALUES (93, 2, 4, 'Y', 1, '2020-09-23 18:05:02');
 INSERT INTO `menu_access_group` VALUES (94, 2, 5, 'Y', 1, '2020-09-23 18:05:02');
@@ -900,41 +1228,46 @@ INSERT INTO `menu_access_group` VALUES (110, 4, 4, 'Y', 1, '2020-09-24 08:18:27'
 INSERT INTO `menu_access_group` VALUES (111, 4, 5, 'Y', 1, '2020-09-24 08:18:27');
 INSERT INTO `menu_access_group` VALUES (112, 4, 35, 'Y', 1, '2020-09-24 08:18:27');
 INSERT INTO `menu_access_group` VALUES (113, 4, 40, 'Y', 1, '2020-09-24 08:18:28');
-INSERT INTO `menu_access_group` VALUES (125, 1, 2, 'Y', 1, '2020-10-27 10:24:32');
-INSERT INTO `menu_access_group` VALUES (126, 1, 36, 'Y', 1, '2020-10-27 10:24:32');
-INSERT INTO `menu_access_group` VALUES (127, 1, 33, 'Y', 1, '2020-10-27 10:24:33');
-INSERT INTO `menu_access_group` VALUES (128, 1, 41, 'Y', 1, '2020-10-27 10:24:33');
-INSERT INTO `menu_access_group` VALUES (130, 1, 38, 'Y', 1, '2020-10-27 10:24:33');
-INSERT INTO `menu_access_group` VALUES (131, 1, 39, 'Y', 1, '2020-10-27 10:24:33');
-INSERT INTO `menu_access_group` VALUES (133, 1, 37, 'Y', 1, '2020-10-27 10:24:33');
-INSERT INTO `menu_access_group` VALUES (136, 1, 44, 'Y', 1, '2020-10-27 10:24:33');
-INSERT INTO `menu_access_group` VALUES (137, 1, 45, 'Y', 1, '2020-10-27 10:24:33');
-INSERT INTO `menu_access_group` VALUES (142, 1, 49, 'Y', 1, '2020-10-27 10:24:33');
-INSERT INTO `menu_access_group` VALUES (143, 1, 50, 'Y', 1, '2020-10-27 10:24:33');
-INSERT INTO `menu_access_group` VALUES (144, 1, 51, 'Y', 1, '2020-10-27 10:24:33');
-INSERT INTO `menu_access_group` VALUES (145, 1, 52, 'Y', 1, '2020-10-27 10:24:32');
-INSERT INTO `menu_access_group` VALUES (146, 1, 53, 'Y', 1, '2020-10-27 10:24:32');
-INSERT INTO `menu_access_group` VALUES (147, 1, 54, 'Y', 1, '2020-10-27 10:24:32');
-INSERT INTO `menu_access_group` VALUES (148, 1, 55, 'Y', 1, '2020-10-27 10:24:32');
-INSERT INTO `menu_access_group` VALUES (149, 1, 56, 'Y', 1, '2020-10-27 10:24:34');
-INSERT INTO `menu_access_group` VALUES (150, 1, 57, 'Y', 1, '2020-10-27 10:24:34');
-INSERT INTO `menu_access_group` VALUES (151, 1, 58, 'Y', 1, '2020-10-27 10:24:34');
-INSERT INTO `menu_access_group` VALUES (152, 1, 59, 'Y', 1, '2020-10-27 10:24:32');
+INSERT INTO `menu_access_group` VALUES (125, 1, 2, 'Y', 1, '2021-07-18 07:01:59');
+INSERT INTO `menu_access_group` VALUES (126, 1, 36, 'Y', 1, '2021-07-18 07:02:00');
+INSERT INTO `menu_access_group` VALUES (127, 1, 33, 'Y', 1, '2021-07-18 07:02:00');
+INSERT INTO `menu_access_group` VALUES (128, 1, 41, 'Y', 1, '2021-07-18 07:02:00');
+INSERT INTO `menu_access_group` VALUES (130, 1, 38, 'Y', 1, '2021-07-18 07:02:00');
+INSERT INTO `menu_access_group` VALUES (131, 1, 39, 'Y', 1, '2021-07-18 07:02:00');
+INSERT INTO `menu_access_group` VALUES (133, 1, 37, 'Y', 1, '2021-07-18 07:02:00');
+INSERT INTO `menu_access_group` VALUES (136, 1, 44, 'Y', 1, '2021-07-18 07:02:00');
+INSERT INTO `menu_access_group` VALUES (137, 1, 45, 'Y', 1, '2021-07-18 07:02:00');
+INSERT INTO `menu_access_group` VALUES (142, 1, 49, 'Y', 1, '2021-07-18 07:02:00');
+INSERT INTO `menu_access_group` VALUES (143, 1, 50, 'Y', 1, '2021-07-18 07:02:00');
+INSERT INTO `menu_access_group` VALUES (144, 1, 51, 'Y', 1, '2021-07-18 07:02:00');
+INSERT INTO `menu_access_group` VALUES (145, 1, 52, 'Y', 1, '2021-07-18 07:01:59');
+INSERT INTO `menu_access_group` VALUES (146, 1, 53, 'Y', 1, '2021-07-18 07:01:59');
+INSERT INTO `menu_access_group` VALUES (147, 1, 54, 'Y', 1, '2021-07-18 07:01:59');
+INSERT INTO `menu_access_group` VALUES (148, 1, 55, 'Y', 1, '2021-07-18 07:01:59');
+INSERT INTO `menu_access_group` VALUES (149, 1, 56, 'Y', 1, '2021-07-18 07:02:01');
+INSERT INTO `menu_access_group` VALUES (152, 1, 59, 'Y', 1, '2021-07-18 07:01:59');
+INSERT INTO `menu_access_group` VALUES (154, 1, 61, 'Y', 1, '2021-07-18 07:01:58');
+INSERT INTO `menu_access_group` VALUES (155, 1, 62, 'Y', 1, '2021-07-18 07:01:58');
+INSERT INTO `menu_access_group` VALUES (156, 1, 63, 'Y', 1, '2021-07-18 07:01:58');
+INSERT INTO `menu_access_group` VALUES (157, 1, 64, 'Y', 1, '2021-07-18 07:01:58');
+INSERT INTO `menu_access_group` VALUES (158, 1, 65, 'Y', 1, '2021-07-18 07:01:58');
+INSERT INTO `menu_access_group` VALUES (159, 1, 66, 'Y', 1, '2021-07-18 07:01:58');
+INSERT INTO `menu_access_group` VALUES (160, 1, 67, 'Y', 1, '2021-07-18 07:01:58');
 
 -- ----------------------------
 -- Table structure for menu_access_sub_group
 -- ----------------------------
 DROP TABLE IF EXISTS `menu_access_sub_group`;
 CREATE TABLE `menu_access_sub_group`  (
-  `masg_id` int(11) NOT NULL AUTO_INCREMENT,
-  `masg_ug_id` int(11) NULL DEFAULT NULL,
-  `masg_usg_id` int(11) NULL DEFAULT NULL,
-  `masg_rm_id` int(11) NULL DEFAULT NULL,
+  `masg_id` int NOT NULL AUTO_INCREMENT,
+  `masg_ug_id` int NULL DEFAULT NULL,
+  `masg_usg_id` int NULL DEFAULT NULL,
+  `masg_rm_id` int NULL DEFAULT NULL,
   `masg_is_active` char(1) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT 'Y',
-  `last_user` int(11) NULL DEFAULT NULL,
+  `last_user` int NULL DEFAULT NULL,
   `last_datetime` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`masg_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 26 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 26 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of menu_access_sub_group
@@ -963,14 +1296,14 @@ INSERT INTO `menu_access_sub_group` VALUES (25, 1, 2, 2, 'Y', 1, '2020-09-28 16:
 -- ----------------------------
 DROP TABLE IF EXISTS `menu_access_user`;
 CREATE TABLE `menu_access_user`  (
-  `mau_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `mau_user_id` int(10) UNSIGNED NOT NULL,
-  `mau_menu_id` int(10) UNSIGNED NOT NULL,
+  `mau_id` int UNSIGNED NOT NULL AUTO_INCREMENT,
+  `mau_user_id` int UNSIGNED NOT NULL,
+  `mau_menu_id` int UNSIGNED NOT NULL,
   `mau_is_active` char(1) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'Y',
-  `last_user` int(10) UNSIGNED NOT NULL,
+  `last_user` int UNSIGNED NOT NULL,
   `last_datetime` datetime(0) NOT NULL,
   PRIMARY KEY (`mau_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 59 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 59 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of menu_access_user
@@ -1001,71 +1334,91 @@ INSERT INTO `menu_access_user` VALUES (58, 2, 42, 'Y', 1, '2020-09-27 23:46:19')
 -- ----------------------------
 DROP TABLE IF EXISTS `projects`;
 CREATE TABLE `projects`  (
-  `p_id` int(11) NOT NULL AUTO_INCREMENT,
+  `p_id` int NOT NULL AUTO_INCREMENT,
   `p_name` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   `p_location` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   `p_is_active` char(1) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT 'Y',
-  `last_user` int(11) NULL DEFAULT NULL,
+  `last_user` int NULL DEFAULT NULL,
   `last_datetime` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`p_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = COMPACT;
+
+-- ----------------------------
+-- Records of projects
+-- ----------------------------
+INSERT INTO `projects` VALUES (3, 'Perumahan Srikandi', 'Jl Srikandi No 1', 'Y', 1, '2020-10-29 03:04:53');
+INSERT INTO `projects` VALUES (4, 'Perumahan Tapung Kampar', 'Kampar', 'Y', 1, '2020-10-29 01:37:31');
+INSERT INTO `projects` VALUES (5, 'tes', 'tes', 'N', 1, '2020-10-29 22:55:36');
 
 -- ----------------------------
 -- Table structure for projects_sub
 -- ----------------------------
 DROP TABLE IF EXISTS `projects_sub`;
 CREATE TABLE `projects_sub`  (
-  `ps_id` int(11) NOT NULL AUTO_INCREMENT,
-  `ps_p_id` int(11) NULL DEFAULT NULL,
-  `ps_bt_id` int(11) NULL DEFAULT NULL,
+  `ps_id` int NOT NULL AUTO_INCREMENT,
+  `ps_p_id` int NULL DEFAULT NULL,
+  `ps_bt_id` int NULL DEFAULT NULL,
   `ps_name` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   `ps_is_active` char(1) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT 'Y',
-  `last_user` int(11) NULL DEFAULT NULL,
+  `last_user` int NULL DEFAULT NULL,
   `last_datetime` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`ps_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = COMPACT;
+
+-- ----------------------------
+-- Records of projects_sub
+-- ----------------------------
+INSERT INTO `projects_sub` VALUES (3, 3, 16, 'A1', 'Y', 1, '2020-10-29 01:45:21');
+INSERT INTO `projects_sub` VALUES (4, 4, 16, 'Blok 1', 'Y', 1, '2020-10-29 23:02:48');
+INSERT INTO `projects_sub` VALUES (5, 3, 16, 'A2', 'Y', 1, '2020-10-29 02:35:35');
+INSERT INTO `projects_sub` VALUES (6, 3, 16, 'A4', 'Y', 1, '2020-10-29 02:37:52');
+INSERT INTO `projects_sub` VALUES (7, 4, 17, 'Blok 1', 'Y', 1, '2020-10-29 02:38:06');
 
 -- ----------------------------
 -- Table structure for rab_building
 -- ----------------------------
 DROP TABLE IF EXISTS `rab_building`;
 CREATE TABLE `rab_building`  (
-  `rb_id` int(11) NOT NULL AUTO_INCREMENT,
-  `rb_bt_id` int(11) NULL DEFAULT NULL,
-  `rb_rl_id` int(11) NULL DEFAULT NULL,
-  `rb_measure` int(11) NULL DEFAULT NULL,
-  `rb_summary` int(11) NULL DEFAULT NULL,
+  `rb_id` int NOT NULL AUTO_INCREMENT,
+  `rb_bt_id` int NULL DEFAULT NULL,
+  `rb_rl_id` int NULL DEFAULT NULL,
+  `rb_il_id` int NULL DEFAULT NULL,
+  `rb_measure` int NULL DEFAULT NULL,
+  `rb_summary` int NULL DEFAULT NULL,
   `rb_is_active` char(1) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT 'Y',
-  `last_user` int(11) NULL DEFAULT NULL,
+  `last_user` int NULL DEFAULT NULL,
   `last_datetime` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`rb_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of rab_building
 -- ----------------------------
-INSERT INTO `rab_building` VALUES (1, 16, 2, 10, 200, 'Y', 1, '2020-10-28 00:19:03');
-INSERT INTO `rab_building` VALUES (2, 16, 3, 15, 894464545, 'Y', 1, '2020-10-28 00:19:03');
-INSERT INTO `rab_building` VALUES (5, 16, 4, 54845, 21938, 'Y', 1, '2020-10-28 00:19:03');
-INSERT INTO `rab_building` VALUES (6, 17, 4, 54548, 21819, 'Y', 1, '2020-10-28 00:19:19');
-INSERT INTO `rab_building` VALUES (7, 17, 2, 1254, 137940, 'Y', 1, '2020-10-28 00:19:19');
-INSERT INTO `rab_building` VALUES (8, 17, 3, 215, 17200, 'Y', 1, '2020-10-28 00:19:19');
+INSERT INTO `rab_building` VALUES (1, 16, 2, 8, 10, 200, 'Y', 1, '2020-10-30 00:26:44');
+INSERT INTO `rab_building` VALUES (2, 16, 3, 8, 12, 960, 'Y', 1, '2020-10-30 00:26:44');
+INSERT INTO `rab_building` VALUES (5, 16, 4, 10, 60, 24, 'Y', 1, '2020-10-30 00:26:44');
+INSERT INTO `rab_building` VALUES (6, 17, 4, NULL, 54548, 21819, 'Y', 1, '2020-10-30 00:06:34');
+INSERT INTO `rab_building` VALUES (7, 17, 2, NULL, 150, 16500, 'Y', 1, '2020-10-30 00:06:34');
+INSERT INTO `rab_building` VALUES (8, 17, 3, NULL, 20, 1600, 'Y', 1, '2020-10-30 00:06:34');
+INSERT INTO `rab_building` VALUES (9, 16, 5, 10, 120, 12, 'Y', 1, '2020-10-30 00:26:44');
+INSERT INTO `rab_building` VALUES (10, 16, 6, 9, 120, 2, 'Y', 1, '2020-10-30 00:26:44');
+INSERT INTO `rab_building` VALUES (11, 16, 7, 10, 240, 96, 'Y', 1, '2020-10-30 00:26:44');
 
 -- ----------------------------
 -- Table structure for rab_list
 -- ----------------------------
 DROP TABLE IF EXISTS `rab_list`;
 CREATE TABLE `rab_list`  (
-  `rl_id` int(11) NOT NULL AUTO_INCREMENT,
-  `rl_ir_id` int(11) NULL DEFAULT NULL,
-  `rl_il_id` int(11) NULL DEFAULT NULL,
-  `rl_un_id` int(11) NULL DEFAULT NULL,
+  `rl_id` int NOT NULL AUTO_INCREMENT,
+  `rl_ir_id` int NULL DEFAULT NULL,
+  `rl_il_id` int NULL DEFAULT NULL,
+  `rl_un_id` int NULL DEFAULT NULL,
   `rl_volume` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `rl_is_active` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT 'Y',
-  `last_user` int(11) NULL DEFAULT NULL,
+  `last_user` int NULL DEFAULT NULL,
   `last_datetime` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`rl_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of rab_list
@@ -1073,21 +1426,24 @@ CREATE TABLE `rab_list`  (
 INSERT INTO `rab_list` VALUES (2, 10, 8, 13, '110', 'Y', 1, '2020-10-26 20:36:11');
 INSERT INTO `rab_list` VALUES (3, 13, 8, 13, '80', 'Y', 1, '2020-10-26 19:48:46');
 INSERT INTO `rab_list` VALUES (4, 9, 10, 14, '0.4', 'Y', 1, '2020-10-26 20:36:16');
+INSERT INTO `rab_list` VALUES (5, 11, 10, 15, '0.1', 'Y', 1, '2020-10-30 00:21:41');
+INSERT INTO `rab_list` VALUES (6, 11, 9, 14, '0.015', 'Y', 1, '2020-10-30 00:24:52');
+INSERT INTO `rab_list` VALUES (7, 13, 10, 15, '0.4', 'Y', 1, '2020-10-30 00:25:33');
 
 -- ----------------------------
 -- Table structure for ref_code
 -- ----------------------------
 DROP TABLE IF EXISTS `ref_code`;
 CREATE TABLE `ref_code`  (
-  `rfc_id` int(11) NOT NULL AUTO_INCREMENT,
+  `rfc_id` int NOT NULL AUTO_INCREMENT,
   `rfc_group` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
   `rfc_code` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
   `rfc_value` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
   `rfc_is_active` char(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT 'Y',
-  `last_user` int(10) UNSIGNED NOT NULL,
+  `last_user` int UNSIGNED NOT NULL,
   `last_datetime` datetime(0) NOT NULL,
   PRIMARY KEY (`rfc_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of ref_code
@@ -1102,24 +1458,24 @@ INSERT INTO `ref_code` VALUES (4, 'FINDINGS', 'A', 'All', 'Y', 1, '2020-10-13 09
 -- ----------------------------
 DROP TABLE IF EXISTS `ref_menu`;
 CREATE TABLE `ref_menu`  (
-  `rm_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `rm_parent_id` int(10) UNSIGNED NULL DEFAULT NULL,
+  `rm_id` int UNSIGNED NOT NULL AUTO_INCREMENT,
+  `rm_parent_id` int UNSIGNED NULL DEFAULT NULL,
   `rm_caption` varchar(32) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `rm_description` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   `rm_url` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   `rm_icon` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
-  `rm_sequence` int(10) UNSIGNED NOT NULL DEFAULT 1,
+  `rm_sequence` int UNSIGNED NOT NULL DEFAULT 1,
   `rm_is_active` char(1) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'Y',
-  `last_user` int(10) UNSIGNED NOT NULL,
+  `last_user` int UNSIGNED NOT NULL,
   `last_datetime` datetime(0) NOT NULL,
   PRIMARY KEY (`rm_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 60 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 62 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of ref_menu
 -- ----------------------------
 INSERT INTO `ref_menu` VALUES (1, NULL, 'Findings', 'Findings', 'trademark/invented_brand', 'fas fa-search', 1, 'N', 1, '2020-10-12 22:32:29');
-INSERT INTO `ref_menu` VALUES (2, NULL, 'Settings', 'Settings', NULL, 'fas fa-cogs', 3, 'Y', 1, '2020-09-24 07:12:10');
+INSERT INTO `ref_menu` VALUES (2, NULL, 'Pengaturan', 'Pengaturan', NULL, 'fas fa-cogs', 4, 'Y', 1, '2021-07-18 06:49:23');
 INSERT INTO `ref_menu` VALUES (3, 37, 'User Detail', 'User Detail', 'settings/user', 'fas fa-user-alt', 1, 'Y', 1, '2020-09-16 23:15:29');
 INSERT INTO `ref_menu` VALUES (4, NULL, 'Control Center', 'Control Center', NULL, 'trademark-icon icon-control', 2, 'N', 1, '2020-10-11 10:11:22');
 INSERT INTO `ref_menu` VALUES (5, 4, 'Client&rsquo;s Trademarks', 'Client&rsquo;s Trademarks', 'trademark/brand', 'fas fa-tags', 1, 'N', 1, '2020-10-11 10:12:29');
@@ -1141,56 +1497,47 @@ INSERT INTO `ref_menu` VALUES (48, 4, 'BRM List', 'BRM List', 'trademark/brm_lis
 INSERT INTO `ref_menu` VALUES (49, 2, 'Master Data', 'Master Data', NULL, 'fas fa-table', 3, 'Y', 1, '2020-10-25 08:40:16');
 INSERT INTO `ref_menu` VALUES (50, 49, 'Item List', 'Item List', 'settings/item_list', 'fas fa-list', 1, 'Y', 1, '2020-10-21 23:58:26');
 INSERT INTO `ref_menu` VALUES (51, 49, 'Item Unit', 'Item Unit', 'settings/item_unit', 'fas fa-boxes', 2, 'Y', 1, '2020-10-22 01:51:26');
-INSERT INTO `ref_menu` VALUES (52, NULL, 'RAB Config', 'RAB Config', NULL, 'fas fa-briefcase', 1, 'Y', 1, '2020-10-25 08:40:26');
+INSERT INTO `ref_menu` VALUES (52, NULL, 'Transaksi', 'Transaksi', NULL, 'fas fa-clipboard', 3, 'Y', 1, '2021-07-18 06:34:15');
 INSERT INTO `ref_menu` VALUES (53, 54, 'RAB List Template', 'RAB List Template', 'master_data/rab_list', 'fas fa-building', 1, 'Y', 1, '2020-10-26 18:38:39');
-INSERT INTO `ref_menu` VALUES (54, 52, 'Template RAB', 'Template RAB', 'settings/rab_template', 'fas fa-ruler-vertical', 4, 'Y', 1, '2020-10-25 08:38:07');
+INSERT INTO `ref_menu` VALUES (54, 52, 'Delivery Order', 'Delivery Order', 'settings/rab_template', 'fas fa-sort-amount-up-alt', 4, 'Y', 1, '2021-07-18 06:30:02');
 INSERT INTO `ref_menu` VALUES (55, 54, 'Item RAB', 'Item Data RAB', 'master_data/item_rab', 'fas fa-pencil-ruler', 1, 'Y', 1, '2020-10-26 18:38:50');
 INSERT INTO `ref_menu` VALUES (56, 49, 'Building Type', 'Building Type', 'settings/building_type', 'fas fa-building', 3, 'Y', 1, '2020-10-25 08:41:03');
-INSERT INTO `ref_menu` VALUES (57, NULL, 'Projects', 'Projects', NULL, 'fas fa-paint-roller', 3, 'Y', 1, '2020-10-27 10:02:22');
+INSERT INTO `ref_menu` VALUES (57, NULL, 'Projects', 'Projects', NULL, 'fas fa-paint-roller', 5, 'N', 1, '2021-07-18 06:48:40');
 INSERT INTO `ref_menu` VALUES (58, 57, 'Projects Data', 'Projects Data', 'projects/projects_data', 'fas fa-hard-hat', 1, 'Y', 1, '2020-10-27 10:08:04');
-INSERT INTO `ref_menu` VALUES (59, 52, 'RAB Building', 'RAB Building', 'master_data/rab_building', 'fas fa-ruler-combined', 3, 'Y', 1, '2020-10-27 10:24:24');
+INSERT INTO `ref_menu` VALUES (59, 52, 'Sales Order', 'Sales Order', NULL, 'fas fa-sort-amount-down-alt', 3, 'Y', 1, '2021-07-18 06:29:21');
+INSERT INTO `ref_menu` VALUES (60, 57, 'Material Consumption', 'Material Consumption', 'projects/material_consumption', 'fas fa-pencil-ruler', 2, 'Y', 1, '2020-10-30 01:24:12');
+INSERT INTO `ref_menu` VALUES (61, NULL, 'Dashboard', NULL, 'main/main', 'fas fa-home', 1, 'Y', 1, '2021-07-14 10:26:19');
+INSERT INTO `ref_menu` VALUES (62, NULL, 'Master Data', 'Master Data', NULL, 'fas fa-book', 2, 'Y', 1, '2021-07-18 06:33:25');
+INSERT INTO `ref_menu` VALUES (63, 62, 'Daftar Item', 'Daftar Item', 'master_data/item_list', 'fas fa-box', 1, 'Y', 1, '2021-07-18 07:21:36');
+INSERT INTO `ref_menu` VALUES (64, 62, 'Vendor', 'Vendor', 'master_data/vendor', 'fas fa-user-friends', 2, 'Y', 1, '2021-07-18 06:44:41');
+INSERT INTO `ref_menu` VALUES (65, 62, 'Kendaraan', 'Kendaraan', 'master_data/kendaraan', 'fas fa-truck-moving', 4, 'Y', 1, '2021-07-18 07:01:42');
+INSERT INTO `ref_menu` VALUES (66, 62, 'Pengemudi', 'Pengemudi', 'master_data/pengemudi', 'fas fa-users', 5, 'Y', 1, '2021-07-18 07:01:51');
+INSERT INTO `ref_menu` VALUES (67, 62, 'Pelanggan', 'Pelanggan', 'master_data/pelanggan', 'fas fa-user-check', 3, 'Y', 1, '2021-07-18 07:01:21');
 
 -- ----------------------------
 -- Table structure for unit
 -- ----------------------------
 DROP TABLE IF EXISTS `unit`;
 CREATE TABLE `unit`  (
-  `un_id` int(11) NOT NULL AUTO_INCREMENT,
+  `un_id` int NOT NULL AUTO_INCREMENT,
   `un_name` varchar(255) CHARACTER SET utf16 COLLATE utf16_bin NULL DEFAULT NULL,
   `un_is_active` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT 'Y',
   `last_user` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `last_datetime` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`un_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 19 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 18 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of unit
 -- ----------------------------
-INSERT INTO `unit` VALUES (1, 'PCS', 'Y', '1', '2020-10-22 00:38:26');
-INSERT INTO `unit` VALUES (2, 'KUBIK', 'N', '1', '2020-10-23 11:18:58');
-INSERT INTO `unit` VALUES (3, 'TRUK', 'N', '1', '2020-10-23 11:19:01');
-INSERT INTO `unit` VALUES (4, 'TRUK', 'Y', '1', '2020-10-23 11:27:25');
-INSERT INTO `unit` VALUES (5, 'BATANG', 'Y', '1', '2020-10-23 11:27:38');
-INSERT INTO `unit` VALUES (6, 'KG', 'Y', '1', '2020-10-23 11:28:51');
-INSERT INTO `unit` VALUES (7, '/M LARI', 'Y', '1', '2020-10-23 13:44:45');
-INSERT INTO `unit` VALUES (8, '/KOLOM', 'Y', '1', '2020-10-23 12:27:11');
-INSERT INTO `unit` VALUES (9, 'M&#178;', 'Y', '1', '2020-10-23 12:46:09');
-INSERT INTO `unit` VALUES (10, 'M&#178; = LARI', 'Y', '1', '2020-10-23 12:28:42');
-INSERT INTO `unit` VALUES (11, '/UNIT KM/WC', 'Y', '1', '2020-10-23 12:28:56');
-INSERT INTO `unit` VALUES (12, '/UNIT RUMAH', 'Y', '1', '2020-10-23 12:29:00');
-INSERT INTO `unit` VALUES (13, 'Bh', 'Y', '1', '2020-10-26 19:44:58');
-INSERT INTO `unit` VALUES (14, 'M&sup3;', 'Y', '1', '2020-10-26 19:52:15');
-INSERT INTO `unit` VALUES (15, 'ZAK', 'Y', '1', '2020-10-26 19:53:14');
-INSERT INTO `unit` VALUES (16, 'Lembar', 'Y', '1', '2020-10-26 19:53:24');
-INSERT INTO `unit` VALUES (17, 'Pail', 'Y', '1', '2020-10-26 19:53:50');
-INSERT INTO `unit` VALUES (18, 'Set', 'Y', '1', '2020-10-26 19:53:57');
+INSERT INTO `unit` VALUES (19, 'KG', 'Y', '1', '2021-07-18 07:50:43');
 
 -- ----------------------------
 -- Table structure for user_detail
 -- ----------------------------
 DROP TABLE IF EXISTS `user_detail`;
 CREATE TABLE `user_detail`  (
-  `ud_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `ud_id` int UNSIGNED NOT NULL AUTO_INCREMENT,
   `ud_username` varchar(32) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `ud_password` varchar(64) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `ud_fullname` varchar(64) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
@@ -1200,31 +1547,31 @@ CREATE TABLE `user_detail`  (
   `ud_img_filename` varchar(64) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   `ud_img_ori` varchar(64) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   `ud_notif_flag` char(1) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT 'Y',
-  `ud_sub_group` int(10) UNSIGNED NOT NULL DEFAULT 3,
+  `ud_sub_group` int UNSIGNED NOT NULL DEFAULT 3,
   `ud_is_active` char(1) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'Y',
-  `last_user` int(10) UNSIGNED NOT NULL,
+  `last_user` int UNSIGNED NOT NULL,
   `last_datetime` datetime(0) NOT NULL,
   PRIMARY KEY (`ud_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of user_detail
 -- ----------------------------
-INSERT INTO `user_detail` VALUES (1, 'admin', '2b9d2a9db155ff51d4574bc2482b510e0946487b', 'Administrator', '2020-06-18', 'pekanbaru', 'admin@localhost.com', 'c084c8c887804ebde68e108f9fa560d1.png', 'logo.png', 'Y', 1, 'Y', 1, '2020-10-22 02:10:20');
+INSERT INTO `user_detail` VALUES (1, 'admin', '05962b1a8d2e2153db9c2facf89504532b901aa6', 'Administrator', '2020-06-18', 'pekanbaru', 'admin@localhost.com', '759c6f3d09241a1f33bc9e99951a30aa.PNG', 'avatar.PNG', 'Y', 1, 'Y', 1, '2021-07-18 00:11:08');
 
 -- ----------------------------
 -- Table structure for user_group
 -- ----------------------------
 DROP TABLE IF EXISTS `user_group`;
 CREATE TABLE `user_group`  (
-  `ug_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `ug_id` int UNSIGNED NOT NULL AUTO_INCREMENT,
   `ug_caption` varchar(32) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `ug_description` varchar(128) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `ug_is_active` char(1) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'Y',
-  `last_user` int(10) UNSIGNED NOT NULL,
+  `last_user` int UNSIGNED NOT NULL,
   `last_datetime` datetime(0) NOT NULL,
   PRIMARY KEY (`ug_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of user_group
@@ -1236,19 +1583,40 @@ INSERT INTO `user_group` VALUES (1, 'Administrators', 'Administrator', 'Y', 1, '
 -- ----------------------------
 DROP TABLE IF EXISTS `user_sub_group`;
 CREATE TABLE `user_sub_group`  (
-  `usg_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `usg_id` int UNSIGNED NOT NULL AUTO_INCREMENT,
   `usg_caption` varchar(32) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `usg_description` varchar(128) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `usg_is_active` char(1) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'Y',
-  `usg_group` int(10) UNSIGNED NOT NULL,
-  `last_user` int(10) UNSIGNED NOT NULL,
+  `usg_group` int UNSIGNED NOT NULL,
+  `last_user` int UNSIGNED NOT NULL,
   `last_datetime` datetime(0) NOT NULL,
   PRIMARY KEY (`usg_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of user_sub_group
 -- ----------------------------
 INSERT INTO `user_sub_group` VALUES (1, 'Super Administrators', 'Super Administrators', 'Y', 1, 1, '2019-11-05 14:19:50');
+
+-- ----------------------------
+-- Table structure for vendor
+-- ----------------------------
+DROP TABLE IF EXISTS `vendor`;
+CREATE TABLE `vendor`  (
+  `v_id` int NOT NULL AUTO_INCREMENT,
+  `v_vendor_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `v_vendor_add` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL,
+  `v_vendor_phone` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `v_vendor_email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `v_is_active` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT 'Y',
+  `last_user` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `last_datetime` datetime(0) NULL DEFAULT NULL,
+  PRIMARY KEY (`v_id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of vendor
+-- ----------------------------
+INSERT INTO `vendor` VALUES (1, 'PT. CIOMAS ADI SATWA Unit PARIAMAN', NULL, NULL, NULL, 'Y', '1', '2021-07-18 07:56:42');
 
 SET FOREIGN_KEY_CHECKS = 1;

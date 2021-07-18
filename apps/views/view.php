@@ -1,6 +1,6 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 /*!
- * @package RAB
+ * @package APPKARGO
  * @copyright Noobscript
  * @author Sikelopes
  * @version 1.0
@@ -52,13 +52,13 @@ $avatar = empty($this->session->userdata('user_img')) ? 'unknown.png' : $this->s
 	</head>
 	<body class="hold-transition sidebar-mini layout-fixed text-sm accent-info">
 		<div class="wrapper">
-			<nav class="main-header navbar navbar-expand navbar-dark navbar-info fixed-top">
+			<nav class="main-header navbar navbar-expand navbar-dark navbar-danger fixed-top">
 				<ul class="navbar-nav">
 					<li class="nav-item">
 						<a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
 					</li>
 				</ul>
-				<ul class="navbar-nav ml-auto">
+				<ul class="navbar-nav ml-auto ">
 					<li class="nav-item" title="Logout">
 						<a class="nav-link" href="<?php echo site_url('auth/do_logout'); ?>">
 							<i class="fas fa-sign-out-alt"></i> Sign Out
@@ -68,7 +68,7 @@ $avatar = empty($this->session->userdata('user_img')) ? 'unknown.png' : $this->s
 			</nav>
 			<aside class="main-sidebar sidebar-dark-primary elevation-4 sidebar-dark-info">
 				<a href="<?php echo base_url(); ?>" class="brand-link">
-					<!-- <img src="<?php echo base_url('images/logo.png'); ?>" alt="Brand Logo" class="brand-image"> -->
+					<!-- <img src="<?php// echo base_url('images/logo.png'); ?>" alt="Brand Logo" class="brand-image"> -->
 					<span class="brand-text font-weight-light" style=""><?= NOOBS_TITLE_1 ?></span>
 				</a>
 				<div class="sidebar">
@@ -77,7 +77,7 @@ $avatar = empty($this->session->userdata('user_img')) ? 'unknown.png' : $this->s
 							$backgroud_url = base_url('images/profiles/'.$avatar);
 						?>
 						<div class="image" style="background-image: url('<?= $backgroud_url ?>');">
-							<!-- <img src="<?php echo base_url('images/profiles/'.$avatar); ?>" class="img-circle elevation-2" alt="Avatar pengguna"> -->
+							<!-- <img src="<?php //echo base_url('images/profiles/'.$avatar); ?>" class="img-circle elevation-2" alt="Avatar pengguna"> -->
 						</div>
 						<div class="info">
 							<a href="<?php echo site_url('main/profile'); ?>" class="d-block"><?php echo $this->session->userdata('user_fullname'); ?></a>
@@ -168,6 +168,9 @@ $avatar = empty($this->session->userdata('user_img')) ? 'unknown.png' : $this->s
 		<script src="<?php echo base_url('vendors/jquery_noobsdaterangepicker/js/noobsdaterangepicker.js'); ?>"></script>
 		<script src="<?php echo base_url('scripts/custom_validity.js'); ?>"></script>
 		<script src="<?php echo base_url('scripts/scripts.js'); ?>"></script>
+		<script src="<?php echo base_url('vendors/template/3.0.0/'); ?>plugins/chart.js/Chart.min.js"></script>
+		<script src="<?php echo base_url('vendors/template/3.0.0/'); ?>dist/js/demo.js"></script>
+		<script src="<?php echo base_url('vendors/template/3.0.0/'); ?>dist/js/pages/dashboard3.js"></script>
 		<?php
 			if (isset($source_bot) && count($source_bot) > 0)
 			{

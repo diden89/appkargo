@@ -1,5 +1,5 @@
 /*!
- * @package RAB
+ * @package APPKARGO
  * @copyright Noobscript
  * @author diden89
  * @version 1.0

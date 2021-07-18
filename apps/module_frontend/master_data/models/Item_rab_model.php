@@ -1,12 +1,12 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /*!
- * @package RAB
+ * @package APPKARGO
  * @copyright Noobscript
  * @author Sikelopes
  * @edit Diden89
  * @version 1.0
  * @access Public
- * @path /rab/apps/module_frontend/trademark/models/item_rab_model.php
+ * @path /appkargo/apps/module_frontend/trademark/models/item_rab_model.php
  */
 
 class Item_rab_model extends NOOBS_Model

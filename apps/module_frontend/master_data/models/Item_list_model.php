@@ -6,7 +6,7 @@
  * @edit Diden89
  * @version 1.0
  * @access Public
- * @path /appkargo/apps/module_frontend/trademark/models/item_list_model.php
+ * @path /appkargo/apps/module_frontend/master_data/models/item_list_model.php
  */
 
 class Item_list_model extends NOOBS_Model
@@ -15,7 +15,7 @@ class Item_list_model extends NOOBS_Model
 	{
 		if (isset($params['txt_item']) && ! empty($params['txt_item']))
 		{
-			$this->db->where('il.il_item_name', strtoupper($params['txt_item']));
+			$this->db->like('UPPER(il.il_item_name)', strtoupper($params['txt_item']));
 		}
 
 		if (isset($params['txt_id']) && ! empty($params['txt_id']))
@@ -26,6 +26,7 @@ class Item_list_model extends NOOBS_Model
 		$this->db->select("*, il.il_id as id", FALSE);
 		$this->db->from("item_list il");
 		$this->db->join("unit un","il.il_un_id = un.un_id","LEFT");
+		$this->db->join("vendor v","v_id = il.il_vendor_id","LEFT");
 		$this->db->where('il.il_is_active', 'Y');
 		$this->db->order_by('il.il_item_name', 'ASC');
 
@@ -38,6 +39,8 @@ class Item_list_model extends NOOBS_Model
 
 		$new_params = array(
 			'il_item_name' => $params['il_item_name'],
+			'il_item_code' => $params['il_item_code'],
+			'il_vendor_id' => $params['il_vendor_id'],
 			'il_un_id' => $params['il_un_id']
 		);
 
@@ -70,6 +73,13 @@ class Item_list_model extends NOOBS_Model
 		$this->db->order_by('un_name', 'ASC');
 
 		return $this->db->get('unit');
+ 	}
+	public function get_option_vendor()
+	{
+		$this->db->where('v_is_active', 'Y');
+		$this->db->order_by('v_vendor_name', 'ASC');
+
+		return $this->db->get('vendor');
  	}
 
 	public function delete_data($params = array())

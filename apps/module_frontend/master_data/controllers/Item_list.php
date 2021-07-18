@@ -6,7 +6,7 @@
  * @edit Diden89
  * @version 1.0
  * @access Public
- * @path /appkargo/apps/module_frontend/settings/controllers/Item_list.php
+ * @path /appkargo/apps/module_frontend/master_data/controllers/Item_list.php
  */
 
 class Item_list extends NOOBS_Controller
@@ -14,20 +14,20 @@ class Item_list extends NOOBS_Controller
 	function __construct()
 	{
 		parent::__construct();
-		$this->load->model('settings/item_list_model', 'db_item_list');
+		$this->load->model('master_data/item_list_model', 'db_item_list');
 	}
 
 	public function index()
 	{
-		$this->store_params['header_title'] = 'Item List';
+		$this->store_params['header_title'] = 'Daftar Item';
 		$this->store_params['breadcrumb'] = array(
 			array('', 'Home'),
-			array('settings/item_list', 'Item List')
+			array('master_data/item_list', 'Daftar Item')
 		);
 
 		$this->store_params['source_bot'] = array(
 			'<script src="'.base_url('vendors/jquery-number-master/jquery.number.js').'"></script>',
-			'<script src="'.base_url('scripts/settings/item_list.js').'"></script>',
+			'<script src="'.base_url('scripts/master_data/item_list.js').'"></script>',
 		);
 
 		$this->store_params['item'] = [];
@@ -59,6 +59,7 @@ class Item_list extends NOOBS_Controller
 			$post = $this->input->post(NULL, TRUE);
 
 			$post['option'] = $this->db_item_list->get_option_unit()->result();
+			$post['vendor'] = $this->db_item_list->get_option_vendor()->result();
 			if($post['mode'] == 'edit')
 			{
 				$post['data'] = $this->db_item_list->load_data_item_list($post['txt_id'])->row();
@@ -75,7 +76,7 @@ class Item_list extends NOOBS_Controller
 		{
 			$post = $this->input->post(NULL, TRUE);
 			$load_data_item_list = $this->db_item_list->load_data_item_list($post);
-
+			// print_r($_POST);exit;
 			if ($load_data_item_list->num_rows() > 0) 
 			{
 				$result = $load_data_item_list->result();

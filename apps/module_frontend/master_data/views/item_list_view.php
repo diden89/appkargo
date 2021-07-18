@@ -14,7 +14,7 @@
 	<div class="col-12">
 		<div class="card">
 			<div class="card-header">
-				<h3 class="card-title">Item List Data</h3>
+				<h3 class="card-title"><?=$header_title?> Data</h3>
 			</div>
 			<div class="card-body">
 				<div class="row">
@@ -25,6 +25,7 @@
 								<input type="text" id="txtList" class="form-control" placeholder="Search data..." aria-describedby="btnSearchWord">
 								<div class="input-group-append">
 									<button id="btnSearchItem" class="btn btn-info" type="button"><i class="fas fa-search"></i></button>
+									<button id="btnReloadItem" class="btn btn-success" type="button"><i class="fas fa-sync-alt"></i></button>
 								</div>
 							</div>
 							<div class="col-3">
@@ -41,8 +42,10 @@
 								<thead>
 									<tr role="row">
 										<th width="10">No</th>
-										<th>Item Name</th>
-										<th>Item Unit</th>
+										<th>Kode Item</th>
+										<th>Nama Item</th>
+										<th>Vendor</th>
+										<th>Satuan</th>
 										<th width="100">Action</th>
 									</tr>
 								</thead>
@@ -50,7 +53,9 @@
 									<?php foreach ($item as $k => $v): ?>
 										<tr>
 											<td><?php echo $v->num; ?></td>
+											<td><?php echo $v->il_item_code; ?></td>
 											<td><?php echo $v->il_item_name; ?></td>
+											<td><?php echo $v->v_vendor_name; ?></td>
 											<td><?php echo $v->un_name; ?></td>
 											<td>
 												<div class="btn-group btn-group-sm" role="group" aria-label="Action Button">
