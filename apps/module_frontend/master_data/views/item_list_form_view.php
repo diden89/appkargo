@@ -6,7 +6,7 @@
  * @edit Diden89
  * @version 1.0
  * @access Public
- * @path /rab_frontend/apps/module_frontend/trademark/views/similar_letters_form_letter_view.php
+ * @path /rab_frontend/apps/module_frontend/master_data/views/item_list_form_view.php
  */
 ?>
 
@@ -20,11 +20,33 @@
 	<?php endif; ?>
 	
 	<div class="row">
-		<div class="col-md-12">
+		<div class="col-md-6">
 			<div class="form-group row">
-				<label for="caption" class="col-sm-4 col-form-label">Item Name</label>
+				<label for="caption" class="col-sm-4 col-form-label">Kode Item</label>
+				<div class="col-sm-8">
+					<input type="text" name="il_item_code" class="form-control" id="item_code" value="<?php echo $mode == 'edit' && $data !== FALSE ? $data->il_item_code : '' ?>" required="required" <?php echo $mode == 'edit' ? '' : ''; ?>>
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="caption" class="col-sm-4 col-form-label">Nama Item</label>
 				<div class="col-sm-8">
 					<input type="text" name="il_item_name" class="form-control" id="item_name" value="<?php echo $mode == 'edit' && $data !== FALSE ? $data->il_item_name : '' ?>" required="required" <?php echo $mode == 'edit' ? '' : ''; ?>>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-6">
+			<div class="form-group row">
+				<label for="url" class="col-sm-4 col-form-label">Vendor</label>
+				<div class="col-sm-8">
+					<select class="form-control select2"  name="il_vendor_id" id="txt_unit">
+						<option value="">-Select-</option>
+						<?php
+							foreach($vendor as $k => $v)
+							{
+								echo '<option value="'.$v->v_id.'" '.(($data->il_vendor_id == $v->v_id) ? 'selected':"").'>'.$v->v_vendor_name.'</option>';
+							}
+						?>
+					</select>
 				</div>
 			</div>
 			<div class="form-group row">
@@ -41,6 +63,7 @@
 					</select>
 				</div>
 			</div>		
+
 		</div>		
 	</div>
 </form>

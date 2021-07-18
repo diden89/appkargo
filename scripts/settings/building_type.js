@@ -1,5 +1,5 @@
 /*!
- * @package RAB
+ * @package APPKARGO
  * @copyright Noobscript
  * @author Andy1t
  * @version 1.0
