@@ -20,7 +20,7 @@
 	<?php endif; ?>
 	
 	<div class="row">
-		<div class="col-md-6">
+		<div class="col-md-12">
 			<div class="form-group row">
 				<label for="caption" class="col-sm-4 col-form-label">Kode Item</label>
 				<div class="col-sm-8">
@@ -33,8 +33,6 @@
 					<input type="text" name="il_item_name" class="form-control" id="item_name" value="<?php echo $mode == 'edit' && $data !== FALSE ? $data->il_item_name : '' ?>" required="required" <?php echo $mode == 'edit' ? '' : ''; ?>>
 				</div>
 			</div>
-		</div>
-		<div class="col-md-6">
 			<div class="form-group row">
 				<label for="url" class="col-sm-4 col-form-label">Vendor</label>
 				<div class="col-sm-8">

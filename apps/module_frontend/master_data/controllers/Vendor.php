@@ -57,12 +57,12 @@ class Vendor extends NOOBS_Controller
 		if (isset($_POST['action']) && $_POST['action'] == 'load_vendor_form')
 		{
 			$post = $this->input->post(NULL, TRUE);
-
+			
 			if($post['mode'] == 'edit')
 			{
-				$post['data'] = $this->db_vendor->load_data_vendor($post['txt_id'])->row();
+				$post['data'] = $this->db_vendor->load_data_vendor($post)->row();
 			}
-	
+			
 			$this->_view('vendor_form_view', $post);
 		}
 		else $this->show_404();

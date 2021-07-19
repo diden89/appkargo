@@ -97,6 +97,7 @@ const itemList = {
 		$this.html(body);
 	},
 	showItem: function(el, mode) {
+		console.log(el)
 		const me = this;
 		let params = {action: 'load_vendor_form'};
 		let title = 'Add New';
