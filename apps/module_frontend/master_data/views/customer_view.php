@@ -6,7 +6,7 @@
  * @edit Diden89
  * @version 1.0
  * @access Public
- * @path /appkargo/apps/module_frontend/master_data/views/vendor_view.php
+ * @path /appkargo/apps/module_frontend/master_data/views/customer_view.php
  */
 ?>
 
@@ -19,12 +19,13 @@
 			<div class="card-body">
 				<div class="row">
 					<div class="col-12">
-						<h4>Vendor Name</h4>
+						<h4>Nama Pelanggan</h4>
 						<div class="row">
 							<div class="input-group col-9">
 								<input type="text" id="txtList" class="form-control" placeholder="Search data..." aria-describedby="btnSearchWord">
 								<div class="input-group-append">
 									<button id="btnSearchItem" class="btn btn-info" type="button"><i class="fas fa-search"></i></button>
+									<button id="btnReloadItem" class="btn btn-success" type="button"><i class="fas fa-sync-alt"></i></button>
 								</div>
 							</div>
 							<div class="col-3">
@@ -41,10 +42,11 @@
 								<thead>
 									<tr role="row">
 										<th width="10">No</th>
-										<th>Nama Vendor</th>
+										<th>Nama Pelanggan</th>
 										<th>Alamat</th>
 										<th>No Telp</th>
 										<th>Email</th>
+										<th>Area</th>
 										<th width="100">Action</th>
 									</tr>
 								</thead>
@@ -52,14 +54,15 @@
 									<?php foreach ($item as $k => $v): ?>
 										<tr>
 											<td><?php echo $v->num; ?></td>
-											<td><?php echo $v->v_vendor_name; ?></td>
-											<td><?php echo $v->v_vendor_add; ?></td>
-											<td><?php echo $v->v_vendor_phone; ?></td>
-											<td><?php echo $v->v_vendor_email; ?></td>
+											<td><?php echo $v->c_name; ?></td>
+											<td><?php echo $v->c_address; ?></td>
+											<td><?php echo $v->c_phone; ?></td>
+											<td><?php echo $v->c_email; ?></td>
+											<td><?php echo $v->rsd_name; ?></td>
 											<td>
 												<div class="btn-group btn-group-sm" role="group" aria-label="Action Button">
-													<button type="button" class="btn btn-success" data-id="<?php echo $v->v_id; ?>" data-item="<?php echo $v->v_vendor_name; ?>" onclick="itemList.showItem(this, 'edit');" title="Edit Word"><i class="fas fa-edit"></i></button>
-													<button type="button" class="btn btn-danger" data-id="<?php echo $v->v_id; ?>" data-item="<?php echo $v->v_vendor_name; ?>" onclick="itemList.deleteDataItem(this);" title="Delete Word"><i class="fas fa-trash-alt"></i></button>
+													<button type="button" class="btn btn-success" data-id="<?php echo $v->c_id; ?>" data-rd_id="<?php echo $v->rd_id; ?>" data-rsd_id="<?php echo $v->c_district_id; ?>" data-item="<?php echo $v->c_name; ?>" onclick="customerList.showItem(this, 'edit');" title="Edit Word"><i class="fas fa-edit"></i></button>
+													<button type="button" class="btn btn-danger" data-id="<?php echo $v->c_id; ?>" data-item="<?php echo $v->c_name; ?>" onclick="customerList.deleteDataItem(this);" title="Delete Word"><i class="fas fa-trash-alt"></i></button>
 												</div>
 											</td>
 										</tr>
