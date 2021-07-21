@@ -57,12 +57,13 @@ class Vehicle extends NOOBS_Controller
 		if (isset($_POST['action']) && $_POST['action'] == 'load_vehicle_form')
 		{
 			$post = $this->input->post(NULL, TRUE);
-			
+			$post['status'] = $this->db_vehicle->get_data_status()->result();
+
 			if($post['mode'] == 'edit')
 			{
 				$post['data'] = $this->db_vehicle->load_data_vehicle($post)->row();
 			}
-			
+			// print_r($post);exit;
 			$this->_view('vehicle_form_view', $post);
 		}
 		else $this->show_404();
@@ -126,9 +127,9 @@ class Vehicle extends NOOBS_Controller
 		if (isset($_POST['action']) && $_POST['action'] == 'delete_data_item')
 		{
 			$post = $this->input->post(NULL, TRUE);
-			$cek_before_delete = $this->db_vehicle->cek_before_delete($post,'item_list','il');
-			if($cek_before_delete->num_rows() < 1)
-			{
+			// $cek_before_delete = $this->db_vehicle->cek_before_delete($post,'item_list','il');
+			// if($cek_before_delete->num_rows() < 1)
+			// {
 				$delete_data_item = $this->db_vehicle->delete_data_item($post);
 
 				if ($delete_data_item->num_rows() > 0) 
@@ -146,20 +147,20 @@ class Vehicle extends NOOBS_Controller
 					echo json_encode(array('success' => TRUE, 'data' => $result,'msg' => 'Success'));
 				}
 				else echo json_encode(array('success' => FALSE, 'msg' => 'Data not found!'));
-			}
-			else
-			{
-				$res = $cek_before_delete->result();
-				$numb = 1;
+			// }
+			// else
+			// {
+			// 	$res = $cek_before_delete->result();
+			// 	$numb = 1;
 
-				foreach ($res as $k => $v)
-				{
-					$v->no = $numb;
+			// 	foreach ($res as $k => $v)
+			// 	{
+			// 		$v->no = $numb;
 
-					$numb++;
-				}
-			 	echo json_encode(array('success' => TRUE, 'msg' => 'Cannot delete this data!','data' => $res));
-			}
+			// 		$numb++;
+			// 	}
+			//  	echo json_encode(array('success' => TRUE, 'msg' => 'Cannot delete this data!','data' => $res));
+			// }
 		}
 		else $this->show_404();
 	}

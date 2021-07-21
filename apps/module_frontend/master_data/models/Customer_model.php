@@ -101,33 +101,13 @@ class Customer_model extends NOOBS_Model
 		return $this->db->get('customer');
  	}
 
-	public function delete_data($params = array())
+	public function delete_data_item($params = array())
 	{
 		$this->table = 'customer';
 
-		$this->db->where('il_id', $params['txt_id']);
-
-		$qry = $this->db->get($this->table);
-
-		if ($qry->num_rows() > 0)
-		{
-			$row = $qry->row();
-
-			$exp = explode(';', $row->il_similar_letter);
-			$data = [];
-
-			foreach ($exp as $k => $v)
-			{
-				if ($v == $params['txt_item']) continue;
-
-				$data[] = $v;
-			}
-
-			$this->edit(['il_similar_letter' => implode(';', $data)], "il_id = {$params['txt_id']}");
-
-			return $this->load_data(['txt_item' => $row->il_item]);
-		}
-		return FALSE;
+		$this->edit(['c_is_active' => 'N'], "c_id = {$params['txt_id']}");
+		
+		return $this->load_data_customer();
 	}
 
 	public function store_data($params = array())

@@ -36,16 +36,14 @@
 			<div class="form-group row">
 				<label for="url" class="col-sm-4 col-form-label">Status Kepemilikan</label>
 				<div class="col-sm-8">
-					<select class="form-control select2"  name="il_vendor_id" id="txt_unit">
+					<select class="form-control select2"  name="ve_status" id="ve_status">
 						<option value="">-Select-</option>
 						<?php
-							// foreach($status as $k => $v)
-							// {
-							// 	echo '<option value="'.$v->v_id.'" '.(($data->il_vendor_id == $v->v_id) ? 'selected':"").'>'.$v->v_vendor_name.'</option>';
-							// }
+							foreach($status as $k => $v)
+							{
+								echo '<option value="'.$v->rs_id.'" '.(($data->ve_status == $v->rs_id) ? 'selected':"").'>'.$v->rs_name.'</option>';
+							}
 						?>
-						<option value='1'>Milik Sendiri</option>
-						<option value='2'>Rekanan</option>
 					</select>
 				</div>
 			</div>

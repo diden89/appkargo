@@ -13,20 +13,23 @@ class Vehicle_model extends NOOBS_Model
 {
 	public function load_data_vehicle($params = array())
 	{
+		$this->db->from('vehicle as ve');
+		$this->db->join('ref_status as rs','rs.rs_id = ve.ve_status','LEFT');
+
 		if (isset($params['txt_item']) && ! empty($params['txt_item']))
 		{
-			$this->db->like('UPPER(ve_name)', strtoupper($params['txt_item']));
+			$this->db->like('UPPER(ve.ve_name)', strtoupper($params['txt_item']));
 		}
 
 		if (isset($params['txt_id']) && ! empty($params['txt_id']))
 		{
-			$this->db->where('ve_id', strtoupper($params['txt_id']));
+			$this->db->where('ve.ve_id', strtoupper($params['txt_id']));
 		}
 
-		$this->db->where('ve_is_active', 'Y');
-		$this->db->order_by('ve_name', 'ASC');
+		$this->db->where('ve.ve_is_active', 'Y');
+		$this->db->order_by('ve.ve_name', 'ASC');
 
-		return $this->db->get('vehicle');
+		return $this->db->get();
  	}
 
 	public function store_data_vehicle($params = array())
@@ -34,10 +37,9 @@ class Vehicle_model extends NOOBS_Model
 		$this->table = 'vehicle';
 
 		$new_params = array(
+			've_license_plate' => $params['ve_license_plate'],
 			've_name' => $params['ve_name'],
-			've_address' => $params['ve_add'],
-			've_phone' => $params['ve_phone'],
-			've_email' => $params['ve_email']
+			've_status' => $params['ve_status']
 		);
 
 		if ($params['mode'] == 'add') $this->add($new_params, TRUE);
@@ -63,41 +65,20 @@ class Vehicle_model extends NOOBS_Model
 		return $this->load_data_vehicle();
 	}
 
-	public function load_data($params = array())
+	public function get_data_status()
 	{
-		$this->db->where('il_item', strtoupper($params['txt_item']));
-		$this->db->where('il_is_active', 'Y');
+		$this->db->where('rs_is_active', 'Y');
 
-		return $this->db->get('vehicle');
+		return $this->db->get('ref_status');
  	}
 
-	public function delete_data($params = array())
+	public function delete_data_item($params = array())
 	{
 		$this->table = 'vehicle';
 
-		$this->db->where('il_id', $params['txt_id']);
-
-		$qry = $this->db->get($this->table);
-
-		if ($qry->num_rows() > 0)
-		{
-			$row = $qry->row();
-
-			$exp = explode(';', $row->il_similar_letter);
-			$data = [];
-
-			foreach ($exp as $k => $v)
-			{
-				if ($v == $params['txt_item']) continue;
-
-				$data[] = $v;
-			}
-
-			$this->edit(['il_similar_letter' => implode(';', $data)], "il_id = {$params['txt_id']}");
-
-			return $this->load_data(['txt_item' => $row->il_item]);
-		}
-		return FALSE;
+		$this->edit(['ve_is_active' => 'N'], "ve_id = {$params['txt_id']}");
+		
+		return $this->load_data_vehicle();
 	}
 
 	public function store_data($params = array())

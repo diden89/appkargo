@@ -83,7 +83,7 @@ const itemList = {
 			body += '<td>' + item.no + '</td>';
 			body += '<td>' + item.ve_license_plate + '</td>';
 			body += '<td>' + item.ve_name + '</td>';
-			body += '<td>' + item.ve_status + '</td>';
+			body += '<td>' + item.rs_name + '</td>';
 			body += '<td>';
 				body += '<div class="btn-group btn-group-sm" role="group" aria-label="Action Button">';
 					body += '<button type="button" class="btn btn-success" data-id="' + item.ve_id + '" data-item="' + item.ve_name + '" onclick="itemList.showItem(this, \'edit\');"><i class="fas fa-edit"></i></button>';
