@@ -35,7 +35,7 @@ class Vehicle_model extends NOOBS_Model
 
 		$new_params = array(
 			've_name' => $params['ve_name'],
-			've_add' => $params['ve_add'],
+			've_address' => $params['ve_add'],
 			've_phone' => $params['ve_phone'],
 			've_email' => $params['ve_email']
 		);
