@@ -18,7 +18,7 @@ class Vehicle_model extends NOOBS_Model
 
 		if (isset($params['txt_item']) && ! empty($params['txt_item']))
 		{
-			$this->db->like('UPPER(ve.ve_name)', strtoupper($params['txt_item']));
+			$this->db->like('UPPER(ve.ve_license_plate)', strtoupper($params['txt_item']));
 		}
 
 		if (isset($params['txt_id']) && ! empty($params['txt_id']))

@@ -11,7 +11,7 @@
  Target Server Version : 80020
  File Encoding         : 65001
 
- Date: 23/07/2021 06:02:18
+ Date: 23/07/2021 06:55:05
 */
 
 SET NAMES utf8mb4;
@@ -912,6 +912,53 @@ INSERT INTO `log_menu_access_group` VALUES (166, 2, 66, 'Y', 1, '2021-07-20 00:4
 INSERT INTO `log_menu_access_group` VALUES (167, 2, 52, 'Y', 1, '2021-07-20 00:47:05', 1, 'add', '2021-07-20 00:47:05', 444);
 INSERT INTO `log_menu_access_group` VALUES (168, 2, 54, 'Y', 1, '2021-07-20 00:47:05', 1, 'add', '2021-07-20 00:47:05', 445);
 INSERT INTO `log_menu_access_group` VALUES (169, 2, 53, 'Y', 1, '2021-07-20 00:47:05', 1, 'add', '2021-07-20 00:47:05', 446);
+INSERT INTO `log_menu_access_group` VALUES (154, 1, 61, 'Y', 1, '2021-07-23 06:36:20', 1, 'edit', '2021-07-23 06:36:20', 447);
+INSERT INTO `log_menu_access_group` VALUES (155, 1, 62, 'Y', 1, '2021-07-23 06:36:20', 1, 'edit', '2021-07-23 06:36:20', 448);
+INSERT INTO `log_menu_access_group` VALUES (156, 1, 63, 'Y', 1, '2021-07-23 06:36:20', 1, 'edit', '2021-07-23 06:36:20', 449);
+INSERT INTO `log_menu_access_group` VALUES (157, 1, 64, 'Y', 1, '2021-07-23 06:36:20', 1, 'edit', '2021-07-23 06:36:20', 450);
+INSERT INTO `log_menu_access_group` VALUES (160, 1, 67, 'Y', 1, '2021-07-23 06:36:20', 1, 'edit', '2021-07-23 06:36:20', 451);
+INSERT INTO `log_menu_access_group` VALUES (158, 1, 65, 'Y', 1, '2021-07-23 06:36:21', 1, 'edit', '2021-07-23 06:36:21', 452);
+INSERT INTO `log_menu_access_group` VALUES (159, 1, 66, 'Y', 1, '2021-07-23 06:36:21', 1, 'edit', '2021-07-23 06:36:21', 453);
+INSERT INTO `log_menu_access_group` VALUES (145, 1, 52, 'Y', 1, '2021-07-23 06:36:21', 1, 'edit', '2021-07-23 06:36:21', 454);
+INSERT INTO `log_menu_access_group` VALUES (152, 1, 59, 'Y', 1, '2021-07-23 06:36:21', 1, 'edit', '2021-07-23 06:36:21', 455);
+INSERT INTO `log_menu_access_group` VALUES (147, 1, 54, 'Y', 1, '2021-07-23 06:36:21', 1, 'edit', '2021-07-23 06:36:21', 456);
+INSERT INTO `log_menu_access_group` VALUES (146, 1, 53, 'Y', 1, '2021-07-23 06:36:22', 1, 'edit', '2021-07-23 06:36:22', 457);
+INSERT INTO `log_menu_access_group` VALUES (148, 1, 55, 'Y', 1, '2021-07-23 06:36:22', 1, 'edit', '2021-07-23 06:36:22', 458);
+INSERT INTO `log_menu_access_group` VALUES (170, 1, 68, 'Y', 1, '2021-07-23 06:36:22', 1, 'add', '2021-07-23 06:36:22', 459);
+INSERT INTO `log_menu_access_group` VALUES (125, 1, 2, 'Y', 1, '2021-07-23 06:36:22', 1, 'edit', '2021-07-23 06:36:22', 460);
+INSERT INTO `log_menu_access_group` VALUES (126, 1, 36, 'Y', 1, '2021-07-23 06:36:22', 1, 'edit', '2021-07-23 06:36:22', 461);
+INSERT INTO `log_menu_access_group` VALUES (127, 1, 33, 'Y', 1, '2021-07-23 06:36:22', 1, 'edit', '2021-07-23 06:36:22', 462);
+INSERT INTO `log_menu_access_group` VALUES (128, 1, 41, 'Y', 1, '2021-07-23 06:36:22', 1, 'edit', '2021-07-23 06:36:22', 463);
+INSERT INTO `log_menu_access_group` VALUES (136, 1, 44, 'Y', 1, '2021-07-23 06:36:22', 1, 'edit', '2021-07-23 06:36:22', 464);
+INSERT INTO `log_menu_access_group` VALUES (137, 1, 45, 'Y', 1, '2021-07-23 06:36:22', 1, 'edit', '2021-07-23 06:36:22', 465);
+INSERT INTO `log_menu_access_group` VALUES (133, 1, 37, 'Y', 1, '2021-07-23 06:36:22', 1, 'edit', '2021-07-23 06:36:22', 466);
+INSERT INTO `log_menu_access_group` VALUES (3, 1, 3, 'Y', 1, '2021-07-23 06:36:22', 1, 'edit', '2021-07-23 06:36:22', 467);
+INSERT INTO `log_menu_access_group` VALUES (130, 1, 38, 'Y', 1, '2021-07-23 06:36:23', 1, 'edit', '2021-07-23 06:36:23', 468);
+INSERT INTO `log_menu_access_group` VALUES (131, 1, 39, 'Y', 1, '2021-07-23 06:36:23', 1, 'edit', '2021-07-23 06:36:23', 469);
+INSERT INTO `log_menu_access_group` VALUES (154, 1, 61, 'Y', 1, '2021-07-23 06:39:44', 1, 'edit', '2021-07-23 06:39:44', 470);
+INSERT INTO `log_menu_access_group` VALUES (155, 1, 62, 'Y', 1, '2021-07-23 06:39:44', 1, 'edit', '2021-07-23 06:39:44', 471);
+INSERT INTO `log_menu_access_group` VALUES (156, 1, 63, 'Y', 1, '2021-07-23 06:39:44', 1, 'edit', '2021-07-23 06:39:44', 472);
+INSERT INTO `log_menu_access_group` VALUES (157, 1, 64, 'Y', 1, '2021-07-23 06:39:44', 1, 'edit', '2021-07-23 06:39:44', 473);
+INSERT INTO `log_menu_access_group` VALUES (160, 1, 67, 'Y', 1, '2021-07-23 06:39:44', 1, 'edit', '2021-07-23 06:39:44', 474);
+INSERT INTO `log_menu_access_group` VALUES (158, 1, 65, 'Y', 1, '2021-07-23 06:39:44', 1, 'edit', '2021-07-23 06:39:44', 475);
+INSERT INTO `log_menu_access_group` VALUES (159, 1, 66, 'Y', 1, '2021-07-23 06:39:45', 1, 'edit', '2021-07-23 06:39:45', 476);
+INSERT INTO `log_menu_access_group` VALUES (145, 1, 52, 'Y', 1, '2021-07-23 06:39:45', 1, 'edit', '2021-07-23 06:39:45', 477);
+INSERT INTO `log_menu_access_group` VALUES (152, 1, 59, 'Y', 1, '2021-07-23 06:39:45', 1, 'edit', '2021-07-23 06:39:45', 478);
+INSERT INTO `log_menu_access_group` VALUES (147, 1, 54, 'Y', 1, '2021-07-23 06:39:45', 1, 'edit', '2021-07-23 06:39:45', 479);
+INSERT INTO `log_menu_access_group` VALUES (146, 1, 53, 'Y', 1, '2021-07-23 06:39:46', 1, 'edit', '2021-07-23 06:39:46', 480);
+INSERT INTO `log_menu_access_group` VALUES (148, 1, 55, 'Y', 1, '2021-07-23 06:39:46', 1, 'edit', '2021-07-23 06:39:46', 481);
+INSERT INTO `log_menu_access_group` VALUES (170, 1, 68, 'Y', 1, '2021-07-23 06:39:46', 1, 'edit', '2021-07-23 06:39:46', 482);
+INSERT INTO `log_menu_access_group` VALUES (171, 1, 69, 'Y', 1, '2021-07-23 06:39:46', 1, 'add', '2021-07-23 06:39:46', 483);
+INSERT INTO `log_menu_access_group` VALUES (125, 1, 2, 'Y', 1, '2021-07-23 06:39:46', 1, 'edit', '2021-07-23 06:39:46', 484);
+INSERT INTO `log_menu_access_group` VALUES (126, 1, 36, 'Y', 1, '2021-07-23 06:39:46', 1, 'edit', '2021-07-23 06:39:46', 485);
+INSERT INTO `log_menu_access_group` VALUES (127, 1, 33, 'Y', 1, '2021-07-23 06:39:46', 1, 'edit', '2021-07-23 06:39:46', 486);
+INSERT INTO `log_menu_access_group` VALUES (128, 1, 41, 'Y', 1, '2021-07-23 06:39:47', 1, 'edit', '2021-07-23 06:39:47', 487);
+INSERT INTO `log_menu_access_group` VALUES (136, 1, 44, 'Y', 1, '2021-07-23 06:39:47', 1, 'edit', '2021-07-23 06:39:47', 488);
+INSERT INTO `log_menu_access_group` VALUES (137, 1, 45, 'Y', 1, '2021-07-23 06:39:47', 1, 'edit', '2021-07-23 06:39:47', 489);
+INSERT INTO `log_menu_access_group` VALUES (133, 1, 37, 'Y', 1, '2021-07-23 06:39:47', 1, 'edit', '2021-07-23 06:39:47', 490);
+INSERT INTO `log_menu_access_group` VALUES (3, 1, 3, 'Y', 1, '2021-07-23 06:39:47', 1, 'edit', '2021-07-23 06:39:47', 491);
+INSERT INTO `log_menu_access_group` VALUES (130, 1, 38, 'Y', 1, '2021-07-23 06:39:47', 1, 'edit', '2021-07-23 06:39:47', 492);
+INSERT INTO `log_menu_access_group` VALUES (131, 1, 39, 'Y', 1, '2021-07-23 06:39:47', 1, 'edit', '2021-07-23 06:39:47', 493);
 
 -- ----------------------------
 -- Table structure for log_menu_access_sub_group
@@ -1732,6 +1779,9 @@ INSERT INTO `log_ref_menu` VALUES (49, 2, 'Master Data', 'Master Data', NULL, 'f
 INSERT INTO `log_ref_menu` VALUES (59, 52, 'Sales Order', 'Sales Order', 'transaksi/sales_order', 'fas fa-sort-amount-down-alt', 3, 'Y', 1, '2021-07-20 00:50:46', 1, 'edit', '2021-07-20 00:50:46', 66);
 INSERT INTO `log_ref_menu` VALUES (65, 62, 'Kendaraan', 'Kendaraan', 'master_data/vehicle', 'fas fa-truck-moving', 4, 'Y', 1, '2021-07-20 01:10:43', 1, 'edit', '2021-07-20 01:10:43', 67);
 INSERT INTO `log_ref_menu` VALUES (66, 62, 'Pengemudi', 'Pengemudi', 'master_data/driver', 'fas fa-users', 5, 'Y', 1, '2021-07-22 00:49:17', 1, 'edit', '2021-07-22 00:49:17', 68);
+INSERT INTO `log_ref_menu` VALUES (68, NULL, 'Akuntansi', 'Akuntansi', NULL, 'fas fa-calculator', 4, 'Y', 1, '2021-07-23 06:35:58', 1, 'add', '2021-07-23 06:35:58', 69);
+INSERT INTO `log_ref_menu` VALUES (2, NULL, 'Pengaturan', 'Pengaturan', NULL, 'fas fa-cogs', 5, 'Y', 1, '2021-07-23 06:36:05', 1, 'edit', '2021-07-23 06:36:05', 70);
+INSERT INTO `log_ref_menu` VALUES (69, 68, 'Daftar Perkiraan', 'Daftar Perkiraan', 'akuntansi/daftar_perkiraan', 'fas fa-list-alt', 1, 'Y', 1, '2021-07-23 06:39:37', 1, 'add', '2021-07-23 06:39:37', 71);
 
 -- ----------------------------
 -- Table structure for log_ref_province
@@ -8798,37 +8848,33 @@ CREATE TABLE `menu_access_group`  (
 -- ----------------------------
 -- Records of menu_access_group
 -- ----------------------------
-INSERT INTO `menu_access_group` VALUES (3, 1, 3, 'Y', 1, '2021-07-18 07:02:00');
+INSERT INTO `menu_access_group` VALUES (3, 1, 3, 'Y', 1, '2021-07-23 06:39:47');
 INSERT INTO `menu_access_group` VALUES (109, 4, 1, 'Y', 1, '2020-09-24 08:18:27');
 INSERT INTO `menu_access_group` VALUES (110, 4, 4, 'Y', 1, '2020-09-24 08:18:27');
 INSERT INTO `menu_access_group` VALUES (111, 4, 5, 'Y', 1, '2020-09-24 08:18:27');
 INSERT INTO `menu_access_group` VALUES (112, 4, 35, 'Y', 1, '2020-09-24 08:18:27');
 INSERT INTO `menu_access_group` VALUES (113, 4, 40, 'Y', 1, '2020-09-24 08:18:28');
-INSERT INTO `menu_access_group` VALUES (125, 1, 2, 'Y', 1, '2021-07-18 07:01:59');
-INSERT INTO `menu_access_group` VALUES (126, 1, 36, 'Y', 1, '2021-07-18 07:02:00');
-INSERT INTO `menu_access_group` VALUES (127, 1, 33, 'Y', 1, '2021-07-18 07:02:00');
-INSERT INTO `menu_access_group` VALUES (128, 1, 41, 'Y', 1, '2021-07-18 07:02:00');
-INSERT INTO `menu_access_group` VALUES (130, 1, 38, 'Y', 1, '2021-07-18 07:02:00');
-INSERT INTO `menu_access_group` VALUES (131, 1, 39, 'Y', 1, '2021-07-18 07:02:00');
-INSERT INTO `menu_access_group` VALUES (133, 1, 37, 'Y', 1, '2021-07-18 07:02:00');
-INSERT INTO `menu_access_group` VALUES (136, 1, 44, 'Y', 1, '2021-07-18 07:02:00');
-INSERT INTO `menu_access_group` VALUES (137, 1, 45, 'Y', 1, '2021-07-18 07:02:00');
-INSERT INTO `menu_access_group` VALUES (142, 1, 49, 'Y', 1, '2021-07-18 07:02:00');
-INSERT INTO `menu_access_group` VALUES (143, 1, 50, 'Y', 1, '2021-07-18 07:02:00');
-INSERT INTO `menu_access_group` VALUES (144, 1, 51, 'Y', 1, '2021-07-18 07:02:00');
-INSERT INTO `menu_access_group` VALUES (145, 1, 52, 'Y', 1, '2021-07-18 07:01:59');
-INSERT INTO `menu_access_group` VALUES (146, 1, 53, 'Y', 1, '2021-07-18 07:01:59');
-INSERT INTO `menu_access_group` VALUES (147, 1, 54, 'Y', 1, '2021-07-18 07:01:59');
-INSERT INTO `menu_access_group` VALUES (148, 1, 55, 'Y', 1, '2021-07-18 07:01:59');
-INSERT INTO `menu_access_group` VALUES (149, 1, 56, 'Y', 1, '2021-07-18 07:02:01');
-INSERT INTO `menu_access_group` VALUES (152, 1, 59, 'Y', 1, '2021-07-18 07:01:59');
-INSERT INTO `menu_access_group` VALUES (154, 1, 61, 'Y', 1, '2021-07-18 07:01:58');
-INSERT INTO `menu_access_group` VALUES (155, 1, 62, 'Y', 1, '2021-07-18 07:01:58');
-INSERT INTO `menu_access_group` VALUES (156, 1, 63, 'Y', 1, '2021-07-18 07:01:58');
-INSERT INTO `menu_access_group` VALUES (157, 1, 64, 'Y', 1, '2021-07-18 07:01:58');
-INSERT INTO `menu_access_group` VALUES (158, 1, 65, 'Y', 1, '2021-07-18 07:01:58');
-INSERT INTO `menu_access_group` VALUES (159, 1, 66, 'Y', 1, '2021-07-18 07:01:58');
-INSERT INTO `menu_access_group` VALUES (160, 1, 67, 'Y', 1, '2021-07-18 07:01:58');
+INSERT INTO `menu_access_group` VALUES (125, 1, 2, 'Y', 1, '2021-07-23 06:39:46');
+INSERT INTO `menu_access_group` VALUES (126, 1, 36, 'Y', 1, '2021-07-23 06:39:46');
+INSERT INTO `menu_access_group` VALUES (127, 1, 33, 'Y', 1, '2021-07-23 06:39:46');
+INSERT INTO `menu_access_group` VALUES (128, 1, 41, 'Y', 1, '2021-07-23 06:39:47');
+INSERT INTO `menu_access_group` VALUES (130, 1, 38, 'Y', 1, '2021-07-23 06:39:47');
+INSERT INTO `menu_access_group` VALUES (131, 1, 39, 'Y', 1, '2021-07-23 06:39:47');
+INSERT INTO `menu_access_group` VALUES (133, 1, 37, 'Y', 1, '2021-07-23 06:39:47');
+INSERT INTO `menu_access_group` VALUES (136, 1, 44, 'Y', 1, '2021-07-23 06:39:47');
+INSERT INTO `menu_access_group` VALUES (137, 1, 45, 'Y', 1, '2021-07-23 06:39:47');
+INSERT INTO `menu_access_group` VALUES (145, 1, 52, 'Y', 1, '2021-07-23 06:39:45');
+INSERT INTO `menu_access_group` VALUES (146, 1, 53, 'Y', 1, '2021-07-23 06:39:46');
+INSERT INTO `menu_access_group` VALUES (147, 1, 54, 'Y', 1, '2021-07-23 06:39:45');
+INSERT INTO `menu_access_group` VALUES (148, 1, 55, 'Y', 1, '2021-07-23 06:39:46');
+INSERT INTO `menu_access_group` VALUES (152, 1, 59, 'Y', 1, '2021-07-23 06:39:45');
+INSERT INTO `menu_access_group` VALUES (154, 1, 61, 'Y', 1, '2021-07-23 06:39:44');
+INSERT INTO `menu_access_group` VALUES (155, 1, 62, 'Y', 1, '2021-07-23 06:39:44');
+INSERT INTO `menu_access_group` VALUES (156, 1, 63, 'Y', 1, '2021-07-23 06:39:44');
+INSERT INTO `menu_access_group` VALUES (157, 1, 64, 'Y', 1, '2021-07-23 06:39:44');
+INSERT INTO `menu_access_group` VALUES (158, 1, 65, 'Y', 1, '2021-07-23 06:39:44');
+INSERT INTO `menu_access_group` VALUES (159, 1, 66, 'Y', 1, '2021-07-23 06:39:45');
+INSERT INTO `menu_access_group` VALUES (160, 1, 67, 'Y', 1, '2021-07-23 06:39:44');
 INSERT INTO `menu_access_group` VALUES (161, 2, 62, 'Y', 1, '2021-07-20 00:47:05');
 INSERT INTO `menu_access_group` VALUES (162, 2, 63, 'Y', 1, '2021-07-20 00:47:05');
 INSERT INTO `menu_access_group` VALUES (163, 2, 64, 'Y', 1, '2021-07-20 00:47:05');
@@ -8838,6 +8884,8 @@ INSERT INTO `menu_access_group` VALUES (166, 2, 66, 'Y', 1, '2021-07-20 00:47:05
 INSERT INTO `menu_access_group` VALUES (167, 2, 52, 'Y', 1, '2021-07-20 00:47:05');
 INSERT INTO `menu_access_group` VALUES (168, 2, 54, 'Y', 1, '2021-07-20 00:47:05');
 INSERT INTO `menu_access_group` VALUES (169, 2, 53, 'Y', 1, '2021-07-20 00:47:05');
+INSERT INTO `menu_access_group` VALUES (170, 1, 68, 'Y', 1, '2021-07-23 06:39:46');
+INSERT INTO `menu_access_group` VALUES (171, 1, 69, 'Y', 1, '2021-07-23 06:39:46');
 
 -- ----------------------------
 -- Table structure for menu_access_sub_group
@@ -9596,7 +9644,7 @@ CREATE TABLE `ref_menu`  (
 -- Records of ref_menu
 -- ----------------------------
 INSERT INTO `ref_menu` VALUES (1, NULL, 'Findings', 'Findings', 'trademark/invented_brand', 'fas fa-search', 1, 'N', 1, '2020-10-12 22:32:29');
-INSERT INTO `ref_menu` VALUES (2, NULL, 'Pengaturan', 'Pengaturan', NULL, 'fas fa-cogs', 4, 'Y', 1, '2021-07-18 06:49:23');
+INSERT INTO `ref_menu` VALUES (2, NULL, 'Pengaturan', 'Pengaturan', NULL, 'fas fa-cogs', 5, 'Y', 1, '2021-07-23 06:36:05');
 INSERT INTO `ref_menu` VALUES (3, 37, 'User Detail', 'User Detail', 'settings/user', 'fas fa-user-alt', 1, 'Y', 1, '2020-09-16 23:15:29');
 INSERT INTO `ref_menu` VALUES (4, NULL, 'Control Center', 'Control Center', NULL, 'trademark-icon icon-control', 2, 'N', 1, '2020-10-11 10:11:22');
 INSERT INTO `ref_menu` VALUES (5, 4, 'Client&rsquo;s Trademarks', 'Client&rsquo;s Trademarks', 'trademark/brand', 'fas fa-tags', 1, 'N', 1, '2020-10-11 10:12:29');
@@ -9634,6 +9682,8 @@ INSERT INTO `ref_menu` VALUES (64, 62, 'Vendor', 'Vendor', 'master_data/vendor',
 INSERT INTO `ref_menu` VALUES (65, 62, 'Kendaraan', 'Kendaraan', 'master_data/vehicle', 'fas fa-truck-moving', 4, 'Y', 1, '2021-07-20 01:10:43');
 INSERT INTO `ref_menu` VALUES (66, 62, 'Pengemudi', 'Pengemudi', 'master_data/driver', 'fas fa-users', 5, 'Y', 1, '2021-07-22 00:49:17');
 INSERT INTO `ref_menu` VALUES (67, 62, 'Pelanggan', 'Pelanggan', 'master_data/customer', 'fas fa-user-check', 3, 'Y', 1, '2021-07-19 22:09:25');
+INSERT INTO `ref_menu` VALUES (68, NULL, 'Akuntansi', 'Akuntansi', NULL, 'fas fa-calculator', 4, 'Y', 1, '2021-07-23 06:35:58');
+INSERT INTO `ref_menu` VALUES (69, 68, 'Daftar Perkiraan', 'Daftar Perkiraan', 'akuntansi/daftar_perkiraan', 'fas fa-list-alt', 1, 'Y', 1, '2021-07-23 06:39:37');
 
 -- ----------------------------
 -- Table structure for ref_province
