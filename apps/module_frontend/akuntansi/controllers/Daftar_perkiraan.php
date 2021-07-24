@@ -13,7 +13,7 @@ class Daftar_perkiraan extends NOOBS_Controller
 	function __construct()
 	{
 		parent::__construct();
-		$this->load->model('daftar_perkiraan/daftar_perkiraan_model', 'db_daftar_perkiraan');
+		$this->load->model('akuntansi/daftar_perkiraan_model', 'db_daftar_perkiraan');
 	}
 
 	public function index()
@@ -23,7 +23,7 @@ class Daftar_perkiraan extends NOOBS_Controller
 		$this->store_params['pages_title'] = 'Daftar Perkiraan List';
 		$this->store_params['breadcrumb'] = array(
 			array('', 'Home'),
-			array('daftar_perkiraan/daftar_perkiraan', 'Daftar Perkiraan')
+			array('akuntansi/daftar_perkiraan', 'Daftar Perkiraan')
 		);
 		
 		$this->store_params['source_top'] = array(
@@ -31,7 +31,7 @@ class Daftar_perkiraan extends NOOBS_Controller
 		);
 
 		$this->store_params['source_bot'] = array(
-			'<script src="'.base_url('scripts/daftar_perkiraan/daftar_perkiraan.js').'"></script>',
+			'<script src="'.base_url('scripts/akuntansi/daftar_perkiraan.js').'"></script>',
 			'<script src="'.base_url('vendors/jquery_acollapsetable/jquery.aCollapTable.js').'"></script>'
 		);
 
@@ -46,6 +46,76 @@ class Daftar_perkiraan extends NOOBS_Controller
 			$get_daftar_perkiraan = $this->db_daftar_perkiraan->get_daftar_perkiraan(array('rm_is_active' => 'Y'));
 
 			if ($get_daftar_perkiraan && $get_daftar_perkiraan->num_rows() > 0) echo json_encode(array('success' => TRUE, 'data' => $get_daftar_perkiraan->result()));
+			else echo json_encode(array('success' => TRUE));
+		} else $this->show_404();
+	}
+
+	public function get_akun_header()
+	{
+		if (isset($_POST['action']) && $_POST['action'] == 'get_akun_header')
+		{
+			$success = FALSE;
+			$get_akun_header = $this->db_daftar_perkiraan->get_akun_header(array('rah_is_active' => 'Y'));
+
+			if ($get_akun_header && $get_akun_header->num_rows() > 0) echo json_encode(array('success' => TRUE, 'data' => $get_akun_header->result()));
+			else echo json_encode(array('success' => TRUE));
+		} else $this->show_404();
+	}
+
+	public function get_akun_detail()
+	{
+		if (isset($_POST['action']) && $_POST['action'] == 'get_akun_detail')
+		{
+			$success = FALSE;
+			
+			$get_akun_header = $this->db_daftar_perkiraan->get_akun_header(array('rah_is_active' => 'Y','rah_id' => $_POST['rah_id']));
+			
+			$get_akun_detail = $this->db_daftar_perkiraan->get_akun_detail(array('rad_is_active' => 'Y'));
+			
+			$detail = array();
+
+			if($get_akun_header->num_rows() > 0)
+			{
+				$header = array();
+				$t=0;
+				foreach($get_akun_header->result() as $k => $v)
+				{
+					$header[$v->mag_id] = $v->mag_rm_id;
+					$t++;
+				}
+				
+				$i=0;
+				foreach($get_akun_detail->result() as $gm => $mn)
+				{		
+					$check = array_search($mn->rm_id, $header) ? 'checked' : '';
+					$mag_id = array_search($mn->rm_id, $header) ? array_search($mn->rm_id, $header) : '';
+					$detail[$i] = (object) array(
+						'rm_id' => $mn->rm_id,
+						'rm_parent_id' =>$mn->rm_parent_id,
+						'rm_caption' =>$mn->rm_caption,
+						'mag_id' => $mag_id,
+						'checked' => $check,
+					);						
+					$i++;
+				}
+			}
+			else
+			{
+				$i=0;
+				foreach($get_akun_detail->result() as $gm => $mn)
+				{		
+					$detail[$i] = (object) array(
+						'rm_id' => $mn->rm_id,
+						'rm_parent_id' =>$mn->rm_parent_id,
+						'rm_caption' =>$mn->rm_caption,
+						'mag_id' => '',
+						'checked' => '',
+					);						
+					$i++;
+				}
+			}
+
+			if (count($detail) > 0) echo json_encode(array('success' => TRUE, 'data' => $detail));
 			else echo json_encode(array('success' => TRUE));
 		} else $this->show_404();
 	}

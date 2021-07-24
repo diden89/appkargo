@@ -4,7 +4,7 @@
  * @author diden89
  * @version 1.0
  * @access Public
- * @link /rab_frontend/scripts/settings/user.js
+ * @link /rab_frontend/scripts/akuntansi/daftar_perkiraan.js
  */
 
 function show_modal(data,title,mode){
@@ -56,7 +56,7 @@ function show_modal(data,title,mode){
 								},
 								success: function (result) {
 									if (result.success) {
-										_generate_menu(result.data);
+										_generate_akun_detail(result.data);
 									} else if (typeof (result.msg) !== 'undefined') {
 										toastr.error(result.msg);
 									} else {
@@ -126,7 +126,7 @@ function delete_data(data){
 						},
 						success: function (result) {
 							if (result.success) {
-								_generate_menu(result.data);
+								_generate_akun_detail(result.data);
 							} else if (typeof (result.msg) !== 'undefined') {
 								toastr.error(result.msg);
 							} else {
@@ -146,7 +146,7 @@ function delete_data(data){
 	});
 }
 
-const _generate_menu = (data) => {
+const _generate_akun_detail = (data) => {
 	let treeMenu = _generate_tree_menu(data, null, 0);
 
 	$('.collaptable').find('tbody').html(treeMenu);
@@ -230,17 +230,66 @@ const _generate_tree_menu = (datas, parentId, idx) => {
 	return strMenu;
 };
 
-$(document).ready(function() {
+function loadTreeData(rah_id) 
+{
 	$.ajax({
-		url: siteUrl('settings/menu/get_menu_data'),
+		url: siteUrl('akuntansi/daftar_perkiraan/get_akun_detail'),
 		type: 'POST',
 		dataType: 'JSON',
 		data: {
-			action: 'get_menu_data'
+			action: 'get_akun_detail',
+			rah_id: rah_id,
 		},
 		success: function (result) {
 			if (result.success) {
-				_generate_menu(result.data);
+				$('.collaptable').find('tbody').html('');
+				$('.collaptable').find('tbody').append('<input type="hidden" value="'+rah_id+'" name="rah_id">');
+				_generate_akun_detail(result.data);
+			} else if (typeof (result.msg) !== 'undefined') {
+				toastr.error(result.msg);
+			} else {
+				toastr.error(msgErr);
+			}
+		},
+		error: function (error) {
+			toastr.error(msgErr);
+		}
+	});
+}
+
+function loadData(data,callback) 
+{
+	var headerList = $('#headerList');
+
+	headerList.html('');
+
+	for (var x in data) {
+		var newData = data[x];
+
+		headerList.append('<a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list" href="#" aria-controls="profile" data-id="' + newData.rah_id + '">' + newData.rah_name + '</a>');
+	}
+	callback();
+}
+
+$(document).ready(function() {
+	$.ajax({
+		url: siteUrl('akuntansi/daftar_perkiraan/get_akun_header'),
+		type: 'POST',
+		dataType: 'JSON',
+		data: {
+			action: 'get_akun_header'
+		},
+		success: function (result) {
+			if (result.success) {
+				loadData(result.data, function() {
+					$('#headerList a').on('click', function (e) {
+						e.preventDefault();
+						$('#btnSave').attr('disabled', false);
+						rah_id = $(this).attr('data-id');
+						loadTreeData(rah_id);
+					});
+				});
+
 			} else if (typeof (result.msg) !== 'undefined') {
 				toastr.error(result.msg);
 			} else {
@@ -252,5 +301,33 @@ $(document).ready(function() {
 		}
 	});
 
-	
+	$('#addAccessGroup').submit(function(e){
+		e.preventDefault(); 
+
+		$.ajax({
+			url: siteUrl('settings/menu_access_group/store_data'),
+			type: 'POST',
+			dataType: 'JSON',
+			data: new FormData(this),
+			processData: false,
+			contentType: false,
+				cache: false,
+				enctype: 'multipart/form-data',
+			success: function(result) {
+				if (result.success) {
+					toastr.success(msgSaveOk);
+					loadTreeData(result.ug_id);
+
+				} else if (typeof(result.msg) !== 'undefined') {
+					toastr.error(result.msg);
+				} else {
+					toastr.error(msgErr);
+				}
+
+			},
+			error: function(error) {
+				toastr.error(msgErr);
+			}
+		});
+	});
 });
