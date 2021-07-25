@@ -38,7 +38,7 @@ class Daftar_perkiraan extends NOOBS_Controller
 			'<script src="'.base_url('vendors/jquery_acollapsetable/jquery.aCollapTable.js').'"></script>'
 		);
 		$this->store_params['data'] = $get_akun_header->result();
-
+		// print_r($this->store_params);exit;
 		$this->view('daftar_perkiraan_view');
 	}
 
@@ -120,7 +120,7 @@ class Daftar_perkiraan extends NOOBS_Controller
 
 				$kode_akun = explode("-",$data2->rad_kode_akun);
 				$data2 = $kode_akun[1];
-				
+
 				$parent_id = ($data2->rad_parent_id !== "") ? $data2->rad_parent_id : "";
 				$post['data'] = $data2;
 			}

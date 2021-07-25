@@ -450,7 +450,8 @@ function delete_data(data){
 
 
 $(document).ready(function() {
-	daftarPerkiraan.loadDataItem();
+	daftarPerkiraan.init();
+	// daftarPerkiraan.loadDataItem();
 	// 
 
 	// $('#addAccessGroup').submit(function(e){
