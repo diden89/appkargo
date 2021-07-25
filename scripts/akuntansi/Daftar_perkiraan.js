@@ -33,6 +33,7 @@ const daftarPerkiraan = {
 			e.preventDefault();
 			me.show_modal(this);
 		});
+		 me.loadDataItem(this);
 	},
 	loadDataItem: function(el) {
 		const me = this;

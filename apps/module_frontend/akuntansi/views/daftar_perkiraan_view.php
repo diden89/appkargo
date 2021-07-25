@@ -33,6 +33,7 @@
 						<h4>Header Akun</h4>
 						<div class="list-group" id="headerList">
 							<p class="text-muted">Header akun</p>
+							
 						</div>
 					</div>
 					<div class="col-10">
@@ -47,7 +48,9 @@
 									<th scope="col">Type</th>
 									<th scope="col" style="text-align:center;">Action</th>
 								</thead>
-								<tbody></tbody>
+								<tbody>
+									
+								</tbody>
 							</table>
 						</div>
 					</div>
