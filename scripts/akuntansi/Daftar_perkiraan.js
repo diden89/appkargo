@@ -33,7 +33,8 @@ const daftarPerkiraan = {
 			e.preventDefault();
 			me.show_modal(this);
 		});
-		 me.loadDataItem(this);
+		
+		me.loadDataItem(this);
 	},
 	loadDataItem: function(el) {
 		const me = this;
@@ -97,8 +98,10 @@ const daftarPerkiraan = {
 					// $('.collaptable').find('tbody').append('<input type="hidden" value="'+rah_id+'" name="rah_id">');
 					daftarPerkiraan._generate_akun_detail(result.data.data);
 				} else if (typeof (result.msg) !== 'undefined') {
+					$('.collaptable').find('tbody').html('');
 					toastr.error(result.msg);
 				} else {
+					$('.collaptable').find('tbody').html('');
 					toastr.error(msgErr);
 				}
 			},
@@ -140,7 +143,7 @@ const daftarPerkiraan = {
 						strMenu += '<td>' + v.rad_type + '</td>';
 						strMenu += '<td style="text-align:center;">';
 							strMenu += '<div class="btn-group" role="group" aria-label="RAB Button Group">'; 
-								strMenu += '<button id="btnEdit" class="btn merekdagang-grid-btn btn-success btn-sm" onClick=daftarPerkiraan.show_modal(this,\'edit\')><i class="fas fa-edit"></i> Edit</button>';
+								strMenu += '<button type="button" id="btnEdit" class="btn merekdagang-grid-btn btn-success btn-sm" data-id_det="' + v.rad_id + '" data-rah_id="' + v.rad_akun_header_id + '" data-parentid="' + v.rad_parent_id + '" onClick=daftarPerkiraan.show_modal(this,\'edit\')><i class="fas fa-edit"></i> Edit</button>';
 								strMenu += '<button id="btnDelete" class="btn merekdagang-grid-btn btn-danger btn-sm " onClick=daftarPerkiraan.delete_data(' + v.rad_id +') ><i class="fas fa-trash-alt"></i> Delete</button >';
 							strMenu += '</div>';
 						strMenu += '</td >';
@@ -158,7 +161,7 @@ const daftarPerkiraan = {
 							strMenu += '<td>' + v.rad_type + '</td>';
 							strMenu += '<td style="text-align:center;">';
 							strMenu += '<div class="btn-group" role="group" aria-label="RAB Button Group">'; 
-								strMenu += '<button id="btnEdit" class="btn merekdagang-grid-btn btn-success btn-sm" onClick=daftarPerkiraan.show_modal(this,\'edit\')><i class="fas fa-edit"></i> Edit</button>';
+								strMenu += '<button type="button" id="btnEdit" class="btn merekdagang-grid-btn btn-success btn-sm" data-id_det="' + v.rad_id + '" data-rah_id="' + v.rad_akun_header_id + '" data-parentid="' + v.rad_parent_id + '" onClick=daftarPerkiraan.show_modal(this,\'edit\')><i class="fas fa-edit"></i> Edit</button>';
 								strMenu += '<button id="btnDelete" class="btn merekdagang-grid-btn btn-danger btn-sm " onClick=daftarPerkiraan.delete_data(' + v.rad_id +') ><i class="fas fa-trash-alt"></i> Delete</button >';
 							strMenu += '</div>';
 						strMenu += '</td >';
@@ -171,7 +174,7 @@ const daftarPerkiraan = {
 							strMenu += '<td>' + v.rad_type + '</td>';
 							strMenu += '<td style="text-align:center;">';
 							strMenu += '<div class="btn-group" role="group" aria-label="RAB Button Group">'; 
-								strMenu += '<button id="btnEdit" class="btn merekdagang-grid-btn btn-success btn-sm" onClick=daftarPerkiraan.show_modal(this,\'edit\')><i class="fas fa-edit"></i> Edit</button>';
+								strMenu += '<button type="button" id="btnEdit" class="btn merekdagang-grid-btn btn-success btn-sm" data-id_det="' + v.rad_id + '" data-rah_id="' + v.rad_akun_header_id + '" data-parentid="' + v.rad_parent_id + '" onClick=daftarPerkiraan.show_modal(this,\'edit\')><i class="fas fa-edit"></i> Edit</button>';
 								strMenu += '<button id="btnDelete" class="btn merekdagang-grid-btn btn-danger btn-sm " onClick=daftarPerkiraan.delete_data(' + v.rad_id +') ><i class="fas fa-trash-alt"></i> Delete</button >';
 							strMenu += '</div>';
 						strMenu += '</td >';
@@ -187,35 +190,32 @@ const daftarPerkiraan = {
 
 		var rah_id = $('#btnAddItem').attr('data-id');
 
-		// const me = this;
-		// let params = {action: 'load_driver_form'};
-		// let title = 'Add New';
+		const me = this;
+		let params = {action: 'popup_modal'};
+		let title = 'Add New';
 
-		// if (typeof(mode) !== 'undefined') {
-		// 	params.mode = mode;
-		// 	title = 'Edit';
-		// 	params.txt_item = $(el).data('item');
-		// 	params.txt_id = $(el).data('id');
-		// 	params.rd_id = $(el).data('rd_id');
-		// 	params.rsd_id = $(el).data('rsd_id');
-		// }
-		// else
-		// {
-		// 	params.mode = 'add';
-		// }
+		if (typeof(mode) !== 'undefined') {
+			params.mode = mode;
+			title = 'Edit';
+			// params.txt_item = $(el).data('item');
+			params.id = $(el).data('id_det');
+			params.rah_id = rah_id;
+			// params.rd_id = $(el).data('rd_id');
+			// params/.rsd_id = $(el).data('rsd_id');
+		}
+		else
+		{
+			params.mode = 'add';
+			params.id = '';
+		}
 
 	    $.popup({
 			title: title + ' Akun Perkiraan',
-			id: mode + 'AkunPerkiraanPopup',
+			id: 'AkunPerkiraanPopup',
 			size: 'medium',
 			proxy: {
 				url: siteUrl('akuntansi/daftar_perkiraan/popup_modal'),
-				params: {
-					action: 'popup_modal',
-					mode: mode,
-					id: data,
-					rah_id : rah_id
-				}
+				params: params
 			},
 			buttons: [{
 				btnId: 'saveData',
@@ -227,7 +227,7 @@ const daftarPerkiraan = {
 					if ($.validation(form)) {
 						var formData = new FormData(form[0]);
 						$.ajax({
-							url: siteUrl('settings/menu/store_data'),
+							url: siteUrl('akuntansi/daftar_perkiraan/store_data'),
 							type: 'POST',
 							dataType: 'JSON',
 							data: formData,
@@ -244,26 +244,7 @@ const daftarPerkiraan = {
 									toastr.error(msgErr);
 								}
 
-								$.ajax({
-									url: siteUrl('settings/menu/get_menu_data'),
-									type: 'POST',
-									dataType: 'JSON',
-									data: {
-										action: 'get_menu_data'
-									},
-									success: function (result) {
-										if (result.success) {
-											daftarPerkiraan._generate_akun_detail(result.data);
-										} else if (typeof (result.msg) !== 'undefined') {
-											toastr.error(result.msg);
-										} else {
-											toastr.error(msgErr);
-										}
-									},
-									error: function (error) {
-										toastr.error(msgErr);
-									}
-								});
+								daftarPerkiraan.loadDataItem(this);
 
 								popup.close();
 
@@ -286,7 +267,9 @@ const daftarPerkiraan = {
 			listeners: {
 				onshow: function(popup) {
 					if (mode == 'edit') {
-						// driverList.generateRegion($('#txt_province').val(),$(el).data('rd_id'));
+						// console.log($(el).data('parentid'))
+						// console.log($(el).data('parentId'))
+						daftarPerkiraan.generateSubHeader($('#txt_header').val(),$(el).data('parentid'));
 						// driverList.generateDistrict($(el).data('rd_id'),$(el).data('rsd_id'));
 					}
 
@@ -311,45 +294,25 @@ const daftarPerkiraan = {
 							// 	value: '',
 							// 	text: '--Pilih Kabupaten / Kota--'
 							// }));
-					});	
-
-					// $('#txt_region').change(function() {
-					// 	var me = $(this);
-					// 	// console.log(me)
-
-					// 		if (me.val() !== '') {
-								
-					// 			driverList.generateDistrict(me.val());
-
-					// 		} else {
-					// 			$('#txt_district').html($('<option>', {
-					// 				value: '',
-					// 				text: 'Pilih Kabupaten/Kota'
-					// 			}));
-
-					// 			$('#txt_district').attr('disabled', true);
-					// 		}
-					// });
-
-					// console.log(mode)				
+					});				
 				}
 				
 			}
 		});
 	},
-	generateSubHeader: function(rahId, radId = false) {
+	generateSubHeader: function(rahid, radid = false) {
 		var subHeader = $('#txt_posisi');
 			headerCcode = $('#header_code');
-
+// console.log(rahid)
 			$.ajax({
-				url: siteUrl('akuntansi/daftar_perkiraan/get_akun_detail'),
+				url: siteUrl('akuntansi/daftar_perkiraan/get_option_detail'),
 				type: 'POST',
 				dataType: 'JSON',
 				beforeSend: function() {},
 				complete: function() {},
 				data: {
 					action: 'get_akun_detail',
-					rah_id: rahId
+					rah_id: rahid
 				},
 				success: function (result) {
 					if (result.success) {
@@ -369,8 +332,8 @@ const daftarPerkiraan = {
 								text: newData.rad_name
 							}));
 						});
-
-						if (radId !== false) subHeader.val(radId);
+						console.log(radid);
+						if (radid !== false) subHeader.val(radid);
 
 					} else {
 

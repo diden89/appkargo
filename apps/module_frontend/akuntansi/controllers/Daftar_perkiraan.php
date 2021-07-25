@@ -74,11 +74,28 @@ class Daftar_perkiraan extends NOOBS_Controller
 			$post = $this->input->post(NULL, TRUE);
 			$get_akun_header = $this->db_daftar_perkiraan->get_akun_header(array('rah_is_active' => 'Y','rah_id' => $post['rah_id']))->row();
 
+			$get_akun_detail = $this->db_daftar_perkiraan->get_akun_detail(array('rad_is_active' => 'Y','rad_akun_header_id' => $post['rah_id']));
+
+			$post['code'] = $get_akun_header->rah_code;
+			$post['data'] = $get_akun_detail->result();
+			// print_r($post);	
+			if ($get_akun_detail && $get_akun_detail->num_rows() > 0) echo json_encode(array('success' => TRUE, 'data' => $post));
+			else echo json_encode(array('success' => FALSE, 'data' => $post));
+		} else $this->show_404();
+	}
+	public function get_option_detail()
+	{
+		if (isset($_POST['action']) && $_POST['action'] == 'get_akun_detail')
+		{
+			$success = FALSE;
+			$post = $this->input->post(NULL, TRUE);
+			$get_akun_header = $this->db_daftar_perkiraan->get_akun_header(array('rah_is_active' => 'Y','rah_id' => $post['rah_id']))->row();
+
 			$get_akun_detail = $this->db_daftar_perkiraan->get_akun_detail(array('rad_is_active' => 'Y','rad_type' => 'H','rad_akun_header_id' => $post['rah_id']));
 
 			$post['code'] = $get_akun_header->rah_code;
 			$post['data'] = $get_akun_detail->result();
-
+			// print_r($post);	
 			if ($get_akun_detail && $get_akun_detail->num_rows() > 0) echo json_encode(array('success' => TRUE, 'data' => $post));
 			else echo json_encode(array('success' => FALSE, 'data' => $post));
 		} else $this->show_404();
@@ -117,11 +134,11 @@ class Daftar_perkiraan extends NOOBS_Controller
 			if($detail->num_rows() > 0)
 			{
 				$data2 = $detail->row();
-
 				$kode_akun = explode("-",$data2->rad_kode_akun);
-				$data2 = $kode_akun[1];
+				// print_r($data2->rad_kode_akun);exit;
+				$data2->kode_akun = $kode_akun[1];
 
-				$parent_id = ($data2->rad_parent_id !== "") ? $data2->rad_parent_id : "";
+				$parent_id = (! empty($data2->rad_parent_id) && $data2->rad_parent_id !== "") ? $data2->rad_parent_id : "";
 				$post['data'] = $data2;
 			}
 			else
@@ -234,7 +251,7 @@ class Daftar_perkiraan extends NOOBS_Controller
 	{
 
 		$post = $this->input->post(NULL, TRUE);
-
+		// print_r($post);exit;
 		if (isset($post['action']) && ! empty($post['action']) && $post['action'] == 'store_data')
 		{
 			unset($post['action']);
@@ -243,11 +260,11 @@ class Daftar_perkiraan extends NOOBS_Controller
 
 			if ($store_data)
 			{
-				$rm_id = $post['mode'] == 'add' ? $store_data : $post['txt_id_daftar_perkiraan'];
+				$rad_id = $post['mode'] == 'add' ? $store_data : $post['txt_detail_id'];
 
 			}
 
-			echo json_encode(array('success' => $store_data,'url' => base_url('daftar_perkiraan/daftar_perkiraan')));
+			echo json_encode(array('success' => $store_data,'url' => base_url('akuntansi/daftar_perkiraan')));
 		}
 		else $this->show_404();
 	}

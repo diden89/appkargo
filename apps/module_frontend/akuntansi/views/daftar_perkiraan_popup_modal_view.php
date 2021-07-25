@@ -19,11 +19,11 @@
 				<label for="type_perkiraan" class="col-sm-4 col-form-label">Tipe Perkiraan</label>
 				<div class="col-sm-8">					
                         <div class="form-check">
-                          <input class="form-check-input" name="radio1" type="radio" value="H">
+                          <input class="form-check-input" name="rad_type" type="radio" value="H" <?php echo (isset($data->rad_type) && $data->rad_type == 'H') ? 'checked' : ''; ?>>
                           <label class="form-check-label">Header</label>
                         </div>
                         <div class="form-check">
-                          <input class="form-check-input" name="radio1" checked="" type="radio" value="D">
+                          <input class="form-check-input" name="rad_type" <?php echo (isset($data->rad_type) && $data->rad_type == 'D') ? 'checked' : ''; ?> type="radio" value="D">
                           <label class="form-check-label">Detail</label>
                         </div>      
 				</div>
@@ -59,7 +59,7 @@
 					<label for="kode_perkiraan" class="col-sm-4 col-form-label">-</label>
 				</div>
 				<div class="col-sm-6">
-					<input type="text" name="code" class="form-control" id="code" value="<?php echo $mode == 'edit' && $data !== FALSE ? $data->rad_kode_akun : '' ?>" <?php echo $mode == 'edit' ? '' : ''; ?>>
+					<input type="text" name="code" class="form-control" id="code" value="<?php echo $mode == 'edit' && $data !== FALSE ? $data->kode_akun : '' ?>" <?php echo $mode == 'edit' ? '' : ''; ?>>
 				</div>
 			</div>
 			<div class="form-group row">
@@ -71,7 +71,7 @@
 			<div class="form-group row">
 				<label for="description" class="col-sm-4 col-form-label">Kas / Bank</label>
 				<div class="col-sm-8">
-					<input type="checkbox"  name="is_bank" value="Y">
+					<input type="checkbox"  name="is_bank" value="Y" <?php echo (isset($data->rad_is_bank) && $data->rad_is_bank == 'Y') ? 'checked' : ''; ?>>
 				</div>
 			</div>	
 	</div>

@@ -93,19 +93,19 @@ class Daftar_perkiraan_model extends NOOBS_Model
 
 	public function store_data($params = array())
 	{
-		$this->table = 'ref_daftar_perkiraan';
+		$this->table = 'ref_akun_detail';
 
 		$new_params = array(
-			'rm_caption' => $params['rm_caption'],
-			'rm_description' => $params['rm_description'],
-			'rm_url' => $params['rm_url'],
-			'rm_icon' => $params['rm_icon'],
-			'rm_parent_id' => $params['txt_parent_id'],
-			'rm_sequence' => $params['rm_sequence'],
+			'rad_type' => $params['rad_type'],
+			'rad_akun_header_id' => $params['txt_header'],
+			'rad_parent_id' => $params['txt_posisi'],
+			'rad_kode_akun' => $params['txt_header'].'-'.$params['code'],
+			'rad_name' => $params['rad_name'],
+			'rad_is_bank' => (isset($params['is_bank'])) ? $params['is_bank'] : 'N',
 		);
 
 		if ($params['mode'] == 'add') return $this->add($new_params, TRUE);
-		else return $this->edit($new_params, "rm_id = {$params['txt_id_daftar_perkiraan']}");
+		else return $this->edit($new_params, "rad_id = {$params['txt_detail_id']}");
 	}
 
 	public function delete_all_daftar_perkiraan($ud_id)
