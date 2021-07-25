@@ -40,7 +40,7 @@
 						<h4>Detail akun</h4>
 						<div class="excel-data-table-container">
 							<form id="addAccessGroup">
-							<table class="collaptable table table-striped" id="example1">
+							<table class="collaptable table table-striped " id="example1">
 								<thead>
 									<th scope="col"><a href="javascript:void(0);" class="act-button-expand" style="color: white;"><i class="fas fa-angle-double-down"></i></a></th>
 									<th scope="col">Kode Akun</th>
