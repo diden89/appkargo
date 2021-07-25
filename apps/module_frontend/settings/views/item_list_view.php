@@ -28,7 +28,7 @@
 								</div>
 							</div>
 							<div class="col-3">
-								<button id="btnAddItem" class="btn btn-lg btn-block btn-primary btn-flat" type="button" title="Add word"><i class="fas fa-plus"></i> Add</button>
+								<button id="btnAddItem" class="btn btn-lg btn-block btn-primary btn-flat" type="button" title="Add Data"><i class="fas fa-plus"></i> Add</button>
 							</div>
 						</div>
 						<hr />

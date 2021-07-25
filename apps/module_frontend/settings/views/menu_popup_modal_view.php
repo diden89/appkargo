@@ -1,11 +1,11 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /*!
- * @package Merk Dagang
+ * @package App Kargo
  * @copyright Noobscript
  * @author diden89
  * @version 1.0
  * @access Public
- * @link /merkdagang/apps/module_frontend/settings/views/user_popup_modal_view.php
+ * @link /appkargo/apps/module_frontend/settings/views/user_popup_modal_view.php
  */
 ?>
 <form role="form" id="storeDataPopup" autocomplete="off" enctype="multipart/form-data">

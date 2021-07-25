@@ -8,6 +8,7 @@
  */
 
 function show_modal(data,title,mode){
+	
     $.popup({
 		title: title + ' Menu',
 		id: mode + 'MenuPopup',

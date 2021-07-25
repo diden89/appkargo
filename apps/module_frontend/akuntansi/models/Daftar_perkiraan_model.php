@@ -22,8 +22,16 @@ class Daftar_perkiraan_model extends NOOBS_Model
 	{
 		$this->db->where($where);
 		$this->db->order_by('rah_seq','ASC');
-		
+
 		return $this->db->get('ref_akun_header');
+	}
+
+	public function get_akun_detail($where=array())
+	{
+		$this->db->where($where);
+		$this->db->order_by('rad_seq','ASC');
+		
+		return $this->db->get('ref_akun_detail');
 	}
 
 	public function get_parent_id($where="")

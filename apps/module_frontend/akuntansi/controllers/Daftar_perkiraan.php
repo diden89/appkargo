@@ -25,7 +25,10 @@ class Daftar_perkiraan extends NOOBS_Controller
 			array('', 'Home'),
 			array('akuntansi/daftar_perkiraan', 'Daftar Perkiraan')
 		);
-		
+
+		$get_akun_header = $this->db_daftar_perkiraan->get_akun_header(array('rah_is_active' => 'Y'));
+
+
 		$this->store_params['source_top'] = array(
 			'<link rel="stylesheet" href="'.base_url('styles/jquerysctipttop.css').'">'
 		);
@@ -34,6 +37,7 @@ class Daftar_perkiraan extends NOOBS_Controller
 			'<script src="'.base_url('scripts/akuntansi/daftar_perkiraan.js').'"></script>',
 			'<script src="'.base_url('vendors/jquery_acollapsetable/jquery.aCollapTable.js').'"></script>'
 		);
+		$this->store_params['data'] = $get_akun_header->result();
 
 		$this->view('daftar_perkiraan_view');
 	}
@@ -67,78 +71,19 @@ class Daftar_perkiraan extends NOOBS_Controller
 		if (isset($_POST['action']) && $_POST['action'] == 'get_akun_detail')
 		{
 			$success = FALSE;
-			
-			$get_akun_header = $this->db_daftar_perkiraan->get_akun_header(array('rah_is_active' => 'Y','rah_id' => $_POST['rah_id']));
-			
-			$get_akun_detail = $this->db_daftar_perkiraan->get_akun_detail(array('rad_is_active' => 'Y'));
-			
-			$detail = array();
+			$post = $this->input->post(NULL, TRUE);
+			$get_akun_header = $this->db_daftar_perkiraan->get_akun_header(array('rah_is_active' => 'Y','rah_id' => $post['rah_id']))->row();
 
-			if($get_akun_header->num_rows() > 0)
-			{
-				$header = array();
-				$t=0;
-				foreach($get_akun_header->result() as $k => $v)
-				{
-					$header[$v->mag_id] = $v->mag_rm_id;
-					$t++;
-				}
-				
-				$i=0;
-				foreach($get_akun_detail->result() as $gm => $mn)
-				{		
-					$check = array_search($mn->rm_id, $header) ? 'checked' : '';
-					$mag_id = array_search($mn->rm_id, $header) ? array_search($mn->rm_id, $header) : '';
-					$detail[$i] = (object) array(
-						'rm_id' => $mn->rm_id,
-						'rm_parent_id' =>$mn->rm_parent_id,
-						'rm_caption' =>$mn->rm_caption,
-						'mag_id' => $mag_id,
-						'checked' => $check,
-					);						
-					$i++;
-				}
-			}
-			else
-			{
-				$i=0;
-				foreach($get_akun_detail->result() as $gm => $mn)
-				{		
-					$detail[$i] = (object) array(
-						'rm_id' => $mn->rm_id,
-						'rm_parent_id' =>$mn->rm_parent_id,
-						'rm_caption' =>$mn->rm_caption,
-						'mag_id' => '',
-						'checked' => '',
-					);						
-					$i++;
-				}
-			}
+			$get_akun_detail = $this->db_daftar_perkiraan->get_akun_detail(array('rad_is_active' => 'Y','rad_type' => 'H','rad_akun_header_id' => $post['rah_id']));
 
-			if (count($detail) > 0) echo json_encode(array('success' => TRUE, 'data' => $detail));
-			else echo json_encode(array('success' => TRUE));
+			$post['code'] = $get_akun_header->rah_code;
+			$post['data'] = $get_akun_detail->result();
+
+			if ($get_akun_detail && $get_akun_detail->num_rows() > 0) echo json_encode(array('success' => TRUE, 'data' => $post));
+			else echo json_encode(array('success' => FALSE, 'data' => $post));
 		} else $this->show_404();
 	}
 
-	// public function get_sequence()
-	// {
-	// 	if (isset($_POST['daftar_perkiraan']))
-	// 	{
-	// 		$get_parent = $this->db_daftar_perkiraan->get_parent_id($_POST['daftar_perkiraan'])->row();
-	// 		$success = FALSE;
-	// 		$get_sequence = $this->db_daftar_perkiraan->get_sequence($get_parent->rm_parent_id);
-
-	// 		if ($get_sequence && $get_sequence->num_rows() > 0)
-	// 		{ 
-	// 			$data = $get_sequence->row();
-	// 			echo json_encode(array('success' => TRUE, 'seq' => $data->rm_sequence+1));
-	// 		}
-	// 		else
-	// 		{ 
-	// 			echo json_encode(array('success' => TRUE));
-	// 		}
-	// 	} else $this->show_404();
-	// }
 
 	public function get_autocomplete_data()
 	{
@@ -160,20 +105,34 @@ class Daftar_perkiraan extends NOOBS_Controller
 		if (isset($post['action']) && ! empty($post['action']) && $post['action'] == 'popup_modal')
 		{
 			unset($post['action']);
-			$data = $this->db_daftar_perkiraan->get_daftar_perkiraan(array('rm_id' => $post['id']));			
+			$post['header_id'] = (isset($post['rah_id']) ? $post['rah_id'] : '');
 
-			if($data->num_rows() > 0)
+			if(isset($post['rah_id']) && $post['rah_id'] !== "" ) {
+				$header = $this->db_daftar_perkiraan->get_akun_header(array('rah_id' => $post['rah_id']))->row();
+				$post['rah_code'] = $header->rah_code;
+			}
+
+			$detail = $this->db_daftar_perkiraan->get_akun_detail(array('rad_id' => $post['id']));			
+
+			if($detail->num_rows() > 0)
 			{
-				$data2 = $data->row();
-				$parent_id = ($data2->rm_parent_id !== "") ? $data2->rm_parent_id : "";
+				$data2 = $detail->row();
+
+				$kode_akun = explode("-",$data2->rad_kode_akun);
+				$data2 = $kode_akun[1];
+				
+				$parent_id = ($data2->rad_parent_id !== "") ? $data2->rad_parent_id : "";
 				$post['data'] = $data2;
 			}
 			else
 			{
 				$parent_id = "";
+				$post['data'] = "";
 			}
-			$post['option'] = $this->_build_data($parent_id);
-			
+
+			$post['header'] = $this->db_daftar_perkiraan->get_akun_header(array('rah_is_active' => 'Y'))->result();
+			// $post['option'] = $this->_build_data($parent_id);
+			// print_r($post);exit;
 			$this->_view('daftar_perkiraan_popup_modal_view', $post);
 		}
 		else $this->show_404();
