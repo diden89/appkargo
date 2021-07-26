@@ -96,9 +96,9 @@ class Daftar_perkiraan_model extends NOOBS_Model
 		$this->table = 'ref_akun_detail';
 
 		$new_params = array(
-			'rad_type' => $params['rad_type'],
+			'rad_type' => (isset($params['rad_type'])) ? $params['rad_type'] : 'D',
 			'rad_akun_header_id' => $params['txt_header'],
-			'rad_parent_id' => $params['txt_posisi'],
+			'rad_parent_id' => (isset($params['txt_posisi'])) ? $params['txt_posisi'] : '',
 			'rad_kode_akun' => $params['txt_header'].'-'.$params['code'],
 			'rad_name' => $params['rad_name'],
 			'rad_is_bank' => (isset($params['is_bank'])) ? $params['is_bank'] : 'N',

@@ -244,7 +244,7 @@ const daftarPerkiraan = {
 									toastr.error(msgErr);
 								}
 
-								daftarPerkiraan.loadDataItem(this);
+								daftarPerkiraan.loadTreeData(rah_id);
 
 								popup.close();
 

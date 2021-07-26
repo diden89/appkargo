@@ -255,7 +255,7 @@ class Daftar_perkiraan extends NOOBS_Controller
 		if (isset($post['action']) && ! empty($post['action']) && $post['action'] == 'store_data')
 		{
 			unset($post['action']);
-
+			
 			$store_data = $this->db_daftar_perkiraan->store_data($post);
 
 			if ($store_data)
