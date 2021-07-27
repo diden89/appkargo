@@ -18,15 +18,16 @@
 		<input type="hidden" name="mode" value="edit">
 		<input type="hidden" name="txt_id" value="<?php echo $txt_id; ?>">
 	<?php endif; ?>
-	
-	<div class="row">
-		<div class="col-md-12">
+	<div class="row">		
+		<div class="col-md-6">
 			<div class="form-group row">
-				<label for="caption" class="col-sm-4 col-form-label">Nama Pelanggan</label>
+				<label for="caption" class="col-sm-4 col-form-label">No Transaksi</label>
 				<div class="col-sm-8">
-					<input type="text" name="c_name" class="form-control" id="vendor_name" value="<?php echo $mode == 'edit' && $data !== FALSE ? $data->c_name : '' ?>" required="required" <?php echo $mode == 'edit' ? '' : ''; ?>>
+					<input type="text" name="so_no_trx" class="form-control" id="so_no_trx" value="<?php echo $mode == 'edit' && $data !== FALSE ? $data->so_no_trx : '' ?>" required="required" <?php echo $mode == 'edit' ? '' : ''; ?>>
 				</div>
 			</div>
+		</div>
+		<div class="col-md-6">
 			<div class="form-group row">
 				<label for="url" class="col-sm-4 col-form-label">Provinsi</label>
 				<div class="col-sm-8">
@@ -41,6 +42,25 @@
 					</select>
 				</div>
 			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-6">
+			<div class="form-group row">
+				<label for="caption" class="col-sm-4 col-form-label">Tanggal</label>
+				<div class="input-group col-8">
+					<div class="input-group">
+						<div class="input-group-prepend">
+							<span class="input-group-text">
+								<i class="far fa-calendar-alt"></i>
+							</span>
+						</div>
+						<input type="text" name="so_created_date" class="form-control" id="created_date" required="required" data-inputmask-alias="datetime" data-inputmask-inputformat="dd-mm-yyyy" data-mask value="">
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-6">
 			<div class="form-group row district">
 				<label for="url" class="col-sm-4 col-form-label">Kabupaten/Kota</label>
 				<div class="col-sm-8">
@@ -49,33 +69,77 @@
 					</select>
 				</div>
 			</div>
-
-			<div class="form-group row district">
-				<label for="url" class="col-sm-4 col-form-label">Kecamatan</label>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-6">
+			<div class="form-group row">
+				<label for="caption" class="col-sm-4 col-form-label">Vendor</label>
 				<div class="col-sm-8">
-					<select class="form-control select2"  name="c_district_id" id="txt_district" disabled>
-						<option value="">Pilih Kabupaten / Kota</option>
+				<select class="form-control select2"  name="v_vendor_id" id="v_vendor_id">
+					<option value="">-Select-</option>
+					<?php
+						foreach($vendor as $k => $v)
+						{
+							echo '<option value="'.$v->v_id.'" '.(($data->so_vendor_id == $v->v_id) ? 'selected':"").'>'.$v->v_vendor_name.'</option>';
+						}
+					?>
+				</select>
+				</div>
+			</div>
+		</div>
+	</div>
+	<hr>
+	<div class="row">
+		<div class="col-md-4">
+			<div class="form-group row">
+				<label for="caption" class="col-sm-4 col-form-label">Nama Item</label>
+				<div class="col-sm-8">
+					<select class="form-control select2"  name="il_id" id="il_id">
+						<option value="">-Select-</option>
+						<?php
+							foreach($item_list as $k => $v)
+							{
+								echo '<option value="'.$v->il_id.'" >'.$v->il_item_name.'</option>';
+							}
+						?>
 					</select>
 				</div>
 			</div>
 			<div class="form-group row">
-				<label for="caption" class="col-sm-4 col-form-label">Alamat</label>
+				<label for="caption" class="col-sm-4 col-form-label">Berat / Kg</label>
+				<div class="col-sm-8">
+					<input type="text" name="sod_qty" class="form-control" id="sod_qty" value="" required="required">
+				</div>
+			</div>
+			<!-- <div class="form-group row">
+				<label for="caption" class="col-sm-4 col-form-label">Keterangan</label>
 				<div class="col-sm-8">
 					<textarea name="c_address" class="form-control" placeholder="Enter content"><?php echo (isset($data->c_address)) ? $data->c_address : ""; ?></textarea>
 				</div>
-			</div>
+			</div> -->
+			
 			<div class="form-group row">
-				<label for="url" class="col-sm-4 col-form-label">Telpon</label>
 				<div class="col-sm-8">
-					<input type="text" name="c_phone" class="form-control" id="vendor_phone" value="<?php echo $mode == 'edit' && $data !== FALSE ? $data->c_phone : '' ?>" required="required" <?php echo $mode == 'edit' ? '' : ''; ?>>
+					<button id="btnAddDetail" class="btn btn-primary btn-flat" type="button" title="Add Data"><i class="fas fa-plus"></i> Add</button>
 				</div>
 			</div>
-			<div class="form-group row">
-				<label for="url" class="col-sm-4 col-form-label">Email</label>
-				<div class="col-sm-8">
-					<input type="text" name="c_email" class="form-control" id="vendor_email" value="<?php echo $mode == 'edit' && $data !== FALSE ? $data->c_email : '' ?>" required="required" <?php echo $mode == 'edit' ? '' : ''; ?>>
-				</div>
-			</div>
-		</div>		
+		</div>	
+		<div class="col-md-8">
+			<table id="temporaryDataTable" style="width: 100%;" class="table table-hover table-striped no-footer" role="grid" aria-describedby="wordDataTable_info">
+				<thead>
+					<tr role="row">
+						<!-- <th width="10">No</th> -->
+						<th>Nama Item</th>
+						<th>Berat / Kg</th>
+						<!-- <th>Keterangan</th> -->
+						<th width="100">Action</th>
+					</tr>
+				</thead>
+				<tbody>
+					
+				</tbody>
+			</table>
+		</div>	
 	</div>
 </form>

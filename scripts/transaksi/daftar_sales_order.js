@@ -105,6 +105,28 @@ const daftarSalesOrderList = {
 
 		$this.html(body);
 	},
+	_generateTemporaryDataTable: (data) => {
+		const $this = $('#temporaryDataTable tbody');
+
+		$this.html('');
+
+		let body = '';
+
+		$.each(data, (idx, item) => {
+			body += '<tr>';
+			// body += '<td>' + item.no + '</td>';
+			body += '<td>' + item.il_item_name + '</td>';
+			body += '<td>' + item.qty + '</td>';
+			body += '<td>';
+				body += '<div class="btn-group btn-group-sm" role="group" aria-label="Action Button">';
+					body += '<button type="button" class="btn btn-danger" data-id="' + item.qty + '" data-idx="' + item.idx + '" onclick="daftarSalesOrderList.deleteDataTemp(this);"><i class="fas fa-trash-alt"></i></button>';
+				body += '</div>';
+			body += '</td>';
+			body += '</tr>';
+		});
+
+		$this.html(body);
+	},
 	showItem: function(el, mode) {
 		const me = this;
 		let params = {action: 'load_daftar_sales_order_form'};
@@ -123,15 +145,13 @@ const daftarSalesOrderList = {
 			params.mode = 'add';
 		}
 
-		
-			console.log('karambia')
 		$('#txt_province').on('select',function(){
 		});
 
 		$.popup({
-			title: title + ' Pelanggan',
+			title: title + ' Sales Order',
 			id: 'showItem',
-			size: 'medium',
+			size: 'large',
 			proxy: {
 				url: siteUrl('transaksi/daftar_sales_order/load_daftar_sales_order_form'),
 				params: params
@@ -187,6 +207,45 @@ const daftarSalesOrderList = {
 						daftarSalesOrderList.generateDistrict($(el).data('rd_id'),$(el).data('rsd_id'));
 					}
 
+					$('#btnAddDetail').click(function(){
+						var qty = $('#sod_qty').val();
+							il_id = $('#il_id').val();
+
+							$.ajax({
+								url: siteUrl('transaksi/daftar_sales_order/store_data_temporary'),
+								type: 'POST',
+								dataType: 'JSON',
+								data: {
+									action: 'insert_temporary_data',
+									qty: qty,
+									il_id: il_id
+								},
+								success: function(result) {
+									if (result.success) {
+										toastr.success("Data succesfully added.");
+										daftarSalesOrderList._generateTemporaryDataTable(result.data);
+						
+									} else if (typeof(result.msg) !== 'undefined') {
+										toastr.error(result.msg);
+									} else {
+										toastr.error(msgErr);
+									}
+									
+								},
+								error: function(error) {
+									toastr.error(msgErr);
+								}
+							});
+					});
+					$('#created_date').inputmask('dd-mm-yyyy', { 'placeholder': 'DD-MM-YYYY' });
+						$('#created_date').noobsdaterangepicker({
+							parentEl: "#" + popup[0].id + " .modal-body",
+							showDropdowns: true,
+							singleDatePicker: true,
+							locale: {
+								format: 'DD-MM-YYYY'
+							}
+						});
 					$('#txt_province').change(function() {
 						var me = $(this);
 						// console.log(me.val())
@@ -352,6 +411,42 @@ const daftarSalesOrderList = {
 						$('#ignoredItemDataTable tbody').html('');
 						
 						if (result.success) me._generateItemDataTable(result.data);
+						else if (typeof(result.msg) !== 'undefined') toastr.error(result.msg);
+						else toastr.error(msgErr);
+					},
+					error: function(error) {
+						toastr.error(msgErr);
+					}
+				});
+			}
+		});
+	},
+	deleteDataTemp: function(el) {
+		const me = this;
+		const $this = $(el);
+		// console.log('lai')
+		Swal.fire({
+			title: 'Are you sure?',
+			text: "Data that has been deleted cannot be restored!",
+			type: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#17a2b8',
+			cancelButtonColor: '#d33',
+			confirmButtonText: 'Yes, delete this data!'
+		}).then((result) => {
+			if (result.value) {
+				$.ajax({
+					url: siteUrl('transaksi/daftar_sales_order/delete_data_temp'),
+					type: 'POST',
+					dataType: 'JSON',
+					data: {
+						action: 'delete_data_temp',
+						idx: $this.data('idx')
+					},
+					success: function(result) {
+						$('#ignoredItemDataTable tbody').html('');
+						
+						if (result.success) daftarSalesOrderList._generateTemporaryDataTable(result.data);
 						else if (typeof(result.msg) !== 'undefined') toastr.error(result.msg);
 						else toastr.error(msgErr);
 					},

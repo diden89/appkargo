@@ -31,8 +31,14 @@ class Daftar_sales_order extends NOOBS_Controller
 		);
 
 		$this->store_params['item'] = [];
+		$date = date('d-m-Y H:i:s');
+		$date = strtotime($date);
+		$date = strtotime("-7 day", $date);
+		// echo date('d-m-Y H:i:s', $date);
 
-		$load_data_daftar_sales_order = $this->db_daftar_sales_order->load_data_daftar_sales_order();
+		$params['date_range1'] = date('Y-m-d H:i:s', $date);
+		$params['date_range2'] = date('Y-m-d H:i:s');
+		$load_data_daftar_sales_order = $this->db_daftar_sales_order->load_data_daftar_sales_order($params);
 
 		if ($load_data_daftar_sales_order->num_rows() > 0)
 		{
@@ -62,7 +68,8 @@ class Daftar_sales_order extends NOOBS_Controller
 			);
 
 			$post['province'] = $this->db_daftar_sales_order->get_option_province()->result();
-			$post['vendor'] = $this->db_daftar_sales_order->get_option_daftar_sales_order()->result();
+			$post['vendor'] = $this->db_daftar_sales_order->get_option_vendor()->result();
+			$post['item_list'] = $this->db_daftar_sales_order->get_option_item_list()->result();
 			if($post['mode'] == 'edit')
 			{
 				$post['data'] = $this->db_daftar_sales_order->load_data_daftar_sales_order($post)->row();
@@ -144,6 +151,7 @@ class Daftar_sales_order extends NOOBS_Controller
 
 	public function store_data_daftar_sales_order()
 	{
+		print_r($_POST);exit;
 		if (isset($_POST['action']) && $_POST['action'] == 'store_data_daftar_sales_order')
 		{
 			$post = $this->input->post(NULL, TRUE);
@@ -162,6 +170,43 @@ class Daftar_sales_order extends NOOBS_Controller
 				}
 
 				echo json_encode(array('success' => TRUE, 'data' => $result));
+			}
+			else echo json_encode(array('success' => FALSE, 'msg' => 'Data not found!'));
+		}
+		else $this->show_404();
+	}
+
+	public function store_data_temporary()
+	{
+		if (isset($_POST['action']) && $_POST['action'] == 'insert_temporary_data')
+		{
+			$post = $this->input->post(NULL, TRUE);
+			$get_data_item = $this->db_daftar_sales_order->get_option_item_list($post)->row();
+			$idx = (! empty($this->session->userdata('temp_data'))) ? (count($this->session->userdata('temp_data')) - 1) : 0;
+					
+			$temp[$idx] = (object) array(
+				'qty' => $post['qty'],
+				'il_item_name' => $get_data_item->il_item_name
+			);            	
+           
+
+			$this->session->set_userdata(array(
+				'temp_data' => $temp
+			));
+
+		
+			if (count($this->session->userdata('temp_data')) > 0) 
+			{
+				$idx = 0;
+				$temporary = $this->session->userdata('temp_data');
+				foreach ($temporary as $k => $v)
+				{
+					$v->idx = $idx;
+
+					$idx++;
+				}
+				
+				echo json_encode(array('success' => TRUE, 'data' => $temporary));
 			}
 			else echo json_encode(array('success' => FALSE, 'msg' => 'Data not found!'));
 		}
@@ -190,6 +235,35 @@ class Daftar_sales_order extends NOOBS_Controller
 				echo json_encode(array('success' => TRUE, 'data' => $result));
 			}
 			else echo json_encode(array('success' => FALSE, 'msg' => 'Data not found!'));
+		}
+		else $this->show_404();
+	}
+
+	public function delete_data_temp()
+	{
+		// print_r($_POST);exit;
+		if (isset($_POST['action']) && $_POST['action'] == 'delete_data_temp')
+		{
+			unset($_SESSION['temp_data'][$_POST['idx']]);
+		
+			// $post = $this->input->post(NULL, TRUE);
+			// $delete_data_item = $this->db_daftar_sales_order->delete_data_item($post);
+
+			// if ($delete_data_item->num_rows() > 0) 
+			// {
+			// 	$result = $delete_data_item->result();
+			// 	$number = 1;
+
+			// 	foreach ($result as $k => $v)
+			// 	{
+			// 		$v->no = $number;
+
+			// 		$number++;
+			// 	}
+				
+				echo json_encode(array('success' => TRUE, 'data' => $this->session->userdata('temp_data')));
+			// }
+			// else echo json_encode(array('success' => FALSE, 'msg' => 'Data not found!'));
 		}
 		else $this->show_404();
 	}

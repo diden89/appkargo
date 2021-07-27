@@ -62,11 +62,12 @@
 								<thead>
 									<tr role="row">
 										<th width="10">No</th>
-										<th>Nama Pelanggan</th>
-										<th>Alamat</th>
-										<th>No Telp</th>
-										<th>Email</th>
-										<th>Area</th>
+										<th>No Transaksi</th>
+										<th>Nama Vendor</th>
+										<th>Berat / Kg</th>
+										<th>Tujuan</th>
+										<th>Tanggal</th>
+										<th>Status</th>
 										<th width="100">Action</th>
 									</tr>
 								</thead>
@@ -74,15 +75,16 @@
 									<?php foreach ($item as $k => $v): ?>
 										<tr>
 											<td><?php echo $v->num; ?></td>
-											<td><?php echo $v->c_name; ?></td>
-											<td><?php echo $v->c_address; ?></td>
-											<td><?php echo $v->c_phone; ?></td>
-											<td><?php echo $v->c_email; ?></td>
-											<td><?php echo $v->rsd_name; ?></td>
+											<td><?php echo $v->so_no_trx; ?></td>
+											<td><?php echo $v->v_vendor_name; ?></td>
+											<td><?php echo $v->so_qty; ?></td>
+											<td><?php echo $v->rd_name; ?></td>
+											<td><?php echo date('d-m-Y H:i:s',strtotime($v->so_created_date)); ?></td>
+											<td><?php echo $v->so_is_status; ?></td>
 											<td>
 												<div class="btn-group btn-group-sm" role="group" aria-label="Action Button">
-													<button type="button" class="btn btn-success" data-id="<?php echo $v->c_id; ?>" data-rd_id="<?php echo $v->rd_id; ?>" data-rsd_id="<?php echo $v->c_district_id; ?>" data-item="<?php echo $v->c_name; ?>" onclick="customerList.showItem(this, 'edit');" title="Edit Word"><i class="fas fa-edit"></i></button>
-													<button type="button" class="btn btn-danger" data-id="<?php echo $v->c_id; ?>" data-item="<?php echo $v->c_name; ?>" onclick="customerList.deleteDataItem(this);" title="Delete Word"><i class="fas fa-trash-alt"></i></button>
+													<button type="button" class="btn btn-success" data-id="<?php echo $v->so_id; ?>" onclick="customerList.showItem(this, 'edit');" title="Edit Word"><i class="fas fa-edit"></i></button>
+													<button type="button" class="btn btn-danger" data-id="<?php echo $v->so_id; ?>" onclick="customerList.deleteDataItem(this);" title="Delete Word"><i class="fas fa-trash-alt"></i></button>
 												</div>
 											</td>
 										</tr>
