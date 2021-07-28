@@ -210,32 +210,48 @@ const daftarSalesOrderList = {
 					$('#btnAddDetail').click(function(){
 						var qty = $('#sod_qty').val();
 							il_id = $('#il_id').val();
+							no_trx = $('#so_no_trx').val();
 
-							$.ajax({
-								url: siteUrl('transaksi/daftar_sales_order/store_data_temporary'),
-								type: 'POST',
-								dataType: 'JSON',
-								data: {
-									action: 'insert_temporary_data',
-									qty: qty,
-									il_id: il_id
-								},
-								success: function(result) {
-									if (result.success) {
-										toastr.success("Data succesfully added.");
-										daftarSalesOrderList._generateTemporaryDataTable(result.data);
-						
-									} else if (typeof(result.msg) !== 'undefined') {
-										toastr.error(result.msg);
-									} else {
+							if(no_trx == "")
+							{
+								Swal.fire({
+									title: 'No Transaksi Tidak Ditemukan',
+									text: "Nomor Transaksi Tidak Ditemukan, input Nomor Transaksi Terlebih Dahulu!",
+									type: 'warning',
+									showCancelButton: false,
+									confirmButtonColor: '#17a2b8',
+									cancelButtonColor: '#d33',
+									confirmButtonText: 'Close!'
+								})
+							}
+							else
+							{
+								$.ajax({
+									url: siteUrl('transaksi/daftar_sales_order/store_data_temporary'),
+									type: 'POST',
+									dataType: 'JSON',
+									data: {
+										action: 'insert_temporary_data',
+										qty: qty,
+										il_id: il_id
+									},
+									success: function(result) {
+										if (result.success) {
+											toastr.success("Data succesfully added.");
+											daftarSalesOrderList._generateTemporaryDataTable(result.data);
+
+										} else if (typeof(result.msg) !== 'undefined') {
+											toastr.error(result.msg);
+										} else {
+											toastr.error(msgErr);
+										}
+										
+									},
+									error: function(error) {
 										toastr.error(msgErr);
 									}
-									
-								},
-								error: function(error) {
-									toastr.error(msgErr);
-								}
-							});
+								});								
+							}
 					});
 					$('#created_date').inputmask('dd-mm-yyyy', { 'placeholder': 'DD-MM-YYYY' });
 						$('#created_date').noobsdaterangepicker({

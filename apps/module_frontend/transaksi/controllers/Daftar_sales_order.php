@@ -182,19 +182,29 @@ class Daftar_sales_order extends NOOBS_Controller
 		{
 			$post = $this->input->post(NULL, TRUE);
 			$get_data_item = $this->db_daftar_sales_order->get_option_item_list($post)->row();
-			$idx = (! empty($this->session->userdata('temp_data'))) ? (count($this->session->userdata('temp_data')) - 1) : 0;
-					
-			$temp[$idx] = (object) array(
-				'qty' => $post['qty'],
-				'il_item_name' => $get_data_item->il_item_name
-			);            	
-           
+			$idx = (! empty($this->session->userdata('temp_data'))) ? count($this->session->userdata('temp_data')) : 0;
+			
+			// if($idx == 0)
+			// {
+				$temp[$idx] = (object) array(
+					'qty' => $post['qty'],
+					'il_item_name' => $get_data_item->il_item_name
+				);				
+			// }
+			// else
+			// {				
+			// 	$temp[$idx] = array(
+			// 		'qty' => $post['qty'],
+			// 		'il_item_name' => $get_data_item->il_item_name
+			// 	);
+				
+			// } 
 
 			$this->session->set_userdata(array(
 				'temp_data' => $temp
 			));
-
-		
+			
+			// print_r($this->session);exit;
 			if (count($this->session->userdata('temp_data')) > 0) 
 			{
 				$idx = 0;
