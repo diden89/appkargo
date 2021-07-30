@@ -70,12 +70,49 @@ class Daftar_sales_order extends NOOBS_Controller
 			$post['province'] = $this->db_daftar_sales_order->get_option_province()->result();
 			$post['vendor'] = $this->db_daftar_sales_order->get_option_vendor()->result();
 			$post['item_list'] = $this->db_daftar_sales_order->get_option_item_list()->result();
+			$get_last_notrx = $this->db_daftar_sales_order->get_last_notrx();
+
+			if($get_last_notrx->num_rows() > 0)
+			{
+				$notrx = $get_last_notrx->row();
+				$last_notrx = $notrx->notrx + 1;
+			}
+			else
+			{
+				$last_notrx = 1;
+			}
+
+			$post['last_notrx'] = sprintf('%04d',$last_notrx);
+			
+
 			if($post['mode'] == 'edit')
 			{
 				$post['data'] = $this->db_daftar_sales_order->load_data_daftar_sales_order($post)->row();
 			}
 	
 			$this->_view('daftar_sales_order_form_view', $post);
+		}
+		else $this->show_404();
+	}
+
+	public function get_item_list_option()
+	{
+		$post = $this->input->post(NULL, TRUE);
+
+
+		if (isset($post['action']) && ! empty($post['action']) && $post['action'] == 'get_item_list_option')
+		{
+			unset($post['action']);
+
+			$get_item_list_option = $this->db_daftar_sales_order->get_item_list_option($post);
+
+			if ($get_item_list_option->num_rows() > 0) 
+			{
+				$result = $get_item_list_option->result();
+
+				echo json_encode(array('success' => TRUE, 'data' => $result));
+			}
+			else echo json_encode(array('success' => FALSE, 'msg' => 'Data Not Found!'));
 		}
 		else $this->show_404();
 	}
@@ -149,9 +186,35 @@ class Daftar_sales_order extends NOOBS_Controller
 		else $this->show_404();
 	}
 
+	public function load_data_temporary_detail_so()
+	{
+		if (isset($_POST['action']) && $_POST['action'] == 'load_data_temporary_detail_so')
+		{
+			// print_r($_POST);exit;
+			$post = $this->input->post(NULL, TRUE);
+			$load_data_detail_so = $this->db_daftar_sales_order->load_data_detail_so($post);
+			if ($load_data_detail_so->num_rows() > 0) 
+			{
+				$result = $load_data_detail_so->result();
+				$number = 1;
+
+				foreach ($result as $k => $v)
+				{
+					$v->no = $number;
+
+					$number++;
+				}
+				
+				echo json_encode(array('success' => TRUE, 'data' => $result));
+			}
+			else echo json_encode(array('success' => FALSE, 'msg' => 'Data not found!'));
+		}
+		else $this->show_404();
+	}
+
 	public function store_data_daftar_sales_order()
 	{
-		print_r($_POST);exit;
+		// print_r($_POST);exit;
 		if (isset($_POST['action']) && $_POST['action'] == 'store_data_daftar_sales_order')
 		{
 			$post = $this->input->post(NULL, TRUE);
@@ -169,6 +232,7 @@ class Daftar_sales_order extends NOOBS_Controller
 					$number++;
 				}
 
+
 				echo json_encode(array('success' => TRUE, 'data' => $result));
 			}
 			else echo json_encode(array('success' => FALSE, 'msg' => 'Data not found!'));
@@ -181,47 +245,79 @@ class Daftar_sales_order extends NOOBS_Controller
 		if (isset($_POST['action']) && $_POST['action'] == 'insert_temporary_data')
 		{
 			$post = $this->input->post(NULL, TRUE);
-			$get_data_item = $this->db_daftar_sales_order->get_option_item_list($post)->row();
-			$idx = (! empty($this->session->userdata('temp_data'))) ? count($this->session->userdata('temp_data')) : 0;
-			
-			// if($idx == 0)
-			// {
-				$temp[$idx] = (object) array(
-					'qty' => $post['qty'],
-					'il_item_name' => $get_data_item->il_item_name
-				);				
-			// }
-			// else
-			// {				
-			// 	$temp[$idx] = array(
-			// 		'qty' => $post['qty'],
-			// 		'il_item_name' => $get_data_item->il_item_name
-			// 	);
-				
-			// } 
+			// print_r($post);exit;
+			$store_detail_so = $this->db_daftar_sales_order->store_detail_so($post);
 
-			$this->session->set_userdata(array(
-				'temp_data' => $temp
-			));
-			
-			// print_r($this->session);exit;
-			if (count($this->session->userdata('temp_data')) > 0) 
+			if ($store_detail_so->num_rows() > 0) 
 			{
-				$idx = 0;
-				$temporary = $this->session->userdata('temp_data');
-				foreach ($temporary as $k => $v)
-				{
-					$v->idx = $idx;
+				$result = $store_detail_so->result();
+				$number = 1;
 
-					$idx++;
+				foreach ($result as $k => $v)
+				{
+					$v->no = $number;
+
+					$number++;
 				}
 				
-				echo json_encode(array('success' => TRUE, 'data' => $temporary));
+				echo json_encode(array('success' => TRUE, 'data' => $result));
 			}
 			else echo json_encode(array('success' => FALSE, 'msg' => 'Data not found!'));
 		}
 		else $this->show_404();
 	}
+	
+	// public function store_data_temporary()
+	// {
+	// 	if (isset($_POST['action']) && $_POST['action'] == 'insert_temporary_data')
+	// 	{
+	// 		$post = $this->input->post(NULL, TRUE);
+
+	// 		$get_data_item = $this->db_daftar_sales_order->get_option_item_list($post)->row();
+			
+	// 		$idx = (! empty($this->session->userdata('temp_data'))) ? (count($this->session->userdata('temp_data')) - 1) +1 : 0;
+			
+	// 		if($idx == 0)
+	// 		{
+	// 			$temp[$idx] = (object) array(
+	// 				'qty' => $post['qty'],
+	// 				'il_item_name' => $get_data_item->il_item_name
+	// 			);				
+			
+	// 			$this->session->set_userdata(array(
+	// 				'temp_data' => $temp
+	// 			));
+	// 		}
+	// 		else
+	// 		{				
+	// 			$temp = (object) array(
+	// 				'qty' => $post['qty'],
+	// 				'il_item_name' => $get_data_item->il_item_name
+	// 			);
+
+	// 			array_push($_SESSION['temp_data'],$temp);
+				
+	// 		} 
+
+			
+	// 		// print_r($this->session);exit;
+	// 		if (count($this->session->userdata('temp_data')) > 0) 
+	// 		{
+	// 			$idx = 0;
+	// 			$temporary = $this->session->userdata('temp_data');
+	// 			foreach ($temporary as $k => $v)
+	// 			{
+	// 				$v->idx = $idx;
+
+	// 				$idx++;
+	// 			}
+				
+	// 			echo json_encode(array('success' => TRUE, 'data' => $temporary));
+	// 		}
+	// 		else echo json_encode(array('success' => FALSE, 'msg' => 'Data not found!'));
+	// 	}
+	// 	else $this->show_404();
+	// }
 
 	public function delete_data_item()
 	{
@@ -254,26 +350,24 @@ class Daftar_sales_order extends NOOBS_Controller
 		// print_r($_POST);exit;
 		if (isset($_POST['action']) && $_POST['action'] == 'delete_data_temp')
 		{
-			unset($_SESSION['temp_data'][$_POST['idx']]);
-		
-			// $post = $this->input->post(NULL, TRUE);
-			// $delete_data_item = $this->db_daftar_sales_order->delete_data_item($post);
+			$post = $this->input->post(NULL, TRUE);
+			$delete_data_sod = $this->db_daftar_sales_order->delete_data_so_detail($post);
 
-			// if ($delete_data_item->num_rows() > 0) 
-			// {
-			// 	$result = $delete_data_item->result();
-			// 	$number = 1;
+			if ($delete_data_sod->num_rows() > 0) 
+			{
+				$result = $delete_data_sod->result();
+				$number = 1;
 
-			// 	foreach ($result as $k => $v)
-			// 	{
-			// 		$v->no = $number;
+				foreach ($result as $k => $v)
+				{
+					$v->no = $number;
 
-			// 		$number++;
-			// 	}
+					$number++;
+				}
 				
-				echo json_encode(array('success' => TRUE, 'data' => $this->session->userdata('temp_data')));
-			// }
-			// else echo json_encode(array('success' => FALSE, 'msg' => 'Data not found!'));
+				echo json_encode(array('success' => TRUE, 'data' => $result));
+			}
+			else echo json_encode(array('success' => FALSE, 'msg' => 'Data not found!','data' => array()));
 		}
 		else $this->show_404();
 	}

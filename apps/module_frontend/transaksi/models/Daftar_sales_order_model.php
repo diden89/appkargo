@@ -14,9 +14,9 @@ class Daftar_sales_order_model extends NOOBS_Model
 	public function load_data_daftar_sales_order($params = array())
 	{
 		// print_r($params);exit;
-		$this->db->select('so.*,rd.rd_name,v.v_vendor_name, (select sum(sod_qty) as so_qty from sales_order_detail where sod_so_id = so.so_id) as so_qty');
+		$this->db->select('so.*,rd.*,v.v_vendor_name, (select sum(sod_qty) as so_qty from sales_order_detail where sod_no_trx = so.so_no_trx) as so_qty');
 		$this->db->from('sales_order as so');
-		// $this->db->join('sales_order_detail as sod','sod.sod_so_id = so.so_id','LEFT');
+		// $this->db->join('sales_order_detail as sod','sod.sod_no_trx = so.so_id','LEFT');
 		$this->db->join('vendor as v','v.v_id = so.so_vendor_id','LEFT');
 		$this->db->join('ref_district as rd','rd.rd_id = so.so_district_id','LEFT');
 		
@@ -41,23 +41,64 @@ class Daftar_sales_order_model extends NOOBS_Model
 
 		return $this->db->get();
  	}
+	public function load_data_detail_so($params = array())
+	{
+		$this->db->select('*');
+		$this->db->from('sales_order_detail as sod');
+		$this->db->join('sales_order as so','sod.sod_no_trx = so.so_no_trx','LEFT');
+		$this->db->join('item_list as il','sod.sod_item_id = il.il_id','LEFT');
+		
+
+		if (isset($params['no_trx']) && ! empty($params['no_trx']))
+		{
+			$this->db->where('sod.sod_no_trx', strtoupper($params['no_trx']));
+		}
+
+		$this->db->where('sod.sod_is_active', 'Y');
+		$this->db->order_by('sod.last_datetime', 'ASC');
+
+		return $this->db->get();
+ 	}
 
 	public function store_data_daftar_sales_order($params = array())
 	{
-		$this->table = 'customer';
+		$this->table = 'sales_order';
 
 		$new_params = array(
-			'c_name' => $params['c_name'],
-			'c_address' => $params['c_address'],
-			'c_phone' => $params['c_phone'],
-			'c_email' => $params['c_email'],
-			'c_district_id' => $params['c_district_id']
+			'so_vendor_id' => $params['v_vendor_id'],
+			'so_district_id' => $params['txt_region'],
+			'so_no_trx' => $params['last_notrx'],
+			'so_is_status' => 'ORDER',
+			'so_created_date' => date('Y-m-d H:i:s', strtotime($params['so_created_date'])),
 		);
 
 		if ($params['mode'] == 'add') $this->add($new_params, TRUE);
-		else $this->edit($new_params, "c_id = {$params['txt_id']}");
+		else $this->edit($new_params, "so_id = {$params['txt_id']}");
 
 		return $this->load_data_daftar_sales_order();
+	}
+
+	public function store_detail_so($params = array())
+	{
+		$this->table = 'sales_order_detail';
+
+		$new_params = array(
+			'sod_no_trx' => $params['sod_no_trx'],
+			'sod_qty' => $params['sod_qty'],
+			'sod_item_id' => $params['sod_item_id']
+		);
+
+		if(! empty($params['so_id'])) {
+			$mode = $params['mode'];
+		}
+		else {
+			$mode = 'add';
+		}
+
+		if ($mode == 'add') $this->add($new_params, TRUE);
+		else $this->edit($new_params, "sod_id = {$params['so_id']}");
+
+		return $this->load_data_detail_so(array('no_trx' => $params['sod_no_trx']));
 	}
 
 	public function delete_data_daftar_sales_order($params = array())
@@ -77,7 +118,16 @@ class Daftar_sales_order_model extends NOOBS_Model
 		return $this->db->get('customer');
  	}
 
- 	public function get_option_province()
+ 	public function get_last_notrx()
+	{
+		$this->db->select('LEFT(so_no_trx,4) as notrx');
+		$this->db->order_by('so_id', 'DESC');
+		$this->db->limit('1');
+		
+		return $this->db->get('sales_order');
+ 	}
+
+	public function get_option_province()
 	{
 		$this->db->order_by('rp_name', 'ASC');
 		
@@ -90,6 +140,23 @@ class Daftar_sales_order_model extends NOOBS_Model
 		$this->db->order_by('rd_name', 'ASC');
 		
 		return $this->db->get('ref_district');
+ 	}
+
+ 	public function get_item_list_option($params)
+	{
+		$this->db->select('*');
+		$this->db->from('item_list as il');
+		$this->db->join('vendor as v','il.il_vendor_id = v.v_id','LEFT');
+
+		if (isset($params['vendor_id']) && ! empty($params['vendor_id']))
+		{
+			$this->db->where('il.il_vendor_id', strtoupper($params['vendor_id']));
+		}
+
+		$this->db->where('il.il_is_active', 'Y');
+		$this->db->order_by('il.last_datetime', 'ASC');
+
+		return $this->db->get();
  	}
 
  	public function get_district_option($params)
@@ -121,13 +188,13 @@ class Daftar_sales_order_model extends NOOBS_Model
 		return $this->db->get('item_list');
  	}
 
-	public function delete_data_item($params = array())
+	public function delete_data_so_detail($params = array())
 	{
-		$this->table = 'customer';
+		$this->table = 'sales_order_detail';
 
-		$this->edit(['c_is_active' => 'N'], "c_id = {$params['txt_id']}");
+		$this->delete('sod_id',$params['id']);
 		
-		return $this->load_data_daftar_sales_order();
+		return $this->load_data_detail_so(array('no_trx' => $params['sod_no_trx']));
 	}
 
 	public function store_data($params = array())

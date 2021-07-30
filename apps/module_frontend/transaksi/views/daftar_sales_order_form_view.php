@@ -12,10 +12,11 @@
 
 <form role="form" id="addDaftarSalesOrder" autocomplete="off">
 	<input type="hidden" name="action" value="store_data_daftar_sales_order">
-	<input type="hidden" name="mode" value="add">
+	<input type="hidden" name="mode" value="<?=$mode?>">
+	<input type="hidden" name="last_notrx" value="<?php echo $mode == 'add' ?  $last_notrx.'/SO/'.date('Ymd') : $data->so_no_trx; ?>">
+	<input type="hidden" name="sod_id" value="" id="sod_id">
 
 	<?php if (isset($txt_id)): ?>
-		<input type="hidden" name="mode" value="edit">
 		<input type="hidden" name="txt_id" value="<?php echo $txt_id; ?>">
 	<?php endif; ?>
 	<div class="row">		
@@ -23,7 +24,7 @@
 			<div class="form-group row">
 				<label for="caption" class="col-sm-4 col-form-label">No Transaksi</label>
 				<div class="col-sm-8">
-					<input type="text" name="so_no_trx" class="form-control" id="so_no_trx" value="<?php echo $mode == 'edit' && $data !== FALSE ? $data->so_no_trx : '' ?>" required="required" <?php echo $mode == 'edit' ? '' : ''; ?>>
+					<input type="text" name="so_no_trx" class="form-control" id="no_trx_id" value="<?php echo $mode == 'edit' && $data !== FALSE ? $data->so_no_trx : $last_notrx.'/SO/'.date('Ymd'); ?>" required="required" <?php echo $mode == 'edit' ? '' : ''; ?> disabled>
 				</div>
 			</div>
 		</div>
@@ -36,7 +37,7 @@
 						<?php
 							foreach($province as $k => $v)
 							{
-								echo '<option value="'.$v->rp_id.'" '.(($data->rp_id == $v->rp_id) ? 'selected':"").'>'.$v->rp_name.'</option>';
+								echo '<option value="'.$v->rp_id.'" '.(($data->rd_province_id == $v->rp_id) ? 'selected':"").'>'.$v->rp_name.'</option>';
 							}
 						?>
 					</select>
@@ -95,13 +96,13 @@
 			<div class="form-group row">
 				<label for="caption" class="col-sm-4 col-form-label">Nama Item</label>
 				<div class="col-sm-8">
-					<select class="form-control select2"  name="il_id" id="il_id">
-						<option value="">-Select-</option>
+					<select class="form-control select2"  name="il_id" id="il_id" disabled="disabled">
+						<!-- <option value="">-Select-</option> -->
 						<?php
-							foreach($item_list as $k => $v)
-							{
-								echo '<option value="'.$v->il_id.'" >'.$v->il_item_name.'</option>';
-							}
+							// foreach($item_list as $k => $v)
+							// {
+							// 	echo '<option value="'.$v->il_id.'" >'.$v->il_item_name.'</option>';
+							// }
 						?>
 					</select>
 				</div>
@@ -109,7 +110,7 @@
 			<div class="form-group row">
 				<label for="caption" class="col-sm-4 col-form-label">Berat / Kg</label>
 				<div class="col-sm-8">
-					<input type="text" name="sod_qty" class="form-control" id="sod_qty" value="" required="required">
+					<input type="text" name="sod_qty" class="form-control" id="sod_qty" value="" >
 				</div>
 			</div>
 			<!-- <div class="form-group row">
