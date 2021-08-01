@@ -67,7 +67,7 @@ class Daftar_delivery_order extends NOOBS_Controller
 				'table' => 'province'
 			);
 
-			$post['province'] = $this->db_daftar_delivery_order->get_option_province()->result();
+			$post['sales_order'] = $this->db_daftar_delivery_order->get_option_so()->result();
 			$post['vendor'] = $this->db_daftar_delivery_order->get_option_vendor()->result();
 			$post['item_list'] = $this->db_daftar_delivery_order->get_option_item_list()->result();
 			$get_last_notrx = $this->db_daftar_delivery_order->get_last_notrx();
@@ -160,6 +160,28 @@ class Daftar_delivery_order extends NOOBS_Controller
 		else $this->show_404();
 	}
 
+	public function get_customer_option()
+	{
+		$post = $this->input->post(NULL, TRUE);
+
+
+		if (isset($post['action']) && ! empty($post['action']) && $post['action'] == 'get_customer_option')
+		{
+			unset($post['action']);
+
+			$get_customer_option = $this->db_daftar_delivery_order->get_customer_option($post);
+
+			if ($get_customer_option->num_rows() > 0) 
+			{
+				$result = $get_customer_option->result();
+
+				echo json_encode(array('success' => TRUE, 'data' => $result));
+			}
+			else echo json_encode(array('success' => FALSE, 'msg' => 'Data Not Found!'));
+		}
+		else $this->show_404();
+	}
+
 	public function load_data_daftar_delivery_order()
 	{
 		if (isset($_POST['action']) && $_POST['action'] == 'load_data_daftar_delivery_order')
@@ -186,16 +208,16 @@ class Daftar_delivery_order extends NOOBS_Controller
 		else $this->show_404();
 	}
 
-	public function load_data_temporary_detail_so()
+	public function load_data_delivery_detail_do()
 	{
-		if (isset($_POST['action']) && $_POST['action'] == 'load_data_temporary_detail_so')
+		if (isset($_POST['action']) && $_POST['action'] == 'load_data_delivery_detail_do')
 		{
 			// print_r($_POST);exit;
 			$post = $this->input->post(NULL, TRUE);
-			$load_data_detail_so = $this->db_daftar_delivery_order->load_data_detail_so($post);
-			if ($load_data_detail_so->num_rows() > 0) 
+			$load_data_detail_do = $this->db_daftar_delivery_order->load_data_detail_do($post);
+			if ($load_data_detail_do->num_rows() > 0) 
 			{
-				$result = $load_data_detail_so->result();
+				$result = $load_data_detail_do->result();
 				$number = 1;
 
 				foreach ($result as $k => $v)
@@ -267,58 +289,6 @@ class Daftar_delivery_order extends NOOBS_Controller
 		else $this->show_404();
 	}
 	
-	// public function store_data_temporary()
-	// {
-	// 	if (isset($_POST['action']) && $_POST['action'] == 'insert_temporary_data')
-	// 	{
-	// 		$post = $this->input->post(NULL, TRUE);
-
-	// 		$get_data_item = $this->db_daftar_delivery_order->get_option_item_list($post)->row();
-			
-	// 		$idx = (! empty($this->session->userdata('temp_data'))) ? (count($this->session->userdata('temp_data')) - 1) +1 : 0;
-			
-	// 		if($idx == 0)
-	// 		{
-	// 			$temp[$idx] = (object) array(
-	// 				'qty' => $post['qty'],
-	// 				'il_item_name' => $get_data_item->il_item_name
-	// 			);				
-			
-	// 			$this->session->set_userdata(array(
-	// 				'temp_data' => $temp
-	// 			));
-	// 		}
-	// 		else
-	// 		{				
-	// 			$temp = (object) array(
-	// 				'qty' => $post['qty'],
-	// 				'il_item_name' => $get_data_item->il_item_name
-	// 			);
-
-	// 			array_push($_SESSION['temp_data'],$temp);
-				
-	// 		} 
-
-			
-	// 		// print_r($this->session);exit;
-	// 		if (count($this->session->userdata('temp_data')) > 0) 
-	// 		{
-	// 			$idx = 0;
-	// 			$temporary = $this->session->userdata('temp_data');
-	// 			foreach ($temporary as $k => $v)
-	// 			{
-	// 				$v->idx = $idx;
-
-	// 				$idx++;
-	// 			}
-				
-	// 			echo json_encode(array('success' => TRUE, 'data' => $temporary));
-	// 		}
-	// 		else echo json_encode(array('success' => FALSE, 'msg' => 'Data not found!'));
-	// 	}
-	// 	else $this->show_404();
-	// }
-
 	public function delete_data_item()
 	{
 		if (isset($_POST['action']) && $_POST['action'] == 'delete_data_item')

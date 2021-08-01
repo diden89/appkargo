@@ -66,17 +66,17 @@
 				<div class="row">
 					<div class="col-12">
 						<div class="excel-data-table-container">
-							<table id="ignoredItemDataTable" style="width: 1860px;" class="table table-hover table-striped no-footer" role="grid" aria-describedby="wordDataTable_info">
+							<table id="ignoredItemDataTable" style="width: 1480px;" class="table table-hover table-striped no-footer" role="grid" aria-describedby="wordDataTable_info">
 								<thead>
 									<tr role="row">
 										<th width="10">No</th>
-										<th width="200">No Transaksi</th>
-										<th width="200">Nama Pelanggan</th>
-										<th width="200">Nama Barang</th>
+										<th width="150">No Transaksi</th>
+										<th width="150">Nama Pelanggan</th>
+										<th width="120">Nama Barang</th>
 										<th width="200">Pengemudi / Kendaraan</th>
-										<th width="400">Alamat Pengiriman</th>
+										<th width="300">Alamat Pengiriman</th>
 										<th width="150">Berat / Kg</th>
-										<th width="150">Biaya</th>
+										<th width="50">Biaya</th>
 										<th width="200">Tanggal Pengiriman</th>
 										<th width="100">Status</th>
 										<th width="100">Action</th>
@@ -90,9 +90,9 @@
 											<td><?php echo $v->c_name; ?></td>
 											<td><?php echo $v->il_item_name; ?></td>
 											<td><?php echo $v->d_name.' / '.$v->ve_license_plate; ?></td>
-											<td><?php echo $v->c_address.'<br>'.$v->rsd_name; ?></td>
+											<td><?php echo $v->c_address.'<br>Kec. '.$v->rsd_name; ?></td>
 											<td><?php echo $v->sod_qty; ?></td>
-											<td><?php echo $v->sod_qty; ?></td>
+											<td><?php echo number_format($v->ongkir); ?></td>
 											<td><?php echo date('d-m-Y H:i:s',strtotime($v->dod_created_date)); ?></td>
 											<td><?php echo $v->dod_is_status; ?></td>
 											<td>

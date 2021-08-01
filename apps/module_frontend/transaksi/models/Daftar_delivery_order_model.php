@@ -14,7 +14,7 @@ class Daftar_delivery_order_model extends NOOBS_Model
 	public function load_data_daftar_delivery_order($params = array())
 	{
 		// print_r($params);exit;
-		$this->db->select('*');
+		$this->db->select('*,(select (sod.sod_qty * sh_cost) as cost from shipping where sh_rsd_id = c.c_district_id) as ongkir');
 		$this->db->from('delivery_order_detail as dod');
 		$this->db->join('customer as c','c.c_id = dod.dod_customer_id','LEFT');
 		$this->db->join('sales_order_detail as sod','sod.sod_id = dod.dod_sod_id','LEFT');
@@ -44,17 +44,18 @@ class Daftar_delivery_order_model extends NOOBS_Model
 
 		return $this->db->get();
  	}
-	public function load_data_detail_so($params = array())
+	public function load_data_detail_do($params = array())
 	{
 		$this->db->select('*');
 		$this->db->from('sales_order_detail as sod');
 		$this->db->join('sales_order as so','sod.sod_no_trx = so.so_no_trx','LEFT');
 		$this->db->join('item_list as il','sod.sod_item_id = il.il_id','LEFT');
+		// $this->db->join('customer as c','c.c_id = dod.dod_customer_id','LEFT');
 		
 
-		if (isset($params['no_trx']) && ! empty($params['no_trx']))
+		if (isset($params['so_id']) && ! empty($params['so_id']))
 		{
-			$this->db->where('sod.sod_no_trx', strtoupper($params['no_trx']));
+			$this->db->where('so.so_id', strtoupper($params['so_id']));
 		}
 
 		$this->db->where('sod.sod_is_active', 'Y');
@@ -130,11 +131,12 @@ class Daftar_delivery_order_model extends NOOBS_Model
 		return $this->db->get('sales_order');
  	}
 
-	public function get_option_province()
+	public function get_option_so()
 	{
-		$this->db->order_by('rp_name', 'ASC');
+		$this->db->where('so_is_status', 'ORDER');
+		$this->db->order_by('so_no_trx', 'ASC');
 		
-		return $this->db->get('ref_province');
+		return $this->db->get('sales_order');
  	}
 
  	public function get_region_option($params)
@@ -169,6 +171,15 @@ class Daftar_delivery_order_model extends NOOBS_Model
 		
 		return $this->db->get('ref_sub_district');
  	}
+
+ 	public function get_customer_option($params)
+	{
+		// $this->db->where('rsd_district_id', $params['district_id']);
+		$this->db->order_by('c_name', 'ASC');
+		
+		return $this->db->get('customer');
+ 	}
+
 	public function get_option_vendor()
 	{		
 		$this->db->where('v_is_active', 'Y');

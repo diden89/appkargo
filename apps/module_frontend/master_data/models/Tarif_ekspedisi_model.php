@@ -34,7 +34,7 @@ class Tarif_ekspedisi_model extends NOOBS_Model
 		return $this->db->get('ref_sub_district');
 	}
 
-	public function cek_access_user($params=array())
+	public function cek_shipping_code($params=array())
 	{
 		$this->db->where($params);
 
@@ -43,11 +43,10 @@ class Tarif_ekspedisi_model extends NOOBS_Model
 
 	public function delete_shipping_cost($params=array())
 	{
-		$this->db->where('sh_id',$params['sh_id']);
-		
-		if(isset($params['rsd_id'])){
-			$this->db->where_not_in('sh_rsd_id',$params['rsd_id']);
-		}
+		$this->db->where('sh_rd_id',$params['rd_id']);		
+		// if(isset($params['rsd_id'])){
+		// 	$this->db->where_not_in('sh_rsd_id',$params['rsd_id']);
+		// }
 
 		return $this->db->delete('shipping');
 	}
@@ -60,13 +59,15 @@ class Tarif_ekspedisi_model extends NOOBS_Model
 
 	public function store_data($params = array())
 	{
+		// print_r($params);exit;
 		$this->table = 'shipping';
 		$new_params = array(
-			'mau_user_id' => $params['mau_user_id'],
-			'mau_menu_id' => $params['mau_menu_id'],
+			'sh_rsd_id' => $params['sh_rsd_id'],
+			'sh_rd_id' => $params['sh_rd_id'],
+			'sh_cost' => $params['sh_cost'],
 		);
 
-		if ($params['mode'] == 'add') return $this->add($new_params, TRUE);
-		else return $this->edit($new_params, "mau_id = {$params['mau_id']}");
+		return $this->add($new_params, TRUE);
+		
 	}
 }

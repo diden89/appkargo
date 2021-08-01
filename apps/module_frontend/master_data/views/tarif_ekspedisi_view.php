@@ -28,22 +28,22 @@
 					</div>
 					<div class="col-8">
 						<h4>Kecamatan</h4>
-						<div class="excel-data-table-container">
-							<form id="addDataTable">
+						<form id="addDataTable">
+						<div class="excel-data-table-container" style="height:100%;">
 							<table class="collaptable table table-striped" id="example1">
 								<thead>
-									<th scope="col"><a href="javascript:void(0);" class="act-button-expand" style="color: white;"><i class="fas fa-angle-double-down"></i></a></th>
+									<th scope="col"><a href="javascript:void(0);" class="act-button-expand" style="color: white;"></a></th>
 									<th scope="col">Caption</th>
-									<th scope="col" style="text-align:center;">Action</th>
+									<th scope="col" style="text-align:center;">Tarif</th>
 								</thead>
 								<tbody></tbody>
 							</table>
-							<div class="btn-group" role="group" aria-label="RAB Button Group">
-								<input type="hidden" name="action" value="store_data">
-								<button type="submit" id="btnSave" class="btn merekdagang-grid-btn btn-primary btn-md" disabled on><i class="fas fa-save"></i> Save</button>
-							</div>
-							</form>
 						</div>
+						<div class="btn-group"  aria-label="RAB Button Group">
+							<input type="hidden" name="action" value="store_data">
+							<button type="submit" id="btnSave" class="btn merekdagang-grid-btn btn-primary btn-md" disabled on><i class="fas fa-save"></i> Save</button>
+						</div>
+						</form>
 					</div>
 				</div>
 			</div>

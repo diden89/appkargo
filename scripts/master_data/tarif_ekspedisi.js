@@ -56,7 +56,7 @@ function loadTarifKecData(rd_id)
 		success: function (result) {
 			if (result.success) {
 				$('.collaptable').find('tbody').html('');
-				$('.collaptable').find('tbody').append('<input type="hidden" value="'+rd_id+'" name="rd_id[]">');
+				$('.collaptable').find('tbody').append('<input type="hidden" value="'+rd_id+'" name="rd_id">');
 				// $('.collaptable').find('tbody').append('<input type="hidden" value="'+rsd_id+'" name="rsd_id[]">');
 				_generate_shipping(result.data);
 			} else if (typeof (result.msg) !== 'undefined') {
@@ -166,7 +166,7 @@ $(document).ready(function() {
 			success: function(result) {
 				if (result.success) {
 					toastr.success(msgSaveOk);
-					loadTreeMenuData(result.ud_id);
+					loadTarifKecData(result.rd_id);
 
 				} else if (typeof(result.msg) !== 'undefined') {
 					toastr.error(result.msg);

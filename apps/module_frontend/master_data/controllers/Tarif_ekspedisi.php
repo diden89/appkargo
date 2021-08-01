@@ -19,8 +19,8 @@ class Tarif_ekspedisi extends NOOBS_Controller
 	public function index()
 	{
 		$this->store_params['page_active'] = isset($this->store_params['page_active']) ? $this->store_params['page_active'] : 'Home';
-		$this->store_params['header_title'] = 'Menu Access User';
-		$this->store_params['pages_title'] = 'Access User List';
+		$this->store_params['header_title'] = 'Tarif Ekspedisi';
+		$this->store_params['pages_title'] = 'Tarif Ekspedisi';
 		$this->store_params['breadcrumb'] = array(
 			array('', 'Home'),
 			array('master_data/tarif_ekspedisi', 'Tarif Ekspedisi')
@@ -80,35 +80,40 @@ class Tarif_ekspedisi extends NOOBS_Controller
 			$get_kec_data = $this->db_tem->get_kec_data(array('rsd_is_active' => 'Y','rsd_district_id' => $_POST['rd_id']));
 			
 			$kec = array();
-
+			
 			if($get_kec_data->num_rows() > 0)
 			{
 				$get_s_district = array();
 				$get_a_district = array();
-				$t=0;
-				foreach($get_shipping_data->result() as $k => $v)
-				{
-					$get_s_district[$v->sh_cost] = $v->sh_rsd_id;
+				
+				foreach($get_shipping_data->result() as $k => $v) {
+					$get_s_district[$v->sh_id.'-'.$v->sh_cost] = $v->sh_rsd_id;
 					$get_a_district[$v->sh_id] = $v->sh_rsd_id;
-					// $get_s_district[$t]['sh_cost'] = $v->sh_cost;
-					$t++;
 				}
-				// print_r($get_s_district);exit;
+				
 				$i=0;
 				foreach($get_kec_data->result() as $gm => $mn)
-				{		
+				{
 					$sh_cost = array_search($mn->rsd_id, $get_s_district) ;
-					$sh_id = array_search($mn->rsd_id, $get_a_district) ? array_search($mn->rsd_id, $get_a_district) : '';
+					$sh_id = array_search($mn->rsd_id, $get_a_district) ;
+
+					$exp = explode('-',$sh_cost);
+					$shcost = "";
+					if(count($exp) == 2)
+					{
+						$shcost = $exp[1];
+					}
 					
 					$kec[$i] = (object) array(
 						'rsd_id' => $mn->rsd_id,
 						'rsd_name' =>$mn->rsd_name,
 						'sh_id' => $sh_id,
-						'sh_cost' => $sh_cost,
+						'sh_cost' => $shcost,
 						// 'checked' => $check,
 					);						
-					$i++;
+					$i++;			
 				}
+			
 			}
 			else
 			{
@@ -125,12 +130,74 @@ class Tarif_ekspedisi extends NOOBS_Controller
 					$i++;
 				}
 			}
-			// print_r($kec);
-			// exit;
+			
 			if (count($kec) > 0) echo json_encode(array('success' => TRUE, 'data' => $kec));
 			else echo json_encode(array('success' => TRUE));
 		} else $this->show_404();
 	}
+		// public function get_kec_data()
+	// {
+	// 	if (isset($_POST['action']) && $_POST['action'] == 'get_kec_data')
+	// 	{
+	// 		$success = FALSE;
+			
+	// 		$get_shipping_data = $this->db_tem->get_shipping_data(array('sh_is_active' => 'Y','sh_rd_id' => $_POST['rd_id']));
+			
+	// 		$get_kec_data = $this->db_tem->get_kec_data(array('rsd_is_active' => 'Y','rsd_district_id' => $_POST['rd_id']));
+			
+	// 		$kec = array();
+	// 		// print_r($get_shipping_data->result());exit;
+	// 		if($get_kec_data->num_rows() > 0)
+	// 		{
+	// 			$get_s_district = array();
+	// 			$get_a_district = array();
+	// 			$t=0;
+	// 			foreach($get_shipping_data->result() as $k => $v)
+	// 			{
+	// 				$get_s_district[$v->sh_cost] = $v->sh_rsd_id;
+	// 				$get_a_district[$v->sh_id] = $v->sh_rsd_id;
+	// 				// $get_s_district[$t]['sh_cost'] = $v->sh_cost;
+					
+	// 				$i=0;
+	// 				foreach($get_kec_data->result() as $gm => $mn)
+	// 				{		
+	// 					$sh_cost = array_search($mn->rsd_id, $get_s_district) ;
+	// 					$sh_id = array_search($mn->rsd_id, $get_a_district) ? array_search($mn->rsd_id, $get_a_district) : '';
+						
+	// 					$kec[$i] = (object) array(
+	// 						'rsd_id' => $mn->rsd_id,
+	// 						'rsd_name' =>$mn->rsd_name,
+	// 						'sh_id' => $sh_id,
+	// 						'sh_cost' => $sh_cost,
+	// 						// 'checked' => $check,
+	// 					);						
+	// 					$i++;
+	// 				}
+	// 				$t++;
+	// 			}
+	// 			// print_r($get_s_district);exit;
+	// 		}
+	// 		else
+	// 		{
+	// 			// $i=0;
+	// 			// foreach($get_kec_data->result() as $gm => $mn)
+	// 			// {		
+	// 			// 	$kec[$i] = (object) array(
+	// 			// 		'rsd_id' => $mn->rsd_id,
+	// 			// 		'rsd_name' =>$mn->rsd_name,
+	// 			// 		'sh_cost' => '',
+	// 			// 		'sh_id' => '',
+	// 			// 		'checked' => '',
+	// 			// 	);						
+	// 			// 	$i++;
+	// 			// }
+	// 		}
+	// 		print_r($kec);
+	// 		exit;
+	// 		if (count($kec) > 0) echo json_encode(array('success' => TRUE, 'data' => $kec));
+	// 		else echo json_encode(array('success' => TRUE));
+	// 	} else $this->show_404();
+	// }
 
 	public function store_data()
 	{
@@ -139,55 +206,23 @@ class Tarif_ekspedisi extends NOOBS_Controller
 		if (isset($post['action']) && ! empty($post['action']) && $post['action'] == 'store_data')
 		{
 			unset($post['action']);
+			
+			$delete = $this->db_tem->delete_shipping_cost($post);
 
-			if(isset($post['sh_id']))
-			{
-				$delete = $this->db_tem->delete_access_user($post);
-
-				$params = array();
-				$store_data = TRUE;
-				if(isset($post['rsd_id'])){
-					foreach ($post['rsd_id'] as $k => $v) {
-						$params = array(
-							'sh_rsd_id' => $post['rsd_id'],
-							'mau_menu_id' => $v,
-						);
-						$cek_am = $this->db_tem->cek_access_user($params);
-						if($cek_am->num_rows() > 0)
-						{
-							$get_am = $cek_am->row();
-							$params['mode'] = 'edit';
-							$params['mau_id'] = $get_am->mau_id;
-							
-							// print_r($params);
-							$store_data = $this->db_tem->store_data($params);
-						}
-						else
-						{
-							$params['mode'] = 'add';
-							$store_data = $this->db_tem->store_data($params);
-						}
-					}
+			$id = 0;
+			foreach($post['sh_cost'] as $k =>$v) {
+				if( ! empty($v) && $v !== "") {
+					$params['sh_rsd_id'] = $post['rsd_id'][$id];
+					$params['sh_rd_id'] = $post['rd_id'];
+					$params['sh_cost'] = $v;
+					$store_data = $this->db_tem->store_data($params);
 				}
-
-			}
-			else
-			{
-				foreach ($post['rsd_id'] as $k => $v) {
-					$params = array(
-						'mau_user_id' => $post['ud_id'],
-						'mau_menu_id' => $v,
-						'mode' => 'add',
-					);
-					
-					$params['mode'] = 'add';
-					$store_data = $this->db_tem->store_data($params);	
-				}
-			}
-
-			echo json_encode(array('success' => $store_data,'ud_id' => $post['ud_id']));
+				// echo $v;
+				$id++;
+			}			
+			echo json_encode(array('success' => $store_data,'rd_id' => $post['rd_id']));
 		}
 		else $this->show_404();
-	}
+	}	
 
 }
