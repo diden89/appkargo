@@ -32,7 +32,7 @@
 			<div class="form-group row">
 				<label for="url" class="col-sm-4 col-form-label">No Transaksi SO</label>
 				<div class="col-sm-8">
-					<select class="form-control select2"  name="txt_so" id="txt_so">
+					<select class="form-control select2"  name="txt_sales_order" id="txt_sales_order">
 						<option value="">-Select-</option>
 						<?php
 							foreach($sales_order as $k => $v)
@@ -96,7 +96,7 @@
 			<div class="form-group row">
 				<label for="caption" class="col-sm-4 col-form-label">Detail SO</label>
 				<div class="col-sm-8">
-					<select class="form-control select2"  name="detail_so" id="detail_so" disabled="disabled">
+					<select class="form-control select2"  name="detail_sales_order" id="detail_sales_order" disabled="disabled">
 					</select>
 				</div>
 			</div>

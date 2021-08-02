@@ -95,6 +95,28 @@ class Daftar_delivery_order extends NOOBS_Controller
 		else $this->show_404();
 	}
 
+	public function get_detail_so_option()
+	{
+		$post = $this->input->post(NULL, TRUE);
+
+
+		if (isset($post['action']) && ! empty($post['action']) && $post['action'] == 'get_detail_so_option')
+		{
+			unset($post['action']);
+
+			$get_detail_so_option = $this->db_daftar_delivery_order->get_detail_so_option($post);
+
+			if ($get_detail_so_option->num_rows() > 0) 
+			{
+				$result = $get_detail_so_option->result();
+
+				echo json_encode(array('success' => TRUE, 'data' => $result));
+			}
+			else echo json_encode(array('success' => FALSE, 'msg' => 'Data Not Found!'));
+		}
+		else $this->show_404();
+	}
+
 	public function get_item_list_option()
 	{
 		$post = $this->input->post(NULL, TRUE);

@@ -170,7 +170,7 @@ const daftarDeliveryOrderList = {
 		$('#sod_id').val(id);
 	},
 	showItem: function(el, mode) {
-		console.log(mode)
+		
 		const me = this;
 		let params = {action: 'load_daftar_delivery_order_form'};
 	
@@ -268,57 +268,57 @@ const daftarDeliveryOrderList = {
 					
 					// $('#so_no_trx').val($('#last_notrx').val());
 
-					$('#btnAddDetail').click(function(){
-						var qty = $('#sod_qty').val();
-							il_id = $('#il_id').val();
-							no_trx = $('#no_trx_id').val();
-							so_id = $('#sod_id').val();
+					// $('#btnAddDetail').click(function(){
+					// 	var qty = $('#sod_qty').val();
+					// 		il_id = $('#il_id').val();
+					// 		no_trx = $('#no_trx_id').val();
+					// 		so_id = $('#sod_id').val();
 
 							
-							if(no_trx == "")
-							{
-								Swal.fire({
-									title: 'No Transaksi Tidak Ditemukan',
-									text: "Nomor Transaksi Tidak Ditemukan, input Nomor Transaksi Terlebih Dahulu!",
-									type: 'warning',
-									showCancelButton: false,
-									confirmButtonColor: '#17a2b8',
-									cancelButtonColor: '#d33',
-									confirmButtonText: 'Close!'
-								})
-							}
-							else
-							{
-								$.ajax({
-									url: siteUrl('transaksi/daftar_delivery_order/store_data_temporary'),
-									type: 'POST',
-									dataType: 'JSON',
-									data: {
-										action: 'insert_temporary_data',
-										sod_qty: qty,
-										sod_item_id: il_id,
-										sod_no_trx: no_trx,
-										so_id: so_id,
-										mode : mode
-									},
-									success: function(result) {
-										if (result.success) {
-											toastr.success("Data succesfully added.");
-											daftarDeliveryOrderList._generateDeliveryDataTable(result.data);
+					// 		if(no_trx == "")
+					// 		{
+					// 			Swal.fire({
+					// 				title: 'No Transaksi Tidak Ditemukan',
+					// 				text: "Nomor Transaksi Tidak Ditemukan, input Nomor Transaksi Terlebih Dahulu!",
+					// 				type: 'warning',
+					// 				showCancelButton: false,
+					// 				confirmButtonColor: '#17a2b8',
+					// 				cancelButtonColor: '#d33',
+					// 				confirmButtonText: 'Close!'
+					// 			})
+					// 		}
+					// 		else
+					// 		{
+					// 			$.ajax({
+					// 				url: siteUrl('transaksi/daftar_delivery_order/store_data_temporary'),
+					// 				type: 'POST',
+					// 				dataType: 'JSON',
+					// 				data: {
+					// 					action: 'insert_temporary_data',
+					// 					sod_qty: qty,
+					// 					sod_item_id: il_id,
+					// 					sod_no_trx: no_trx,
+					// 					so_id: so_id,
+					// 					mode : mode
+					// 				},
+					// 				success: function(result) {
+					// 					if (result.success) {
+					// 						toastr.success("Data succesfully added.");
+					// 						daftarDeliveryOrderList._generateDeliveryDataTable(result.data);
 
-										} else if (typeof(result.msg) !== 'undefined') {
-											toastr.error(result.msg);
-										} else {
-											toastr.error(msgErr);
-										}
+					// 					} else if (typeof(result.msg) !== 'undefined') {
+					// 						toastr.error(result.msg);
+					// 					} else {
+					// 						toastr.error(msgErr);
+					// 					}
 										
-									},
-									error: function(error) {
-										toastr.error(msgErr);
-									}
-								});								
-							}
-					});
+					// 				},
+					// 				error: function(error) {
+					// 					toastr.error(msgErr);
+					// 				}
+					// 			});								
+					// 		}
+					// });
 
 					$('#created_date').inputmask('dd-mm-yyyy', { 'placeholder': 'DD-MM-YYYY' });
 					$('#created_date').noobsdaterangepicker({
@@ -330,96 +330,88 @@ const daftarDeliveryOrderList = {
 						}
 					});
 
-					$('#v_vendor_id').change(function() {
+					// $('#v_vendor_id').change(function() {
+					// 	var me = $(this);
+
+					// 	if (me.val() !== '') {
+							
+					// 		daftarDeliveryOrderList.generateItemList(me.val());
+
+					// 	} else {
+					// 		$('#il_id').html($('<option>', {
+					// 			value: '',
+					// 			text: 'Item Barang'
+					// 		}));
+
+					// 		$('#il_id').attr('disabled', true);
+					// 	}
+					// });
+
+					$('#txt_sales_order').change(function() {
 						var me = $(this);
 
 						if (me.val() !== '') {
 							
-							daftarDeliveryOrderList.generateItemList(me.val());
-
-						} else {
-							$('#il_id').html($('<option>', {
-								value: '',
-								text: 'Item Barang'
-							}));
-
-							$('#il_id').attr('disabled', true);
-						}
-					});
-
-					$('#txt_so').change(function() {
-						var me = $(this);
-
-						if (me.val() !== '') {
-							
+							// $('#detail_sales_order').attr('disabled', true);
 							daftarDeliveryOrderList.generateDetailSO(me.val());
 
 						} else {
-							$('#detail_so').html($('<option>', {
+							$('#detail_sales_order').attr('disabled', true);
+							$('#detail_sales_order').html($('<option>', {
 								value: '',
-								text: '--Detail SO--'
+								text: '--Detail SO ikonyo--'
 							}));
 
-							$('#detail_so').attr('disabled', true);
 						}
 					});
-					$('#il_id').change(function() {
+					// $('#il_id').change(function() {
 						
-						$('#sod_qty').val('');
-						$('#sod_id').val('');
+					// 	$('#sod_qty').val('');
+					// 	$('#sod_id').val('');
 						
-					});
-					$('#txt_so').change(function() {
-						var me = $(this);
-				
-							if (me.val() !== '') {
+					// });
+					
+
+					// $('#txtName').noobsautocomplete({
+					// 	remote: true,
+					// 	placeholder: 'Find data.',
+					// 	proxy: {
+					// 		url: siteUrl('transaksi/daftar_delivery_order/get_customer_option'),
+					// 		method: 'post',
+					// 		data: {
+					// 			action: 'get_customer_option'
+					// 		},
+					// 	},
+					// 	listeners: {
+					// 		onselect: function(data) {
+					// 			// USER.gridUser.reloadData({
+					// 			// 	txt_id: $('#txtName').val()
+					// 			// });
+					// 			$('#txtName').val()
+					// 		},
+					// 		onclear: function(obj) {
+					// 			// USER.gridUser.reloadData({});
+					// 		}
+					// 	}
+					// });
+
+					// $('#txt_region').change(function() {
+					// 	var me = $(this);
+					// 	// console.log(me)
+
+					// 		if (me.val() !== '') {
 								
-								// daftarDeliveryOrderList.generateCustomer();
-								daftarDeliveryOrderList.loadDataItemDelivery(me.val());
+					// 			daftarDeliveryOrderList.generateDistrict(me.val());
 
-							}
-					});
+					// 		} else {
+					// 			$('#txt_district').html($('<option>', {
+					// 				value: '',
+					// 				text: 'Pilih Kabupaten/Kota'
+					// 			}));
 
-					$('#txtName').noobsautocomplete({
-						remote: true,
-						placeholder: 'Find data.',
-						proxy: {
-							url: siteUrl('transaksi/daftar_delivery_order/get_customer_option'),
-							method: 'post',
-							data: {
-								action: 'get_customer_option'
-							},
-						},
-						listeners: {
-							onselect: function(data) {
-								// USER.gridUser.reloadData({
-								// 	txt_id: $('#txtName').val()
-								// });
-								$('#txtName').val()
-							},
-							onclear: function(obj) {
-								// USER.gridUser.reloadData({});
-							}
-						}
-					});
-
-					$('#txt_region').change(function() {
-						var me = $(this);
-						// console.log(me)
-
-							if (me.val() !== '') {
-								
-								daftarDeliveryOrderList.generateDistrict(me.val());
-
-							} else {
-								$('#txt_district').html($('<option>', {
-									value: '',
-									text: 'Pilih Kabupaten/Kota'
-								}));
-
-								$('#txt_district').attr('disabled', true);
-							}
-					});
+					// 			$('#txt_district').attr('disabled', true);
+					// 		}
+					// });
 
 					// console.log(mode)				
 				}
@@ -428,8 +420,8 @@ const daftarDeliveryOrderList = {
 
 	},
 	generateDetailSO: function(so_id, sod_id = false) {
-		var itemList = $('#il_id');
-			// console.log(provinceId)
+		var detailSO = $('#txt_sales_order');
+			
 			$.ajax({
 				url: siteUrl('transaksi/daftar_delivery_order/get_detail_so_option'),
 				type: 'POST',
@@ -437,34 +429,34 @@ const daftarDeliveryOrderList = {
 				beforeSend: function() {},
 				complete: function() {},
 				data: {
-					action: 'get_item_list_option',
-					vendor_id: vendor_id
+					action: 'get_detail_so_option',
+					prov_id: provinceId
 				},
 				success: function (result) {
 					if (result.success) {
 						var data = result.data;
 
-						itemList.attr('disabled', false);
+						region.attr('disabled', false);
 
-						itemList.html($('<option>', {
+						region.html($('<option>', {
 							value: '',
-							text: '--Pilih Item--'
+							text: '--Pilih Kabupaten / Kota--'
 						}));
 						
 						data.forEach(function (newData) {
-							itemList.append($('<option>', {
-								value: newData.sod_id,
-								text: newData.il_item_name
+							region.append($('<option>', {
+								value: newData.rd_id,
+								text: newData.rd_name
 							}));
 						});
 
-						if (sod_id !== false) itemList.val(sod_id);
+						if (regionId !== false) region.val(regionId);
 
 					} else {
 
-						itemList.html($('<option>', {
+						region.html($('<option>', {
 							value: '',
-							text: 'Item Barang Tidak Ditemukan!'
+							text: 'Kabupaten tidak ditemukan!'
 						}));
 					}
 				},
@@ -521,7 +513,7 @@ const daftarDeliveryOrderList = {
 	},
 	generateRegion: function(provinceId, regionId = false) {
 		var region = $('#txt_region');
-			console.log(regionId)
+			// console.log(regionId)
 			$.ajax({
 				url: siteUrl('transaksi/daftar_delivery_order/get_region_option'),
 				type: 'POST',
