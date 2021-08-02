@@ -91,8 +91,8 @@
 											<td><?php echo $v->il_item_name; ?></td>
 											<td><?php echo $v->d_name.' / '.$v->ve_license_plate; ?></td>
 											<td><?php echo $v->c_address.'<br>Kec. '.$v->rsd_name; ?></td>
-											<td><?php echo $v->sod_qty; ?></td>
-											<td><?php echo number_format($v->ongkir); ?></td>
+											<td><?php echo number_format($v->dod_shipping_qty); ?></td>
+											<td><?php echo number_format($v->dod_ongkir); ?></td>
 											<td><?php echo date('d-m-Y H:i:s',strtotime($v->dod_created_date)); ?></td>
 											<td><?php echo $v->dod_is_status; ?></td>
 											<td>

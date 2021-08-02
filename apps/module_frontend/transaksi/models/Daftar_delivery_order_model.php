@@ -14,7 +14,8 @@ class Daftar_delivery_order_model extends NOOBS_Model
 	public function load_data_daftar_delivery_order($params = array())
 	{
 		// print_r($params);exit;
-		$this->db->select('*,(select (sod.sod_qty * sh_cost) as cost from shipping where sh_rsd_id = c.c_district_id) as ongkir');
+		// $this->db->select('*,(select (dod.dod_shipping_qty * sh_cost) as cost from shipping where sh_rsd_id = c.c_district_id) as ongkir');
+		$this->db->select('*');
 		$this->db->from('delivery_order_detail as dod');
 		$this->db->join('customer as c','c.c_id = dod.dod_customer_id','LEFT');
 		$this->db->join('sales_order_detail as sod','sod.sod_id = dod.dod_sod_id','LEFT');
@@ -66,14 +67,18 @@ class Daftar_delivery_order_model extends NOOBS_Model
 
 	public function store_data_daftar_delivery_order($params = array())
 	{
-		$this->table = 'sales_order';
+		$this->table = 'delivery_order_detail';
 
 		$new_params = array(
-			'so_vendor_id' => $params['v_vendor_id'],
-			'so_district_id' => $params['txt_region'],
-			'so_no_trx' => $params['last_notrx'],
-			'so_is_status' => 'ORDER',
-			'so_created_date' => date('Y-m-d H:i:s', strtotime($params['so_created_date'])),
+			'dod_no_trx' => $params['no_trx'],
+			'dod_sod_id' => $params['dod_sod_id'],
+			'dod_driver_id' => $params['dod_driver_id'],
+			'dod_customer_id' => $params['dod_customer_id'],
+			'dod_vehicle_id' => $params['dod_vehicle_id'],
+			'dod_shipping_qty' => $params['dod_shipping_qty'],
+			'dod_ongkir' => str_replace(',','',$params['dod_ongkir']),
+			'dod_is_status' => 'MUAT',
+			'dod_created_date' => date('Y-m-d H:i:s', strtotime($params['dod_created_date'])),
 		);
 
 		if ($params['mode'] == 'add') $this->add($new_params, TRUE);
@@ -82,9 +87,9 @@ class Daftar_delivery_order_model extends NOOBS_Model
 		return $this->load_data_daftar_delivery_order();
 	}
 
-	public function store_detail_so($params = array())
+	public function store_detail_do($params = array())
 	{
-		$this->table = 'sales_order_detail';
+		$this->table = 'delivery_order_detail';
 
 		$new_params = array(
 			'sod_no_trx' => $params['sod_no_trx'],
@@ -131,12 +136,82 @@ class Daftar_delivery_order_model extends NOOBS_Model
 		return $this->db->get('sales_order');
  	}
 
-	public function get_option_so()
+	public function get_detail_so_option($params) //dipakai
+	{
+		$this->db->select('*');
+		$this->db->from('sales_order_detail as sod');
+		$this->db->join('sales_order as so','sod.sod_no_trx = so.so_no_trx','LEFT');
+		$this->db->join('item_list as il','il.il_id = sod.sod_item_id','LEFT');
+
+		if (isset($params['so_id']) && ! empty($params['so_id']))
+		{
+			$this->db->where('so.so_id', strtoupper($params['so_id']));
+		}
+
+		$this->db->where('sod.sod_flag', 'N');
+		$this->db->where('sod_is_active', 'Y');
+		$this->db->order_by('sod.sod_id', 'ASC');
+		
+		return $this->db->get();
+ 	}
+
+ 	public function get_option_so()//dipakai
 	{
 		$this->db->where('so_is_status', 'ORDER');
-		$this->db->order_by('so_no_trx', 'ASC');
+		$this->db->where('so_is_active', 'Y');
 		
 		return $this->db->get('sales_order');
+ 	}
+
+ 	public function get_realisasi_qty($params)//dipakai
+	{
+		$this->db->select('*,sod.sod_qty - (select sum(dod_shipping_qty) from delivery_order_detail where dod_sod_id = sod.sod_id) as qty_real');
+		$this->db->from('sales_order_detail as sod');
+		$this->db->where('sod.sod_is_active', 'Y');
+
+		if (isset($params['sod_id']) && ! empty($params['sod_id']))
+		{
+			$this->db->where('sod.sod_id', strtoupper($params['sod_id']));
+		}
+
+		return $this->db->get();
+ 	}
+
+ 	public function get_ongkir_district($params)//dipakai
+	{
+		$this->db->select('*');
+		$this->db->from('customer as c');
+		$this->db->join('shipping as sh','c.c_district_id = sh.sh_rsd_id');
+
+		$this->db->where('c.c_is_active', 'Y');
+		
+		if (isset($params['c_id']) && ! empty($params['c_id']))
+		{
+			$this->db->where('c_id', strtoupper($params['c_id']));
+		}
+
+		return $this->db->get();
+ 	}
+
+ 	public function get_option_customer()//dipakai
+	{
+		$this->db->where('c_is_active', 'Y');
+		
+		return $this->db->get('customer');
+ 	}
+
+ 	public function get_option_vehicle()//dipakai
+	{
+		$this->db->where('ve_is_active', 'Y');
+		
+		return $this->db->get('vehicle');
+ 	}
+
+ 	public function get_option_driver()//dipakai
+	{
+		$this->db->where('d_is_active', 'Y');
+		
+		return $this->db->get('driver');
  	}
 
  	public function get_region_option($params)

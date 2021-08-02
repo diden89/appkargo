@@ -58,6 +58,39 @@ class Daftar_delivery_order extends NOOBS_Controller
 		$this->view('daftar_delivery_order_view');
 	}
 
+	public function load_do_data()
+	{
+		$post = $this->input->post(NULL, TRUE);
+
+		// print_r($post);exit;
+		if (isset($post['action']) && ! empty($post['action']) && $post['action'] == 'load_data_daftar_delivery_order')
+		{
+			unset($post['action']);
+
+			$load_data_daftar_delivery_order = $this->db_daftar_delivery_order->load_data_daftar_delivery_order($post);
+
+			if ($load_data_daftar_delivery_order->num_rows() > 0) 
+			{
+				$result = $load_data_daftar_delivery_order->result();
+				$num = 0;
+
+				foreach ($result as $k => $v)
+				{
+					$num++;
+
+					$v->num = $num;
+					$v->dod_created_date = date('d-m-Y H:i:s',strtotime($v->dod_created_date));
+					$v->dod_shipping_qty = number_format($v->dod_shipping_qty);
+					$v->dod_ongkir = number_format($v->dod_ongkir);
+				}
+
+				echo json_encode(array('success' => TRUE, 'data' => $result));
+			}
+			else echo json_encode(array('success' => FALSE, 'msg' => 'Data Not Found!'));
+		}
+		else $this->show_404();
+	}
+
 	public function load_daftar_delivery_order_form()
 	{
 		if (isset($_POST['action']) && $_POST['action'] == 'load_daftar_delivery_order_form')
@@ -68,6 +101,9 @@ class Daftar_delivery_order extends NOOBS_Controller
 			);
 
 			$post['sales_order'] = $this->db_daftar_delivery_order->get_option_so()->result();
+			$post['customer'] = $this->db_daftar_delivery_order->get_option_customer()->result();
+			$post['vehicle'] = $this->db_daftar_delivery_order->get_option_vehicle()->result();
+			$post['driver'] = $this->db_daftar_delivery_order->get_option_driver()->result();
 			$post['vendor'] = $this->db_daftar_delivery_order->get_option_vendor()->result();
 			$post['item_list'] = $this->db_daftar_delivery_order->get_option_item_list()->result();
 			$get_last_notrx = $this->db_daftar_delivery_order->get_last_notrx();
@@ -99,7 +135,7 @@ class Daftar_delivery_order extends NOOBS_Controller
 	{
 		$post = $this->input->post(NULL, TRUE);
 
-
+		// print_r($post);exit;
 		if (isset($post['action']) && ! empty($post['action']) && $post['action'] == 'get_detail_so_option')
 		{
 			unset($post['action']);
@@ -113,6 +149,50 @@ class Daftar_delivery_order extends NOOBS_Controller
 				echo json_encode(array('success' => TRUE, 'data' => $result));
 			}
 			else echo json_encode(array('success' => FALSE, 'msg' => 'Data Not Found!'));
+		}
+		else $this->show_404();
+	}
+
+	public function get_realisasi_qty()
+	{
+		$post = $this->input->post(NULL, TRUE);
+
+
+		if (isset($post['action']) && ! empty($post['action']) && $post['action'] == 'get_realisasi_qty')
+		{
+			unset($post['action']);
+
+			$get_realisasi_qty = $this->db_daftar_delivery_order->get_realisasi_qty($post);
+
+			if ($get_realisasi_qty->num_rows() > 0) 
+			{
+				$res = $get_realisasi_qty->row();
+
+				echo json_encode(array('success' => TRUE, 'qty_real' => $res->qty_real));
+			}
+			else echo json_encode(array('success' => FALSE, 'msg' => 'Data Not Found!'));
+		}
+		else $this->show_404();
+	}
+
+	public function get_ongkir_district()
+	{
+		$post = $this->input->post(NULL, TRUE);
+
+
+		if (isset($post['action']) && ! empty($post['action']) && $post['action'] == 'get_ongkir_district')
+		{
+			unset($post['action']);
+
+			$get_ongkir_district = $this->db_daftar_delivery_order->get_ongkir_district($post);
+
+			if ($get_ongkir_district->num_rows() > 0) 
+			{
+				$res = $get_ongkir_district->row();
+
+				echo json_encode(array('success' => TRUE, 'ongkir_temp' => $res->sh_cost));
+			}
+			else echo json_encode(array('success' => FALSE, 'ongkir_temp' => '0'));
 		}
 		else $this->show_404();
 	}
@@ -258,7 +338,7 @@ class Daftar_delivery_order extends NOOBS_Controller
 
 	public function store_data_daftar_delivery_order()
 	{
-		// print_r($_POST);exit;
+		print_r($_POST);exit;
 		if (isset($_POST['action']) && $_POST['action'] == 'store_data_daftar_delivery_order')
 		{
 			$post = $this->input->post(NULL, TRUE);
@@ -284,22 +364,25 @@ class Daftar_delivery_order extends NOOBS_Controller
 		else $this->show_404();
 	}
 
-	public function store_data_temporary()
+	public function store_data_detail_delivery_order()
 	{
-		if (isset($_POST['action']) && $_POST['action'] == 'insert_temporary_data')
+		if (isset($_POST['action']) && $_POST['action'] == 'insert_delivery_order')
 		{
 			$post = $this->input->post(NULL, TRUE);
 			// print_r($post);exit;
-			$store_detail_so = $this->db_daftar_delivery_order->store_detail_so($post);
+			$store_data_daftar_delivery_order = $this->db_daftar_delivery_order->store_data_daftar_delivery_order($post);
 
-			if ($store_detail_so->num_rows() > 0) 
+			if ($store_data_daftar_delivery_order->num_rows() > 0) 
 			{
-				$result = $store_detail_so->result();
+				$result = $store_data_daftar_delivery_order->result();
 				$number = 1;
 
 				foreach ($result as $k => $v)
 				{
-					$v->no = $number;
+					$v->num = $number;
+					$v->dod_created_date = date('d-m-Y H:i:s',strtotime($v->dod_created_date));
+					$v->dod_shipping_qty = number_format($v->dod_shipping_qty);
+					$v->dod_ongkir = number_format($v->dod_ongkir);
 
 					$number++;
 				}
