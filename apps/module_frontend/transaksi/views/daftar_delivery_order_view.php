@@ -66,19 +66,19 @@
 				<div class="row">
 					<div class="col-12">
 						<div class="excel-data-table-container">
-							<table id="ignoredItemDataTable" style="width: 1480px;" class="table table-hover table-striped no-footer" role="grid" aria-describedby="wordDataTable_info">
+							<table id="ignoredItemDataTable" style="width: 100%;" class="table table-hover table-striped no-footer" role="grid" aria-describedby="wordDataTable_info">
 								<thead>
 									<tr role="row">
 										<th width="10">No</th>
-										<th width="150">No Transaksi</th>
-										<th width="150">Nama Pelanggan</th>
-										<th width="120">Nama Barang</th>
-										<th width="200">Pengemudi / Kendaraan</th>
-										<th width="300">Alamat Pengiriman</th>
-										<th width="150">Berat / Kg</th>
-										<th width="50">Biaya</th>
-										<th width="200">Tanggal Pengiriman</th>
-										<th width="100">Status</th>
+										<th>No Transaksi</th>
+										<th>Nama Pelanggan</th>
+										<th>Nama Barang</th>
+										<th>Pengemudi / Kendaraan</th>
+										<th >Alamat Pengiriman</th>
+										<th>Berat / Kg</th>
+										<th>Biaya</th>
+										<th>Tanggal Pengiriman</th>
+										<th>Status</th>
 										<th width="100">Action</th>
 									</tr>
 								</thead>
