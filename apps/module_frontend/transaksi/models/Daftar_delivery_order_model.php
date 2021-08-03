@@ -19,6 +19,7 @@ class Daftar_delivery_order_model extends NOOBS_Model
 		$this->db->from('delivery_order_detail as dod');
 		$this->db->join('customer as c','c.c_id = dod.dod_customer_id','LEFT');
 		$this->db->join('sales_order_detail as sod','sod.sod_id = dod.dod_sod_id','LEFT');
+		$this->db->join('sales_order as so','sod.sod_no_trx = so.so_no_trx','LEFT');
 		$this->db->join('ref_sub_district as rsd','rsd.rsd_id = c.c_district_id','LEFT');
 		$this->db->join('vehicle as ve','ve.ve_id = dod.dod_vehicle_id','LEFT');
 		$this->db->join('driver as d','d.d_id = dod.dod_driver_id','LEFT');
@@ -32,6 +33,11 @@ class Daftar_delivery_order_model extends NOOBS_Model
 		if (isset($params['txt_id']) && ! empty($params['txt_id']))
 		{
 			$this->db->where('dod.dod_id', strtoupper($params['txt_id']));
+		}
+
+		if (isset($params['so_id']) && ! empty($params['so_id']))
+		{
+			$this->db->where('so.so_id', strtoupper($params['so_id']));
 		}
 
 		if (isset($params['date_range1']) && ! empty($params['date_range1']))

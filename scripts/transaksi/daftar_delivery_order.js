@@ -133,6 +133,36 @@ const daftarDeliveryOrderList = {
 
 		$this.html(body);
 	},
+	_generateTemporaryDataTable: (data) => {
+		const $this = $('#temporaryDataTable tbody');
+
+		$this.html('');
+
+		let body = '';
+
+		$.each(data, (idx, item) => {
+			body += '<tr>';
+			body += '<td>' + item.num + '</td>';
+			body += '<td>' + item.dod_no_trx + '</td>';
+			body += '<td>' + item.c_name + '</td>';
+			body += '<td>' + item.il_item_name + '</td>';
+			body += '<td>' + item.d_name + ' / ' + item.ve_license_plate + '</td>';
+			body += '<td>' + item.c_address + '<br>' + item.rsd_name + '</td>';
+			body += '<td>' + item.dod_shipping_qty + '</td>';
+			body += '<td>' + item.dod_ongkir + '</td>';
+			body += '<td>' + item.dod_created_date + '</td>';
+			body += '<td>' + item.dod_is_status + '</td>';
+			body += '<td>';
+				body += '<div class="btn-group btn-group-sm" role="group" aria-label="Action Button">';
+					body += '<button type="button" class="btn btn-success" data-id="' + item.dod_id + '" data-no_trx="' + item.dod_no_trx + '" onclick="daftarDeliveryOrderList.showItem(this, \'edit\');"><i class="fas fa-edit"></i></button>';
+					body += '<button type="button" class="btn btn-danger" data-id="' + item.dod_id + '"  data-no_trx="' + item.dod_no_trx + '" onclick="daftarDeliveryOrderList.deleteDataItem(this);"><i class="fas fa-trash-alt"></i></button>';
+				body += '</div>';
+			body += '</td>';
+			body += '</tr>';
+		});
+
+		$this.html(body);
+	},
 	showItem: function(el, mode) {
 		
 		const me = this;
@@ -268,7 +298,7 @@ const daftarDeliveryOrderList = {
 									success: function(result) {
 										if (result.success) {
 											toastr.success("Data succesfully added.");
-											daftarDeliveryOrderList._generateItemDataTable(result.data);
+											daftarDeliveryOrderList._generateTemporaryDataTable(result.data);
 
 										} else if (typeof(result.msg) !== 'undefined') {
 											toastr.error(result.msg);
@@ -452,10 +482,40 @@ const daftarDeliveryOrderList = {
 							}));
 						});
 
+						$('#temporaryDataTable tbody').html('');
+
+						$.ajax({
+							url: siteUrl('transaksi/daftar_delivery_order/load_do_data'),
+							type: 'POST',
+							dataType: 'JSON',
+							data : {
+								action : 'load_data_daftar_delivery_order',
+								so_id : so_id
+							},
+							success: function(result) {
+								if (result.success) {
+									toastr.success("Data succesfully added.");
+									daftarDeliveryOrderList._generateTemporaryDataTable(result.data);
+
+								} else if (typeof(result.msg) !== 'undefined') {
+									toastr.error(result.msg);
+								} else {
+									toastr.error(msgErr);
+								}
+								
+							},
+							error: function(error) {
+								toastr.error(msgErr);
+							}
+						});	
+
+
 						if (sod_id !== false) detailSO.val(sod_id);
 
 					} else {
 
+						$('#temporaryDataTable tbody').html('');
+						
 						detailSO.html($('<option>', {
 							value: '',
 							text: 'Data tidak ditemukan!'
