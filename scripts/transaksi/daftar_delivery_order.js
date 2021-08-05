@@ -172,10 +172,10 @@ const daftarDeliveryOrderList = {
 		if (mode == 'edit') {
 			params.mode = mode;
 			title = 'Edit';
-			params.txt_item = $(el).data('item');
-			params.txt_id = $(el).data('id');
-			params.rd_id = $(el).data('rd_id');
-			params.rsd_id = $(el).data('rsd_id');
+			// params.txt_item = $(el).data('item');
+			// params.txt_id = $(el).data('id');
+			// params.rd_id = $(el).data('rd_id');
+			// params.rsd_id = $(el).data('rsd_id');
 		}
 		else
 		{
@@ -266,6 +266,7 @@ const daftarDeliveryOrderList = {
 
 							params.qty = $('#sod_qty').val();
 							params.dod_sod_id = $('#detail_sales_order').val();
+							params.so_id = $('#so_id').val();
 							params.dod_customer_id = $('#c_id').val();
 							params.dod_vehicle_id = $('#dod_vehicle_id').val();
 							params.dod_driver_id = $('#dod_driver_id').val();
@@ -275,9 +276,33 @@ const daftarDeliveryOrderList = {
 							params.dod_created_date = $('#created_date').val();
 							params.mode = $('#mode').val();
 							
-							
-							if(params.dod_ongkir == "")
-							{
+							// console.log(params.qty)
+							// console.log(params.dod_shipping_qty)
+							// if(params.dod_shipping_qty >= params.qty)
+							// {
+							// 	Swal.fire({
+							// 		title: 'Berat Melebihi Pesanan',
+							// 		text: "Anda tidak bisa menambahkan transaksi, berat melebihi pesanan!",
+							// 		type: 'warning',
+							// 		showCancelButton: false,
+							// 		confirmButtonColor: '#17a2b8',
+							// 		cancelButtonColor: '#d33',
+							// 		confirmButtonText: 'Close!'
+							// 	})
+							// } 
+							// else 
+								if(params.qty == '0') {
+								Swal.fire({
+									title: 'Order Sudah Terpenuhi',
+									text: "Anda tidak bisa menambahkan transaksi, order sudah terpenuhi!",
+									type: 'warning',
+									showCancelButton: false,
+									confirmButtonColor: '#17a2b8',
+									cancelButtonColor: '#d33',
+									confirmButtonText: 'Close!'
+								})
+							} 
+							else if(params.no_trx == ""){
 								Swal.fire({
 									title: 'No Transaksi Tidak Ditemukan',
 									text: "Nomor Transaksi Tidak Ditemukan, input Nomor Transaksi Terlebih Dahulu!",
@@ -298,7 +323,18 @@ const daftarDeliveryOrderList = {
 									success: function(result) {
 										if (result.success) {
 											toastr.success("Data succesfully added.");
+
+											$('#c_id').prop('selectedIndex',0);
+											$('#dod_vehicle_id').prop('selectedIndex',0);
+											$('#dod_driver_id').prop('selectedIndex',0);
+											$('#sod_shipping_qty').val('');
+											$('#sod_qty').val('');
+											$('#dod_ongkir_temp').val('');
+											$('#dod_ongkir').val('');
+											$('#no_trx_do').val('');
+
 											daftarDeliveryOrderList._generateTemporaryDataTable(result.data);
+											daftarDeliveryOrderList.generateDetailSO(params.so_id);
 
 										} else if (typeof(result.msg) !== 'undefined') {
 											toastr.error(result.msg);
@@ -315,23 +351,6 @@ const daftarDeliveryOrderList = {
 					});
 
 
-					// $('#v_vendor_id').change(function() {
-					// 	var me = $(this);
-
-					// 	if (me.val() !== '') {
-							
-					// 		daftarDeliveryOrderList.generateItemList(me.val());
-
-					// 	} else {
-					// 		$('#il_id').html($('<option>', {
-					// 			value: '',
-					// 			text: 'Item Barang'
-					// 		}));
-
-					// 		$('#il_id').attr('disabled', true);
-					// 	}
-					// });
-
 					$('#txt_sales_order').change(function() {
 						var me = $(this);
 
@@ -344,7 +363,7 @@ const daftarDeliveryOrderList = {
 							$('#detail_sales_order').attr('disabled', true);
 							$('#detail_sales_order').html($('<option>', {
 								value: '',
-								text: '--Detail SO ikonyo--'
+								text: '--Detail Sales Order--'
 							}));
 
 						}
@@ -469,6 +488,8 @@ const daftarDeliveryOrderList = {
 						 $('#no_trx_do').attr('disabled', false);
 						 $('#dod_vehicle_id').attr('disabled', false);
 						 $('#dod_driver_id').attr('disabled', false);
+						 $('#btnAddDetail').attr('disabled', false);
+						 $('#so_id').val(so_id);
 
 						detailSO.html($('<option>', {
 							value: '',
@@ -511,6 +532,8 @@ const daftarDeliveryOrderList = {
 
 
 						if (sod_id !== false) detailSO.val(sod_id);
+
+						daftarDeliveryOrderList.generateCustomer(so_id)
 
 					} else {
 
@@ -665,8 +688,8 @@ const daftarDeliveryOrderList = {
 				}
 			});
 	},
-	generateCustomer: function(c_id = false) {
-		var customer = $('#txt_pelanggan');
+	generateCustomer: function(so_id, c_id = false) {
+		var customer = $('#c_id');
 			
 			$.ajax({
 				url: siteUrl('transaksi/daftar_delivery_order/get_customer_option'),
@@ -675,7 +698,8 @@ const daftarDeliveryOrderList = {
 				beforeSend: function() {},
 				complete: function() {},
 				data: {
-					action: 'get_customer_option'
+					action: 'get_customer_option',
+					so_id : so_id
 				},
 				success: function (result) {
 					if (result.success) {

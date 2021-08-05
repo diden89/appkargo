@@ -71,7 +71,7 @@ class Daftar_delivery_order_model extends NOOBS_Model
 		return $this->db->get();
  	}
 
-	public function store_data_daftar_delivery_order($params = array())
+	public function store_data_daftar_delivery_order($params = array()) //dipakai
 	{
 		$this->table = 'delivery_order_detail';
 
@@ -91,6 +91,30 @@ class Daftar_delivery_order_model extends NOOBS_Model
 		else $this->edit($new_params, "so_id = {$params['txt_id']}");
 
 		return $this->load_data_daftar_delivery_order();
+	}
+
+
+	public function get_quantity($params = array()) //dipakai
+	{
+		if (isset($params['dod_sod_id']) && ! empty($params['dod_sod_id']))
+		{
+			$this->db->where('sod_id', strtoupper($params['dod_sod_id']));
+		}
+		
+		return $this->db->get('sales_order_detail');
+ 	}
+
+	public function update_quantity_sales_order_detail($params = array()) //dipakai
+	{
+		$this->table = 'sales_order_detail';
+
+		$new_params = array(
+			'sod_realisasi' => $params['new_qty']
+		);
+
+		return $this->edit($new_params, "sod_id = {$params['dod_sod_id']}");
+
+		// return $this->load_data_daftar_delivery_order();
 	}
 
 	public function store_detail_do($params = array())
@@ -171,7 +195,8 @@ class Daftar_delivery_order_model extends NOOBS_Model
 
  	public function get_realisasi_qty($params)//dipakai
 	{
-		$this->db->select('*,sod.sod_qty - (select sum(dod_shipping_qty) from delivery_order_detail where dod_sod_id = sod.sod_id) as qty_real');
+		// $this->db->select('*,sod.sod_qty - (select sum(dod_shipping_qty) from delivery_order_detail where dod_sod_id = sod.sod_id) as qty_real');
+		$this->db->select('*,(sod.sod_qty - sod.sod_realisasi) as qty_real');
 		$this->db->from('sales_order_detail as sod');
 		$this->db->where('sod.sod_is_active', 'Y');
 
@@ -253,12 +278,11 @@ class Daftar_delivery_order_model extends NOOBS_Model
 		return $this->db->get('ref_sub_district');
  	}
 
- 	public function get_customer_option($params)
+ 	public function get_customer_option($params) //dipakai
 	{
-		// $this->db->where('rsd_district_id', $params['district_id']);
-		$this->db->order_by('c_name', 'ASC');
+		$query = "select * from customer where c_district_id in (select rsd.rsd_id from ref_sub_district as rsd left join sales_order as so on rsd.rsd_district_id = so.so_district_id where so.so_id = {$params['so_id']} order by c_name ASC)";
 		
-		return $this->db->get('customer');
+		return $this->db->query($query);
  	}
 
 	public function get_option_vendor()
