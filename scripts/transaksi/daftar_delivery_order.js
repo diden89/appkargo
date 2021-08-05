@@ -183,6 +183,8 @@ const daftarDeliveryOrderList = {
 			title = 'Add';
 		}
 
+		
+
 		$('#txt_province').on('select',function(){
 		});
 
@@ -225,7 +227,43 @@ const daftarDeliveryOrderList = {
 					});
 					// popup.close();
 				}
-			}],
+			},
+			{
+				btnId: 'printDO',
+				btnText:'Print',
+				btnClass: 'success',
+				btnIcon: 'fas fa-print',
+				btnDisabled: 'disabled',
+				onclick: function(popup) {
+
+					var so_id = $('#txt_sales_order').val();
+
+					$.ajax({
+						url: siteUrl('transaksi/daftar_delivery_order/print_delivery_order'),
+						type: 'POST',
+						dataType: 'JSON',
+						data: {
+							action : 'print_delivery_order',
+							so_id : so_id
+						},
+						success: function(result) {
+							if (result.success) {
+								// toastr.success('msgSaveOk');
+								me._generateItemDataTable(result.data);
+							} else if (typeof(result.msg) !== 'undefined') toastr.error(result.msg);
+							else toastr.error(msgErr);
+
+							popup.close();
+
+						},
+						error: function(error) {
+							toastr.error(msgErr);
+						}
+					});
+					// popup.close();
+				}
+			},
+			],
 			listeners: {
 				onshow: function(popup) {
 					
@@ -325,8 +363,8 @@ const daftarDeliveryOrderList = {
 											toastr.success("Data succesfully added.");
 
 											$('#c_id').prop('selectedIndex',0);
-											$('#dod_vehicle_id').prop('selectedIndex',0);
-											$('#dod_driver_id').prop('selectedIndex',0);
+											// $('#dod_vehicle_id').prop('selectedIndex',0);
+											// $('#dod_driver_id').prop('selectedIndex',0);
 											$('#sod_shipping_qty').val('');
 											$('#sod_qty').val('');
 											$('#dod_ongkir_temp').val('');
@@ -358,6 +396,8 @@ const daftarDeliveryOrderList = {
 							
 							// $('#detail_sales_order').attr('disabled', true);
 							daftarDeliveryOrderList.generateDetailSO(me.val());
+							$('#printDO').attr('disabled', false);
+
 
 						} else {
 							$('#detail_sales_order').attr('disabled', true);

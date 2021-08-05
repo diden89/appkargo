@@ -135,6 +135,7 @@
 						var bFooterBtn = $('<button />').addClass('btn btn-flat btn-' + btn.btnClass).addClass(btn.class)
 							.attr('id', btn.btnId)
 							.attr('type', 'button')
+							.attr('disabled', btn.btnDisabled)
 							.click(function () {
 								btn.onclick(bModal, bFooterBtn);
 							});

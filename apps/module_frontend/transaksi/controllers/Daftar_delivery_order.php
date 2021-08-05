@@ -293,6 +293,34 @@
 			else $this->show_404();
 		}
 
+		public function print_delivery_order() //dipakai
+		{
+			print_r($_POST);exit;
+			if (isset($_POST['action']) && $_POST['action'] == 'load_data_delivery_detail_do')
+			{
+				$post = $this->input->post(NULL, TRUE);
+				$load_data_detail_do = $this->db_daftar_delivery_order->load_data_detail_do($post);
+				if ($load_data_detail_do->num_rows() > 0) 
+				{
+					$result = $load_data_detail_do->result();
+					$number = 1;
+
+					foreach ($result as $k => $v)
+					{
+						$v->no = $number;
+
+						$number++;
+					}
+					
+					echo json_encode(array('success' => TRUE, 'data' => $result));
+				}
+				else echo json_encode(array('success' => FALSE, 'msg' => 'Data not found!'));
+			}
+			else $this->show_404();
+		}
+
+
+
 		public function store_data_daftar_delivery_order()
 		{
 			print_r($_POST);exit;
