@@ -57,12 +57,12 @@ class Item_list extends NOOBS_Controller
 		if (isset($_POST['action']) && $_POST['action'] == 'load_item_form')
 		{
 			$post = $this->input->post(NULL, TRUE);
-
+			// print_r($post);exit;
 			$post['option'] = $this->db_item_list->get_option_unit()->result();
 			$post['vendor'] = $this->db_item_list->get_option_vendor()->result();
 			if($post['mode'] == 'edit')
 			{
-				$post['data'] = $this->db_item_list->load_data_item_list($post['txt_id'])->row();
+				$post['data'] = $this->db_item_list->load_data_item_list($post)->row();
 			}
 	
 			$this->_view('item_list_form_view', $post);

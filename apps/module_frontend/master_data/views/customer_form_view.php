@@ -76,6 +76,19 @@
 					<input type="text" name="c_email" class="form-control" id="vendor_email" value="<?php echo $mode == 'edit' && $data !== FALSE ? $data->c_email : '' ?>" required="required" <?php echo $mode == 'edit' ? '' : ''; ?>>
 				</div>
 			</div>
+			<hr>
+			<div class="form-group row">
+				<label for="url" class="col-sm-4 col-form-label">Ongkir</label>
+				<div class="col-sm-8">
+					<input type="number" name="c_shipping_area" class="form-control" id="c_shipping_area" value="<?php echo $mode == 'edit' && $data !== FALSE ? $data->c_shipping_area : '' ?>" required="required" <?php echo $mode == 'edit' ? '' : ''; ?>>
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="url" class="col-sm-4 col-form-label">Jarak dari gudang / KM</label>
+				<div class="col-sm-8">
+					<input type="number" name="c_distance_area" class="form-control" id="c_distance_area" value="<?php echo $mode == 'edit' && $data !== FALSE ? $data->c_distance_area : '' ?>" required="required" <?php echo $mode == 'edit' ? '' : ''; ?>>
+				</div>
+			</div>
 		</div>		
 	</div>
 </form>

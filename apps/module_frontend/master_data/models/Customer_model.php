@@ -45,7 +45,9 @@ class Customer_model extends NOOBS_Model
 			'c_address' => $params['c_address'],
 			'c_phone' => $params['c_phone'],
 			'c_email' => $params['c_email'],
-			'c_district_id' => $params['c_district_id']
+			'c_district_id' => $params['c_district_id'],
+			'c_shipping_area' => $params['c_shipping_area'],
+			'c_distance_area' => $params['c_distance_area']
 		);
 
 		if ($params['mode'] == 'add') $this->add($new_params, TRUE);

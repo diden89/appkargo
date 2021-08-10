@@ -61,8 +61,8 @@
 											<td><?php echo $v->rsd_name; ?></td>
 											<td>
 												<div class="btn-group btn-group-sm" role="group" aria-label="Action Button">
-													<button type="button" class="btn btn-success" data-id="<?php echo $v->d_id; ?>" data-rd_id="<?php echo $v->rd_id; ?>" data-rsd_id="<?php echo $v->d_district_id; ?>" data-item="<?php echo $v->d_name; ?>" onclick="customerList.showItem(this, 'edit');" title="Edit Word"><i class="fas fa-edit"></i></button>
-													<button type="button" class="btn btn-danger" data-id="<?php echo $v->d_id; ?>" data-item="<?php echo $v->d_name; ?>" onclick="customerList.deleteDataItem(this);" title="Delete Word"><i class="fas fa-trash-alt"></i></button>
+													<button type="button" class="btn btn-success" data-id="<?php echo $v->d_id; ?>" data-rd_id="<?php echo $v->rd_id; ?>" data-rsd_id="<?php echo $v->d_district_id; ?>" data-item="<?php echo $v->d_name; ?>" onclick="driverList.showItem(this, 'edit');" title="Edit Word"><i class="fas fa-edit"></i></button>
+													<button type="button" class="btn btn-danger" data-id="<?php echo $v->d_id; ?>" data-item="<?php echo $v->d_name; ?>" onclick="driverList.deleteDataItem(this);" title="Delete Word"><i class="fas fa-trash-alt"></i></button>
 												</div>
 											</td>
 										</tr>

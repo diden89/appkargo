@@ -47,6 +47,8 @@
 										<th>No Telp</th>
 										<th>Email</th>
 										<th>Area</th>
+										<th>Ongkir Area</th>
+										<th>Jarak dari gudang</th>
 										<th width="100">Action</th>
 									</tr>
 								</thead>
@@ -59,6 +61,8 @@
 											<td><?php echo $v->c_phone; ?></td>
 											<td><?php echo $v->c_email; ?></td>
 											<td><?php echo $v->rsd_name; ?></td>
+											<td><?php echo 'Rp '. number_format($v->c_shipping_area); ?></td>
+											<td><?php echo $v->c_distance_area; ?> Km</td>
 											<td>
 												<div class="btn-group btn-group-sm" role="group" aria-label="Action Button">
 													<button type="button" class="btn btn-success" data-id="<?php echo $v->c_id; ?>" data-rd_id="<?php echo $v->rd_id; ?>" data-rsd_id="<?php echo $v->c_district_id; ?>" data-item="<?php echo $v->c_name; ?>" onclick="customerList.showItem(this, 'edit');" title="Edit Word"><i class="fas fa-edit"></i></button>

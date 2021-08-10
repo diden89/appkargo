@@ -13,6 +13,12 @@ class Item_list_model extends NOOBS_Model
 {
 	public function load_data_item_list($params = array())
 	{
+		$this->db->select("*, il.il_id as id", FALSE);
+		$this->db->from("item_list il");
+		$this->db->join("unit un","il.il_un_id = un.un_id","LEFT");
+		$this->db->join("vendor v","v_id = il.il_vendor_id","LEFT");
+		$this->db->where('il.il_is_active', 'Y');
+		
 		if (isset($params['txt_item']) && ! empty($params['txt_item']))
 		{
 			$this->db->like('UPPER(il.il_item_name)', strtoupper($params['txt_item']));
@@ -20,14 +26,9 @@ class Item_list_model extends NOOBS_Model
 
 		if (isset($params['txt_id']) && ! empty($params['txt_id']))
 		{
-			$this->db->where('il.il_id', strtoupper($params['txt_id']));
+			$this->db->where('il.il_id', $params['txt_id']);
 		}
 
-		$this->db->select("*, il.il_id as id", FALSE);
-		$this->db->from("item_list il");
-		$this->db->join("unit un","il.il_un_id = un.un_id","LEFT");
-		$this->db->join("vendor v","v_id = il.il_vendor_id","LEFT");
-		$this->db->where('il.il_is_active', 'Y');
 		$this->db->order_by('il.il_item_name', 'ASC');
 
 		return $this->db->get();

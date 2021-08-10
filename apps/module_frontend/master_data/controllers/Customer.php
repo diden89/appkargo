@@ -147,6 +147,7 @@ class Customer extends NOOBS_Controller
 		if (isset($_POST['action']) && $_POST['action'] == 'store_data_customer')
 		{
 			$post = $this->input->post(NULL, TRUE);
+			// print_r($post);exit;
 			$store_data_customer = $this->db_customer->store_data_customer($post);
 
 			if ($store_data_customer->num_rows() > 0) 
