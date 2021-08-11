@@ -59,7 +59,7 @@
 											<td><?php echo $v->un_name; ?></td>
 											<td>
 												<div class="btn-group btn-group-sm" role="group" aria-label="Action Button">
-													<button type="button" class="btn btn-success" data-id="<?php echo $v->id; ?>" data-item="<?php echo $v->il_item_name; ?>" onclick="itemList.showItem(this, 'edit');" title="Edit Word"><i class="fas fa-edit"></i></button>
+													<button type="button" class="btn btn-success" data-id="<?php echo $v->id; ?>" data-item="<?php echo $v->il_item_name; ?>" onclick="itemList.showItem(this, 'edit');" ><i class="fas fa-edit"></i></button>
 													<button type="button" class="btn btn-danger" data-id="<?php echo $v->id; ?>" data-item="<?php echo $v->il_item_name; ?>" onclick="itemList.deleteDataItem(this);" title="Delete Word"><i class="fas fa-trash-alt"></i></button>
 												</div>
 											</td>

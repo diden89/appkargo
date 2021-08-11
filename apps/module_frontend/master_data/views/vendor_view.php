@@ -59,7 +59,7 @@
 											<td><?php echo $v->v_vendor_email; ?></td>
 											<td>
 												<div class="btn-group btn-group-sm" role="group" aria-label="Action Button">
-													<button type="button" class="btn btn-success" data-id="<?php echo $v->v_id; ?>" data-item="<?php echo $v->v_vendor_name; ?>" onclick="itemList.showItem(this, 'edit');" title="Edit Word"><i class="fas fa-edit"></i></button>
+													<button type="button" class="btn btn-success" data-id="<?php echo $v->v_id; ?>" data-item="<?php echo $v->v_vendor_name; ?>" onclick="itemList.showItem(this, 'edit');" ><i class="fas fa-edit"></i></button>
 													<button type="button" class="btn btn-danger" data-id="<?php echo $v->v_id; ?>" data-item="<?php echo $v->v_vendor_name; ?>" onclick="itemList.deleteDataVendor(this);" title="Delete Word"><i class="fas fa-trash-alt"></i></button>
 												</div>
 											</td>

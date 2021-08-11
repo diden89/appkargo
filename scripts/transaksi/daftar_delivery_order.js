@@ -126,6 +126,7 @@ const daftarDeliveryOrderList = {
 				body += '<div class="btn-group btn-group-sm" role="group" aria-label="Action Button">';
 					body += '<button type="button" class="btn btn-success" data-id="' + item.dod_id + '" data-no_trx="' + item.dod_no_trx + '" onclick="daftarDeliveryOrderList.showItem(this, \'edit\');"><i class="fas fa-edit"></i></button>';
 					body += '<button type="button" class="btn btn-danger" data-id="' + item.dod_id + '"  data-no_trx="' + item.dod_no_trx + '" onclick="daftarDeliveryOrderList.deleteDataItem(this);"><i class="fas fa-trash-alt"></i></button>';
+					body += '<button type="button" class="btn btn-primary" data-id="' + item.dod_id + '" data-no_trx="' + item.dod_no_trx + '" data-is_status="' + item.dod_is_status + '" data-so_id="' + item.so_id + '" onclick="daftarDeliveryOrderList.updateStatus(this, \'edit\');"><i class="fas fa-exchange-alt"></i></button>';
 				body += '</div>';
 			body += '</td>';
 			body += '</tr>';
@@ -156,7 +157,7 @@ const daftarDeliveryOrderList = {
 				body += '<div class="btn-group btn-group-sm" role="group" aria-label="Action Button">';
 					body += '<button type="button" class="btn btn-success" data-id="' + item.dod_id + '" data-no_trx="' + item.dod_no_trx + '" onclick="daftarDeliveryOrderList.showItem(this, \'edit\');"><i class="fas fa-edit"></i></button>';
 					body += '<button type="button" class="btn btn-danger" data-id="' + item.dod_id + '"  data-no_trx="' + item.dod_no_trx + '" onclick="daftarDeliveryOrderList.deleteDataItem(this);"><i class="fas fa-trash-alt"></i></button>';
-				body += '</div>';
+					body += '</div>';
 			body += '</td>';
 			body += '</tr>';
 		});
@@ -501,6 +502,113 @@ const daftarDeliveryOrderList = {
 					// });
 
 					// console.log(mode)				
+				}
+			}
+		});
+
+	},
+	updateStatus: function(el, mode) {
+		
+		const me = this;
+		let params = {action: 'load_update_status_form'};
+	
+
+		if (mode == 'edit') {
+			params.mode = mode;
+			title = 'Edit';
+			params.no_trx = $(el).data('no_trx');
+			params.dod_is_status = $(el).data('is_status');
+			params.id = $(el).data('id');
+			params.so_id = $(el).data('so_id');
+			// params.rsd_id = $(el).data('rsd_id');
+		}
+		else
+		{
+			params.mode = 'add';
+			title = 'Add';
+		}
+
+		$.popup({
+			title: title + ' Update Status',
+			id: 'showItem',
+			size: 'small',
+			proxy: {
+				url: siteUrl('transaksi/daftar_delivery_order/load_update_status_form'),
+				params: params
+			},
+			buttons: [{
+				btnId: 'saveData',
+				btnText:'Save',
+				btnClass: 'info',
+				btnIcon: 'far fa-check-circle',
+				onclick: function(popup) {
+					const form  = popup.find('form');
+
+					if ($.validation(form)) {
+						const formData = new FormData(form[0]);
+
+						$.ajax({
+							url: siteUrl('transaksi/daftar_delivery_order/store_update_status'),
+							type: 'POST',
+							dataType: 'JSON',
+							data: formData,
+							processData: false,
+							contentType: false,
+	         				cache: false,
+							success: function(result) {
+								if (result.success) {
+									toastr.success(msgSaveOk);
+									me._generateItemDataTable(result.data);
+								} else if (typeof(result.msg) !== 'undefined') toastr.error(result.msg);
+								else toastr.error(msgErr);
+
+								popup.close();
+
+							},
+							error: function(error) {
+								toastr.error(msgErr);
+							}
+						});
+					}
+				}
+			},
+			{
+				btnId: 'closePopup',
+				btnText:'Close',
+				btnClass: 'secondary',
+				btnIcon: 'fas fa-times',
+				onclick: function(popup) {
+
+					$.ajax({
+						url: siteUrl('transaksi/daftar_delivery_order/load_do_data'),
+						type: 'POST',
+						dataType: 'JSON',
+						data: {
+							action : 'load_data_daftar_delivery_order'
+						},
+						success: function(result) {
+							if (result.success) {
+								// toastr.success('msgSaveOk');
+								me._generateItemDataTable(result.data);
+							} else if (typeof(result.msg) !== 'undefined') toastr.error(result.msg);
+							else toastr.error(msgErr);
+
+							popup.close();
+
+						},
+						error: function(error) {
+							toastr.error(msgErr);
+						}
+					});
+					// popup.close();
+				}
+			}],
+			listeners: {
+				onshow: function(popup) {					
+					$('#no_trx').val(params.no_trx);			
+					$('#dod_id').val(params.id);			
+					$('#no_trx_dod').val(params.no_trx);			
+					$('#so_id').val(params.so_id);			
 				}
 			}
 		});

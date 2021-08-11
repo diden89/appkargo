@@ -65,7 +65,7 @@
 											<td><?php echo $v->c_distance_area; ?> Km</td>
 											<td>
 												<div class="btn-group btn-group-sm" role="group" aria-label="Action Button">
-													<button type="button" class="btn btn-success" data-id="<?php echo $v->c_id; ?>" data-rd_id="<?php echo $v->rd_id; ?>" data-rsd_id="<?php echo $v->c_district_id; ?>" data-item="<?php echo $v->c_name; ?>" onclick="customerList.showItem(this, 'edit');" title="Edit Word"><i class="fas fa-edit"></i></button>
+													<button type="button" class="btn btn-success" data-id="<?php echo $v->c_id; ?>" data-rd_id="<?php echo $v->rd_id; ?>" data-rsd_id="<?php echo $v->c_district_id; ?>" data-item="<?php echo $v->c_name; ?>" onclick="customerList.showItem(this, 'edit');" ><i class="fas fa-edit"></i></button>
 													<button type="button" class="btn btn-danger" data-id="<?php echo $v->c_id; ?>" data-item="<?php echo $v->c_name; ?>" onclick="customerList.deleteDataItem(this);" title="Delete Word"><i class="fas fa-trash-alt"></i></button>
 												</div>
 											</td>

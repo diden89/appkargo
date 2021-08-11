@@ -14,7 +14,11 @@ class Daftar_sales_order_model extends NOOBS_Model
 	public function load_data_daftar_sales_order($params = array())
 	{
 		// print_r($params);exit;
-		$this->db->select('so.*,rd.*,v.v_vendor_name, (select sum(sod_qty) as so_qty from sales_order_detail where sod_no_trx = so.so_no_trx) as so_qty');
+		$this->db->select('so.*,rd.*,v.v_vendor_name, (select sum(sod_qty) as so_qty from sales_order_detail where sod_no_trx = so.so_no_trx) as so_qty,
+			(CASE 
+			WHEN so_is_pay = "BL" THEN "BELUM LUNAS"
+			WHEN so_is_pay = "LN" THEN "LUNAS"
+			ELSE "BELUM LENGKAP" END) as paying, DATE_FORMAT(so.so_created_date, "%d-%m-%Y") as date_create');
 		$this->db->from('sales_order as so');
 		// $this->db->join('sales_order_detail as sod','sod.sod_no_trx = so.so_id','LEFT');
 		$this->db->join('vendor as v','v.v_id = so.so_vendor_id','LEFT');
@@ -37,7 +41,8 @@ class Daftar_sales_order_model extends NOOBS_Model
 		}
 
 		$this->db->where('so.so_is_active', 'Y');
-		$this->db->order_by('so.so_created_date', 'ASC');
+		$this->db->order_by('so.so_created_date', 'DESC');
+		$this->db->order_by('so.so_id', 'DESC');
 
 		return $this->db->get();
  	}

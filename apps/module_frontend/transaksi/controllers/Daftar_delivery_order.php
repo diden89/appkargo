@@ -131,6 +131,17 @@
 			else $this->show_404();
 		}
 
+		public function load_update_status_form()
+		{
+			if (isset($_POST['action']) && $_POST['action'] == 'load_update_status_form')
+			{
+				$post = $this->input->post(NULL, TRUE);
+						
+				$this->_view('update_status_form_view', $post);
+			}
+			else $this->show_404();
+		}
+
 		public function get_detail_so_option()
 		{
 			$post = $this->input->post(NULL, TRUE);
@@ -190,7 +201,7 @@
 				{
 					$res = $get_ongkir_district->row();
 
-					echo json_encode(array('success' => TRUE, 'ongkir_temp' => $res->sh_cost));
+					echo json_encode(array('success' => TRUE, 'ongkir_temp' => $res->c_shipping_area));
 				}
 				else echo json_encode(array('success' => FALSE, 'ongkir_temp' => '0'));
 			}
@@ -323,7 +334,7 @@
 
 		public function store_data_daftar_delivery_order()
 		{
-			print_r($_POST);exit;
+			// print_r($_POST);exit;
 			if (isset($_POST['action']) && $_POST['action'] == 'store_data_daftar_delivery_order')
 			{
 				$post = $this->input->post(NULL, TRUE);
@@ -349,7 +360,7 @@
 			else $this->show_404();
 		}
 
-		public function store_data_detail_delivery_order()
+		public function store_data_detail_delivery_order()//dipakai
 		{
 			if (isset($_POST['action']) && $_POST['action'] == 'insert_delivery_order')
 			{
@@ -369,6 +380,39 @@
 					{
 						$v->num = $number;
 						$v->dod_created_date = date('d-m-Y H:i:s',strtotime($v->dod_created_date));
+						$v->dod_shipping_qty = number_format($v->dod_shipping_qty);
+						$v->dod_ongkir = number_format($v->dod_ongkir);
+
+						$number++;
+					}
+					
+					echo json_encode(array('success' => TRUE, 'data' => $result));
+				}
+				else echo json_encode(array('success' => FALSE, 'msg' => 'Data not found!'));
+			}
+			else $this->show_404();
+		}
+
+		public function store_update_status()//dipakai
+		{
+			if (isset($_POST['action']) && $_POST['action'] == 'store_update_status')
+			{
+				$post = $this->input->post(NULL, TRUE);
+				// print_r($post);exit;
+				
+				$input_to_delivery_order_status = $this->db_daftar_delivery_order->store_delivery_order_status($post);
+				$update_status_sales_order = $this->db_daftar_delivery_order->store_update_status_sales_order($post);
+				$update_status = $this->db_daftar_delivery_order->store_update_status_delivery_order($post);
+
+				if ($update_status->num_rows() > 0) 
+				{
+					$result = $update_status->result();
+					$number = 1;
+
+					foreach ($result as $k => $v)
+					{
+						$v->num = $number;
+						$v->dod_created_date = date('d-m-Y',strtotime($v->dod_created_date));
 						$v->dod_shipping_qty = number_format($v->dod_shipping_qty);
 						$v->dod_ongkir = number_format($v->dod_ongkir);
 

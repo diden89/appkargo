@@ -74,7 +74,7 @@ class Daftar_delivery_order_model extends NOOBS_Model
 	public function store_data_daftar_delivery_order($params = array()) //dipakai
 	{
 		$this->table = 'delivery_order_detail';
-
+		
 		$new_params = array(
 			'dod_no_trx' => $params['no_trx'],
 			'dod_sod_id' => $params['dod_sod_id'],
@@ -104,12 +104,56 @@ class Daftar_delivery_order_model extends NOOBS_Model
 		return $this->db->get('sales_order_detail');
  	}
 
-	public function update_quantity_sales_order_detail($params = array()) //dipakai
+	public function store_delivery_order_status($params = array()) //dipakai
 	{
-		$this->table = 'sales_order_detail';
+		$this->table = 'delivery_order_status';
 
 		$new_params = array(
-			'sod_realisasi' => $params['new_qty']
+			'dos_date' => date('Y-m-d'),
+			'dos_delivery_id' => $params['dod_id'],
+			'dos_status' => $params['dod_is_status']
+
+		);
+
+		return $this->add($new_params, TRUE);
+
+		// return $this->load_data_daftar_delivery_order();
+	}
+
+	public function store_update_status_delivery_order($params = array()) //dipakai
+	{
+		$this->table = 'delivery_order_detail';
+
+		$new_params = array(
+			'dod_is_status' => $params['dod_is_status']
+
+		);
+
+		$this->edit($new_params, "dod_id = {$params['dod_id']}");
+
+		return $this->load_data_daftar_delivery_order();
+	}
+
+	public function store_update_status_sales_order($params = array()) //dipakai
+	{
+		$this->table = 'sales_order';
+
+		$new_params = array(
+			'so_is_status' => $params['dod_is_status']
+
+		);
+
+		return $this->edit($new_params, "so_id = {$params['so_id']}");
+
+		// return $this->load_data_daftar_delivery_order();
+	}
+
+	public function update_status_sales_order_detail($params = array()) //dipakai
+	{
+		$this->table = 'sales_order';
+
+		$new_params = array(
+			'so_is_status' => $params['new_qty']
 		);
 
 		return $this->edit($new_params, "sod_id = {$params['dod_sod_id']}");
@@ -210,18 +254,15 @@ class Daftar_delivery_order_model extends NOOBS_Model
 
  	public function get_ongkir_district($params)//dipakai
 	{
-		$this->db->select('*');
-		$this->db->from('customer as c');
-		$this->db->join('shipping as sh','c.c_district_id = sh.sh_rsd_id');
 
-		$this->db->where('c.c_is_active', 'Y');
+		$this->db->where('c_is_active', 'Y');
 		
 		if (isset($params['c_id']) && ! empty($params['c_id']))
 		{
 			$this->db->where('c_id', strtoupper($params['c_id']));
 		}
 
-		return $this->db->get();
+		return $this->db->get('customer');
  	}
 
  	public function get_option_customer()//dipakai

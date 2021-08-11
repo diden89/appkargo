@@ -52,7 +52,7 @@
 											<td><?php echo $v->words; ?></td>
 											<td>
 												<div class="btn-group btn-group-sm" role="group" aria-label="Action Button">
-													<button type="button" class="btn btn-success" data-id="<?php echo $v->id; ?>" data-letter="<?php echo $v->words; ?>" onclick="similarWords.showWord(this, 'edit');" title="Edit Word"><i class="fas fa-edit"></i></button>
+													<button type="button" class="btn btn-success" data-id="<?php echo $v->id; ?>" data-letter="<?php echo $v->words; ?>" onclick="similarWords.showWord(this, 'edit');" ><i class="fas fa-edit"></i></button>
 													<button type="button" class="btn btn-danger" data-id="<?php echo $v->id; ?>" data-letter="<?php echo $v->words; ?>" onclick="similarWords.deleteDataWord(this);" title="Delete Word"><i class="fas fa-trash-alt"></i></button>
 												</div>
 											</td>

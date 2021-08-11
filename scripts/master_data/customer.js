@@ -65,6 +65,8 @@ const customerList = {
 
 		$this.html('');
 
+		var formatter = new Intl.NumberFormat();
+
 		let body = '';
 
 		$.each(data, (idx, item) => {
@@ -75,6 +77,8 @@ const customerList = {
 			body += '<td>' + item.c_phone + '</td>';
 			body += '<td>' + item.c_email + '</td>';
 			body += '<td>' + item.rsd_name + '</td>';
+			body += '<td>' + formatter.format(item.c_shipping_area) + '</td>';
+			body += '<td>' + item.c_distance_area + '</td>';
 			body += '<td>';
 				body += '<div class="btn-group btn-group-sm" role="group" aria-label="Action Button">';
 					body += '<button type="button" class="btn btn-success" data-id="' + item.c_id + '" data-rd_id="' + item.rd_id + '" data-rsd_id="' + item.c_district_id + '" data-item="' + item.c_name + '" onclick="customerList.showItem(this, \'edit\');"><i class="fas fa-edit"></i></button>';
