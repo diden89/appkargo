@@ -81,7 +81,19 @@
 											<td><?php echo $v->so_qty; ?></td>
 											<td><?php echo $v->rd_name; ?></td>
 											<td><?php echo date('d-m-Y',strtotime($v->so_created_date)); ?></td>
-											<td><?php echo $v->so_is_status; ?></td>
+											<td>
+												<div class="progress progress-sm">
+													<div class="progress-bar bg-green" role="progressbar" aria-valuenow="<?php echo $v->progress; ?>" aria-valuemin="0" aria-valuemax="5" style="width: <?php echo ($v->total !== '0') ? ($v->progress * 100) / $v->total : '0'; ?>%">
+													</div>
+												</div>
+						                        <small>
+						                            <?php echo ($v->total !== '0') ? ($v->progress * 100) / $v->total : '0'; ?>% Complete
+						                        </small>
+						                        <br>
+												<?php echo $v->so_is_status; ?></td>
+
+                          
+                      
 											<td><?php echo $v->paying; ?></td>
 											<td>
 												<div class="btn-group btn-group-sm" role="group" aria-label="Action Button">

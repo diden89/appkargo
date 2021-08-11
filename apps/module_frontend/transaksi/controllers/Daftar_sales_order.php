@@ -49,9 +49,31 @@ class Daftar_sales_order extends NOOBS_Controller
 			{
 				$num++;
 
+				$get_progress_so = $this->db_daftar_sales_order->get_progress_so(array('so_id' => $v->so_id,'dod_is_status' => 'SELESAI'));
+
+				$get_total_so = $this->db_daftar_sales_order->get_progress_so(array('so_id' => $v->so_id));
+
+				if($get_progress_so->num_rows() > 0) {
+					$progress = $get_progress_so->row();
+					$v->progress =  $progress->progress;
+				}
+				else
+				{
+					$v->progress = 0;
+				}
+
+				if($get_total_so->num_rows() > 0) {
+					$total = $get_total_so->row();
+					$v->total =  $total->progress;
+				}
+				else
+				{
+					$v->total = 0;
+				}
+				
 				$v->num = $num;
 			}
-
+			// print_r($result);exit;
 			$this->store_params['item'] = $result;
 		}
 
