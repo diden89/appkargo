@@ -368,7 +368,7 @@
 				// print_r($post);exit;
 				$get_qty = $this->db_daftar_delivery_order->get_quantity($post)->row();
 				$post['new_qty'] = $get_qty->sod_realisasi + $post['dod_shipping_qty'];
-				$update_quantity_sales_order_detail = $this->db_daftar_delivery_order->update_quantity_sales_order_detail($post);
+				// $update_quantity_sales_order_detail = $this->db_daftar_delivery_order->update_quantity_sales_order_detail($post);
 				$store_data_daftar_delivery_order = $this->db_daftar_delivery_order->store_data_daftar_delivery_order($post);
 
 				if ($store_data_daftar_delivery_order->num_rows() > 0) 

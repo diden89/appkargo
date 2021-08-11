@@ -83,18 +83,18 @@
 											<td><?php echo date('d-m-Y',strtotime($v->so_created_date)); ?></td>
 											<td>
 												<div class="progress progress-sm">
-													<div class="progress-bar bg-green" role="progressbar" aria-valuenow="<?php echo $v->progress; ?>" aria-valuemin="0" aria-valuemax="5" style="width: <?php echo ($v->total !== '0') ? ($v->progress * 100) / $v->total : '0'; ?>%">
+													<div class="progress-bar bg-green" role="progressbar" aria-valuenow="<?php echo $v->progress; ?>" aria-valuemin="0" aria-valuemax="<?php echo $v->total; ?>" style="width: <?php echo ($v->total !== '0') ? round(($v->progress * 100) / $v->total,2) : '0'; ?>%">
 													</div>
 												</div>
 						                        <small>
-						                            <?php echo ($v->total !== '0') ? ($v->progress * 100) / $v->total : '0'; ?>% Complete
+						                            <?php echo ($v->total !== '0') ? round(($v->progress * 100) / $v->total,2) : '0'; ?>% Complete
 						                        </small>
-						                        <br>
-												<?php echo $v->so_is_status; ?></td>
+						                        <br><b>
+												<?php echo $v->so_is_status; ?></b></td>
 
                           
                       
-											<td><?php echo $v->paying; ?></td>
+											<td><b><?php echo $v->paying; ?></b></td>
 											<td>
 												<div class="btn-group btn-group-sm" role="group" aria-label="Action Button">
 													<button type="button" class="btn btn-success" data-id="<?php echo $v->so_id; ?>" data-no_trx="<?php echo $v->so_no_trx; ?>" data-rd_id="<?php echo $v->rd_id; ?>" data-rp_id="<?php echo $v->rd_province_id; ?>" onclick="daftarSalesOrderList.showItem(this, 'edit');" ><i class="fas fa-edit"></i></button>
