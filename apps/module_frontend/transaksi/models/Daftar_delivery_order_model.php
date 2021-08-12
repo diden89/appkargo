@@ -35,9 +35,9 @@ class Daftar_delivery_order_model extends NOOBS_Model
 			$this->db->where('dod.dod_id', strtoupper($params['txt_id']));
 		}
 
-		if (isset($params['so_id']) && ! empty($params['so_id']))
+		if (isset($params['so_no_trx']) && ! empty($params['so_no_trx']))
 		{
-			$this->db->where('so.so_id', strtoupper($params['so_id']));
+			$this->db->where('so.so_no_trx', strtoupper($params['so_no_trx']));
 		}
 
 		if (isset($params['date_range1']) && ! empty($params['date_range1']))
@@ -118,6 +118,20 @@ class Daftar_delivery_order_model extends NOOBS_Model
 		return $this->add($new_params, TRUE);
 
 		// return $this->load_data_daftar_delivery_order();
+	}
+
+	public function update_quantity_sales_order_detail($params = array()) //dipakai
+	{
+		$this->table = 'sales_order_detail';
+
+		$new_params = array(
+			'sod_realisasi' => $params['new_qty']
+
+		);
+
+		$this->edit($new_params, "sod_id = {$params['dod_sod_id']}");
+
+		return $this->load_data_daftar_delivery_order();
 	}
 
 	public function store_update_status_delivery_order($params = array()) //dipakai
@@ -224,6 +238,11 @@ class Daftar_delivery_order_model extends NOOBS_Model
 
 		$this->db->where('sod.sod_flag', 'N');
 		$this->db->where('sod_is_active', 'Y');
+		if (isset($params['mode']) && ! $params['mode'] == 'add')
+		{
+			$this->db->where('sod_qty != sod_realisasi');
+		}
+		
 		$this->db->order_by('sod.sod_id', 'ASC');
 		
 		return $this->db->get();

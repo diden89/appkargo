@@ -45,7 +45,7 @@
 						<?php
 							foreach($vehicle as $k => $v)
 							{
-								echo '<option value="'.$v->ve_id.'" >'.$v->ve_license_plate.'</option>';
+								echo '<option value="'.$v->ve_id.'" '.(($dod_vehicle_id == $v->ve_id) ? 'selected':"").'>'.$v->ve_license_plate.'</option>';
 							}
 						?>
 					</select>
@@ -64,7 +64,7 @@
 						<?php
 							foreach($sales_order as $k => $v)
 							{
-								echo '<option value="'.$v->so_id.'" '.(($data->sod_no_trx == $v->so_no_trx) ? 'selected':"").'>'.$v->so_no_trx.'</option>';
+								echo '<option value="'.$v->so_id.'" '.(($so_no_trx == $v->so_no_trx) ? 'selected':"").'>'.$v->so_no_trx.'</option>';
 							}
 						?>
 					</select>
@@ -80,7 +80,7 @@
 						<?php
 							foreach($driver as $k => $v)
 							{
-								echo '<option value="'.$v->d_id.'" >'.$v->d_name.'</option>';
+								echo '<option value="'.$v->d_id.'" '.(($dod_driver_id == $v->d_id) ? 'selected':"").'>'.$v->d_name.'</option>';
 							}
 						?>
 					</select>
@@ -126,14 +126,14 @@
 			<div class="form-group row">
 				<label for="caption" class="col-sm-4 col-form-label">Ongkir</label>
 				<div class="col-sm-8">
-					<input type="text"  class="form-control" id="dod_ongkir_temp" disabled="disabled">
+					<input type="text"  class="form-control" id="dod_ongkir_temp" value="" disabled="disabled">
 				</div>
 			</div>
 			<div class="form-group row">
 				<label for="caption" class="col-sm-4 col-form-label">Total Ongkir</label>
 				<div class="col-sm-8">
 					<input type="text" name="dod_ongkir" class="form-control" id="dod_ongkir" value="" >
-					<input type="hidden"  class="form-control" id="dod_ongkir_temp">
+					<input type="hidden"  class="form-control" id="dod_ongkir_temp2" value="">
 				</div>
 			</div>
 			<!-- <div class="form-group row">

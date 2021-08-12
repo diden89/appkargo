@@ -124,8 +124,9 @@
 				if($post['mode'] == 'edit')
 				{
 					$post['data'] = $this->db_daftar_delivery_order->load_data_daftar_delivery_order($post)->row();
+					
 				}
-		
+			// print_r($post['data']);exit;
 				$this->_view('daftar_delivery_order_form_view', $post);
 			}
 			else $this->show_404();
@@ -266,11 +267,11 @@
 
 					foreach ($result as $k => $v)
 					{
-						$v->no = $number;
+						$v->num = $number;
 
 						$number++;
 					}
-
+					// print_r($result);exit;
 					echo json_encode(array('success' => TRUE, 'data' => $result));
 				}
 				else echo json_encode(array('success' => FALSE, 'msg' => 'Data not found!'));
@@ -368,7 +369,7 @@
 				// print_r($post);exit;
 				$get_qty = $this->db_daftar_delivery_order->get_quantity($post)->row();
 				$post['new_qty'] = $get_qty->sod_realisasi + $post['dod_shipping_qty'];
-				// $update_quantity_sales_order_detail = $this->db_daftar_delivery_order->update_quantity_sales_order_detail($post);
+				$update_quantity_sales_order_detail = $this->db_daftar_delivery_order->update_quantity_sales_order_detail($post);
 				$store_data_daftar_delivery_order = $this->db_daftar_delivery_order->store_data_daftar_delivery_order($post);
 
 				if ($store_data_daftar_delivery_order->num_rows() > 0) 
