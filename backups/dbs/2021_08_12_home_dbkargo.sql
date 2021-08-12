@@ -11,7 +11,7 @@
  Target Server Version : 80020
  File Encoding         : 65001
 
- Date: 12/08/2021 00:22:40
+ Date: 12/08/2021 19:28:26
 */
 
 SET NAMES utf8mb4;
@@ -59,7 +59,7 @@ CREATE TABLE `customer`  (
 -- ----------------------------
 -- Records of customer
 -- ----------------------------
-INSERT INTO `customer` VALUES (4, 1733, 'Dian Kosasih', 'Batang Kabung Ganting', '082385727870', 'didendiko@gmail.com', 50000, 80, 'Y', '1', '2021-08-11 14:53:27');
+INSERT INTO `customer` VALUES (4, 1733, 'Dian Kosasih', 'Batang Kabung Ganting', '082385727870', 'didendiko@gmail.com', 500, 80, 'Y', '1', '2021-08-12 09:06:56');
 INSERT INTO `customer` VALUES (5, 1737, 'Ilfan Taufik', 'Kamang Magek Pakan sinayan', '08527457454', 'ilfantaufik@gmail.com', 60, 50, 'Y', '1', '2021-08-10 14:52:24');
 
 -- ----------------------------
@@ -86,9 +86,9 @@ CREATE TABLE `delivery_order_detail`  (
 -- ----------------------------
 -- Records of delivery_order_detail
 -- ----------------------------
-INSERT INTO `delivery_order_detail` VALUES (57, 'C.123.000005', 37, 6, 4, 2, 1500, 75000000, '2021-08-11', 'SELESAI', 'Y', '1', '2021-08-12 00:20:26');
-INSERT INTO `delivery_order_detail` VALUES (58, 'C.123.000006', 37, 6, 5, 2, 1500, 90000, '2021-08-11', 'SELESAI', 'Y', '1', '2021-08-12 00:20:39');
-INSERT INTO `delivery_order_detail` VALUES (59, 'C.123.000007', 38, 6, 4, 2, 2500, 125000000, '2021-08-12', 'SELESAI', 'Y', '1', '2021-08-12 00:20:56');
+INSERT INTO `delivery_order_detail` VALUES (61, 'C.123.000001', 37, 6, 4, 2, 3000, 150000000, '2021-08-12', 'MUAT', 'Y', '1', '2021-08-12 08:59:21');
+INSERT INTO `delivery_order_detail` VALUES (62, 'C.123.000002', 38, 6, 4, 2, 2000, 100000000, '2021-08-12', 'MUAT', 'Y', '1', '2021-08-12 09:04:26');
+INSERT INTO `delivery_order_detail` VALUES (63, 'C.123.000003', 38, 6, 5, 2, 500, 30000, '2021-08-12', 'MUAT', 'Y', '1', '2021-08-12 09:04:39');
 
 -- ----------------------------
 -- Table structure for delivery_order_status
@@ -108,10 +108,6 @@ CREATE TABLE `delivery_order_status`  (
 -- ----------------------------
 -- Records of delivery_order_status
 -- ----------------------------
-INSERT INTO `delivery_order_status` VALUES (2, '2021-08-11 00:00:00', 57, 'SELESAI', 'Y', 1, '2021-08-11 20:37:38');
-INSERT INTO `delivery_order_status` VALUES (3, '2021-08-12 00:00:00', 57, 'SELESAI', 'Y', 1, '2021-08-12 00:20:26');
-INSERT INTO `delivery_order_status` VALUES (4, '2021-08-12 00:00:00', 58, 'SELESAI', 'Y', 1, '2021-08-12 00:20:39');
-INSERT INTO `delivery_order_status` VALUES (5, '2021-08-12 00:00:00', 59, 'SELESAI', 'Y', 1, '2021-08-12 00:20:55');
 
 -- ----------------------------
 -- Table structure for driver
@@ -364,6 +360,7 @@ INSERT INTO `log_customer` VALUES (4, 1733, 'Dian Kosasih', 'Batang Kabung Ganti
 INSERT INTO `log_customer` VALUES (4, 1733, 'Dian Kosasih', 'Batang Kabung Ganting', '082385727870', 'didendiko@gmail.com', 50000, 80, 'Y', '1', '2021-08-11 14:19:25', 1, 'edit', '2021-08-11 14:19:25', 28);
 INSERT INTO `log_customer` VALUES (4, 1733, 'Dian Kosasih', 'Batang Kabung Ganting', '082385727870', 'didendiko@gmail.com', 5000, 80, 'Y', '1', '2021-08-11 14:52:54', 1, 'edit', '2021-08-11 14:52:54', 29);
 INSERT INTO `log_customer` VALUES (4, 1733, 'Dian Kosasih', 'Batang Kabung Ganting', '082385727870', 'didendiko@gmail.com', 50000, 80, 'Y', '1', '2021-08-11 14:53:27', 1, 'edit', '2021-08-11 14:53:27', 30);
+INSERT INTO `log_customer` VALUES (4, 1733, 'Dian Kosasih', 'Batang Kabung Ganting', '082385727870', 'didendiko@gmail.com', 500, 80, 'Y', '1', '2021-08-12 09:06:56', 1, 'edit', '2021-08-12 09:06:56', 31);
 
 -- ----------------------------
 -- Table structure for log_delivery_order_detail
@@ -421,6 +418,10 @@ INSERT INTO `log_delivery_order_detail` VALUES (59, 'C.123.000007', 38, 6, 2, 4,
 INSERT INTO `log_delivery_order_detail` VALUES (57, 'C.123.000005', 37, 6, 2, 4, 75000000, 'SELESAI', '2021-08-11 00:00:00', 1500, 'Y', '1', '2021-08-12 00:20:26', 1, 'edit', '2021-08-12 00:20:26', 59);
 INSERT INTO `log_delivery_order_detail` VALUES (58, 'C.123.000006', 37, 6, 2, 5, 90000, 'SELESAI', '2021-08-11 00:00:00', 1500, 'Y', '1', '2021-08-12 00:20:39', 1, 'edit', '2021-08-12 00:20:39', 60);
 INSERT INTO `log_delivery_order_detail` VALUES (59, 'C.123.000007', 38, 6, 2, 4, 125000000, 'SELESAI', '2021-08-12 00:00:00', 2500, 'Y', '1', '2021-08-12 00:20:56', 1, 'edit', '2021-08-12 00:20:56', 61);
+INSERT INTO `log_delivery_order_detail` VALUES (60, 'C.123.00001', 37, NULL, NULL, 4, 150000000, 'MUAT', '2021-08-12 00:00:00', 3000, 'Y', '1', '2021-08-12 08:57:27', 1, 'add', '2021-08-12 08:57:27', 62);
+INSERT INTO `log_delivery_order_detail` VALUES (61, 'C.123.000001', 37, 6, 2, 4, 150000000, 'MUAT', '2021-08-12 00:00:00', 3000, 'Y', '1', '2021-08-12 08:59:21', 1, 'add', '2021-08-12 08:59:21', 63);
+INSERT INTO `log_delivery_order_detail` VALUES (62, 'C.123.000002', 38, 6, 2, 4, 100000000, 'MUAT', '2021-08-12 00:00:00', 2000, 'Y', '1', '2021-08-12 09:04:26', 1, 'add', '2021-08-12 09:04:26', 64);
+INSERT INTO `log_delivery_order_detail` VALUES (63, 'C.123.000003', 38, 6, 2, 5, 30000, 'MUAT', '2021-08-12 00:00:00', 500, 'Y', '1', '2021-08-12 09:04:39', 1, 'add', '2021-08-12 09:04:39', 65);
 
 -- ----------------------------
 -- Table structure for log_delivery_order_status
@@ -9033,6 +9034,10 @@ INSERT INTO `log_sales_order_detail` VALUES (37, '0001/SO/20210811', 17, 3000, 7
 INSERT INTO `log_sales_order_detail` VALUES (40, '0002/SO/20210811', 9, 5000, 0, 'N', 'Y', '1', '2021-08-11 19:42:23', 1, 'add', '2021-08-11 19:42:23', 68);
 INSERT INTO `log_sales_order_detail` VALUES (37, '0001/SO/20210811', 17, 3000, 1500, 'N', 'Y', '1', '2021-08-11 19:50:05', 1, 'edit', '2021-08-11 19:50:05', 69);
 INSERT INTO `log_sales_order_detail` VALUES (37, '0001/SO/20210811', 17, 3000, 3000, 'N', 'Y', '1', '2021-08-11 19:50:16', 1, 'edit', '2021-08-11 19:50:16', 70);
+INSERT INTO `log_sales_order_detail` VALUES (37, '0001/SO/20210811', 17, 3000, 0, 'N', 'Y', '1', '2021-08-12 08:57:27', 1, 'edit', '2021-08-12 08:57:27', 71);
+INSERT INTO `log_sales_order_detail` VALUES (37, '0001/SO/20210811', 17, 3000, 3000, 'N', 'Y', '1', '2021-08-12 08:59:21', 1, 'edit', '2021-08-12 08:59:21', 72);
+INSERT INTO `log_sales_order_detail` VALUES (38, '0001/SO/20210811', 18, 2500, 2000, 'N', 'Y', '1', '2021-08-12 09:04:25', 1, 'edit', '2021-08-12 09:04:25', 73);
+INSERT INTO `log_sales_order_detail` VALUES (38, '0001/SO/20210811', 18, 2500, 2500, 'N', 'Y', '1', '2021-08-12 09:04:39', 1, 'edit', '2021-08-12 09:04:39', 74);
 
 -- ----------------------------
 -- Table structure for log_shipping
@@ -17052,7 +17057,7 @@ CREATE TABLE `sales_order`  (
 -- ----------------------------
 -- Records of sales_order
 -- ----------------------------
-INSERT INTO `sales_order` VALUES (8, 2, 127, '0001/SO/20210811', '2021-08-11', 'BL', 'SELESAI', 'Y', '1', '2021-08-12 00:20:55');
+INSERT INTO `sales_order` VALUES (8, 2, 127, '0001/SO/20210811', '2021-08-11', 'BL', 'ORDER', 'Y', '1', '2021-08-12 00:20:55');
 INSERT INTO `sales_order` VALUES (9, 1, 131, '0002/SO/20210811', '2021-08-11', 'BL', 'ORDER', 'Y', '1', '2021-08-11 19:47:54');
 
 -- ----------------------------
@@ -17075,8 +17080,8 @@ CREATE TABLE `sales_order_detail`  (
 -- ----------------------------
 -- Records of sales_order_detail
 -- ----------------------------
-INSERT INTO `sales_order_detail` VALUES (37, '0001/SO/20210811', 17, 3000, 3000, 'N', 'Y', '1', '2021-08-11 19:50:16');
-INSERT INTO `sales_order_detail` VALUES (38, '0001/SO/20210811', 18, 2500, 0, 'N', 'Y', '1', '2021-08-11 15:08:55');
+INSERT INTO `sales_order_detail` VALUES (37, '0001/SO/20210811', 17, 3000, 3000, 'N', 'Y', '1', '2021-08-12 08:59:21');
+INSERT INTO `sales_order_detail` VALUES (38, '0001/SO/20210811', 18, 2500, 2500, 'N', 'Y', '1', '2021-08-12 09:04:39');
 INSERT INTO `sales_order_detail` VALUES (39, '0001/SO/20210811', 27, 4500, 0, 'N', 'Y', '1', '2021-08-11 15:01:56');
 INSERT INTO `sales_order_detail` VALUES (40, '0002/SO/20210811', 9, 5000, 0, 'N', 'Y', '1', '2021-08-11 19:42:23');
 
