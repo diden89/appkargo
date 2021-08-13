@@ -97,9 +97,11 @@
 											<td><?php echo $v->dod_is_status; ?></td>
 											<td>
 												<div class="btn-group btn-group-sm" role="group" aria-label="Action Button">
-													<button type="button" class="btn btn-success" data-id="<?php echo $v->dod_id; ?>" data-no_trx="<?php echo $v->dod_no_trx; ?>" data-so_no_trx="<?php echo $v->so_no_trx; ?>" data-dod_customer_id="<?php echo $v->dod_customer_id; ?>"data-dod_driver_id="<?php echo $v->dod_driver_id; ?>" data-dod_sod_id="<?php echo $v->dod_sod_id; ?>" data-dod_vehicle_id="<?php echo $v->dod_vehicle_id; ?>" data-dod_shipping_qty="<?php echo $v->dod_shipping_qty; ?>" onclick="daftarDeliveryOrderList.showItem(this, 'edit');" ><i class="fas fa-edit"></i></button>
-													<button type="button" class="btn btn-danger" data-id="<?php echo $v->dod_id; ?>" onclick="daftarDeliveryOrderList.deleteDataItem(this);" title="Delete Word"><i class="fas fa-trash-alt"></i></button>
-													<button type="button" class="btn btn-primary" data-id="<?php echo $v->dod_id; ?>" data-no_trx="<?php echo $v->dod_no_trx; ?>" data-is_status="<?php echo $v->dod_is_status; ?>" data-so_id="<?php echo $v->so_id; ?>" onclick="daftarDeliveryOrderList.updateStatus(this, 'edit');" title="Update Status"><i class="fas fa-exchange-alt"></i></button>
+													<?php if($v->dod_is_status !== 'SELESAI') { ?>
+														<button type="button" class="btn btn-success" data-id="<?php echo $v->dod_id; ?>" data-no_trx="<?php echo $v->dod_no_trx; ?>" data-so_no_trx="<?php echo $v->so_no_trx; ?>" data-dod_customer_id="<?php echo $v->dod_customer_id; ?>"data-dod_driver_id="<?php echo $v->dod_driver_id; ?>" data-dod_sod_id="<?php echo $v->dod_sod_id; ?>" data-dod_vehicle_id="<?php echo $v->dod_vehicle_id; ?>" data-dod_shipping_qty="<?php echo $v->dod_shipping_qty; ?>" onclick="daftarDeliveryOrderList.showItem(this, 'edit');" ><i class="fas fa-edit"></i></button>
+														<button type="button" class="btn btn-danger" data-id="<?php echo $v->dod_id; ?>" onclick="daftarDeliveryOrderList.deleteDataItem(this);" title="Delete Word"><i class="fas fa-trash-alt"></i></button>
+														<button type="button" class="btn btn-primary" data-id="<?php echo $v->dod_id; ?>" data-no_trx="<?php echo $v->dod_no_trx; ?>" data-is_status="<?php echo $v->dod_is_status; ?>" data-so_id="<?php echo $v->so_id; ?>"  data-so_no_trx="<?php echo $v->so_no_trx; ?>"onclick="daftarDeliveryOrderList.updateStatus(this, 'edit');" title="Update Status"><i class="fas fa-exchange-alt"></i></button>
+													<?php }?>
 												</div>
 											</td>
 										</tr>

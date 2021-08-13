@@ -123,11 +123,13 @@ const daftarDeliveryOrderList = {
 			body += '<td>' + item.dod_created_date + '</td>';
 			body += '<td>' + item.dod_is_status + '</td>';
 			body += '<td>';
+			if(item.dod_is_status !== 'SELESAI') {
 				body += '<div class="btn-group btn-group-sm" role="group" aria-label="Action Button">';
 					body += '<button type="button" class="btn btn-success" data-id="' + item.dod_id + '" data-no_trx="' + item.dod_no_trx + '" data-so_no_trx="' + item.so_no_trx + '" data-dod_customer_id="' + item.dod_customer_id + '" data-dod_driver_id="' + item.dod_driver_id + '" data-dod_sod_id="' + item.dod_sod_id + '" data-dod_vehicle_id="' + item.dod_vehicle_id + '" data-dod_shipping_qty="' + item.dod_shipping_qty + '" onclick="daftarDeliveryOrderList.showItem(this, \'edit\');"><i class="fas fa-edit"></i></button>';
 					body += '<button type="button" class="btn btn-danger" data-id="' + item.dod_id + '"  data-no_trx="' + item.dod_no_trx + '" onclick="daftarDeliveryOrderList.deleteDataItem(this);"><i class="fas fa-trash-alt"></i></button>';
-					body += '<button type="button" class="btn btn-primary" data-id="' + item.dod_id + '" data-no_trx="' + item.dod_no_trx + '" data-is_status="' + item.dod_is_status + '" data-so_id="' + item.so_id + '" onclick="daftarDeliveryOrderList.updateStatus(this, \'edit\');"><i class="fas fa-exchange-alt"></i></button>';
+					body += '<button type="button" class="btn btn-primary" data-id="' + item.dod_id + '" data-no_trx="' + item.dod_no_trx + '" data-is_status="' + item.dod_is_status + '" data-so_id="' + item.so_id + '" data-so_no_trx="' + item.so_no_trx + '" onclick="daftarDeliveryOrderList.updateStatus(this, \'edit\');"><i class="fas fa-exchange-alt"></i></button>';
 				body += '</div>';
+			}
 			body += '</td>';
 			body += '</tr>';
 		});
@@ -154,10 +156,12 @@ const daftarDeliveryOrderList = {
 			body += '<td>' + item.dod_created_date + '</td>';
 			body += '<td>' + item.dod_is_status + '</td>';
 			body += '<td>';
-				body += '<div class="btn-group btn-group-sm" role="group" aria-label="Action Button">';
-					body += '<button type="button" class="btn btn-success" data-id="' + item.dod_id + '" data-no_trx="' + item.dod_no_trx + '" data-so_no_trx="' + item.so_no_trx + '" data-dod_customer_id="' + item.dod_customer_id + '" data-dod_driver_id="' + item.dod_driver_id + '" data-dod_sod_id="' + item.dod_sod_id + '" data-dod_vehicle_id="' + item.dod_vehicle_id + '" data-dod_shipping_qty="' + item.dod_shipping_qty_ori + '" onclick="daftarDeliveryOrderList.editDetailDO(this, \'edit\');"><i class="fas fa-edit"></i></button>';
-					body += '<button type="button" class="btn btn-danger" data-id="' + item.dod_id + '"  data-no_trx="' + item.dod_no_trx + '" onclick="daftarDeliveryOrderList.deleteDataItem(this);"><i class="fas fa-trash-alt"></i></button>';
-					body += '</div>';
+				if(item.dod_is_status !== 'SELESAI') {
+					body += '<div class="btn-group btn-group-sm" role="group" aria-label="Action Button">';
+						body += '<button type="button" class="btn btn-success" data-id="' + item.dod_id + '" data-no_trx="' + item.dod_no_trx + '" data-so_no_trx="' + item.so_no_trx + '" data-dod_customer_id="' + item.dod_customer_id + '" data-dod_driver_id="' + item.dod_driver_id + '" data-dod_sod_id="' + item.dod_sod_id + '" data-dod_vehicle_id="' + item.dod_vehicle_id + '" data-dod_shipping_qty="' + item.dod_shipping_qty_ori + '" onclick="daftarDeliveryOrderList.editDetailDO(this, \'edit\');"><i class="fas fa-edit"></i></button>';
+						body += '<button type="button" class="btn btn-danger" data-id="' + item.dod_id + '"  data-no_trx="' + item.dod_no_trx + '" onclick="daftarDeliveryOrderList.deleteDataItem(this);"><i class="fas fa-trash-alt"></i></button>';
+						body += '</div>';
+				}
 			body += '</td>';
 			body += '</tr>';
 		});
@@ -401,12 +405,13 @@ const daftarDeliveryOrderList = {
 
 					if (mode == 'edit') {
 						daftarDeliveryOrderList.loadDataItem(params);
+
 						$('#dod_vehicle_id').attr('disabled', false);
 						$('#dod_driver_id').attr('disabled', false);
 						$('#no_trx_do').val(params.no_trx);
 						$('#sod_shipping_qty').val(params.dod_shipping_qty);
 						$('#dod_id').val(params.dod_id);
-
+						console.log($('#txt_sales_order').val());
 						if($('#txt_sales_order').val() !== '') {								
 							// $('#detail_sales_order').attr('disabled', true);
 							daftarDeliveryOrderList.generateDetailSO($('#txt_sales_order').val(),params.sod_id,'edit',params.dod_customer_id);
@@ -468,7 +473,7 @@ const daftarDeliveryOrderList = {
 										var formatter = new Intl.NumberFormat();
 
 										ongkir = formatter.format(sod_shipp*ongkir_temp);
-										
+
 										$('#dod_ongkir').val(ongkir);
 
 									}
@@ -482,7 +487,6 @@ const daftarDeliveryOrderList = {
 									toastr.error(msgErr);
 								}
 							});
-							
 						}
 
 					}
@@ -511,8 +515,6 @@ const daftarDeliveryOrderList = {
 							format: 'DD-MM-YYYY'
 						}
 					});
-
-					// $('#so_no_trx').val($('#last_notrx').val());
 
 					$('#btnAddDetail').click(function(){
 
@@ -729,6 +731,7 @@ const daftarDeliveryOrderList = {
 			params.dod_is_status = $(el).data('is_status');
 			params.id = $(el).data('id');
 			params.so_id = $(el).data('so_id');
+			params.so_no_trx = $(el).data('so_no_trx');
 			// params.rsd_id = $(el).data('rsd_id');
 		}
 		else
@@ -818,6 +821,7 @@ const daftarDeliveryOrderList = {
 					$('#dod_id').val(params.id);			
 					$('#no_trx_dod').val(params.no_trx);			
 					$('#so_id').val(params.so_id);			
+					$('#so_no_trx').val(params.so_no_trx);			
 				}
 			}
 		});

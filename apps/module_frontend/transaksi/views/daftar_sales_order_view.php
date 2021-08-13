@@ -78,7 +78,7 @@
 											<td><?php echo $v->num; ?></td>
 											<td><?php echo $v->so_no_trx; ?></td>
 											<td><?php echo $v->v_vendor_name; ?></td>
-											<td><?php echo $v->so_qty; ?></td>
+											<td><?php echo number_format($v->so_qty); ?></td>
 											<td><?php echo $v->rd_name; ?></td>
 											<td><?php echo date('d-m-Y',strtotime($v->so_created_date)); ?></td>
 											<td>

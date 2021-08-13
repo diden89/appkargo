@@ -18,7 +18,8 @@
 	<input type="hidden" name="so_id" value="" id="so_id">
 	<input type="hidden" name="dod_id" value="" id="dod_id">
 
-	<?php if (isset($txt_id)): ?>
+	<?php 
+	if (isset($txt_id)): ?>
 		<input type="hidden" name="txt_id" value="<?php echo $txt_id; ?>">
 	<?php endif; ?>
 	<div class="row">		

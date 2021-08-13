@@ -118,6 +118,22 @@ class Daftar_delivery_order_model extends NOOBS_Model
 		return $this->db->get();
  	}
 
+ 	public function get_total_status($params = array(),$total = false) //dipakai
+	{
+		$this->db->select('COUNT(dod.dod_id) as total_data');
+		$this->db->from('delivery_order_detail as dod');
+		$this->db->join('sales_order_detail as sod','dod.dod_sod_id = sod.sod_id','LEFT');
+
+		if ($total !== 'total')
+		{
+			$this->db->where('dod_is_status', strtoupper($params['dod_is_status']));
+		}
+		
+		$this->db->where('sod.sod_no_trx', $params['so_no_trx']);
+		
+		return $this->db->get();
+ 	}
+
 	public function store_delivery_order_status($params = array()) //dipakai
 	{
 		$this->table = 'delivery_order_status';
@@ -167,7 +183,7 @@ class Daftar_delivery_order_model extends NOOBS_Model
 		$this->table = 'sales_order';
 
 		$new_params = array(
-			'so_is_status' => $params['dod_is_status']
+			'so_is_status' => $params['is_status']
 
 		);
 

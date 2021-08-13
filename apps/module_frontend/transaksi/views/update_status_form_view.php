@@ -16,6 +16,7 @@
 	<input type="hidden" name="dod_id" value="" id="dod_id">
 	<input type="hidden" name="no_trx" value="" id="no_trx_dod">
 	<input type="hidden" name="so_id" value="" id="so_id">
+	<input type="hidden" name="so_no_trx" value="" id="so_no_trx">
 
 	<?php if (isset($txt_id)): ?>
 		<input type="hidden" name="txt_id" value="<?php echo $txt_id; ?>">

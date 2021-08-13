@@ -81,7 +81,7 @@ class Daftar_delivery_order extends NOOBS_Controller
 					$num++;
 
 					$v->num = $num;
-					$v->dod_created_date = date('d-m-Y H:i:s',strtotime($v->dod_created_date));
+					$v->dod_created_date = date('d-m-Y',strtotime($v->dod_created_date));
 					$v->dod_shipping_qty_ori = $v->dod_shipping_qty;
 					$v->dod_shipping_qty = number_format($v->dod_shipping_qty);
 					$v->dod_ongkir = number_format($v->dod_ongkir);
@@ -414,6 +414,24 @@ class Daftar_delivery_order extends NOOBS_Controller
 			// print_r($post);exit;
 			
 			$input_to_delivery_order_status = $this->db_daftar_delivery_order->store_delivery_order_status($post);
+
+			$get_total_status = $this->db_daftar_delivery_order->get_total_status($post,'total');
+
+			if($get_total_status->num_rows() > 0) {
+				$post['dod_is_status'] = 'SELESAI';
+				$get_total_success = $this->db_daftar_delivery_order->get_total_status($post);
+
+				if($get_total_success->num_rows() > 0) {
+					$get_ttl = $get_total_status->row();
+					$get_suc = $get_total_success->row();
+
+					if($get_suc->total_data < $get_ttl->total_data) {
+						$post['is_status'] = 'ON PROGRESS';
+					} else if($get_suc->total_data == $get_ttl->total_data) {
+						$post['is_status'] = $post['dod_is_status'];
+					}
+				}
+			}
 			$update_status_sales_order = $this->db_daftar_delivery_order->store_update_status_sales_order($post);
 			$update_status = $this->db_daftar_delivery_order->store_update_status_delivery_order($post);
 
