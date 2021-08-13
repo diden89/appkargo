@@ -15,6 +15,7 @@
 		{
 			parent::__construct();
 			$this->load->model('transaksi/daftar_delivery_order_model', 'db_daftar_delivery_order');
+			// print_r($this->session);exit;
 		}
 
 		public function index()
@@ -29,7 +30,7 @@
 				'<script src="'.base_url('vendors/jquery-number-master/jquery.number.js').'"></script>',
 				'<script src="'.base_url('scripts/transaksi/daftar_delivery_order.js').'"></script>',
 			);
-
+			
 			$this->store_params['item'] = [];
 			$date = date('d-m-Y H:i:s');
 			$date = strtotime($date);
@@ -38,6 +39,7 @@
 
 			$params['date_range1'] = date('Y-m-d H:i:s', $date);
 			$params['date_range2'] = date('Y-m-d H:i:s');
+
 			$load_data_daftar_delivery_order = $this->db_daftar_delivery_order->load_data_daftar_delivery_order($params);
 
 			if ($load_data_daftar_delivery_order->num_rows() > 0)
@@ -80,10 +82,11 @@
 
 						$v->num = $num;
 						$v->dod_created_date = date('d-m-Y H:i:s',strtotime($v->dod_created_date));
+						$v->dod_shipping_qty_ori = $v->dod_shipping_qty;
 						$v->dod_shipping_qty = number_format($v->dod_shipping_qty);
 						$v->dod_ongkir = number_format($v->dod_ongkir);
 					}
-
+						// print_r($result);exit;
 					echo json_encode(array('success' => TRUE, 'data' => $result));
 				}
 				else echo json_encode(array('success' => FALSE, 'msg' => 'Data Not Found!'));
@@ -307,7 +310,7 @@
 
 		public function print_delivery_order() //dipakai
 		{
-			print_r($_POST);exit;
+			// print_r($_POST);exit;
 			if (isset($_POST['action']) && $_POST['action'] == 'load_data_delivery_detail_do')
 			{
 				$post = $this->input->post(NULL, TRUE);
@@ -366,18 +369,27 @@
 			if (isset($_POST['action']) && $_POST['action'] == 'insert_delivery_order')
 			{
 				$post = $this->input->post(NULL, TRUE);
-				// print_r($post);exit;
-				$get_qty = $this->db_daftar_delivery_order->get_quantity($post)->row();
-				$post['new_qty'] = $get_qty->sod_realisasi + $post['dod_shipping_qty'];
-				$update_quantity_sales_order_detail = $this->db_daftar_delivery_order->update_quantity_sales_order_detail($post);
+
 				$store_data_daftar_delivery_order = $this->db_daftar_delivery_order->store_data_daftar_delivery_order($post);
 
-				if ($store_data_daftar_delivery_order->num_rows() > 0) 
+				$get_total_qty = $this->db_daftar_delivery_order->get_total_qty($post);
+
+				if($get_total_qty->num_rows() > 0) {
+					$total = $get_total_qty->row();
+					$post['new_qty'] = $total->total_qty;
+				
+					$update_quantity_sales_order_detail = $this->db_daftar_delivery_order->update_quantity_sales_order_detail($post);
+
+				}
+
+				$result = $this->db_daftar_delivery_order->load_data_daftar_delivery_order($post);
+				
+				if ($result->num_rows() > 0) 
 				{
-					$result = $store_data_daftar_delivery_order->result();
+					$res = $result->result();
 					$number = 1;
 
-					foreach ($result as $k => $v)
+					foreach ($res as $k => $v)
 					{
 						$v->num = $number;
 						$v->dod_created_date = date('d-m-Y H:i:s',strtotime($v->dod_created_date));
@@ -387,7 +399,7 @@
 						$number++;
 					}
 					
-					echo json_encode(array('success' => TRUE, 'data' => $result));
+					echo json_encode(array('success' => TRUE, 'data' => $res));
 				}
 				else echo json_encode(array('success' => FALSE, 'msg' => 'Data not found!'));
 			}

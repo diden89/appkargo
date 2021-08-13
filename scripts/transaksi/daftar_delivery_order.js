@@ -124,7 +124,7 @@ const daftarDeliveryOrderList = {
 			body += '<td>' + item.dod_is_status + '</td>';
 			body += '<td>';
 				body += '<div class="btn-group btn-group-sm" role="group" aria-label="Action Button">';
-					body += '<button type="button" class="btn btn-success" data-id="' + item.dod_id + '" data-no_trx="' + item.dod_no_trx + '" onclick="daftarDeliveryOrderList.showItem(this, \'edit\');"><i class="fas fa-edit"></i></button>';
+					body += '<button type="button" class="btn btn-success" data-id="' + item.dod_id + '" data-no_trx="' + item.dod_no_trx + '" data-so_no_trx="' + item.so_no_trx + '" data-dod_customer_id="' + item.dod_customer_id + '" data-dod_driver_id="' + item.dod_driver_id + '" data-dod_sod_id="' + item.dod_sod_id + '" data-dod_vehicle_id="' + item.dod_vehicle_id + '" data-dod_shipping_qty="' + item.dod_shipping_qty + '" onclick="daftarDeliveryOrderList.showItem(this, \'edit\');"><i class="fas fa-edit"></i></button>';
 					body += '<button type="button" class="btn btn-danger" data-id="' + item.dod_id + '"  data-no_trx="' + item.dod_no_trx + '" onclick="daftarDeliveryOrderList.deleteDataItem(this);"><i class="fas fa-trash-alt"></i></button>';
 					body += '<button type="button" class="btn btn-primary" data-id="' + item.dod_id + '" data-no_trx="' + item.dod_no_trx + '" data-is_status="' + item.dod_is_status + '" data-so_id="' + item.so_id + '" onclick="daftarDeliveryOrderList.updateStatus(this, \'edit\');"><i class="fas fa-exchange-alt"></i></button>';
 				body += '</div>';
@@ -155,7 +155,7 @@ const daftarDeliveryOrderList = {
 			body += '<td>' + item.dod_is_status + '</td>';
 			body += '<td>';
 				body += '<div class="btn-group btn-group-sm" role="group" aria-label="Action Button">';
-					body += '<button type="button" class="btn btn-success" data-id="' + item.dod_id + '" data-no_trx="' + item.dod_no_trx + '" onclick="daftarDeliveryOrderList.showItem(this, \'edit\');"><i class="fas fa-edit"></i></button>';
+					body += '<button type="button" class="btn btn-success" data-id="' + item.dod_id + '" data-no_trx="' + item.dod_no_trx + '" data-so_no_trx="' + item.so_no_trx + '" data-dod_customer_id="' + item.dod_customer_id + '" data-dod_driver_id="' + item.dod_driver_id + '" data-dod_sod_id="' + item.dod_sod_id + '" data-dod_vehicle_id="' + item.dod_vehicle_id + '" data-dod_shipping_qty="' + item.dod_shipping_qty_ori + '" onclick="daftarDeliveryOrderList.editDetailDO(this, \'edit\');"><i class="fas fa-edit"></i></button>';
 					body += '<button type="button" class="btn btn-danger" data-id="' + item.dod_id + '"  data-no_trx="' + item.dod_no_trx + '" onclick="daftarDeliveryOrderList.deleteDataItem(this);"><i class="fas fa-trash-alt"></i></button>';
 					body += '</div>';
 			body += '</td>';
@@ -163,6 +163,115 @@ const daftarDeliveryOrderList = {
 		});
 
 		$this.html(body);
+	},
+	editDetailDO: function(el, mode) { 
+		
+		const me = this;
+		let params = {action: 'load_daftar_delivery_order_form'};
+
+		if (mode == 'edit') {
+			params.mode = mode;
+			title = 'Edit';
+			params.dod_id = $(el).data('id');
+			params.no_trx = $(el).data('no_trx');
+			params.so_no_trx = $(el).data('so_no_trx');
+			params.dod_customer_id = $(el).data('dod_customer_id');
+			params.dod_vehicle_id = $(el).data('dod_vehicle_id');
+			params.dod_driver_id = $(el).data('dod_driver_id');
+			params.sod_id = $(el).data('dod_sod_id');
+			params.dod_shipping_qty = $(el).data('dod_shipping_qty');
+			// params.rsd_id = $(el).data('rsd_id');
+		}
+		else
+		{
+			params.mode = 'add';
+			title = 'Add';
+		}
+		
+		daftarDeliveryOrderList.loadDataItem(params);
+
+		$('#dod_vehicle_id').attr('disabled', false);
+		$('#dod_driver_id').attr('disabled', false);
+		$('#no_trx_do').val(params.no_trx);
+		$('#sod_shipping_qty').val(params.dod_shipping_qty);
+		$('#dod_id').val(params.dod_id);
+
+		if($('#txt_sales_order').val() !== '') {								
+			// $('#detail_sales_order').attr('disabled', true);
+			daftarDeliveryOrderList.generateDetailSO($('#txt_sales_order').val(),params.sod_id,'edit',params.dod_customer_id);
+			$('#printDO').attr('disabled', false);							
+		}
+
+		if($('#detail_sales_order').val() !== '') {
+		
+			sod_id = $('#detail_sales_order').val();
+
+			$.ajax({
+				url: siteUrl('transaksi/daftar_delivery_order/get_realisasi_qty'),
+				type: 'POST',
+				dataType: 'JSON',
+				beforeSend: function() {},
+				complete: function() {},
+				data: {
+					action: 'get_realisasi_qty',
+					sod_id: sod_id
+				},
+				success: function (result) {
+					if (result.success) {
+						
+						 $('#sod_qty').val(result.qty_real);
+
+					} 
+				},
+				error: function (error) {
+					toastr.error(msgErr);
+				}
+			});	
+		
+		}
+
+		if($('#c_id').val() !== '') {
+		
+			c_id = $('#c_id').val();
+
+			$.ajax({
+				url: siteUrl('transaksi/daftar_delivery_order/get_ongkir_district'),
+				type: 'POST',
+				dataType: 'JSON',
+				beforeSend: function() {},
+				complete: function() {},
+				data: {
+					action: 'get_ongkir_district',
+					c_id: c_id
+				},
+				success: function (result) {
+					if (result.success) {
+						
+						$('#dod_ongkir_temp').val('');
+						$('#dod_ongkir_temp').val(result.ongkir_temp);
+						$('#dod_ongkir_temp_2').val(result.ongkir_temp);
+
+						sod_shipp = $('#sod_shipping_qty').val();
+						ongkir_temp = result.ongkir_temp;
+
+						var formatter = new Intl.NumberFormat();
+
+						ongkir = formatter.format(sod_shipp*ongkir_temp);
+
+						$('#dod_ongkir').val(ongkir);
+
+					}
+					else
+					{
+						$('#dod_ongkir_temp').val(result.ongkir_temp);
+						$('#dod_ongkir_temp_2').val(result.ongkir_temp);
+					}
+				},
+				error: function (error) {
+					toastr.error(msgErr);
+				}
+			});
+		}
 	},
 	showItem: function(el, mode) {
 		
@@ -272,13 +381,31 @@ const daftarDeliveryOrderList = {
 			],
 			listeners: {
 				onshow: function(popup) {
-					console.log($('#txt_sales_order').val())
+					$('#btnReset').on('click',function(){
+						$('#c_id').prop('selectedIndex',0);
+						$('#detail_sales_order').prop('selectedIndex',0);
+						// $('#dod_vehicle_id').prop('selectedIndex',0);
+						// $('#dod_driver_id').prop('selectedIndex',0);
+						$('#so_id').val('');
+						$('#sod_shipping_qty').val('');
+						$('#sod_qty').val('');
+						$('#dod_ongkir_temp').val('');
+						$('#dod_ongkir').val('');
+						$('#no_trx_do').val('');
+						$('#dod_id').val('');
+
+						if(params.mode == 'edit') {
+							$('#mode').val('add');
+						}
+					});
+
 					if (mode == 'edit') {
 						daftarDeliveryOrderList.loadDataItem(params);
 						$('#dod_vehicle_id').attr('disabled', false);
 						$('#dod_driver_id').attr('disabled', false);
 						$('#no_trx_do').val(params.no_trx);
 						$('#sod_shipping_qty').val(params.dod_shipping_qty);
+						$('#dod_id').val(params.dod_id);
 
 						if($('#txt_sales_order').val() !== '') {								
 							// $('#detail_sales_order').attr('disabled', true);
@@ -333,11 +460,22 @@ const daftarDeliveryOrderList = {
 										
 										$('#dod_ongkir_temp').val('');
 										$('#dod_ongkir_temp').val(result.ongkir_temp);
+										$('#dod_ongkir_temp_2').val(result.ongkir_temp);
+
+										sod_shipp = $('#sod_shipping_qty').val();
+										ongkir_temp = result.ongkir_temp;
+
+										var formatter = new Intl.NumberFormat();
+
+										ongkir = formatter.format(sod_shipp*ongkir_temp);
+										
+										$('#dod_ongkir').val(ongkir);
 
 									}
 									else
 									{
 										$('#dod_ongkir_temp').val(result.ongkir_temp);
+										$('#dod_ongkir_temp_2').val(result.ongkir_temp);
 									}
 								},
 								error: function (error) {
@@ -347,16 +485,6 @@ const daftarDeliveryOrderList = {
 							
 						}
 
-						if($('#sod_shipping_qty').val() !== '') {
-							sod_shipp = $('#sod_shipping_qty').val();
-							ongkir_temp = $('#dod_ongkir_temp').val();
-
-							var formatter = new Intl.NumberFormat();
-
-							ongkir = formatter.format(sod_shipp*ongkir_temp);
-							
-							$('#dod_ongkir').val(ongkir);
-						}
 					}
 
 					if (typeof(mode) !== 'undefined') {
@@ -402,33 +530,22 @@ const daftarDeliveryOrderList = {
 							params.dod_created_date = $('#created_date').val();
 							params.mode = $('#mode').val();
 							
-							// console.log(params.qty)
-							// console.log(params.dod_shipping_qty)
-							// if(params.dod_shipping_qty >= params.qty)
-							// {
-							// 	Swal.fire({
-							// 		title: 'Berat Melebihi Pesanan',
-							// 		text: "Anda tidak bisa menambahkan transaksi, berat melebihi pesanan!",
-							// 		type: 'warning',
-							// 		showCancelButton: false,
-							// 		confirmButtonColor: '#17a2b8',
-							// 		cancelButtonColor: '#d33',
-							// 		confirmButtonText: 'Close!'
-							// 	})
-							// } 
-							// else 
-								if(params.qty == '0') {
-								Swal.fire({
-									title: 'Order Sudah Terpenuhi',
-									text: "Anda tidak bisa menambahkan transaksi, order sudah terpenuhi!",
-									type: 'warning',
-									showCancelButton: false,
-									confirmButtonColor: '#17a2b8',
-									cancelButtonColor: '#d33',
-									confirmButtonText: 'Close!'
-								})
+							if(params.mode == 'edit') {
+								params.dod_id = $('#dod_id').val()
+							}
+					
+							if(params.qty == '0' && params.mode !== 'edit') {
+							Swal.fire({
+								title: 'Order Sudah Terpenuhi',
+								text: "Anda tidak bisa menambahkan transaksi, order sudah terpenuhi!",
+								type: 'warning',
+								showCancelButton: false,
+								confirmButtonColor: '#17a2b8',
+								cancelButtonColor: '#d33',
+								confirmButtonText: 'Close!'
+							})
 							} 
-							else if(params.no_trx == ""){
+							else if(params.no_trx == "" && params.mode !== 'edit'){
 								Swal.fire({
 									title: 'No Transaksi Tidak Ditemukan',
 									text: "Nomor Transaksi Tidak Ditemukan, input Nomor Transaksi Terlebih Dahulu!",
@@ -458,6 +575,11 @@ const daftarDeliveryOrderList = {
 											$('#dod_ongkir_temp').val('');
 											$('#dod_ongkir').val('');
 											$('#no_trx_do').val('');
+											$('#dod_id').val('');
+
+											if(params.mode == 'edit') {
+												$('#mode').val('add');
+											}
 
 											daftarDeliveryOrderList._generateTemporaryDataTable(result.data);
 											daftarDeliveryOrderList.generateDetailSO(params.so_id);

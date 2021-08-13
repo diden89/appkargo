@@ -16,6 +16,7 @@
 	<input type="hidden" name="last_notrx" value="<?php echo $mode == 'add' ?  $last_notrx.'/SO/'.date('Ymd') : $data->so_no_trx; ?>">
 	<input type="hidden" name="sod_id" value="" id="sod_id">
 	<input type="hidden" name="so_id" value="" id="so_id">
+	<input type="hidden" name="dod_id" value="" id="dod_id">
 
 	<?php if (isset($txt_id)): ?>
 		<input type="hidden" name="txt_id" value="<?php echo $txt_id; ?>">
@@ -133,7 +134,7 @@
 				<label for="caption" class="col-sm-4 col-form-label">Total Ongkir</label>
 				<div class="col-sm-8">
 					<input type="text" name="dod_ongkir" class="form-control" id="dod_ongkir" value="" >
-					<input type="hidden"  class="form-control" id="dod_ongkir_temp2" value="">
+					<input type="hidden"  class="form-control" id="dod_ongkir_temp_2" value="">
 				</div>
 			</div>
 			<!-- <div class="form-group row">
@@ -144,8 +145,9 @@
 			</div> -->
 			
 			<div class="form-group row">
-				<div class="col-sm-8">
-					<button id="btnAddDetail" class="btn btn-primary btn-flat" type="button" title="Add Data" disabled="disabled"><i class="fas fa-plus"></i> Add</button>
+				<div class="col-sm-6">
+					<button id="btnReset" class="btn btn-secondary btn-flat" type="button" title="Reset Data"><i class="fas fa-file"></i> New</button>
+					<button id="btnAddDetail" class="btn btn-success btn-flat" type="button" title="Add Data" disabled="disabled"><i class="fas fa-plus"></i> Submit</button>
 				</div>
 			</div>
 		</div>	

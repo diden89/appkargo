@@ -48,6 +48,7 @@ class Daftar_delivery_order_model extends NOOBS_Model
 
 		$this->db->where('dod.dod_is_active', 'Y');
 		$this->db->order_by('dod.dod_created_date', 'ASC');
+		$this->db->order_by('il.il_item_name', 'ASC');
 
 		return $this->db->get();
  	}
@@ -88,9 +89,9 @@ class Daftar_delivery_order_model extends NOOBS_Model
 		);
 
 		if ($params['mode'] == 'add') $this->add($new_params, TRUE);
-		else $this->edit($new_params, "so_id = {$params['txt_id']}");
+		else $this->edit($new_params, "dod_id = {$params['dod_id']}");
 
-		return $this->load_data_daftar_delivery_order();
+		// return $this->load_data_daftar_delivery_order();
 	}
 
 
@@ -102,6 +103,19 @@ class Daftar_delivery_order_model extends NOOBS_Model
 		}
 		
 		return $this->db->get('sales_order_detail');
+ 	}
+
+ 	public function get_total_qty($params = array()) //dipakai
+	{
+		$this->db->select('sum(dod_shipping_qty) as total_qty');
+		$this->db->from('delivery_order_detail');
+
+		if (isset($params['dod_sod_id']) && ! empty($params['dod_sod_id']))
+		{
+			$this->db->where('dod_sod_id', strtoupper($params['dod_sod_id']));
+		}
+		
+		return $this->db->get();
  	}
 
 	public function store_delivery_order_status($params = array()) //dipakai
