@@ -175,10 +175,10 @@ const daftarCashOutList = {
 		if (mode == 'edit') {
 			params.mode = mode;
 			title = 'Edit';
-			params.txt_item = $(el).data('item');
-			params.txt_id = $(el).data('id');
-			params.rd_id = $(el).data('rd_id');
-			params.rsd_id = $(el).data('rsd_id');
+			params.id = $(el).data('id');
+			params.no_trx = $(el).data('no_trx');
+			params.ud_id = $(el).data('ud_id');
+			params.rad_id = $(el).data('rad_id');
 		}
 		else
 		{
@@ -186,11 +186,8 @@ const daftarCashOutList = {
 			title = 'Add';
 		}
 
-		$('#txt_province').on('select',function(){
-		});
-
 		$.popup({
-			title: title + ' Sales Order',
+			title: title + ' Kas Keluar',
 			id: 'showItem',
 			size: 'large',
 			proxy: {

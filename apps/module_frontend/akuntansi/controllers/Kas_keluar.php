@@ -31,14 +31,13 @@ class Kas_Keluar extends NOOBS_Controller
 		);
 
 		$this->store_params['item'] = [];
-		$date = date('d-m-Y H:i:s');
+		$date = date('d-m-Y');
 		$date = strtotime($date);
 		$date = strtotime("-7 day", $date);
-		// echo date('d-m-Y H:i:s', $date);
-
-		$params['date_range1'] = date('Y-m-d H:i:s', $date);
-		$params['date_range2'] = date('Y-m-d H:i:s');
-		// print_r($params);exit;
+		
+		$params['date_range1'] = date('Y-m-d', $date);
+		$params['date_range2'] = date('Y-m-d');
+		
 		$load_data_kas_keluar = $this->db_cash_out->load_data_kas_keluar($params);
 
 		if ($load_data_kas_keluar->num_rows() > 0)
@@ -50,35 +49,12 @@ class Kas_Keluar extends NOOBS_Controller
 			{
 				$num++;
 
-				$get_progress_so = $this->db_cash_out->get_progress_so(array('so_id' => $v->so_id,'dod_is_status' => 'SELESAI'));
-
-				$get_total_so = $this->db_cash_out->get_progress_so(array('so_id' => $v->so_id));
-
-				if($get_progress_so->num_rows() > 0) {
-					$progress = $get_progress_so->row();
-					$v->progress =  $progress->progress;
-				}
-				else
-				{
-					$v->progress = 0;
-				}
-
-				if($get_total_so->num_rows() > 0) {
-					$total = $get_total_so->row();
-					$v->total =  $total->progress;
-				}
-				else
-				{
-					$v->total = 0;
-				}
-				
 				$v->num = $num;
 			}
-			// print_r($result);exit;
-
+			
 			$this->store_params['item'] = $result;
 		}
-		$this->store_params['date_range1'] = date('Y-m-d H:i:s', $date);
+		$this->store_params['date_range1'] = date('Y-m-d', $date);
 
 		$this->view('kas_keluar_view');
 	}
@@ -92,10 +68,11 @@ class Kas_Keluar extends NOOBS_Controller
 				'table' => 'province'
 			);
 
-			$post['province'] = $this->db_cash_out->get_option_province()->result();
-			$post['vendor'] = $this->db_cash_out->get_option_vendor()->result();
-			$post['item_list'] = $this->db_cash_out->get_option_item_list()->result();
+			$post['kas_bank'] = $this->db_cash_out->get_kas_bank()->result();
+			$post['akun_header'] = $this->db_cash_out->get_akun_header()->result();
 			$get_last_notrx = $this->db_cash_out->get_last_notrx();
+			// $post['vendor'] = $this->db_cash_out->get_option_vendor()->result();
+			// $post['item_list'] = $this->db_cash_out->get_option_item_list()->result();
 
 			if($get_last_notrx->num_rows() > 0)
 			{
