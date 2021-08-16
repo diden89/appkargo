@@ -84,12 +84,16 @@ class Kas_Keluar extends NOOBS_Controller
 				$last_notrx = 1;
 			}
 
-			$post['last_notrx'] = sprintf('%04d',$last_notrx);
+			$post['last_notrx'] = sprintf('%04d',$last_notrx).'/CHOUT/'.date('Ymd');
 			
 
 			if($post['mode'] == 'edit')
 			{
 				$post['data'] = $this->db_cash_out->load_data_kas_keluar($post)->row();
+			}
+			else
+			{
+				$delete = $this->db_cash_out->delete_temp_data($post);
 			}
 	
 			$this->_view('kas_keluar_form_view', $post);
@@ -97,21 +101,23 @@ class Kas_Keluar extends NOOBS_Controller
 		else $this->show_404();
 	}
 
-	public function get_item_list_option()
+	public function get_akun_detail_option()
 	{
 		$post = $this->input->post(NULL, TRUE);
 
-
-		if (isset($post['action']) && ! empty($post['action']) && $post['action'] == 'get_item_list_option')
+		if (isset($post['action']) && ! empty($post['action']) && $post['action'] == 'get_akun_detail_option')
 		{
 			unset($post['action']);
 
-			$get_item_list_option = $this->db_cash_out->get_item_list_option($post);
+			$get_akun_detail_option = $this->db_cash_out->get_akun_detail_option($post);
 
-			if ($get_item_list_option->num_rows() > 0) 
+			if ($get_akun_detail_option->num_rows() > 0) 
 			{
-				$result = $get_item_list_option->result();
-
+				$result = $get_akun_detail_option->result();
+				foreach($result as $k => $v) 
+				{
+					$v->rad_name = strtoupper($v->rad_name);
+				}
 				echo json_encode(array('success' => TRUE, 'data' => $result));
 			}
 			else echo json_encode(array('success' => FALSE, 'msg' => 'Data Not Found!'));
@@ -119,48 +125,33 @@ class Kas_Keluar extends NOOBS_Controller
 		else $this->show_404();
 	}
 
-	public function get_region_option()
+	public function store_data_temporary()
 	{
-		$post = $this->input->post(NULL, TRUE);
-
-
-		if (isset($post['action']) && ! empty($post['action']) && $post['action'] == 'get_region_option')
+		if (isset($_POST['action']) && $_POST['action'] == 'insert_temporary_data')
 		{
-			unset($post['action']);
+			$post = $this->input->post(NULL, TRUE);
+			// print_r($post);exit;
+			$store_temporary_data = $this->db_cash_out->store_temporary_data($post);
 
-			$get_region_option = $this->db_cash_out->get_region_option($post);
-
-			if ($get_region_option->num_rows() > 0) 
+			if ($store_temporary_data->num_rows() > 0) 
 			{
-				$result = $get_region_option->result();
+				$result = $store_temporary_data->result();
+				$number = 1;
 
+				foreach ($result as $k => $v)
+				{
+					$v->no = $number;
+
+					$number++;
+				}
+				
 				echo json_encode(array('success' => TRUE, 'data' => $result));
 			}
-			else echo json_encode(array('success' => FALSE, 'msg' => 'Data Not Found!'));
+			else echo json_encode(array('success' => FALSE, 'msg' => 'Data not found!'));
 		}
 		else $this->show_404();
 	}
-	public function get_district_option()
-	{
-		$post = $this->input->post(NULL, TRUE);
 
-
-		if (isset($post['action']) && ! empty($post['action']) && $post['action'] == 'get_district_option')
-		{
-			unset($post['action']);
-
-			$get_district_option = $this->db_cash_out->get_district_option($post);
-
-			if ($get_district_option->num_rows() > 0) 
-			{
-				$result = $get_district_option->result();
-
-				echo json_encode(array('success' => TRUE, 'data' => $result));
-			}
-			else echo json_encode(array('success' => FALSE, 'msg' => 'Data Not Found!'));
-		}
-		else $this->show_404();
-	}
 
 	public function load_data_kas_keluar()
 	{
@@ -242,32 +233,7 @@ class Kas_Keluar extends NOOBS_Controller
 		else $this->show_404();
 	}
 
-	public function store_data_temporary()
-	{
-		if (isset($_POST['action']) && $_POST['action'] == 'insert_temporary_data')
-		{
-			$post = $this->input->post(NULL, TRUE);
-			// print_r($post);exit;
-			$store_detail_so = $this->db_cash_out->store_detail_so($post);
-
-			if ($store_detail_so->num_rows() > 0) 
-			{
-				$result = $store_detail_so->result();
-				$number = 1;
-
-				foreach ($result as $k => $v)
-				{
-					$v->no = $number;
-
-					$number++;
-				}
-				
-				echo json_encode(array('success' => TRUE, 'data' => $result));
-			}
-			else echo json_encode(array('success' => FALSE, 'msg' => 'Data not found!'));
-		}
-		else $this->show_404();
-	}
+	
 	
 	// public function store_data_temporary()
 	// {

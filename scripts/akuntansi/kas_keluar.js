@@ -141,9 +141,11 @@ const daftarCashOutList = {
 
 		$.each(data, (idx, item) => {
 			body += '<tr>';
-			// body += '<td>' + item.no + '</td>';
-			body += '<td>' + item.il_item_name + '</td>';
-			body += '<td>' + item.sod_qty + '</td>';
+			body += '<td>' + item.no + '</td>';
+			body += '<td>' + item.rad_kode_akun + '</td>';
+			body += '<td>' + item.rad_name + '</td>';
+			body += '<td>' + item.cod_keterangan + '</td>';
+			body += '<td>' + item.cod_total + '</td>';
 			body += '<td>';
 				body += '<div class="btn-group btn-group-sm" role="group" aria-label="Action Button">';
 					body += '<button type="button" class="btn btn-success" data-id="' + item.sod_id + '" data-no_trx="' + item.so_no_trx + '" data-il_id="' + item.il_id + '" data-v_id="' + item.so_vendor_id + '" data-sod_qty="' + item.sod_qty + '" onclick="daftarCashOutList.editDetailSO(this, \'edit\');"><i class="fas fa-edit"></i></button>';
@@ -263,55 +265,42 @@ const daftarCashOutList = {
 					// $('#so_no_trx').val($('#last_notrx').val());
 
 					$('#btnAddDetail').click(function(){
-						var qty = $('#sod_qty').val();
-							il_id = $('#il_id').val();
-							no_trx = $('#no_trx_id').val();
-							so_id = $('#sod_id').val();
-
+						var akun_header = $('#akun_header').val();
+							akun_detail = $('#akun_detail').val();
+							cod_keterangan = $('#cod_keterangan').val();
+							cod_total = $('#cod_total').val();							
+							co_no_trx = $('#co_no_trx_temp').val();							
 							
-							if(no_trx == "")
-							{
-								Swal.fire({
-									title: 'No Transaksi Tidak Ditemukan',
-									text: "Nomor Transaksi Tidak Ditemukan, input Nomor Transaksi Terlebih Dahulu!",
-									type: 'warning',
-									showCancelButton: false,
-									confirmButtonColor: '#17a2b8',
-									cancelButtonColor: '#d33',
-									confirmButtonText: 'Close!'
-								})
-							}
-							else
-							{
-								$.ajax({
-									url: siteUrl('akuntansi/kas_keluar/store_data_temporary'),
-									type: 'POST',
-									dataType: 'JSON',
-									data: {
-										action: 'insert_temporary_data',
-										sod_qty: qty,
-										sod_item_id: il_id,
-										sod_no_trx: no_trx,
-										so_id: so_id,
-										mode : mode
-									},
-									success: function(result) {
-										if (result.success) {
-											toastr.success("Data succesfully added.");
-											daftarCashOutList._generateTemporaryDataTable(result.data);
+						$.ajax({
+							url: siteUrl('akuntansi/kas_keluar/store_data_temporary'),
+							type: 'POST',
+							dataType: 'JSON',
+							data: {
+								action: 'insert_temporary_data',
+								akun_header: akun_header,
+								akun_detail: akun_detail,
+								cod_keterangan: cod_keterangan,
+								cod_total: cod_total,
+								co_no_trx: co_no_trx,
+								mode : mode
+							},
+							success: function(result) {
+								if (result.success) {
+									toastr.success("Data succesfully added.");
+									daftarCashOutList._generateTemporaryDataTable(result.data);
 
-										} else if (typeof(result.msg) !== 'undefined') {
-											toastr.error(result.msg);
-										} else {
-											toastr.error(msgErr);
-										}
-										
-									},
-									error: function(error) {
-										toastr.error(msgErr);
-									}
-								});								
+								} else if (typeof(result.msg) !== 'undefined') {
+									toastr.error(result.msg);
+								} else {
+									toastr.error(msgErr);
+								}
+								
+							},
+							error: function(error) {
+								toastr.error(msgErr);
 							}
+						});								
+							
 					});
 					$('#created_date').inputmask('dd-mm-yyyy', { 'placeholder': 'DD-MM-YYYY' });
 						$('#created_date').noobsdaterangepicker({
@@ -322,212 +311,74 @@ const daftarCashOutList = {
 								format: 'DD-MM-YYYY'
 							}
 						});
-					$('#v_vendor_id').change(function() {
-						var me = $(this);
 
+					$('#akun_header').change(function() {
+						var me = $(this);
+						
 						if (me.val() !== '') {
 							
-							daftarCashOutList.generateItemList(me.val());
+							daftarCashOutList.generateAkunDetail(me.val());
 
 						} else {
-							$('#il_id').html($('<option>', {
+							$('#akun_detail').html($('<option>', {
 								value: '',
-								text: 'Item Barang'
+								text: '--Akun Detail--'
 							}));
 
-							$('#il_id').attr('disabled', true);
+							$('#akun_detail').attr('disabled', true);
 						}
-					});
-					$('#il_id').change(function() {
-						
-						$('#sod_qty').val('');
-						$('#sod_id').val('');
-						
-					});
-					$('#txt_province').change(function() {
-						var me = $(this);
-						// console.log(me.val())
-
-							if (me.val() !== '') {
-								
-								daftarCashOutList.generateRegion(me.val());
-
-							} else {
-								$('#txt_region').html($('<option>', {
-									value: '',
-									text: 'Pilih Provinsi'
-								}));
-
-								$('#txt_region').attr('disabled', true);
-							}
-							$('#txt_district').attr('disabled', true);
-							$('#txt_district').html($('<option>', {
-								value: '',
-								text: '--Pilih Kabupaten / Kota--'
-							}));
 					});	
-
-					$('#txt_region').change(function() {
-						var me = $(this);
-						// console.log(me)
-
-							if (me.val() !== '') {
-								
-								daftarCashOutList.generateDistrict(me.val());
-
-							} else {
-								$('#txt_district').html($('<option>', {
-									value: '',
-									text: 'Pilih Kabupaten/Kota'
-								}));
-
-								$('#txt_district').attr('disabled', true);
-							}
-					});
-
-					// console.log(mode)				
+				
 				}
 			}
 		});
 
 	},
-	generateItemList: function(vendor_id, il_id = false) {
-		var itemList = $('#il_id');
-			// console.log(provinceId)
-			$.ajax({
-				url: siteUrl('akuntansi/kas_keluar/get_item_list_option'),
-				type: 'POST',
-				dataType: 'JSON',
-				beforeSend: function() {},
-				complete: function() {},
-				data: {
-					action: 'get_item_list_option',
-					vendor_id: vendor_id
-				},
-				success: function (result) {
-					if (result.success) {
-						var data = result.data;
+	generateAkunDetail: function(rah_id, rad_id = false) {
+		var akun_detail = $('#akun_detail');
 
-						itemList.attr('disabled', false);
+		$.ajax({
+			url: siteUrl('akuntansi/kas_keluar/get_akun_detail_option'),
+			type: 'POST',
+			dataType: 'JSON',
+			beforeSend: function() {},
+			complete: function() {},
+			data: {
+				action: 'get_akun_detail_option',
+				rah_id: rah_id
+			},
+			success: function (result) {
+				if (result.success) {
+					var data = result.data;
 
-						itemList.html($('<option>', {
-							value: '',
-							text: '--Pilih Item--'
+					akun_detail.attr('disabled', false);
+
+					akun_detail.html($('<option>', {
+						value: '',
+						text: '--Akun Detail--'
+					}));
+					
+					data.forEach(function (newData) {
+						akun_detail.append($('<option>', {
+							value: newData.rad_id,
+							text: newData.rad_name
 						}));
-						
-						data.forEach(function (newData) {
-							itemList.append($('<option>', {
-								value: newData.il_id,
-								text: newData.il_item_name
-							}));
-						});
+					});
 
-						if (il_id !== false) itemList.val(il_id);
+					if (rad_id !== false) akun_detail.val(rad_id);
 
-					} else {
+				} else {
 
-						itemList.html($('<option>', {
-							value: '',
-							text: 'Item Barang Tidak Ditemukan!'
-						}));
-					}
-				},
-				error: function (error) {
-					toastr.error(msgErr);
+					akun_detail.html($('<option>', {
+						value: '',
+						text: 'Akun Detail Tidak Ditemukan!'
+					}));
 				}
-			});
-	},
-	generateRegion: function(provinceId, regionId = false) {
-		var region = $('#txt_region');
-			console.log(regionId)
-			$.ajax({
-				url: siteUrl('akuntansi/kas_keluar/get_region_option'),
-				type: 'POST',
-				dataType: 'JSON',
-				beforeSend: function() {},
-				complete: function() {},
-				data: {
-					action: 'get_region_option',
-					prov_id: provinceId
-				},
-				success: function (result) {
-					if (result.success) {
-						var data = result.data;
-
-						region.attr('disabled', false);
-
-						region.html($('<option>', {
-							value: '',
-							text: '--Pilih Kabupaten / Kota--'
-						}));
-						
-						data.forEach(function (newData) {
-							region.append($('<option>', {
-								value: newData.rd_id,
-								text: newData.rd_name
-							}));
-						});
-
-						if (regionId !== false) region.val(regionId);
-
-					} else {
-
-						region.html($('<option>', {
-							value: '',
-							text: 'Kabupaten tidak ditemukan!'
-						}));
-					}
-				},
-				error: function (error) {
-					toastr.error(msgErr);
-				}
-			});
-	},
-	generateDistrict: function(regionId, districtId = false) {
-		var district = $('#txt_district');
-			
-			$.ajax({
-				url: siteUrl('akuntansi/kas_keluar/get_district_option'),
-				type: 'POST',
-				dataType: 'JSON',
-				beforeSend: function() {},
-				complete: function() {},
-				data: {
-					action: 'get_district_option',
-					district_id: regionId
-				},
-				success: function (result) {
-					if (result.success) {
-						var data = result.data;
-
-						district.attr('disabled', false);
-
-						district.html($('<option>', {
-							value: '',
-							text: '--Pilih Kecamatan--'
-						}));
-						
-						data.forEach(function (newData) {
-							district.append($('<option>', {
-								value: newData.rsd_id,
-								text: newData.rsd_name
-							}));
-						});
-
-						if (districtId !== false) district.val(districtId);
-
-					} else {
-
-						district.html($('<option>', {
-							value: '',
-							text: 'Kecamatan tidak ditemukan!'
-						}));
-					}
-				},
-				error: function (error) {
-					toastr.error(msgErr);
-				}
-			});
+			},
+			error: function (error) {
+				toastr.error(msgErr);
+			}
+		});
 	},
 	deleteDataItem: function(el) {
 		const me = this;

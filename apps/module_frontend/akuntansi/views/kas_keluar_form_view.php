@@ -13,18 +13,19 @@
 <form role="form" id="addKasKeluar" autocomplete="off">
 	<input type="hidden" name="action" value="store_data_kas_keluar">
 	<input type="hidden" name="mode" value="<?=$mode?>">
-	<input type="hidden" name="last_notrx" value="<?php echo $mode == 'add' ?  $last_notrx.'/CHOUT/'.date('Ymd') : $data->co_no_trx; ?>">
-	<!-- <input type="hidden" name="sod_id" value="" id="sod_id"> -->
+	<input type="hidden" name="last_notrx" value="<?php echo $mode == 'add' ?  $last_notrx : $data->co_no_trx; ?>">
+	<input type="hidden" name="sod_id" value="" id="sod_id">
 
 	<?php if (isset($txt_id)): ?>
-		<input type="hidden" name="txt_id" value="<?php echo $txt_id; ?>">
+		<input type="hidden" name="cod_id" value="<?php echo $cod_id; ?>">
 	<?php endif; ?>
 	<div class="row">		
 		<div class="col-md-6">
 			<div class="form-group row">
 				<label for="caption" class="col-sm-4 col-form-label">No Transaksi</label>
 				<div class="col-sm-8">
-					<input type="text" name="co_no_trx" class="form-control" id="no_trx_id" value="<?php echo $mode == 'edit' && $data !== FALSE ? $data->co_no_trx : $last_notrx.'/CHOUT/'.date('Ymd'); ?>" required="required" <?php echo $mode == 'edit' ? '' : ''; ?> disabled>
+					<input type="text" name="co_no_trx" class="form-control" id="no_trx_id" value="<?php echo $mode == 'edit' && $data !== FALSE ? $data->co_no_trx : $last_notrx; ?>" required="required" <?php echo $mode == 'edit' ? '' : ''; ?> disabled>
+					<input type="hidden" name="co_no_trx_temp" class="form-control" id="co_no_trx_temp" value="<?php echo $mode == 'edit' && $data !== FALSE ? $data->co_no_trx : $last_notrx; ?>">
 				</div>
 			</div>
 		</div>
@@ -37,7 +38,7 @@
 						<?php
 							foreach($kas_bank as $k => $v)
 							{
-								echo '<option value="'.$v->rad_id.'" '.(($data->rd_province_id == $v->rp_id) ? 'selected':"").'>'.$v->rad_name.'</option>';
+								echo '<option value="'.$v->rad_id.'" '.(($data->co_rad_id == $v->rad_id) ? 'selected':"").'>'.$v->rad_name.'</option>';
 							}
 						?>
 					</select>
@@ -81,7 +82,7 @@
 			<div class="form-group row">
 				<label for="caption" class="col-sm-4 col-form-label">Keterangan</label>
 				<div class="col-sm-8">
-				<textarea name="co_keterangan" class="textarea" placeholder="Enter content" style="width: 100%; height: 50px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"><?php echo $mode == 'edit' && $data !== FALSE ? $data->co_keterangan : '' ?></textarea>
+				<textarea name="co_keterangan" id="co_keterangan" class="textarea" placeholder="Enter content" style="width: 100%; height: 50px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"><?php echo $mode == 'edit' && $data !== FALSE ? $data->co_keterangan : '' ?></textarea>
 				</div>
 			</div>
 		</div>
@@ -92,28 +93,36 @@
 			<div class="form-group row">
 				<label for="caption" class="col-sm-4 col-form-label">Akun header</label>
 				<div class="col-sm-8">
-					<select class="form-control select2"  name="il_id" id="il_id">
+					<select class="form-control select2"  name="akun_header" id="akun_header" required="required">
+						<option value="">--Akun Header--</option>
 						<?php
 							foreach($akun_header as $k => $v)
 							{
-								echo '<option value="'.$v->rah_id.'" '.(($data->rd_province_id == $v->rah_id) ? 'selected':"").'>'.$v->rah_name.'</option>';
+								echo '<option value="'.$v->rah_id.'" '.(($data->rd_province_id == $v->rah_id) ? 'selected':"").'>'.strtoupper($v->rah_name).'</option>';
 							}
 						?>
 					</select>
 				</div>
 			</div>
 			<div class="form-group row">
-				<label for="caption" class="col-sm-4 col-form-label">Berat / Kg</label>
+				<label for="caption" class="col-sm-4 col-form-label">Akun detail</label>
 				<div class="col-sm-8">
-					<input type="text" name="sod_qty" class="form-control" id="sod_qty" value="" >
+					<select class="form-control select2"  name="akun_detail" id="akun_detail" disabled="disabled" required="required">
+					</select>
 				</div>
 			</div>
-			<!-- <div class="form-group row">
-				<label for="caption" class="col-sm-4 col-form-label">Keterangan</label>
+			<div class="form-group row">
+				<label for="caption" class="col-sm-4 col-form-label">Rincian</label>
 				<div class="col-sm-8">
-					<textarea name="c_address" class="form-control" placeholder="Enter content"><?php echo (isset($data->c_address)) ? $data->c_address : ""; ?></textarea>
+					<textarea name="cod_keterangan" id="cod_keterangan" class="form-control" placeholder="Enter content"><?php echo (isset($data->cod_keterangan)) ? $data->cod_keterangan : ""; ?></textarea>
 				</div>
-			</div> -->
+			</div>
+			<div class="form-group row">
+				<label for="caption" class="col-sm-4 col-form-label">Total</label>
+				<div class="col-sm-8">
+					<input type="number" name="cod_total" class="form-control" id="cod_total" value="" required="required" >
+				</div>
+			</div>
 			
 			<div class="form-group row">
 				<div class="col-sm-8">
@@ -125,16 +134,23 @@
 			<table id="temporaryDataTable" style="width: 100%;" class="table table-hover table-striped no-footer" role="grid" aria-describedby="wordDataTable_info">
 				<thead>
 					<tr role="row">
-						<!-- <th width="10">No</th> -->
-						<th>Nama Item</th>
-						<th>Berat / Kg</th>
-						<!-- <th>Keterangan</th> -->
+						<th width="10">No</th>
+						<th>Kode Akun</th>
+						<th>Nama Akun</th>
+						<th>Keterangan</th>
+						<th>Total</th>
 						<th width="100">Action</th>
 					</tr>
 				</thead>
 				<tbody>
 					
 				</tbody>
+				<tfoot>
+					<tr>
+						<td colspan="4">Total</td>
+						<td>100.000</td>
+					</tr>
+				</tfoot>
 			</table>
 		</div>	
 	</div>

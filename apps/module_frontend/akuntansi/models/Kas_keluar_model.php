@@ -16,7 +16,7 @@ class Kas_keluar_model extends NOOBS_Model
 		// print_r($params);exit;
 		$this->db->select('*');
 		$this->db->from('cash_out as co');
-		$this->db->join('cash_out_detail as cod','co.co_id = cod.cod_co_id','LEFT');
+		$this->db->join('cash_out_detail as cod','co.co_no_trx = cod.cod_co_no_trx','LEFT');
 		$this->db->join('user_detail as ud','ud.ud_id = co.last_user','LEFT');
 		$this->db->join('ref_akun_detail as rad','rad.rad_id = co.co_rad_id','LEFT');
 		
@@ -69,6 +69,64 @@ class Kas_keluar_model extends NOOBS_Model
 		
 		return $this->db->get('ref_akun_header');
  	}
+ 	
+ 	public function get_akun_detail_option($params)
+	{
+		$this->db->select('*');
+		$this->db->from('ref_akun_detail as rad');
+		$this->db->join('ref_akun_header as rah','rah.rah_id = rad.rad_akun_header_id','LEFT');
+
+		if (isset($params['rah_id']) && ! empty($params['rah_id']))
+		{
+			$this->db->where('rad.rad_akun_header_id', strtoupper($params['rah_id']));
+		}
+
+		$this->db->where('rad.rad_type', 'D');
+		$this->db->where('rad.rad_is_active', 'Y');
+		
+		return $this->db->get();
+ 	}
+
+ 	public function load_data_cash_out_detail($params = array())
+	{
+		$this->db->select('*');
+		$this->db->from('cash_out_detail as cod');
+		$this->db->join('ref_akun_detail as rad','rad.rad_id = cod.cod_rad_id','LEFT');
+		
+		if (isset($params['no_trx']) && ! empty($params['cod_co_no_trx']))
+		{
+			$this->db->where('cod.cod_co_no_trx', strtoupper($params['cod_co_no_trx']));
+		}
+
+		$this->db->where('cod.cod_is_active', 'Y');
+		
+		return $this->db->get();
+ 	}
+
+ 	public function store_temporary_data($params = array())
+	{
+		$this->table = 'cash_out_detail';
+
+		$new_params = array(
+			'cod_co_no_trx' => $params['co_no_trx'],
+			'cod_rad_id' => $params['akun_detail'],
+			'cod_keterangan' => $params['cod_keterangan'],
+			'cod_total' => $params['cod_total'],
+		);
+		if ($params['mode'] == 'add') $this->add($new_params, TRUE);
+		else $this->edit($new_params, "cod_id = {$params['cod_id']}");
+
+		return $this->load_data_cash_out_detail(array('cod_co_no_trx' => $params['co_no_trx']));
+	}
+
+	public function delete_temp_data($params = array())
+	{
+		$this->table = 'cash_out_detail';
+
+		return $this->delete('cod_co_no_trx',$params['last_notrx']);	
+		
+	}
+
 	// public function get_progress_so($params = array())
 	// {
 	// 	$this->db->select('count(dod.dod_id) as progress');
@@ -177,22 +235,6 @@ class Kas_keluar_model extends NOOBS_Model
 	// 	return $this->db->get('ref_district');
  // 	}
 
- // 	public function get_item_list_option($params)
-	// {
-	// 	$this->db->select('*');
-	// 	$this->db->from('item_list as il');
-	// 	$this->db->join('vendor as v','il.il_vendor_id = v.v_id','LEFT');
-
-	// 	if (isset($params['vendor_id']) && ! empty($params['vendor_id']))
-	// 	{
-	// 		$this->db->where('il.il_vendor_id', strtoupper($params['vendor_id']));
-	// 	}
-
-	// 	$this->db->where('il.il_is_active', 'Y');
-	// 	$this->db->order_by('il.last_datetime', 'ASC');
-
-	// 	return $this->db->get();
- // 	}
 
  // 	public function get_district_option($params)
 	// {
