@@ -9,12 +9,16 @@
  * @path /rab_frontend/apps/module_frontend/transaksi/views/kas_keluar_form_view.php
  */
 ?>
-
+<?php 
+// print_r($data);exit;
+// echo $data->co_id 	;exit;
+?>
 <form role="form" id="addKasKeluar" autocomplete="off">
 	<input type="hidden" name="action" value="store_data_kas_keluar">
 	<input type="hidden" name="mode" value="<?=$mode?>">
 	<input type="hidden" name="last_notrx" value="<?php echo $mode == 'add' ?  $last_notrx : $data->co_no_trx; ?>">
-	<input type="hidden" name="sod_id" value="" id="sod_id">
+	<input type="hidden" name="cod_id_edt" value="" id="cod_id_edt">
+	<input type="hidden" name="co_id" id="co_id" value="<?php echo $data->co_id 	; ?>">
 
 	<?php if (isset($txt_id)): ?>
 		<input type="hidden" name="cod_id" value="<?php echo $cod_id; ?>">
@@ -69,7 +73,7 @@
 			<div class="form-group row district">
 				<label for="url" class="col-sm-4 col-form-label">Jumlah</label>
 				<div class="col-sm-8">
-					<input type="text" name="co_total" class="form-control" id="co_total" value="" >
+					<input type="text" name="co_total" class="form-control" id="co_total" value="<?php echo $mode == 'edit' && $data !== FALSE ? number_format($data->co_total) : '' ?>" >
 				</div>
 			</div>
 		</div>
@@ -93,7 +97,7 @@
 			<div class="form-group row">
 				<label for="caption" class="col-sm-4 col-form-label">Akun header</label>
 				<div class="col-sm-8">
-					<select class="form-control select2"  name="akun_header" id="akun_header" required="required">
+					<select class="form-control select2"  name="akun_header" id="akun_header">
 						<option value="">--Akun Header--</option>
 						<?php
 							foreach($akun_header as $k => $v)
@@ -107,7 +111,7 @@
 			<div class="form-group row">
 				<label for="caption" class="col-sm-4 col-form-label">Akun detail</label>
 				<div class="col-sm-8">
-					<select class="form-control select2"  name="akun_detail" id="akun_detail" disabled="disabled" required="required">
+					<select class="form-control select2"  name="akun_detail" id="akun_detail" disabled="disabled">
 					</select>
 				</div>
 			</div>
@@ -120,7 +124,7 @@
 			<div class="form-group row">
 				<label for="caption" class="col-sm-4 col-form-label">Total</label>
 				<div class="col-sm-8">
-					<input type="number" name="cod_total" class="form-control" id="cod_total" value="" required="required" >
+					<input type="text" name="cod_total" class="form-control" id="cod_total" value="" >
 				</div>
 			</div>
 			

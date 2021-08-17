@@ -19,9 +19,9 @@
 				<div class="row">
 					<div class="col-12">
 						<div class="row">
-							<div class="input-group col-11">
+							<div class="input-group col-lg-11">
 							</div>
-							<div class="col-1">
+							<div class="col-lg-1">
 								<button id="btnAddItem" class="btn btn-lg btn-block btn-primary btn-flat" type="button" title="Add Data"><i class="fas fa-plus"></i> Add</button>
 							</div>
 						</div>

@@ -84,13 +84,13 @@ const daftarCashOutList = {
 		const $this = $(el);
 		
 		$.ajax({
-			url: siteUrl('akuntansi/kas_keluar/load_data_temporary_detail_so'),
+			url: siteUrl('akuntansi/kas_keluar/load_data_cash_out_detail'),
 			type: 'POST',
 			dataType: 'JSON',
 			data: {
-				action: 'load_data_temporary_detail_so',
+				action: 'load_data_cash_out_detail',
 				txt_item: $('#txtList').val(),
-				no_trx:$('#no_trx_id').val()
+				cod_co_no_trx:$('#no_trx_id').val(),
 			},
 			success: function(result) {
 				$('#temporaryDataTable tbody').html('');
@@ -206,28 +206,44 @@ const daftarCashOutList = {
 					if ($.validation(form)) {
 						const formData = new FormData(form[0]);
 
-						$.ajax({
-							url: siteUrl('akuntansi/kas_keluar/store_data_kas_keluar'),
-							type: 'POST',
-							dataType: 'JSON',
-							data: formData,
-							processData: false,
-							contentType: false,
-	         				cache: false,
-							success: function(result) {
-								if (result.success) {
-									toastr.success(msgSaveOk);
-									me._generateItemDataTable(result.data);
-								} else if (typeof(result.msg) !== 'undefined') toastr.error(result.msg);
-								else toastr.error(msgErr);
+						co_total = $('#co_total').val();
+						total_amount = $('#total_amount').html();
 
-								popup.close();
+						if(co_total !== total_amount) {
+							Swal.fire({
+								title: 'Maaf !!',
+								text: "Jumlah dan total dana harus sama nilainya",
+								type: 'warning',
+								showCancelButton: false,
+								confirmButtonColor: '#17a2b8',
+								cancelButtonColor: '#d33',
+								confirmButtonText: 'Close!'
+							});
+						}
+						else {
+							$.ajax({
+								url: siteUrl('akuntansi/kas_keluar/store_data_kas_keluar'),
+								type: 'POST',
+								dataType: 'JSON',
+								data: formData,
+								processData: false,
+								contentType: false,
+		         				cache: false,
+								success: function(result) {
+									if (result.success) {
+										toastr.success(msgSaveOk);
+										me._generateItemDataTable(result.data);
+									} else if (typeof(result.msg) !== 'undefined') toastr.error(result.msg);
+									else toastr.error(msgErr);
 
-							},
-							error: function(error) {
-								toastr.error(msgErr);
-							}
-						});
+									popup.close();
+
+								},
+								error: function(error) {
+									toastr.error(msgErr);
+								}
+							});							
+						}
 					}
 				}
 			}, {
@@ -242,8 +258,47 @@ const daftarCashOutList = {
 			listeners: {
 				onshow: function(popup) {
 					if (mode == 'edit') {
-						daftarCashOutList.generateRegion($('#txt_province').val(),$(el).data('rd_id'));
 						daftarCashOutList.loadDataItemTemporary();
+
+						co_rad_id = $('#co_rad_id').val();
+						co_no_trx = $('#co_no_trx').val();
+						$.ajax({
+							url: siteUrl('akuntansi/kas_keluar/get_amount_kas'),
+							type: 'POST',
+							dataType: 'JSON',
+							data: {
+								action: 'get_amount_kas',
+								co_rad_id: co_rad_id
+							},
+							success: function(result) {
+								if (result.success) {
+									$('#temp_akun').val(result.amount);
+								}
+								
+							},
+							error: function(error) {
+								toastr.error(msgErr);
+							}
+						});
+
+						$.ajax({
+							url: siteUrl('akuntansi/kas_keluar/total_amount_detail_cash_out'),
+							type: 'POST',
+							dataType: 'JSON',
+							data: {
+								action: 'total_amount_detail_cash_out',
+								co_no_trx: co_no_trx
+							},
+							success: function(result) {
+								if (result.success) {
+									$('#total_amount').html(result.total_amount);
+								}
+								
+							},
+							error: function(error) {
+								toastr.error(msgErr);
+							}
+						});
 					}
 
 					if (typeof(mode) !== 'undefined') {
@@ -330,6 +385,62 @@ const daftarCashOutList = {
 								format: 'DD-MM-YYYY'
 							}
 						});
+
+					$('#co_total').on('keyup',function(event) {
+						if(Number.isInteger($('#co_total').val()))
+						{
+							Swal.fire({
+								title: 'Maaf !!',
+								text: "Jumlah dan total dana harus sama nilainya",
+								type: 'warning',
+								showCancelButton: false,
+								confirmButtonColor: '#17a2b8',
+								cancelButtonColor: '#d33',
+								confirmButtonText: 'Close!'
+							})
+						}
+						else
+						{	
+							// skip for arrow keys
+							if(event.which >= 37 && event.which <= 40) return;
+
+							// format number
+							$(this).val(function(index, value) {
+							return value
+							.replace(/\D/g, "")
+							.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+							;
+							});
+						}
+					});
+
+					$('#cod_total').on('keyup',function(event) {
+						if(Number.isInteger($('#cod_total').val()))
+						{
+							Swal.fire({
+								title: 'Maaf !!',
+								text: "Jumlah dan total dana harus sama nilainya",
+								type: 'warning',
+								showCancelButton: false,
+								confirmButtonColor: '#17a2b8',
+								cancelButtonColor: '#d33',
+								confirmButtonText: 'Close!'
+							})
+						}
+						else
+						{							
+							// skip for arrow keys
+							if(event.which >= 37 && event.which <= 40) return;
+
+							// format number
+							$(this).val(function(index, value) {
+							return value
+							.replace(/\D/g, "")
+							.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+							;
+							});
+						}
+					});
 
 					$('#akun_header').change(function() {
 						var me = $(this);
@@ -423,6 +534,17 @@ const daftarCashOutList = {
 				toastr.error(msgErr);
 			}
 		});
+	},
+	addCommas: function(nStr) {
+	    nStr += ''; 
+	    x = nStr.split('.');
+	    x1 = x[0];
+	    x2 = x.length > 1 ? '.' + x[1] : '';
+	    var rgx = /(\d+)(\d{3})/;
+	    while (rgx.test(x1)) {
+	        x1 = x1.replace(rgx, '$1' + ',' + '$2');
+	    }
+	    return x1 + x2;
 	},
 	deleteDataItem: function(el) {
 		const me = this;

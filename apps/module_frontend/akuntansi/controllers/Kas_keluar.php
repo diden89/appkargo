@@ -244,13 +244,12 @@ class Kas_Keluar extends NOOBS_Controller
 		else $this->show_404();
 	}
 
-	public function load_data_temporary_detail_so()
+	public function load_data_cash_out_detail()
 	{
-		if (isset($_POST['action']) && $_POST['action'] == 'load_data_temporary_detail_so')
+		if (isset($_POST['action']) && $_POST['action'] == 'load_data_cash_out_detail')
 		{
-			// print_r($_POST);exit;
 			$post = $this->input->post(NULL, TRUE);
-			$load_data_detail_so = $this->db_cash_out->load_data_detail_so($post);
+			$load_data_detail_so = $this->db_cash_out->load_data_cash_out_detail($post);
 			if ($load_data_detail_so->num_rows() > 0) 
 			{
 				$result = $load_data_detail_so->result();
@@ -259,10 +258,12 @@ class Kas_Keluar extends NOOBS_Controller
 				foreach ($result as $k => $v)
 				{
 					$v->no = $number;
+					$v->cod_total = number_format($v->cod_total);
 
 					$number++;
 				}
 				
+			// print_r($post);exit;
 				echo json_encode(array('success' => TRUE, 'data' => $result));
 			}
 			else echo json_encode(array('success' => FALSE, 'msg' => 'Data not found!'));

@@ -134,15 +134,26 @@ class Kas_keluar_model extends NOOBS_Model
  	public function store_temporary_data($params = array())
 	{
 		$this->table = 'cash_out_detail';
-
+		// print_r($params);exit;
 		$new_params = array(
 			'cod_co_no_trx' => $params['co_no_trx'],
 			'cod_rad_id' => $params['akun_detail'],
 			'cod_keterangan' => $params['cod_keterangan'],
-			'cod_total' => $params['cod_total'],
+			'cod_total' => str_replace(',','',$params['cod_total']),
 		);
-		if ($params['mode'] == 'add') $this->add($new_params, TRUE);
-		else $this->edit($new_params, "cod_id = {$params['cod_id']}");
+		if ($params['mode'] == 'add') 
+		{
+			$this->add($new_params, TRUE);
+		}
+		elseif ($params['mode'] == 'edit' && isset($params['cod_id_edt'])) 
+		{
+			$this->edit($new_params, "cod_id = {$params['cod_id']}");
+
+		}
+		else
+		{
+			$this->add($new_params, TRUE);
+		}
 
 		return $this->load_data_cash_out_detail(array('cod_co_no_trx' => $params['co_no_trx']));
 	}
@@ -155,7 +166,7 @@ class Kas_keluar_model extends NOOBS_Model
 			'co_rad_id' => $params['co_rad_id'],
 			'co_no_trx' => $params['co_no_trx_temp'],
 			'co_keterangan' => $params['co_keterangan'],
-			'co_total' => $params['co_total'],
+			'co_total' => str_replace(',','',$params['co_total']),
 			'co_created_date' => $params['co_created_date'],
 		);
 

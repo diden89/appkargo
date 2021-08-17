@@ -20,12 +20,14 @@
 				<div class="row">
 					<div class="col-12">
 						<h4>Filter data :</h4>
-						<div class="row">
-							<div class="input-group col-6">
+						<di+
+
+						v class="row">
+							<div class="input-group col-lg-6">
 								<input type="text" id="txtList" class="form-control" placeholder="Search data..." aria-describedby="btnSearchWord">
 								
 							</div>
-							<div class="input-group col-2">
+							<div class="input-group col-lg-2">
 								<div class="input-group">
 									<div class="input-group-prepend">
 										<span class="input-group-text">
@@ -35,7 +37,7 @@
 									<input type="text" name="ud_dob_new" class="form-control" id="range1" required="required" data-inputmask-alias="datetime" data-inputmask-inputformat="dd-mm-yyyy" data-mask value="">
 								</div>
 							</div>
-							<div class="input-group col-2">
+							<div class="input-group col-lg-2">
 								<div class="input-group">
 									<div class="input-group-prepend">
 										<span class="input-group-text">
@@ -45,7 +47,7 @@
 									<input type="text" name="ud_dob_new" class="form-control" id="range2" required="required" data-inputmask-alias="datetime" data-inputmask-inputformat="dd-mm-yyyy" data-mask value="">
 								</div>
 							</div>
-							<div class="input-group col-2">
+							<div class="input-group col-lg-2">
 								<div class="input-group-append">
 									<button id="btnSearchItem" class="btn btn-info" type="button"><i class="fas fa-search"></i></button>
 									<button id="btnReloadItem" class="btn btn-success" type="button"><i class="fas fa-sync-alt"></i></button>
