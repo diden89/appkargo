@@ -70,6 +70,7 @@ class Kas_Keluar extends NOOBS_Controller
 
 			$post['kas_bank'] = $this->db_cash_out->get_kas_bank()->result();
 			$post['akun_header'] = $this->db_cash_out->get_akun_header()->result();
+			// $post['get_amount_kas'] = $this->db_cash_out->get_amount_kas()->result();
 			$get_last_notrx = $this->db_cash_out->get_last_notrx();
 			// $post['vendor'] = $this->db_cash_out->get_option_vendor()->result();
 			// $post['item_list'] = $this->db_cash_out->get_option_item_list()->result();
@@ -125,6 +126,48 @@ class Kas_Keluar extends NOOBS_Controller
 		else $this->show_404();
 	}
 
+	public function total_amount_detail_cash_out()
+	{
+		$post = $this->input->post(NULL, TRUE);
+		// print_r($post);exit;
+		if (isset($post['action']) && ! empty($post['action']) && $post['action'] == 'total_amount_detail_cash_out')
+		{
+			unset($post['action']);
+
+			$total_amount_detail_cash_out = $this->db_cash_out->total_amount_detail_cash_out($post);
+
+			if ($total_amount_detail_cash_out->num_rows() > 0) 
+			{
+				$result = $total_amount_detail_cash_out->row();
+
+				echo json_encode(array('success' => TRUE, 'total_amount' => number_format($result->total_amount)));
+			}
+			else echo json_encode(array('success' => FALSE, 'msg' => 'Data Not Found!'));
+		}
+		else $this->show_404();
+	}
+
+	public function get_amount_kas()
+	{
+		$post = $this->input->post(NULL, TRUE);
+		// print_r($post);exit;
+		if (isset($post['action']) && ! empty($post['action']) && $post['action'] == 'get_amount_kas')
+		{
+			unset($post['action']);
+
+			$get_amount_kas = $this->db_cash_out->get_amount_kas($post);
+
+			if ($get_amount_kas->num_rows() > 0) 
+			{
+				$result = $get_amount_kas->row();
+
+				echo json_encode(array('success' => TRUE, 'amount' => $result->amount));
+			}
+			else echo json_encode(array('success' => FALSE, 'msg' => 'Data Not Found!'));
+		}
+		else $this->show_404();
+	}
+
 	public function store_data_temporary()
 	{
 		if (isset($_POST['action']) && $_POST['action'] == 'insert_temporary_data')
@@ -141,6 +184,7 @@ class Kas_Keluar extends NOOBS_Controller
 				foreach ($result as $k => $v)
 				{
 					$v->no = $number;
+					$v->cod_total = number_format($v->cod_total);
 
 					$number++;
 				}
@@ -211,6 +255,9 @@ class Kas_Keluar extends NOOBS_Controller
 		if (isset($_POST['action']) && $_POST['action'] == 'store_data_kas_keluar')
 		{
 			$post = $this->input->post(NULL, TRUE);
+
+			$store_data_ref_trx = $this->store_data_ref_trx($post);
+
 			$store_data_kas_keluar = $this->db_cash_out->store_data_kas_keluar($post);
 
 			if ($store_data_kas_keluar->num_rows() > 0) 
@@ -221,14 +268,50 @@ class Kas_Keluar extends NOOBS_Controller
 				foreach ($result as $k => $v)
 				{
 					$v->no = $number;
+					$v->co_created_date = date('d-m-Y',strtotime($v->co_created_date));
+					$v->co_total = number_format($v->co_total);
 
 					$number++;
 				}
 
-
+				 print_r($result);exit;
 				echo json_encode(array('success' => TRUE, 'data' => $result));
 			}
 			else echo json_encode(array('success' => FALSE, 'msg' => 'Data not found!'));
+		}
+		else $this->show_404();
+	}
+
+	public function store_data_ref_trx($params = array())
+	{
+		if (isset($_POST['action']) && $_POST['action'] == 'store_data_kas_keluar')
+		{
+			$params = $this->input->post(NULL, TRUE);
+
+			$params['cod_co_no_trx'] = $params['co_no_trx_temp'];
+			
+			// print_r($params);exit;
+
+			$cek_temp_data = $this->db_cash_out->load_data_cash_out_detail($params);
+
+			if($cek_temp_data->num_rows() > 0) 
+			{
+				$temp_result = $cek_temp_data->result();
+				foreach($temp_result as $k => $v)
+				{
+					$new_params = array(
+						'trx_no_trx' => $params['co_no_trx_temp'],
+						'trx_rad_id_form' => $params['co_rad_id'],
+						'trx_rad_id_to' => $params['akun_detail'],
+						'trx_total' => $v->cod_total,
+						'trx_created_date' => $params['co_created_date'],
+						'mode' => $params['mode'],
+
+					);			
+					$store_data_kas_keluar = $this->db_cash_out->store_data_ref_trx($new_params);
+				}
+			}
+
 		}
 		else $this->show_404();
 	}

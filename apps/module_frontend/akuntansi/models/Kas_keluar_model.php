@@ -16,13 +16,13 @@ class Kas_keluar_model extends NOOBS_Model
 		// print_r($params);exit;
 		$this->db->select('*');
 		$this->db->from('cash_out as co');
-		$this->db->join('cash_out_detail as cod','co.co_no_trx = cod.cod_co_no_trx','LEFT');
+		// $this->db->join('cash_out_detail as cod','co.co_no_trx = cod.cod_co_no_trx','LEFT');
 		$this->db->join('user_detail as ud','ud.ud_id = co.last_user','LEFT');
 		$this->db->join('ref_akun_detail as rad','rad.rad_id = co.co_rad_id','LEFT');
 		
-		if (isset($params['txt_item']) && ! empty($params['txt_item']))
+		if (isset($params['no_trx']) && ! empty($params['no_trx']))
 		{
-			$this->db->like('UPPER(so.so_no_trx)', strtoupper($params['txt_item']));
+			$this->db->like('UPPER(co.co_no_trx)', strtoupper($params['no_trx']));
 		}
 
 		if (isset($params['txt_id']) && ! empty($params['txt_id']))
@@ -69,6 +69,28 @@ class Kas_keluar_model extends NOOBS_Model
 		
 		return $this->db->get('ref_akun_header');
  	}
+
+ 	public function get_amount_kas($params = array())
+	{
+		$this->db->where('rah_is_active', 'Y');
+		$this->db->order_by('rah_seq', 'ASC');
+		
+		return $this->db->get('ref_transaksi');
+ 	}
+
+ 	public function total_amount_detail_cash_out($params = array())
+	{
+		$this->db->select('sum(cod_total) as total_amount');
+		$this->db->from('cash_out_detail');
+
+		if (isset($params['co_no_trx']) && ! empty($params['co_no_trx']))
+		{
+			$this->db->where('cod_co_no_trx', strtoupper($params['co_no_trx']));
+		}
+		$this->db->where('cod_is_active', 'Y');
+		
+		return $this->db->get();
+ 	}
  	
  	public function get_akun_detail_option($params)
 	{
@@ -93,7 +115,7 @@ class Kas_keluar_model extends NOOBS_Model
 		$this->db->from('cash_out_detail as cod');
 		$this->db->join('ref_akun_detail as rad','rad.rad_id = cod.cod_rad_id','LEFT');
 		
-		if (isset($params['no_trx']) && ! empty($params['cod_co_no_trx']))
+		if (isset($params['cod_co_no_trx']) && ! empty($params['cod_co_no_trx']))
 		{
 			$this->db->where('cod.cod_co_no_trx', strtoupper($params['cod_co_no_trx']));
 		}
@@ -117,6 +139,35 @@ class Kas_keluar_model extends NOOBS_Model
 		else $this->edit($new_params, "cod_id = {$params['cod_id']}");
 
 		return $this->load_data_cash_out_detail(array('cod_co_no_trx' => $params['co_no_trx']));
+	}
+
+	public function store_data_kas_keluar($params = array())
+	{
+		$this->table = 'cash_out';
+
+		$new_params = array(
+			'co_rad_id' => $params['co_rad_id'],
+			'co_no_trx' => $params['co_no_trx_temp'],
+			'co_keterangan' => $params['co_keterangan'],
+			'co_total' => $params['co_total'],
+			'co_created_date' => $params['co_created_date'],
+		);
+
+		if ($params['mode'] == 'add') $this->add($new_params, TRUE);
+		else $this->edit($new_params, "co_id = {$params['txt_id']}");
+
+		return $this->load_data_kas_keluar();
+	}
+
+	public function store_data_ref_trx($params = array())
+	{
+		// print_r($params);exit;
+		$this->table = 'ref_transaksi';
+
+		if ($params['mode'] == 'add') return $this->add($params, TRUE);
+		else return $this->edit($params, "co_id = {$params['txt_id']}");
+
+		// return $this->load_data_kas_keluar();
 	}
 
 	public function delete_temp_data($params = array())

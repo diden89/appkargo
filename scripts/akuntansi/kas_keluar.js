@@ -114,13 +114,12 @@ const daftarCashOutList = {
 		$.each(data, (idx, item) => {
 			body += '<tr>';
 			body += '<td>' + item.no + '</td>';
-			body += '<td>' + item.so_no_trx + '</td>';
-			body += '<td>' + item.v_vendor_name + '</td>';
-			body += '<td>' + item.so_qty + '</td>';
-			body += '<td>' + item.rd_name + '</td>';
-			body += '<td>' + item.date_create + '</td>';
-			body += '<td>' + item.so_is_status + '</td>';
-			body += '<td>' + item.paying + '</td>';
+			body += '<td>' + item.co_no_trx + '</td>';
+			body += '<td>' + item.co_created_date + '</td>';
+			body += '<td>' + item.rad_name + '</td>';
+			body += '<td>' + item.co_keterangan + '</td>';
+			body += '<td>' + item.co_total + '</td>';
+			body += '<td>' + item.ud_fullname + '</td>';
 			body += '<td>';
 				body += '<div class="btn-group btn-group-sm" role="group" aria-label="Action Button">';
 					body += '<button type="button" class="btn btn-success" data-id="' + item.so_id + '" data-no_trx="' + item.so_no_trx + '" data-rd_id="' + item.rd_id + '" data-rp_id="' + item.rd_province_id + '" onclick="daftarCashOutList.showItem(this, \'edit\');"><i class="fas fa-edit"></i></button>';
@@ -289,6 +288,25 @@ const daftarCashOutList = {
 									toastr.success("Data succesfully added.");
 									daftarCashOutList._generateTemporaryDataTable(result.data);
 
+									 $.ajax({
+										url: siteUrl('akuntansi/kas_keluar/total_amount_detail_cash_out'),
+										type: 'POST',
+										dataType: 'JSON',
+										data: {
+											action: 'total_amount_detail_cash_out',
+											co_no_trx: co_no_trx
+										},
+										success: function(result) {
+											if (result.success) {
+												$('#total_amount').html(result.total_amount);
+											}
+											
+										},
+										error: function(error) {
+											toastr.error(msgErr);
+										}
+									});
+
 								} else if (typeof(result.msg) !== 'undefined') {
 									toastr.error(result.msg);
 								} else {
@@ -302,6 +320,7 @@ const daftarCashOutList = {
 						});								
 							
 					});
+
 					$('#created_date').inputmask('dd-mm-yyyy', { 'placeholder': 'DD-MM-YYYY' });
 						$('#created_date').noobsdaterangepicker({
 							parentEl: "#" + popup[0].id + " .modal-body",
@@ -327,6 +346,31 @@ const daftarCashOutList = {
 
 							$('#akun_detail').attr('disabled', true);
 						}
+					});	
+
+					$('#co_rad_id').change(function() {
+
+						var me = $(this);
+						co_rad_id = $('#co_rad_id').val();
+						
+						$.ajax({
+							url: siteUrl('akuntansi/kas_keluar/get_amount_kas'),
+							type: 'POST',
+							dataType: 'JSON',
+							data: {
+								action: 'get_amount_kas',
+								co_rad_id: co_rad_id
+							},
+							success: function(result) {
+								if (result.success) {
+									$('#co_rad_id').val(result.amount);
+								}
+								
+							},
+							error: function(error) {
+								toastr.error(msgErr);
+							}
+						});
 					});	
 				
 				}

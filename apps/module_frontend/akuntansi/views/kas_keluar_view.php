@@ -67,6 +67,7 @@
 										<th>Tanggal</th>
 										<th>Keluar Dari Akun</th>
 										<th>Keterangan</th>
+										<th>Total</th>
 										<th>User Buat</th>
 										<th width="100">Action</th>
 									</tr>
@@ -76,15 +77,15 @@
 										<tr>
 											<td><?php echo $v->num; ?></td>
 											<td><?php echo $v->co_no_trx; ?></td>
-											<td><?php echo date('d-m-Y',strtotime($v->so_created_date)); ?></td>
+											<td><?php echo date('d-m-Y',strtotime($v->co_created_date)); ?></td>
 											<td><?php echo $v->rad_name; ?></td>
 											<td><?php echo $v->co_keterangan; ?></td>
-											<td><?php echo $v->ud_fullname; ?></td>
 											<td><?php echo number_format($v->co_total); ?></td>
+											<td><?php echo $v->ud_fullname; ?></td>
 											<td>
 												<div class="btn-group btn-group-sm" role="group" aria-label="Action Button">
 													<button type="button" class="btn btn-success" data-id="<?php echo $v->co_id; ?>" data-no_trx="<?php echo $v->co_no_trx; ?>" data-ud_id="<?php echo $v->ud_id; ?>" data-rad_id="<?php echo $v->rad_id; ?>" onclick="daftarCashOutList.showItem(this, 'edit');" ><i class="fas fa-edit"></i></button>
-													<button type="button" class="btn btn-danger" data-id="<?php echo $v->so_id; ?>" onclick="daftarCashOutList.deleteDataItem(this);" title="Delete Word"><i class="fas fa-trash-alt"></i></button>
+													<button type="button" class="btn btn-danger" data-id="<?php echo $v->co_id; ?>" onclick="daftarCashOutList.deleteDataItem(this);" title="Delete Word"><i class="fas fa-trash-alt"></i></button>
 												</div>
 											</td>
 										</tr>

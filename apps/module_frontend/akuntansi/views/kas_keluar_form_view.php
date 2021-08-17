@@ -60,7 +60,7 @@
 								<i class="far fa-calendar-alt"></i>
 							</span>
 						</div>
-						<input type="text" name="so_created_date" class="form-control" id="created_date" required="required" data-inputmask-alias="datetime" data-inputmask-inputformat="dd-mm-yyyy" data-mask value="">
+						<input type="text" name="co_created_date" class="form-control" id="created_date" required="required" data-inputmask-alias="datetime" data-inputmask-inputformat="dd-mm-yyyy" data-mask value="">
 					</div>
 				</div>
 			</div>
@@ -98,7 +98,7 @@
 						<?php
 							foreach($akun_header as $k => $v)
 							{
-								echo '<option value="'.$v->rah_id.'" '.(($data->rd_province_id == $v->rah_id) ? 'selected':"").'>'.strtoupper($v->rah_name).'</option>';
+								echo '<option value="'.$v->rah_id.'" '.(($data->rd_province_id == $v->rah_id) ? 'selected':"").'>'.htmlspecialchars($v->rah_name).'</option>';
 							}
 						?>
 					</select>
@@ -146,10 +146,8 @@
 					
 				</tbody>
 				<tfoot>
-					<tr>
-						<td colspan="4">Total</td>
-						<td>100.000</td>
-					</tr>
+					<th colspan="4">Total</th>
+					<th colspan="1" id="total_amount"></th>
 				</tfoot>
 			</table>
 		</div>	
