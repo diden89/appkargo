@@ -70,10 +70,16 @@ class Kas_keluar_model extends NOOBS_Model
 		return $this->db->get('ref_akun_header');
  	}
 
- 	public function get_amount_kas($params = array())
+ 	public function get_amount_kas($params = array(),$set)
 	{
-		$this->db->where('rah_is_active', 'Y');
-		$this->db->order_by('rah_seq', 'ASC');
+		$this->db->select('sum(trx_total) as amount');
+
+		if (isset($set) && ! empty($set))
+		{
+			$this->db->where($set);
+		}
+
+		$this->db->where('month(trx_created_date)', date('n'));
 		
 		return $this->db->get('ref_transaksi');
  	}

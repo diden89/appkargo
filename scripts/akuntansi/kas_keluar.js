@@ -363,7 +363,7 @@ const daftarCashOutList = {
 							},
 							success: function(result) {
 								if (result.success) {
-									$('#co_rad_id').val(result.amount);
+									$('#temp_akun').val(result.amount);
 								}
 								
 							},

@@ -155,15 +155,36 @@ class Kas_Keluar extends NOOBS_Controller
 		{
 			unset($post['action']);
 
-			$get_amount_kas = $this->db_cash_out->get_amount_kas($post);
+			$get_amount_to = $this->db_cash_out->get_amount_kas($post,array('trx_rad_id_to' => $post['co_rad_id']));
+			$get_amount_from = $this->db_cash_out->get_amount_kas($post,array('trx_rad_id_from' => $post['co_rad_id']));
 
-			if ($get_amount_kas->num_rows() > 0) 
+			$amount_to = '';
+			$amount_from = '';
+			
+			if($get_amount_to->num_rows() > 0)
 			{
-				$result = $get_amount_kas->row();
-
-				echo json_encode(array('success' => TRUE, 'amount' => $result->amount));
+				$to = $get_amount_to->row();
+				$amount_to = $to->amount;
 			}
-			else echo json_encode(array('success' => FALSE, 'msg' => 'Data Not Found!'));
+			else
+			{
+				$amount_to = 0;
+			}
+
+			if($get_amount_from->num_rows() > 0)
+			{
+				$from = $get_amount_from->row();
+				$amount_from = $from->amount;
+			}
+			else
+			{
+				$amount_from = 0;
+			}
+
+			$selisih = $amount_to - $amount_from;
+
+			echo json_encode(array('success' => TRUE, 'amount' => number_format($selisih)));
+			
 		}
 		else $this->show_404();
 	}
@@ -256,6 +277,7 @@ class Kas_Keluar extends NOOBS_Controller
 		{
 			$post = $this->input->post(NULL, TRUE);
 
+			// print_r($store_data_kas_keluar->result());exit;
 			$store_data_ref_trx = $this->store_data_ref_trx($post);
 
 			$store_data_kas_keluar = $this->db_cash_out->store_data_kas_keluar($post);
@@ -274,7 +296,6 @@ class Kas_Keluar extends NOOBS_Controller
 					$number++;
 				}
 
-				 print_r($result);exit;
 				echo json_encode(array('success' => TRUE, 'data' => $result));
 			}
 			else echo json_encode(array('success' => FALSE, 'msg' => 'Data not found!'));
@@ -290,7 +311,6 @@ class Kas_Keluar extends NOOBS_Controller
 
 			$params['cod_co_no_trx'] = $params['co_no_trx_temp'];
 			
-			// print_r($params);exit;
 
 			$cek_temp_data = $this->db_cash_out->load_data_cash_out_detail($params);
 
@@ -301,13 +321,14 @@ class Kas_Keluar extends NOOBS_Controller
 				{
 					$new_params = array(
 						'trx_no_trx' => $params['co_no_trx_temp'],
-						'trx_rad_id_form' => $params['co_rad_id'],
+						'trx_rad_id_from' => $params['co_rad_id'],
 						'trx_rad_id_to' => $params['akun_detail'],
 						'trx_total' => $v->cod_total,
 						'trx_created_date' => $params['co_created_date'],
 						'mode' => $params['mode'],
 
 					);			
+			// print_r($new_params);exit;
 					$store_data_kas_keluar = $this->db_cash_out->store_data_ref_trx($new_params);
 				}
 			}

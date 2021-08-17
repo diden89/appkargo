@@ -80,7 +80,7 @@
 											<td><?php echo date('d-m-Y',strtotime($v->co_created_date)); ?></td>
 											<td><?php echo $v->rad_name; ?></td>
 											<td><?php echo $v->co_keterangan; ?></td>
-											<td><?php echo number_format($v->co_total); ?></td>
+											<td><?php echo $v->co_total; ?></td>
 											<td><?php echo $v->ud_fullname; ?></td>
 											<td>
 												<div class="btn-group btn-group-sm" role="group" aria-label="Action Button">
