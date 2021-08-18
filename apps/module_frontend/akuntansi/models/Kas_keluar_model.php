@@ -119,6 +119,7 @@ class Kas_keluar_model extends NOOBS_Model
 	{
 		$this->db->select('*');
 		$this->db->from('cash_out_detail as cod');
+		$this->db->join('ref_transaksi as trx','trx.trx_key_lock = cod.cod_key_lock','LEFT');
 		$this->db->join('ref_akun_detail as rad','rad.rad_id = cod.cod_rad_id','LEFT');
 		
 		if (isset($params['cod_co_no_trx']) && ! empty($params['cod_co_no_trx']))
@@ -131,21 +132,38 @@ class Kas_keluar_model extends NOOBS_Model
 		return $this->db->get();
  	}
 
+ 	public function cek_cash_out_detail($params = array())
+	{
+		// print_r($params);exit;
+		$this->db->select('count(cod_id) as count_cod');
+		$this->db->from('cash_out_detail');
+		
+		if (isset($params['cod_no_trx']) && ! empty($params['cod_no_trx']))
+		{
+			$this->db->where('cod_co_no_trx', strtoupper($params['cod_no_trx']));
+		}
+
+		$this->db->where('cod_is_active', 'Y');
+		
+		return $this->db->get();
+ 	}
+
  	public function store_temporary_data($params = array())
 	{
 		$this->table = 'cash_out_detail';
 		// print_r($params);exit;
 		$new_params = array(
-			'cod_co_no_trx' => $params['co_no_trx'],
+			'cod_co_no_trx' => $params['cod_no_trx'],
 			'cod_rad_id' => $params['akun_detail'],
 			'cod_keterangan' => $params['cod_keterangan'],
 			'cod_total' => str_replace(',','',$params['cod_total']),
+			'cod_key_lock' => $params['cod_key_lock'],
 		);
 		if ($params['mode'] == 'add') 
 		{
 			$this->add($new_params, TRUE);
 		}
-		elseif ($params['mode'] == 'edit' && isset($params['cod_id_edt'])) 
+		elseif ($params['mode'] == 'edit' && isset($params['cod_id']) && ! empty($params['cod_id'])) 
 		{
 			$this->edit($new_params, "cod_id = {$params['cod_id']}");
 
@@ -155,7 +173,7 @@ class Kas_keluar_model extends NOOBS_Model
 			$this->add($new_params, TRUE);
 		}
 
-		return $this->load_data_cash_out_detail(array('cod_co_no_trx' => $params['co_no_trx']));
+		return $this->load_data_cash_out_detail(array('cod_co_no_trx' => $params['cod_no_trx']));
 	}
 
 	public function store_data_kas_keluar($params = array())
@@ -182,7 +200,7 @@ class Kas_keluar_model extends NOOBS_Model
 		$this->table = 'ref_transaksi';
 
 		if ($params['mode'] == 'add') return $this->add($params, TRUE);
-		else return $this->edit($params, "co_id = {$params['txt_id']}");
+		else return $this->edit($params, "trx_id = {$params['txt_id']}");
 
 		// return $this->load_data_kas_keluar();
 	}

@@ -100,7 +100,7 @@ class Daftar_perkiraan_model extends NOOBS_Model
 			'rad_akun_header_id' => $params['txt_header'],
 			'rad_parent_id' => (isset($params['txt_posisi'])) ? $params['txt_posisi'] : '',
 			'rad_kode_akun' => $params['txt_header'].'-'.$params['code'],
-			'rad_name' => strtoupper(str_replace('&amp;','&',$params['rad_name'])),
+			'rad_name' => $params['rad_name'],
 			'rad_is_bank' => (isset($params['is_bank'])) ? $params['is_bank'] : 'N',
 		);
 

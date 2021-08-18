@@ -122,7 +122,7 @@ const daftarCashOutList = {
 			body += '<td>' + item.ud_fullname + '</td>';
 			body += '<td>';
 				body += '<div class="btn-group btn-group-sm" role="group" aria-label="Action Button">';
-					body += '<button type="button" class="btn btn-success" data-id="' + item.so_id + '" data-no_trx="' + item.so_no_trx + '" data-rd_id="' + item.rd_id + '" data-rp_id="' + item.rd_province_id + '" onclick="daftarCashOutList.showItem(this, \'edit\');"><i class="fas fa-edit"></i></button>';
+					body += '<button type="button" class="btn btn-success" data-id="' + item.co_id + '" data-no_trx="' + item.co_no_trx + '" data-ud_id="' + item.ud_id + '" data-rad_id="' + item.rad_id + '" onclick="daftarCashOutList.showItem(this, \'edit\');"><i class="fas fa-edit"></i></button>';
 					body += '<button type="button" class="btn btn-danger" data-id="' + item.so_id + '"  data-no_trx="' + item.so_no_trx + '" onclick="daftarCashOutList.deleteDataItem(this);"><i class="fas fa-trash-alt"></i></button>';
 				body += '</div>';
 			body += '</td>';
@@ -147,7 +147,7 @@ const daftarCashOutList = {
 			body += '<td>' + item.cod_total + '</td>';
 			body += '<td>';
 				body += '<div class="btn-group btn-group-sm" role="group" aria-label="Action Button">';
-					body += '<button type="button" class="btn btn-success" data-id="' + item.sod_id + '" data-no_trx="' + item.so_no_trx + '" data-il_id="' + item.il_id + '" data-v_id="' + item.so_vendor_id + '" data-sod_qty="' + item.sod_qty + '" onclick="daftarCashOutList.editDetailSO(this, \'edit\');"><i class="fas fa-edit"></i></button>';
+					body += '<button type="button" class="btn btn-success" data-id="' + item.cod_id + '" data-cod_rad_id="' + item.cod_rad_id + '" data-header_id="' + item.rad_akun_header_id + '" data-cod_keterangan="' + item.cod_keterangan + '" data-cod_total="' + item.cod_total + '" data-key_lock="' + item.cod_key_lock + '" onclick="daftarCashOutList.editDetailSO(this, \'edit\');"><i class="fas fa-edit"></i></button>';
 					body += '<button type="button" class="btn btn-danger" data-id="' + item.sod_id + '" data-no_trx="' + item.sod_no_trx + '" onclick="daftarCashOutList.deleteDataTemp(this);"><i class="fas fa-trash-alt"></i></button>';
 				body += '</div>';
 			body += '</td>';
@@ -158,14 +158,18 @@ const daftarCashOutList = {
 	},
 	editDetailSO: function(el) {
 		const me = this;
-		id = $(el).data('id');
-		v_id = $(el).data('v_id');
-		il_id = $(el).data('il_id');
-		sod_qty = $(el).data('sod_qty');
+		cod_id = $(el).data('id');
+		cod_rad_id = $(el).data('cod_rad_id');
+		header_id = $(el).data('header_id');
+		cod_keterangan = $(el).data('cod_keterangan');
+		cod_total = $(el).data('cod_total');
+		key_lock = $(el).data('key_lock');
 
-		me.generateItemList(v_id,il_id);
-		$('#sod_qty').val(sod_qty);
-		$('#sod_id').val(id);
+		daftarCashOutList.generateAkunHeader(header_id);
+		daftarCashOutList.generateAkunDetail(header_id,cod_rad_id);
+		$('#cod_id').val(cod_id);
+		$('#cod_keterangan').val(cod_keterangan);
+		$('#cod_total').val(cod_total);
 	},
 	showItem: function(el, mode) {
 		console.log(mode)
@@ -257,6 +261,7 @@ const daftarCashOutList = {
 			}],
 			listeners: {
 				onshow: function(popup) {
+					daftarCashOutList.generateAkunHeader();
 					if (mode == 'edit') {
 						daftarCashOutList.loadDataItemTemporary();
 
@@ -324,7 +329,15 @@ const daftarCashOutList = {
 							cod_keterangan = $('#cod_keterangan').val();
 							cod_total = $('#cod_total').val();							
 							co_no_trx = $('#co_no_trx_temp').val();							
-							
+							if(mode == 'edit')
+							{
+								cod_id = $('#cod_id').val();
+							}
+							else
+							{
+								cod_id = false;
+							}
+
 						$.ajax({
 							url: siteUrl('akuntansi/kas_keluar/store_data_temporary'),
 							type: 'POST',
@@ -335,7 +348,8 @@ const daftarCashOutList = {
 								akun_detail: akun_detail,
 								cod_keterangan: cod_keterangan,
 								cod_total: cod_total,
-								co_no_trx: co_no_trx,
+								cod_no_trx: co_no_trx,
+								cod_id: cod_id,
 								mode : mode
 							},
 							success: function(result) {
@@ -343,6 +357,12 @@ const daftarCashOutList = {
 									toastr.success("Data succesfully added.");
 									daftarCashOutList._generateTemporaryDataTable(result.data);
 
+									$('#akun_header').prop('selectedIndex',0);
+									$('#akun_detail').prop('selectedIndex',0);
+									$('#cod_keterangan').val('');
+									$('#cod_total').val('');
+									$('#cod_id').val('');
+									
 									 $.ajax({
 										url: siteUrl('akuntansi/kas_keluar/total_amount_detail_cash_out'),
 										type: 'POST',
@@ -488,6 +508,51 @@ const daftarCashOutList = {
 			}
 		});
 
+	},
+	generateAkunHeader: function(rah_id = false) {
+		var akun_header = $('#akun_header');
+
+		$.ajax({
+			url: siteUrl('akuntansi/kas_keluar/get_akun_header_option'),
+			type: 'POST',
+			dataType: 'JSON',
+			beforeSend: function() {},
+			complete: function() {},
+			data: {
+				action: 'get_akun_header_option'
+			},
+			success: function (result) {
+				if (result.success) {
+					var data = result.data;
+
+					akun_header.attr('disabled', false);
+
+					akun_header.html($('<option>', {
+						value: '',
+						text: '--Akun Detail--'
+					}));
+					
+					data.forEach(function (newData) {
+						akun_header.append($('<option>', {
+							value: newData.rah_id,
+							text: newData.rah_name
+						}));
+					});
+
+					if (rah_id !== false) akun_header.val(rah_id);
+
+				} else {
+
+					akun_header.html($('<option>', {
+						value: '',
+						text: 'Akun Detail Tidak Ditemukan!'
+					}));
+				}
+			},
+			error: function (error) {
+				toastr.error(msgErr);
+			}
+		});
 	},
 	generateAkunDetail: function(rah_id, rad_id = false) {
 		var akun_detail = $('#akun_detail');

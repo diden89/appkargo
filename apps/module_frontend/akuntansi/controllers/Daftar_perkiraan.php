@@ -77,7 +77,14 @@ class Daftar_perkiraan extends NOOBS_Controller
 			$get_akun_detail = $this->db_daftar_perkiraan->get_akun_detail(array('rad_is_active' => 'Y','rad_akun_header_id' => $post['rah_id']));
 
 			$post['code'] = $get_akun_header->rah_code;
-			$post['data'] = $get_akun_detail->result();
+			$result = $get_akun_detail->result();
+			foreach($result as $k => $v)
+			{
+				$v->rad_name = get_content($v->rad_name);
+			}
+
+			$post['data'] =  $get_akun_detail->result();
+
 			// print_r($post);	
 			if ($get_akun_detail && $get_akun_detail->num_rows() > 0) echo json_encode(array('success' => TRUE, 'data' => $post));
 			else echo json_encode(array('success' => FALSE, 'data' => $post));

@@ -50,6 +50,7 @@ class Kas_Keluar extends NOOBS_Controller
 				$num++;
 
 				$v->num = $num;
+				$v->co_total = number_format($v->co_total);
 			}
 			
 			$this->store_params['item'] = $result;
@@ -86,7 +87,6 @@ class Kas_Keluar extends NOOBS_Controller
 			}
 
 			$post['last_notrx'] = sprintf('%04d',$last_notrx).'/CHOUT/'.date('Ymd');
-			
 
 			if($post['mode'] == 'edit')
 			{
@@ -96,8 +96,32 @@ class Kas_Keluar extends NOOBS_Controller
 			{
 				$delete = $this->db_cash_out->delete_temp_data($post);
 			}
-	
+		// print_r($post);exit;
 			$this->_view('kas_keluar_form_view', $post);
+		}
+		else $this->show_404();
+	}
+
+	public function get_akun_header_option()
+	{
+		$post = $this->input->post(NULL, TRUE);
+
+		if (isset($post['action']) && ! empty($post['action']) && $post['action'] == 'get_akun_header_option')
+		{
+			unset($post['action']);
+
+			$get_akun_header_option = $this->db_cash_out->get_akun_header();
+
+			if ($get_akun_header_option->num_rows() > 0) 
+			{
+				$result = $get_akun_header_option->result();
+				foreach($result as $k => $v) 
+				{
+					$v->rah_name = get_content($v->rah_name);
+				}
+				echo json_encode(array('success' => TRUE, 'data' => $result));
+			}
+			else echo json_encode(array('success' => FALSE, 'msg' => 'Data Not Found!'));
 		}
 		else $this->show_404();
 	}
@@ -117,7 +141,7 @@ class Kas_Keluar extends NOOBS_Controller
 				$result = $get_akun_detail_option->result();
 				foreach($result as $k => $v) 
 				{
-					$v->rad_name = strtoupper($v->rad_name);
+					$v->rad_name = strtoupper(get_content($v->rad_name));
 				}
 				echo json_encode(array('success' => TRUE, 'data' => $result));
 			}
@@ -194,6 +218,23 @@ class Kas_Keluar extends NOOBS_Controller
 		if (isset($_POST['action']) && $_POST['action'] == 'insert_temporary_data')
 		{
 			$post = $this->input->post(NULL, TRUE);
+			// print_r($post);exit;
+			$cek_co_detail = $this->db_cash_out->cek_cash_out_detail($post)->row();
+
+			if($cek_co_detail->count_cod > 0)
+			{
+				$cek = $cek_co_detail->count_cod ;
+				$key = str_replace('/','',$post['cod_no_trx']);
+				$cek++;
+				$post['cod_key_lock'] = $key.'_'.$cek;
+			
+			}
+			else
+			{
+				$key = str_replace('/','',$post['cod_no_trx']);
+				$post['cod_key_lock'] = $key.'_1';
+			}
+			
 			// print_r($post);exit;
 			$store_temporary_data = $this->db_cash_out->store_temporary_data($post);
 
@@ -306,10 +347,10 @@ class Kas_Keluar extends NOOBS_Controller
 
 	public function store_data_ref_trx($params = array())
 	{
-		if (isset($_POST['action']) && $_POST['action'] == 'store_data_kas_keluar')
+		if (isset($params['action']) && $params['action'] == 'store_data_kas_keluar')
 		{
-			$params = $this->input->post(NULL, TRUE);
-
+			// $params = $this->input->post(NULL, TRUE);
+			// print_r($params);exit;
 			$params['cod_co_no_trx'] = $params['co_no_trx_temp'];
 			
 
@@ -323,9 +364,10 @@ class Kas_Keluar extends NOOBS_Controller
 					$new_params = array(
 						'trx_no_trx' => $params['co_no_trx_temp'],
 						'trx_rad_id_from' => $params['co_rad_id'],
-						'trx_rad_id_to' => $params['akun_detail'],
+						'trx_rad_id_to' => $v->cod_rad_id,
 						'trx_total' => $v->cod_total,
 						'trx_created_date' => $params['co_created_date'],
+						'trx_key_lock' => $v->cod_key_lock,
 						'mode' => $params['mode'],
 
 					);			
