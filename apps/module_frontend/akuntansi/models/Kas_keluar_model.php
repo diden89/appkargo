@@ -78,8 +78,22 @@ class Kas_keluar_model extends NOOBS_Model
 		{
 			$this->db->where($set);
 		}
-
-		$this->db->where('month(trx_created_date)', date('n'));
+	
+		// $this->db->where('month(trx_created_date) >=', date('n'));
+		if (isset($params['date_range1']))
+		{
+			$this->db->where('month(trx_created_date) >=', date('n',strtotime($params['date_range1'])));
+			$this->db->where('month(trx_created_date) <=',date('n',strtotime($params['date_range2'])));
+			$this->db->where('year(trx_created_date) >=', date('Y',strtotime($params['date_range1'])));
+			$this->db->where('year(trx_created_date) <=', date('Y',strtotime($params['date_range2'])));
+			$this->db->where($set);
+		}
+		else
+		{
+			$this->db->where('month(trx_created_date) >=', '1');
+			$this->db->where('month(trx_created_date) <=', '12');
+			$this->db->where('year(trx_created_date) <=', date('Y'));
+		}
 		
 		return $this->db->get('ref_transaksi');
  	}
@@ -148,6 +162,18 @@ class Kas_keluar_model extends NOOBS_Model
 		return $this->db->get();
  	}
 
+ 	public function cek_ref_transaksi($key_lock = '')
+	{		
+		if (isset($key_lock) && ! empty($key_lock))
+		{
+			$this->db->where('trx_key_lock', strtoupper($key_lock));
+		}
+
+		$this->db->where('trx_is_active', 'Y');
+		
+		return $this->db->get('ref_transaksi');
+ 	}
+
  	public function store_temporary_data($params = array())
 	{
 		$this->table = 'cash_out_detail';
@@ -189,18 +215,18 @@ class Kas_keluar_model extends NOOBS_Model
 		);
 
 		if ($params['mode'] == 'add') $this->add($new_params, TRUE);
-		else $this->edit($new_params, "co_id = {$params['txt_id']}");
+		else $this->edit($new_params, "co_id = {$params['co_id']}");
 
 		return $this->load_data_kas_keluar();
 	}
 
-	public function store_data_ref_trx($params = array())
+	public function store_data_ref_trx($params = array(),$cond = array())
 	{
 		// print_r($params);exit;
 		$this->table = 'ref_transaksi';
 
-		if ($params['mode'] == 'add') return $this->add($params, TRUE);
-		else return $this->edit($params, "trx_id = {$params['txt_id']}");
+		if ($cond['mode'] == 'add') return $this->add($params, TRUE);
+		else return $this->edit($params, "trx_key_lock = '{$cond['trx_key_lock']}'");
 
 		// return $this->load_data_kas_keluar();
 	}
@@ -211,6 +237,43 @@ class Kas_keluar_model extends NOOBS_Model
 
 		return $this->delete('cod_co_no_trx',$params['last_notrx']);	
 		
+	}
+
+	public function delete_data_cash_out($params = array())
+	{
+		$this->table = 'cash_out';
+
+		$this->delete('co_no_trx',$params['no_trx']);
+		
+		return $this->load_data_kas_keluar();
+	}
+
+	public function delete_data_cash_out_detail($params = array())
+	{
+		$this->table = 'cash_out_detail';
+
+		if (isset($params['key_lock']) && ! empty($params['key_lock']))
+		{
+			return $this->delete('cod_key_lock',$params['key_lock']);
+		}
+		else
+		{
+			return $this->delete('cod_co_no_trx',$params['no_trx']);
+		}
+	}
+
+	public function delete_data_ref_transaksi($params = array())
+	{
+		$this->table = 'ref_transaksi';
+
+		if (isset($params['key_lock']) && ! empty($params['key_lock']))
+		{
+			return $this->delete('trx_key_lock',$params['key_lock']);
+		}
+		else
+		{
+			return $this->delete('trx_no_trx',$params['no_trx']);
+		}
 	}
 
 	// public function get_progress_so($params = array())

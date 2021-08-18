@@ -219,20 +219,27 @@ class Kas_Keluar extends NOOBS_Controller
 		{
 			$post = $this->input->post(NULL, TRUE);
 			// print_r($post);exit;
-			$cek_co_detail = $this->db_cash_out->cek_cash_out_detail($post)->row();
-
-			if($cek_co_detail->count_cod > 0)
+			if($post['mode'] !== 'edit')
 			{
-				$cek = $cek_co_detail->count_cod ;
-				$key = str_replace('/','',$post['cod_no_trx']);
-				$cek++;
-				$post['cod_key_lock'] = $key.'_'.$cek;
-			
+				$cek_co_detail = $this->db_cash_out->cek_cash_out_detail($post)->row();
+
+				if($cek_co_detail->count_cod > 0)
+				{
+					$cek = $cek_co_detail->count_cod ;
+					$key = str_replace('/','',$post['cod_no_trx']);
+					$cek++;
+					$post['cod_key_lock'] = $key.'_'.$cek;
+				
+				}
+				else
+				{
+					$key = str_replace('/','',$post['cod_no_trx']);
+					$post['cod_key_lock'] = $key.'_1';
+				}
 			}
 			else
 			{
-				$key = str_replace('/','',$post['cod_no_trx']);
-				$post['cod_key_lock'] = $key.'_1';
+				$post['cod_key_lock'] = $post['key_lock'];
 			}
 			
 			// print_r($post);exit;
@@ -361,18 +368,43 @@ class Kas_Keluar extends NOOBS_Controller
 				$temp_result = $cek_temp_data->result();
 				foreach($temp_result as $k => $v)
 				{
-					$new_params = array(
-						'trx_no_trx' => $params['co_no_trx_temp'],
-						'trx_rad_id_from' => $params['co_rad_id'],
-						'trx_rad_id_to' => $v->cod_rad_id,
-						'trx_total' => $v->cod_total,
-						'trx_created_date' => $params['co_created_date'],
-						'trx_key_lock' => $v->cod_key_lock,
-						'mode' => $params['mode'],
+					$cek_trx_data = $this->db_cash_out->cek_ref_transaksi($v->cod_key_lock);
+					if($cek_trx_data->num_rows() > 0)
+					{
+						$new_params = array(
+							// 'trx_no_trx' => $params['co_no_trx_temp'],
+							'trx_rad_id_from' => $params['co_rad_id'],
+							'trx_rad_id_to' => $v->cod_rad_id,
+							'trx_total' => $v->cod_total,
+							'trx_created_date' => $params['co_created_date'],	
+						);
 
-					);			
-			// print_r($new_params);exit;
-					$store_data_kas_keluar = $this->db_cash_out->store_data_ref_trx($new_params);
+						$cond = array(
+							'trx_key_lock' => $v->cod_key_lock,
+							'mode' => $params['mode'],
+						);				
+
+					}
+					else
+					{
+						$new_params = array(
+							'trx_no_trx' => $params['co_no_trx_temp'],
+							'trx_rad_id_from' => $params['co_rad_id'],
+							'trx_rad_id_to' => $v->cod_rad_id,
+							'trx_total' => $v->cod_total,
+							'trx_created_date' => $params['co_created_date'],	
+							'trx_key_lock' => $v->cod_key_lock,	
+						);
+
+						$cond = array(
+							'trx_key_lock' => $v->cod_key_lock,
+							'mode' =>'add',
+						);
+					}
+			
+			// print_r($new_params);
+			// print_r($cond);exit;
+					$store_data_kas_keluar = $this->db_cash_out->store_data_ref_trx($new_params,$cond);
 				}
 			}
 
@@ -439,11 +471,14 @@ class Kas_Keluar extends NOOBS_Controller
 		if (isset($_POST['action']) && $_POST['action'] == 'delete_data_item')
 		{
 			$post = $this->input->post(NULL, TRUE);
-			$delete_data_item = $this->db_cash_out->delete_data_item($post);
 
-			if ($delete_data_item->num_rows() > 0) 
+			$delete_data_ref_transaksi = $this->db_cash_out->delete_data_ref_transaksi($post);
+			$delete_data_cash_out_detail = $this->db_cash_out->delete_data_cash_out_detail($post);
+			$delete_data_cash_out = $this->db_cash_out->delete_data_cash_out($post);
+
+			if ($delete_data_cash_out->num_rows() > 0) 
 			{
-				$result = $delete_data_item->result();
+				$result = $delete_data_cash_out->result();
 				$number = 1;
 
 				foreach ($result as $k => $v)
@@ -466,11 +501,13 @@ class Kas_Keluar extends NOOBS_Controller
 		if (isset($_POST['action']) && $_POST['action'] == 'delete_data_temp')
 		{
 			$post = $this->input->post(NULL, TRUE);
-			$delete_data_sod = $this->db_cash_out->delete_data_so_detail($post);
-
-			if ($delete_data_sod->num_rows() > 0) 
+			$delete_data_ref_transaksi = $this->db_cash_out->delete_data_ref_transaksi($post);
+			$delete_data_cash_out_detail = $this->db_cash_out->delete_data_cash_out_detail($post);
+			$load_cash_out_detail = $this->db_cash_out->load_data_cash_out_detail($post);
+			
+			if ($load_cash_out_detail->num_rows() > 0) 
 			{
-				$result = $delete_data_sod->result();
+				$result = $load_cash_out_detail->result();
 				$number = 1;
 
 				foreach ($result as $k => $v)
