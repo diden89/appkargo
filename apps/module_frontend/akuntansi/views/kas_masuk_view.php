@@ -6,7 +6,7 @@
  * @edit Diden89
  * @version 1.0
  * @access Public
- * @path /appkargo/apps/module_frontend/transaksi/views/kas_keluar_view.php
+ * @path /appkargo/apps/module_frontend/transaksi/views/kas_masuk_view.php
  */
 ?>
 
@@ -77,16 +77,16 @@
 									<?php foreach ($item as $k => $v): ?>
 										<tr>
 											<td><?php echo $v->num; ?></td>
-											<td><?php echo $v->co_no_trx; ?></td>
-											<td><?php echo date('d-m-Y',strtotime($v->co_created_date)); ?></td>
+											<td><?php echo $v->ci_no_trx; ?></td>
+											<td><?php echo date('d-m-Y',strtotime($v->ci_created_date)); ?></td>
 											<td><?php echo $v->rad_name; ?></td>
-											<td><?php echo $v->co_keterangan; ?></td>
-											<td><?php echo $v->co_total; ?></td>
+											<td><?php echo $v->ci_keterangan; ?></td>
+											<td><?php echo $v->ci_total; ?></td>
 											<td><?php echo $v->ud_fullname; ?></td>
 											<td>
 												<div class="btn-group btn-group-sm" role="group" aria-label="Action Button">
-													<button type="button" class="btn btn-success" data-id="<?php echo $v->co_id; ?>" data-no_trx="<?php echo $v->co_no_trx; ?>" data-ud_id="<?php echo $v->ud_id; ?>" data-rad_id="<?php echo $v->rad_id; ?>" onclick="daftarCashOutList.showItem(this, 'edit');" ><i class="fas fa-edit"></i></button>
-													<button type="button" class="btn btn-danger" data-id="<?php echo $v->co_id; ?>" data-no_trx="<?php echo $v->co_no_trx; ?>" onclick="daftarCashOutList.deleteDataItem(this);" title="Delete Word"><i class="fas fa-trash-alt"></i></button>
+													<button type="button" class="btn btn-success" data-id="<?php echo $v->ci_id; ?>" data-no_trx="<?php echo $v->ci_no_trx; ?>" data-ud_id="<?php echo $v->ud_id; ?>" data-rad_id="<?php echo $v->rad_id; ?>" onclick="daftarCashInList.showItem(this, 'edit');" ><i class="fas fa-edit"></i></button>
+													<button type="button" class="btn btn-danger" data-id="<?php echo $v->ci_id; ?>" data-no_trx="<?php echo $v->ci_no_trx; ?>" onclick="daftarCashInList.deleteDataItem(this);" title="Delete Word"><i class="fas fa-trash-alt"></i></button>
 												</div>
 											</td>
 										</tr>

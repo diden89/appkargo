@@ -41,6 +41,7 @@ class Daftar_sales_order_model extends NOOBS_Model
 		}
 
 		$this->db->where('so.so_is_active', 'Y');
+		$this->db->or_where('so.so_is_pay', 'BL');
 		$this->db->order_by('so.so_created_date', 'DESC');
 		$this->db->order_by('so.so_id', 'DESC');
 

@@ -243,7 +243,7 @@ class Kas_keluar_model extends NOOBS_Model
 	{
 		$this->table = 'cash_out';
 
-		$this->delete('co_no_trx',$params['no_trx']);
+		$this->delete('co_no_trx',$params['cod_co_no_trx']);
 		
 		return $this->load_data_kas_keluar();
 	}
@@ -258,7 +258,7 @@ class Kas_keluar_model extends NOOBS_Model
 		}
 		else
 		{
-			return $this->delete('cod_co_no_trx',$params['no_trx']);
+			return $this->delete('cod_co_no_trx',$params['cod_co_no_trx']);
 		}
 	}
 
@@ -272,7 +272,7 @@ class Kas_keluar_model extends NOOBS_Model
 		}
 		else
 		{
-			return $this->delete('trx_no_trx',$params['no_trx']);
+			return $this->delete('trx_no_trx',$params['cod_co_no_trx']);
 		}
 	}
 

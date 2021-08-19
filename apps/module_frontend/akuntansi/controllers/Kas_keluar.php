@@ -6,10 +6,10 @@
  * @edit Diden89
  * @version 1.0
  * @access Public
- * @path /appkargo/apps/module_frontend/akuntansi/controllers/Kas_Keluar.php
+ * @path /appkargo/apps/module_frontend/akuntansi/controllers/Kas_keluar.php
  */
 
-class Kas_Keluar extends NOOBS_Controller
+class Kas_keluar extends NOOBS_Controller
 {
 	function __construct()
 	{

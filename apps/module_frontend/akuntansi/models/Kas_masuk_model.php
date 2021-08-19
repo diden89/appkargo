@@ -6,50 +6,50 @@
  * @edit Diden89
  * @version 1.0
  * @access Public
- * @path /appkargo/apps/module_frontend/akuntansi/models/Kas_keluar_model.php
+ * @path /appkargo/apps/module_frontend/akuntansi/models/Kas_masuk_model.php
  */
 
-class Kas_keluar_model extends NOOBS_Model
+class Kas_masuk_model extends NOOBS_Model
 {
-	public function load_data_kas_keluar($params = array())
+	public function load_data_kas_masuk($params = array())
 	{
 		// print_r($params);exit;
 		$this->db->select('*');
-		$this->db->from('cash_out as co');
-		// $this->db->join('cash_out_detail as cod','co.co_no_trx = cod.cod_co_no_trx','LEFT');
-		$this->db->join('user_detail as ud','ud.ud_id = co.last_user','LEFT');
-		$this->db->join('ref_akun_detail as rad','rad.rad_id = co.co_rad_id','LEFT');
+		$this->db->from('cash_in as ci');
+		// $this->db->join('cash_in_detail as cid','ci.ci_no_trx = cid.cid_ci_no_trx','LEFT');
+		$this->db->join('user_detail as ud','ud.ud_id = ci.last_user','LEFT');
+		$this->db->join('ref_akun_detail as rad','rad.rad_id = ci.ci_rad_id','LEFT');
 		
 		if (isset($params['no_trx']) && ! empty($params['no_trx']))
 		{
-			$this->db->like('UPPER(co.co_no_trx)', strtoupper($params['no_trx']));
+			$this->db->like('UPPER(ci.ci_no_trx)', strtoupper($params['no_trx']));
 		}
 
 		if (isset($params['txt_id']) && ! empty($params['txt_id']))
 		{
-			$this->db->where('co.co_id', strtoupper($params['txt_id']));
+			$this->db->where('ci.ci_id', strtoupper($params['txt_id']));
 		}
 
 		if (isset($params['date_range1']) && ! empty($params['date_range1']))
 		{
-			$this->db->where('co.co_created_date >=', $params['date_range1']);
-			$this->db->where('co.co_created_date <=', $params['date_range2']);
+			$this->db->where('ci.ci_created_date >=', $params['date_range1']);
+			$this->db->where('ci.ci_created_date <=', $params['date_range2']);
 		}
 
-		$this->db->where('co.co_is_active', 'Y');
-		$this->db->order_by('co.co_created_date', 'DESC');
-		$this->db->order_by('co.co_id', 'DESC');
+		$this->db->where('ci.ci_is_active', 'Y');
+		$this->db->order_by('ci.ci_created_date', 'DESC');
+		$this->db->order_by('ci.ci_id', 'DESC');
 
 		return $this->db->get();
  	}
 
  	public function get_last_notrx()
 	{
-		$this->db->select('LEFT(co_no_trx,4) as notrx');
-		$this->db->order_by('co_id', 'DESC');
+		$this->db->select('LEFT(ci_no_trx,4) as notrx');
+		$this->db->order_by('ci_id', 'DESC');
 		$this->db->limit('1');
 		
-		return $this->db->get('cash_out');
+		return $this->db->get('cash_in');
  	}
 
 	public function get_kas_bank()
@@ -98,16 +98,16 @@ class Kas_keluar_model extends NOOBS_Model
 		return $this->db->get('ref_transaksi');
  	}
 
- 	public function total_amount_detail_cash_out($params = array())
+ 	public function total_amount_detail_cash_in($params = array())
 	{
-		$this->db->select('sum(cod_total) as total_amount');
-		$this->db->from('cash_out_detail');
+		$this->db->select('sum(cid_total) as total_amount');
+		$this->db->from('cash_in_detail');
 
-		if (isset($params['co_no_trx']) && ! empty($params['co_no_trx']))
+		if (isset($params['ci_no_trx']) && ! empty($params['ci_no_trx']))
 		{
-			$this->db->where('cod_co_no_trx', strtoupper($params['co_no_trx']));
+			$this->db->where('cid_ci_no_trx', strtoupper($params['ci_no_trx']));
 		}
-		$this->db->where('cod_is_active', 'Y');
+		$this->db->where('cid_is_active', 'Y');
 		
 		return $this->db->get();
  	}
@@ -129,35 +129,35 @@ class Kas_keluar_model extends NOOBS_Model
 		return $this->db->get();
  	}
 
- 	public function load_data_cash_out_detail($params = array())
+ 	public function load_data_cash_in_detail($params = array())
 	{
 		$this->db->select('*');
-		$this->db->from('cash_out_detail as cod');
-		$this->db->join('ref_transaksi as trx','trx.trx_key_lock = cod.cod_key_lock','LEFT');
-		$this->db->join('ref_akun_detail as rad','rad.rad_id = cod.cod_rad_id','LEFT');
+		$this->db->from('cash_in_detail as cid');
+		$this->db->join('ref_transaksi as trx','trx.trx_key_lock = cid.cid_key_lock','LEFT');
+		$this->db->join('ref_akun_detail as rad','rad.rad_id = cid.cid_rad_id','LEFT');
 		
-		if (isset($params['cod_co_no_trx']) && ! empty($params['cod_co_no_trx']))
+		if (isset($params['cid_ci_no_trx']) && ! empty($params['cid_ci_no_trx']))
 		{
-			$this->db->where('cod.cod_co_no_trx', strtoupper($params['cod_co_no_trx']));
+			$this->db->where('cid.cid_ci_no_trx', strtoupper($params['cid_ci_no_trx']));
 		}
 
-		$this->db->where('cod.cod_is_active', 'Y');
+		$this->db->where('cid.cid_is_active', 'Y');
 		
 		return $this->db->get();
  	}
 
- 	public function cek_cash_out_detail($params = array())
+ 	public function cek_cash_in_detail($params = array())
 	{
 		// print_r($params);exit;
-		$this->db->select('max(cod_key_lock) as max');
-		$this->db->from('cash_out_detail');
+		$this->db->select('max(cid_key_lock) as max');
+		$this->db->from('cash_in_detail');
 		
-		if (isset($params['cod_no_trx']) && ! empty($params['cod_no_trx']))
+		if (isset($params['cid_no_trx']) && ! empty($params['cid_no_trx']))
 		{
-			$this->db->where('cod_co_no_trx', strtoupper($params['cod_no_trx']));
+			$this->db->where('cid_ci_no_trx', strtoupper($params['cid_no_trx']));
 		}
 
-		$this->db->where('cod_is_active', 'Y');
+		$this->db->where('cid_is_active', 'Y');
 		
 		return $this->db->get();
  	}
@@ -176,22 +176,22 @@ class Kas_keluar_model extends NOOBS_Model
 
  	public function store_temporary_data($params = array())
 	{
-		$this->table = 'cash_out_detail';
+		$this->table = 'cash_in_detail';
 		// print_r($params);exit;
 		$new_params = array(
-			'cod_co_no_trx' => $params['cod_no_trx'],
-			'cod_rad_id' => $params['akun_detail'],
-			'cod_keterangan' => $params['cod_keterangan'],
-			'cod_total' => str_replace(',','',$params['cod_total']),
-			'cod_key_lock' => $params['cod_key_lock'],
+			'cid_ci_no_trx' => $params['cid_no_trx'],
+			'cid_rad_id' => $params['akun_detail'],
+			'cid_keterangan' => $params['cid_keterangan'],
+			'cid_total' => str_replace(',','',$params['cid_total']),
+			'cid_key_lock' => $params['cid_key_lock'],
 		);
-		if ($params['cod_id'] == false) 
+		if ($params['cid_id'] == false) 
 		{
 			$this->add($new_params, TRUE);
 		}
-		elseif (isset($params['cod_id']) && ! empty($params['cod_id'])) 
+		elseif (isset($params['cid_id']) && ! empty($params['cid_id'])) 
 		{
-			$this->edit($new_params, "cod_id = {$params['cod_id']}");
+			$this->edit($new_params, "cid_id = {$params['cid_id']}");
 
 		}
 		else
@@ -199,25 +199,25 @@ class Kas_keluar_model extends NOOBS_Model
 			$this->add($new_params, TRUE);
 		}
 
-		return $this->load_data_cash_out_detail(array('cod_co_no_trx' => $params['cod_no_trx']));
+		return $this->load_data_cash_in_detail(array('cid_ci_no_trx' => $params['cid_no_trx']));
 	}
 
-	public function store_data_kas_keluar($params = array())
+	public function store_data_kas_masuk($params = array())
 	{
-		$this->table = 'cash_out';
+		$this->table = 'cash_in';
 
 		$new_params = array(
-			'co_rad_id' => $params['co_rad_id'],
-			'co_no_trx' => $params['co_no_trx_temp'],
-			'co_keterangan' => $params['co_keterangan'],
-			'co_total' => str_replace(',','',$params['co_total']),
-			'co_created_date' => $params['co_created_date'],
+			'ci_rad_id' => $params['ci_rad_id'],
+			'ci_no_trx' => $params['ci_no_trx_temp'],
+			'ci_keterangan' => $params['ci_keterangan'],
+			'ci_total' => str_replace(',','',$params['ci_total']),
+			'ci_created_date' => $params['ci_created_date'],
 		);
 
 		if ($params['mode'] == 'add') $this->add($new_params, TRUE);
-		else $this->edit($new_params, "co_id = {$params['co_id']}");
+		else $this->edit($new_params, "ci_id = {$params['ci_id']}");
 
-		return $this->load_data_kas_keluar();
+		return $this->load_data_kas_masuk();
 	}
 
 	public function store_data_ref_trx($params = array(),$cond = array())
@@ -228,37 +228,37 @@ class Kas_keluar_model extends NOOBS_Model
 		if ($cond['mode'] == 'add') return $this->add($params, TRUE);
 		else return $this->edit($params, "trx_key_lock = '{$cond['trx_key_lock']}'");
 
-		// return $this->load_data_kas_keluar();
+		// return $this->load_data_kas_masuk();
 	}
 
 	public function delete_temp_data($params = array())
 	{
-		$this->table = 'cash_out_detail';
+		$this->table = 'cash_in_detail';
 
-		return $this->delete('cod_co_no_trx',$params['last_notrx']);	
+		return $this->delete('cid_ci_no_trx',$params['last_notrx']);	
 		
 	}
 
-	public function delete_data_cash_out($params = array())
+	public function delete_data_cash_in($params = array())
 	{
-		$this->table = 'cash_out';
+		$this->table = 'cash_in';
 
-		$this->delete('co_no_trx',$params['no_trx']);
+		$this->delete('ci_no_trx',$params['cid_ci_no_trx']);
 		
-		return $this->load_data_kas_keluar();
+		return $this->load_data_kas_masuk();
 	}
 
-	public function delete_data_cash_out_detail($params = array())
+	public function delete_data_cash_in_detail($params = array())
 	{
-		$this->table = 'cash_out_detail';
+		$this->table = 'cash_in_detail';
 
 		if (isset($params['key_lock']) && ! empty($params['key_lock']))
 		{
-			return $this->delete('cod_key_lock',$params['key_lock']);
+			return $this->delete('cid_key_lock',$params['key_lock']);
 		}
 		else
 		{
-			return $this->delete('cod_co_no_trx',$params['no_trx']);
+			return $this->delete('cid_ci_no_trx',$params['cid_ci_no_trx']);
 		}
 	}
 
@@ -272,7 +272,7 @@ class Kas_keluar_model extends NOOBS_Model
 		}
 		else
 		{
-			return $this->delete('trx_no_trx',$params['no_trx']);
+			return $this->delete('trx_no_trx',$params['cid_ci_no_trx']);
 		}
 	}
 
