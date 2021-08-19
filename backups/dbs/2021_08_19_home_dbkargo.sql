@@ -11,10 +11,10 @@
  Target Server Version : 80020
  File Encoding         : 65001
 
- Date: 19/08/2021 01:33:21
+ Date: 19/08/2021 09:36:02
 */
 
-SET NAMES utf8mb4;
+SET NAMES utf8;
 SET FOREIGN_KEY_CHECKS = 0;
 
 -- ----------------------------
@@ -44,20 +44,19 @@ DROP TABLE IF EXISTS `cash_out`;
 CREATE TABLE `cash_out`  (
   `co_id` int NOT NULL AUTO_INCREMENT,
   `co_rad_id` int NULL DEFAULT NULL,
-  `co_no_trx` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `co_keterangan` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `co_total` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `co_no_trx` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `co_keterangan` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `co_total` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `co_created_date` date NULL DEFAULT NULL,
-  `co_is_active` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT 'Y',
+  `co_is_active` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT 'Y',
   `last_user` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `last_datetime` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`co_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of cash_out
 -- ----------------------------
-INSERT INTO `cash_out` VALUES (12, 3, '0001/CHOUT/20210819', 'uang', '1500000', '2021-08-19', 'Y', '1', '2021-08-19 01:27:14');
 
 -- ----------------------------
 -- Table structure for cash_out_detail
@@ -65,22 +64,20 @@ INSERT INTO `cash_out` VALUES (12, 3, '0001/CHOUT/20210819', 'uang', '1500000', 
 DROP TABLE IF EXISTS `cash_out_detail`;
 CREATE TABLE `cash_out_detail`  (
   `cod_id` int NOT NULL AUTO_INCREMENT,
-  `cod_co_no_trx` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `cod_key_lock` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `cod_co_no_trx` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `cod_key_lock` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `cod_rad_id` int NULL DEFAULT NULL,
-  `cod_keterangan` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `cod_total` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `cod_is_active` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT 'Y',
+  `cod_keterangan` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `cod_total` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `cod_is_active` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT 'Y',
   `last_user` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `last_datetime` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`cod_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 45 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 45 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of cash_out_detail
 -- ----------------------------
-INSERT INTO `cash_out_detail` VALUES (49, '0001/CHOUT/20210819', NULL, 16, 'uang jalan', '150000', 'Y', '1', '2021-08-19 01:32:11');
-INSERT INTO `cash_out_detail` VALUES (50, '0001/CHOUT/20210819', NULL, 19, 'uang jalan', '652000', 'Y', '1', '2021-08-19 01:32:32');
 
 -- ----------------------------
 -- Table structure for customer
@@ -89,17 +86,17 @@ DROP TABLE IF EXISTS `customer`;
 CREATE TABLE `customer`  (
   `c_id` int NOT NULL AUTO_INCREMENT,
   `c_district_id` int NULL DEFAULT NULL,
-  `c_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `c_address` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL,
-  `c_phone` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `c_email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `c_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `c_address` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+  `c_phone` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `c_email` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `c_shipping_area` int NULL DEFAULT NULL,
   `c_distance_area` double NULL DEFAULT NULL,
   `c_is_active` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT 'Y',
   `last_user` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `last_datetime` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`c_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of customer
@@ -115,7 +112,7 @@ INSERT INTO `customer` VALUES (7, 1789, 'Ahmad', 'Sungai Limau', '085274524152',
 DROP TABLE IF EXISTS `delivery_order_detail`;
 CREATE TABLE `delivery_order_detail`  (
   `dod_id` int NOT NULL AUTO_INCREMENT,
-  `dod_no_trx` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `dod_no_trx` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `dod_sod_id` int NULL DEFAULT NULL,
   `dod_driver_id` int NULL DEFAULT NULL,
   `dod_customer_id` int NULL DEFAULT NULL,
@@ -123,12 +120,12 @@ CREATE TABLE `delivery_order_detail`  (
   `dod_shipping_qty` int NULL DEFAULT NULL,
   `dod_ongkir` decimal(10, 0) NULL DEFAULT NULL,
   `dod_created_date` date NULL DEFAULT NULL,
-  `dod_is_status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `dod_is_status` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `dod_is_active` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT 'Y',
   `last_user` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `last_datetime` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`dod_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 69 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 69 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of delivery_order_detail
@@ -149,12 +146,12 @@ CREATE TABLE `delivery_order_status`  (
   `dos_id` int NOT NULL AUTO_INCREMENT,
   `dos_date` datetime(0) NULL DEFAULT NULL,
   `dos_delivery_id` int NULL DEFAULT NULL,
-  `dos_status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `dos_is_active` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT 'Y',
+  `dos_status` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `dos_is_active` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT 'Y',
   `last_user` int UNSIGNED NOT NULL,
   `last_datetime` datetime(0) NOT NULL,
   PRIMARY KEY (`dos_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 27 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 27 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of delivery_order_status
@@ -188,15 +185,15 @@ DROP TABLE IF EXISTS `driver`;
 CREATE TABLE `driver`  (
   `d_id` int NOT NULL AUTO_INCREMENT,
   `d_district_id` int NULL DEFAULT NULL,
-  `d_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `d_address` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL,
-  `d_phone` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `d_email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `d_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `d_address` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+  `d_phone` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `d_email` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `d_is_active` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT 'Y',
   `last_user` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `last_datetime` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`d_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of driver
@@ -211,7 +208,7 @@ DROP TABLE IF EXISTS `item_list`;
 CREATE TABLE `item_list`  (
   `il_id` int NOT NULL AUTO_INCREMENT,
   `il_item_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `il_item_code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `il_item_code` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `il_vendor_id` int NULL DEFAULT NULL,
   `il_un_id` int NULL DEFAULT NULL,
   `il_is_active` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT 'Y',
@@ -386,11 +383,11 @@ DROP TABLE IF EXISTS `log_cash_out`;
 CREATE TABLE `log_cash_out`  (
   `co_id` int NOT NULL,
   `co_rad_id` int NULL DEFAULT NULL,
-  `co_no_trx` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `co_keterangan` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `co_total` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `co_no_trx` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `co_keterangan` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `co_total` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `co_created_date` date NULL DEFAULT NULL,
-  `co_is_active` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT 'Y',
+  `co_is_active` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT 'Y',
   `last_user` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `last_datetime` datetime(0) NULL DEFAULT NULL,
   `log_user_id` int NULL DEFAULT NULL,
@@ -398,7 +395,7 @@ CREATE TABLE `log_cash_out`  (
   `log_datetime` datetime(0) NOT NULL,
   `log_id` int UNSIGNED NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`log_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 16 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 16 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of log_cash_out
@@ -418,6 +415,15 @@ INSERT INTO `log_cash_out` VALUES (11, 3, '0001/CHOUT/20210818', 'uang jalan', '
 INSERT INTO `log_cash_out` VALUES (11, 3, '0001/CHOUT/20210818', 'uang jalan', '1800000', '2021-08-19', 'Y', '1', '2021-08-19 00:48:38', 1, 'edit', '2021-08-19 00:48:38', 13);
 INSERT INTO `log_cash_out` VALUES (11, 3, '0001/CHOUT/20210818', 'uang jalan', '1800000', '2021-08-19', 'Y', '1', '2021-08-19 00:48:38', 1, 'delete', '2021-08-19 01:07:11', 14);
 INSERT INTO `log_cash_out` VALUES (12, 3, '0001/CHOUT/20210819', 'uang', '1500000', '2021-08-19', 'Y', '1', '2021-08-19 01:27:14', 1, 'add', '2021-08-19 01:27:14', 15);
+INSERT INTO `log_cash_out` VALUES (12, 3, '0001/CHOUT/20210819', 'uang', '1500000', '2021-08-19', 'Y', '1', '2021-08-19 01:27:14', 1, 'delete', '2021-08-19 08:45:20', 16);
+INSERT INTO `log_cash_out` VALUES (13, 3, '0001/CHOUT/20210819', 'uang keluar', '4750000', '2021-08-19', 'Y', '1', '2021-08-19 09:04:43', 1, 'add', '2021-08-19 09:04:43', 17);
+INSERT INTO `log_cash_out` VALUES (13, 3, '0001/CHOUT/20210819', 'uang keluar', '700000', '2021-08-19', 'Y', '1', '2021-08-19 09:05:00', 1, 'edit', '2021-08-19 09:05:00', 18);
+INSERT INTO `log_cash_out` VALUES (13, 3, '0001/CHOUT/20210819', 'uang keluar', '250000', '2021-08-19', 'Y', '1', '2021-08-19 09:08:37', 1, 'edit', '2021-08-19 09:08:37', 19);
+INSERT INTO `log_cash_out` VALUES (13, 3, '0001/CHOUT/20210819', 'uang keluar', '640000', '2021-08-19', 'Y', '1', '2021-08-19 09:23:31', 1, 'edit', '2021-08-19 09:23:31', 20);
+INSERT INTO `log_cash_out` VALUES (13, 3, '0001/CHOUT/20210819', 'uang keluar', '1000000', '2021-08-19', 'Y', '1', '2021-08-19 09:24:00', 1, 'edit', '2021-08-19 09:24:00', 21);
+INSERT INTO `log_cash_out` VALUES (13, 3, '0001/CHOUT/20210819', 'uang keluar', '500000', '2021-08-19', 'Y', '1', '2021-08-19 09:25:02', 1, 'edit', '2021-08-19 09:25:02', 22);
+INSERT INTO `log_cash_out` VALUES (13, 3, '0001/CHOUT/20210819', 'uang keluar', '7040000', '2021-08-19', 'Y', '1', '2021-08-19 09:35:15', 1, 'edit', '2021-08-19 09:35:15', 23);
+INSERT INTO `log_cash_out` VALUES (13, 3, '0001/CHOUT/20210819', 'uang keluar', '7040000', '2021-08-19', 'Y', '1', '2021-08-19 09:35:15', 1, 'delete', '2021-08-19 09:35:37', 24);
 
 -- ----------------------------
 -- Table structure for log_cash_out_detail
@@ -425,12 +431,12 @@ INSERT INTO `log_cash_out` VALUES (12, 3, '0001/CHOUT/20210819', 'uang', '150000
 DROP TABLE IF EXISTS `log_cash_out_detail`;
 CREATE TABLE `log_cash_out_detail`  (
   `cod_id` int NOT NULL,
-  `cod_co_no_trx` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `cod_key_lock` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `cod_co_no_trx` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `cod_key_lock` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `cod_rad_id` int NULL DEFAULT NULL,
-  `cod_keterangan` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `cod_total` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `cod_is_active` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT 'Y',
+  `cod_keterangan` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `cod_total` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `cod_is_active` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT 'Y',
   `last_user` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `last_datetime` datetime(0) NULL DEFAULT NULL,
   `log_user_id` int NULL DEFAULT NULL,
@@ -438,7 +444,7 @@ CREATE TABLE `log_cash_out_detail`  (
   `log_datetime` datetime(0) NOT NULL,
   `log_id` int UNSIGNED NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`log_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 76 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 76 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of log_cash_out_detail
@@ -518,6 +524,48 @@ INSERT INTO `log_cash_out_detail` VALUES (48, '0001/CHOUT/20210819', '0001CHOUT2
 INSERT INTO `log_cash_out_detail` VALUES (48, '0001/CHOUT/20210819', '0001CHOUT20210819_1', 16, 'uang jalan', '1500000', 'Y', '1', '2021-08-19 01:27:05', 1, 'delete', '2021-08-19 01:31:29', 73);
 INSERT INTO `log_cash_out_detail` VALUES (49, '0001/CHOUT/20210819', NULL, 16, 'uang jalan', '150000', 'Y', '1', '2021-08-19 01:32:11', 1, 'add', '2021-08-19 01:32:11', 74);
 INSERT INTO `log_cash_out_detail` VALUES (50, '0001/CHOUT/20210819', NULL, 19, 'uang jalan', '652000', 'Y', '1', '2021-08-19 01:32:32', 1, 'add', '2021-08-19 01:32:32', 75);
+INSERT INTO `log_cash_out_detail` VALUES (49, '0001/CHOUT/20210819', NULL, 16, 'uang jalan', '150000', 'Y', '1', '2021-08-19 01:32:11', 1, 'delete', '2021-08-19 08:45:19', 76);
+INSERT INTO `log_cash_out_detail` VALUES (50, '0001/CHOUT/20210819', NULL, 19, 'uang jalan', '652000', 'Y', '1', '2021-08-19 01:32:32', 1, 'delete', '2021-08-19 08:45:19', 77);
+INSERT INTO `log_cash_out_detail` VALUES (51, '0001/CHOUT/20210819', '0001CHOUT20210819_1', 16, 'uang jalan', '150000', 'Y', '1', '2021-08-19 08:46:00', 1, 'add', '2021-08-19 08:46:00', 78);
+INSERT INTO `log_cash_out_detail` VALUES (52, '0001/CHOUT/20210819', '0001CHOUT20210819_2', 16, 'uang jalan', '250000', 'Y', '1', '2021-08-19 08:46:19', 1, 'add', '2021-08-19 08:46:19', 79);
+INSERT INTO `log_cash_out_detail` VALUES (51, '0001/CHOUT/20210819', '0001CHOUT20210819_1', 16, 'uang jalan', '150000', 'Y', '1', '2021-08-19 08:46:00', 1, 'delete', '2021-08-19 08:52:58', 80);
+INSERT INTO `log_cash_out_detail` VALUES (53, '0001/CHOUT/20210819', 'false', 16, 'wqdqw', '150000', 'Y', '1', '2021-08-19 08:56:37', 1, 'add', '2021-08-19 08:56:37', 81);
+INSERT INTO `log_cash_out_detail` VALUES (54, '0001/CHOUT/20210819', '0001CHOUT20210819_1', 16, 'uang jalan', '150000', 'Y', '1', '2021-08-19 08:58:26', 1, 'add', '2021-08-19 08:58:26', 82);
+INSERT INTO `log_cash_out_detail` VALUES (54, '0001/CHOUT/20210819', '0001CHOUT20210819_1', 16, 'uang jalan', '250000', 'Y', '1', '2021-08-19 09:00:33', 1, 'edit', '2021-08-19 09:00:33', 83);
+INSERT INTO `log_cash_out_detail` VALUES (54, '0001/CHOUT/20210819', '0001CHOUT20210819_1', 16, 'uang jalan', '35000', 'Y', '1', '2021-08-19 09:00:40', 1, 'edit', '2021-08-19 09:00:40', 84);
+INSERT INTO `log_cash_out_detail` VALUES (55, '0001/CHOUT/20210819', '0001CHOUT20210819_1', 16, 'UANG JALAN', '150000', 'Y', '1', '2021-08-19 09:02:57', 1, 'add', '2021-08-19 09:02:57', 85);
+INSERT INTO `log_cash_out_detail` VALUES (55, '0001/CHOUT/20210819', '0001CHOUT20210819_1', 16, 'UANG JALAN', '250000', 'Y', '1', '2021-08-19 09:03:03', 1, 'edit', '2021-08-19 09:03:03', 86);
+INSERT INTO `log_cash_out_detail` VALUES (56, '0001/CHOUT/20210819', '0001CHOUT20210819_2', 19, 'uang jalan', '350000', 'Y', '1', '2021-08-19 09:04:20', 1, 'add', '2021-08-19 09:04:20', 87);
+INSERT INTO `log_cash_out_detail` VALUES (56, '0001/CHOUT/20210819', '0001CHOUT20210819_2', 19, 'uang jalan', '4500000', 'Y', '1', '2021-08-19 09:04:27', 1, 'edit', '2021-08-19 09:04:27', 88);
+INSERT INTO `log_cash_out_detail` VALUES (56, '0001/CHOUT/20210819', '0001CHOUT20210819_2', 19, 'uang jalan', '450000', 'Y', '1', '2021-08-19 09:04:54', 1, 'edit', '2021-08-19 09:04:54', 89);
+INSERT INTO `log_cash_out_detail` VALUES (56, '0001/CHOUT/20210819', '0001CHOUT20210819_2', 19, 'uang jalan', '450000', 'Y', '1', '2021-08-19 09:04:54', 1, 'delete', '2021-08-19 09:05:09', 90);
+INSERT INTO `log_cash_out_detail` VALUES (57, '0001/CHOUT/20210819', NULL, 19, 'UANG JALAN', '520000', 'Y', '1', '2021-08-19 09:10:46', 1, 'add', '2021-08-19 09:10:46', 91);
+INSERT INTO `log_cash_out_detail` VALUES (55, '0001/CHOUT/20210819', '0001CHOUT20210819_1', 16, 'UANG JALAN', '250000', 'Y', '1', '2021-08-19 09:03:03', 1, 'delete', '2021-08-19 09:14:20', 92);
+INSERT INTO `log_cash_out_detail` VALUES (57, '0001/CHOUT/20210819', NULL, 19, 'UANG JALAN', '520000', 'Y', '1', '2021-08-19 09:10:46', 1, 'delete', '2021-08-19 09:14:20', 93);
+INSERT INTO `log_cash_out_detail` VALUES (58, '0001/CHOUT/20210819', NULL, 16, 'UANG JALAN', '250000', 'Y', '1', '2021-08-19 09:15:22', 1, 'add', '2021-08-19 09:15:22', 94);
+INSERT INTO `log_cash_out_detail` VALUES (59, '0001/CHOUT/20210819', NULL, 22, 'UANG JALAN', '65000', 'Y', '1', '2021-08-19 09:15:32', 1, 'add', '2021-08-19 09:15:32', 95);
+INSERT INTO `log_cash_out_detail` VALUES (58, '0001/CHOUT/20210819', NULL, 16, 'UANG JALAN', '250000', 'Y', '1', '2021-08-19 09:15:22', 1, 'delete', '2021-08-19 09:15:35', 96);
+INSERT INTO `log_cash_out_detail` VALUES (59, '0001/CHOUT/20210819', NULL, 22, 'UANG JALAN', '65000', 'Y', '1', '2021-08-19 09:15:32', 1, 'delete', '2021-08-19 09:15:35', 97);
+INSERT INTO `log_cash_out_detail` VALUES (60, '0001/CHOUT/20210819', NULL, 16, 'UANG JALAN', '500000', 'Y', '1', '2021-08-19 09:16:55', 1, 'add', '2021-08-19 09:16:55', 98);
+INSERT INTO `log_cash_out_detail` VALUES (60, '0001/CHOUT/20210819', NULL, 16, 'UANG JALAN', '500000', 'Y', '1', '2021-08-19 09:16:55', 1, 'delete', '2021-08-19 09:18:24', 99);
+INSERT INTO `log_cash_out_detail` VALUES (61, '0001/CHOUT/20210819', '0001CHOUT20210819_1', 22, 'UANG JALAN', '150000', 'Y', '1', '2021-08-19 09:21:12', 1, 'add', '2021-08-19 09:21:12', 100);
+INSERT INTO `log_cash_out_detail` VALUES (61, '0001/CHOUT/20210819', '0001CHOUT20210819_1', 22, 'UANG JALAN', '850000', 'Y', '1', '2021-08-19 09:21:42', 1, 'edit', '2021-08-19 09:21:42', 101);
+INSERT INTO `log_cash_out_detail` VALUES (61, '0001/CHOUT/20210819', '0001CHOUT20210819_1', 22, 'UANG JALAN', '850000', 'Y', '1', '2021-08-19 09:21:42', 1, 'delete', '2021-08-19 09:21:50', 102);
+INSERT INTO `log_cash_out_detail` VALUES (62, '0001/CHOUT/20210819', '0001CHOUT20210819_1', 19, 'UANG JALAN', '500000', 'Y', '1', '2021-08-19 09:22:01', 1, 'add', '2021-08-19 09:22:01', 103);
+INSERT INTO `log_cash_out_detail` VALUES (63, '0001/CHOUT/20210819', '0001CHOUT20210819_2', 16, 'UANG JALAN', '80000', 'Y', '1', '2021-08-19 09:22:12', 1, 'add', '2021-08-19 09:22:12', 104);
+INSERT INTO `log_cash_out_detail` VALUES (63, '0001/CHOUT/20210819', '0001CHOUT20210819_2', 16, 'UANG JALAN', '80000', 'Y', '1', '2021-08-19 09:22:12', 1, 'delete', '2021-08-19 09:22:14', 105);
+INSERT INTO `log_cash_out_detail` VALUES (64, '0001/CHOUT/20210819', '0001CHOUT20210819_2', 16, 'uang jaan', '640000', 'Y', '1', '2021-08-19 09:23:20', 1, 'add', '2021-08-19 09:23:20', 106);
+INSERT INTO `log_cash_out_detail` VALUES (62, '0001/CHOUT/20210819', '0001CHOUT20210819_1', 19, 'UANG JALAN', '500000', 'Y', '1', '2021-08-19 09:22:01', 1, 'delete', '2021-08-19 09:23:23', 107);
+INSERT INTO `log_cash_out_detail` VALUES (64, '0001/CHOUT/20210819', '0001CHOUT20210819_2', 16, 'uang jaan', '1000000', 'Y', '1', '2021-08-19 09:23:56', 1, 'edit', '2021-08-19 09:23:56', 108);
+INSERT INTO `log_cash_out_detail` VALUES (64, '0001/CHOUT/20210819', '0001CHOUT20210819_2', 16, 'uang jaan', '500000', 'Y', '1', '2021-08-19 09:24:48', 1, 'edit', '2021-08-19 09:24:48', 109);
+INSERT INTO `log_cash_out_detail` VALUES (65, '0001/CHOUT/20210819', '0001CHOUT20210819_2', 22, 'uang jalan', '54000', 'Y', '1', '2021-08-19 09:25:30', 1, 'add', '2021-08-19 09:25:30', 110);
+INSERT INTO `log_cash_out_detail` VALUES (66, '0001/CHOUT/20210819', '0001CHOUT20210819_6', 19, 'uang jalan', '540000', 'Y', '1', '2021-08-19 09:33:27', 1, 'add', '2021-08-19 09:33:27', 111);
+INSERT INTO `log_cash_out_detail` VALUES (65, '0001/CHOUT/20210819', '0001CHOUT20210819_5', 22, 'uang jalan', '54000', 'Y', '1', '2021-08-19 09:25:30', 1, 'delete', '2021-08-19 09:33:31', 112);
+INSERT INTO `log_cash_out_detail` VALUES (66, '0001/CHOUT/20210819', '0001CHOUT20210819_6', 19, 'uang jalan', '540000', 'Y', '1', '2021-08-19 09:33:27', 1, 'delete', '2021-08-19 09:34:47', 113);
+INSERT INTO `log_cash_out_detail` VALUES (64, '0001/CHOUT/20210819', '0001CHOUT20210819_2', 16, 'uang jaan', '500000', 'Y', '1', '2021-08-19 09:34:58', 1, 'edit', '2021-08-19 09:34:58', 114);
+INSERT INTO `log_cash_out_detail` VALUES (67, '0001/CHOUT/20210819', '0001CHOUT20210819_3', 22, 'uang jalan', '6540000', 'Y', '1', '2021-08-19 09:35:07', 1, 'add', '2021-08-19 09:35:07', 115);
+INSERT INTO `log_cash_out_detail` VALUES (64, '0001/CHOUT/20210819', '0001CHOUT20210819_2', 16, 'uang jaan', '500000', 'Y', '1', '2021-08-19 09:34:58', 1, 'delete', '2021-08-19 09:35:37', 116);
+INSERT INTO `log_cash_out_detail` VALUES (67, '0001/CHOUT/20210819', '0001CHOUT20210819_3', 22, 'uang jalan', '6540000', 'Y', '1', '2021-08-19 09:35:07', 1, 'delete', '2021-08-19 09:35:37', 117);
 
 -- ----------------------------
 -- Table structure for log_customer
@@ -526,10 +574,10 @@ DROP TABLE IF EXISTS `log_customer`;
 CREATE TABLE `log_customer`  (
   `c_id` int NOT NULL,
   `c_district_id` int NULL DEFAULT NULL,
-  `c_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `c_address` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL,
-  `c_phone` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `c_email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `c_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `c_address` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+  `c_phone` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `c_email` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `c_shipping_area` int NULL DEFAULT NULL,
   `c_distance_area` double NULL DEFAULT NULL,
   `c_is_active` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT 'Y',
@@ -540,7 +588,7 @@ CREATE TABLE `log_customer`  (
   `log_datetime` datetime(0) NOT NULL,
   `log_id` int UNSIGNED NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`log_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 35 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 35 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of log_customer
@@ -584,13 +632,13 @@ INSERT INTO `log_customer` VALUES (7, 1789, 'Ahmad', 'Sungai Limau', '0852745241
 DROP TABLE IF EXISTS `log_delivery_order_detail`;
 CREATE TABLE `log_delivery_order_detail`  (
   `dod_id` int NOT NULL,
-  `dod_no_trx` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `dod_no_trx` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `dod_sod_id` int NULL DEFAULT NULL,
   `dod_driver_id` int NULL DEFAULT NULL,
   `dod_vehicle_id` int NULL DEFAULT NULL,
   `dod_customer_id` int NULL DEFAULT NULL,
   `dod_ongkir` decimal(10, 0) NULL DEFAULT NULL,
-  `dod_is_status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `dod_is_status` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `dod_created_date` datetime(0) NULL DEFAULT NULL,
   `dod_shipping_qty` int NULL DEFAULT NULL,
   `dod_is_active` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT 'Y',
@@ -601,7 +649,7 @@ CREATE TABLE `log_delivery_order_detail`  (
   `log_datetime` datetime(0) NOT NULL,
   `log_id` int UNSIGNED NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`log_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 90 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 90 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of log_delivery_order_detail
@@ -671,8 +719,8 @@ CREATE TABLE `log_delivery_order_status`  (
   `dos_id` int NOT NULL,
   `dos_date` datetime(0) NULL DEFAULT NULL,
   `dos_delivery_id` int NULL DEFAULT NULL,
-  `dos_status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `dos_is_active` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT 'Y',
+  `dos_status` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `dos_is_active` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT 'Y',
   `last_user` int UNSIGNED NOT NULL,
   `last_datetime` datetime(0) NOT NULL,
   `log_user_id` int NULL DEFAULT NULL,
@@ -680,7 +728,7 @@ CREATE TABLE `log_delivery_order_status`  (
   `log_datetime` datetime(0) NOT NULL,
   `log_id` int UNSIGNED NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`log_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 27 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 27 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of log_delivery_order_status
@@ -718,10 +766,10 @@ DROP TABLE IF EXISTS `log_driver`;
 CREATE TABLE `log_driver`  (
   `d_id` int NOT NULL,
   `d_district_id` int NULL DEFAULT NULL,
-  `d_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `d_address` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL,
-  `d_phone` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `d_email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `d_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `d_address` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+  `d_phone` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `d_email` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `d_is_active` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT 'Y',
   `last_user` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `last_datetime` datetime(0) NULL DEFAULT NULL,
@@ -730,7 +778,7 @@ CREATE TABLE `log_driver`  (
   `log_datetime` datetime(0) NOT NULL,
   `log_id` int UNSIGNED NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`log_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 21 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 21 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of log_driver
@@ -749,7 +797,7 @@ DROP TABLE IF EXISTS `log_item_list`;
 CREATE TABLE `log_item_list`  (
   `il_id` int NOT NULL,
   `il_item_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `il_item_code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `il_item_code` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `il_vendor_id` int NULL DEFAULT NULL,
   `il_un_id` int NULL DEFAULT NULL,
   `il_is_active` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT 'Y',
@@ -1676,12 +1724,12 @@ CREATE TABLE `log_ref_akun_detail`  (
   `rad_id` int NOT NULL,
   `rad_parent_id` int NULL DEFAULT NULL,
   `rad_akun_header_id` int NOT NULL,
-  `rad_kode_akun` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `rad_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `rad_seq` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '1',
-  `rad_type` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `rad_kode_akun` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `rad_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `rad_seq` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '1',
+  `rad_type` varchar(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `rad_is_active` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT 'Y',
-  `rad_is_bank` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT 'N',
+  `rad_is_bank` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT 'N',
   `last_user` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `last_datetime` datetime(0) NULL DEFAULT NULL,
   `log_user_id` int UNSIGNED NOT NULL,
@@ -1689,7 +1737,7 @@ CREATE TABLE `log_ref_akun_detail`  (
   `log_datetime` datetime(0) NULL DEFAULT NULL,
   `log_id` int UNSIGNED NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`log_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 33 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 33 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of log_ref_akun_detail
@@ -1733,9 +1781,9 @@ INSERT INTO `log_ref_akun_detail` VALUES (22, 14, 4, '4-1104', 'BBM &amp; Uang J
 DROP TABLE IF EXISTS `log_ref_akun_header`;
 CREATE TABLE `log_ref_akun_header`  (
   `rah_id` int NOT NULL,
-  `rah_code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `rah_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `rah_seq` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `rah_code` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `rah_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `rah_seq` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `rah_is_active` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT 'Y',
   `last_user` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `last_datetime` datetime(0) NULL DEFAULT NULL,
@@ -1744,7 +1792,7 @@ CREATE TABLE `log_ref_akun_header`  (
   `log_datetime` datetime(0) NULL DEFAULT NULL,
   `log_id` int UNSIGNED NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`log_id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of log_ref_akun_header
@@ -1757,7 +1805,7 @@ DROP TABLE IF EXISTS `log_ref_district`;
 CREATE TABLE `log_ref_district`  (
   `rd_id` int NOT NULL,
   `rd_province_id` int NULL DEFAULT NULL,
-  `rd_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `rd_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `rd_is_active` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT 'Y',
   `last_user` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `last_datetime` datetime(0) NULL DEFAULT NULL,
@@ -1766,7 +1814,7 @@ CREATE TABLE `log_ref_district`  (
   `log_datetime` datetime(0) NULL DEFAULT NULL,
   `log_id` int UNSIGNED NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`log_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1315 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1315 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of log_ref_district
@@ -2375,7 +2423,7 @@ INSERT INTO `log_ref_menu` VALUES (73, 68, 'Kas Keluar', 'Kas Keluar', 'akuntans
 DROP TABLE IF EXISTS `log_ref_province`;
 CREATE TABLE `log_ref_province`  (
   `rp_id` int NOT NULL,
-  `rp_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `rp_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `rp_is_active` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT 'Y',
   `last_user` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `last_datetime` datetime(0) NULL DEFAULT NULL,
@@ -2384,7 +2432,7 @@ CREATE TABLE `log_ref_province`  (
   `log_datetime` datetime(0) NULL DEFAULT NULL,
   `log_id` int UNSIGNED NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`log_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 98 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 98 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of log_ref_province
@@ -2430,8 +2478,8 @@ INSERT INTO `log_ref_province` VALUES (34, 'Papua', 'Y', '1', '2021-07-19 08:54:
 DROP TABLE IF EXISTS `log_ref_status`;
 CREATE TABLE `log_ref_status`  (
   `rs_id` int NOT NULL,
-  `rs_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `rs_is_active` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT 'Y',
+  `rs_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `rs_is_active` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT 'Y',
   `last_user` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `last_datetime` datetime(0) NULL DEFAULT NULL,
   `log_user_id` int UNSIGNED NOT NULL,
@@ -2439,7 +2487,7 @@ CREATE TABLE `log_ref_status`  (
   `log_datetime` datetime(0) NULL DEFAULT NULL,
   `log_id` int UNSIGNED NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`log_id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of log_ref_status
@@ -2452,7 +2500,7 @@ DROP TABLE IF EXISTS `log_ref_sub_district`;
 CREATE TABLE `log_ref_sub_district`  (
   `rsd_id` int NOT NULL,
   `rsd_district_id` int NULL DEFAULT NULL,
-  `rsd_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `rsd_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `rsd_is_active` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT 'Y',
   `last_user` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `last_datetime` datetime(0) NULL DEFAULT NULL,
@@ -2461,7 +2509,7 @@ CREATE TABLE `log_ref_sub_district`  (
   `log_datetime` datetime(0) NULL DEFAULT NULL,
   `log_id` int UNSIGNED NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`log_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 17437 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 17437 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of log_ref_sub_district
@@ -9199,13 +9247,13 @@ INSERT INTO `log_ref_sub_district` VALUES (10588, 813, ' Jayapura Utara', 'Y', '
 DROP TABLE IF EXISTS `log_ref_transaksi`;
 CREATE TABLE `log_ref_transaksi`  (
   `trx_id` int NOT NULL,
-  `trx_no_trx` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `trx_key_lock` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `trx_no_trx` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `trx_key_lock` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `trx_rad_id_from` int NULL DEFAULT NULL,
   `trx_rad_id_to` int NULL DEFAULT NULL,
-  `trx_total` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `trx_total` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `trx_created_date` date NULL DEFAULT NULL,
-  `trx_is_active` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT 'Y',
+  `trx_is_active` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT 'Y',
   `last_user` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `last_datetime` datetime(0) NULL DEFAULT NULL,
   `log_user_id` int UNSIGNED NOT NULL,
@@ -9213,7 +9261,7 @@ CREATE TABLE `log_ref_transaksi`  (
   `log_datetime` datetime(0) NULL DEFAULT NULL,
   `log_id` int UNSIGNED NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`log_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 31 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 31 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of log_ref_transaksi
@@ -9248,6 +9296,20 @@ INSERT INTO `log_ref_transaksi` VALUES (17, '0001/CHOUT/20210818', '0001CHOUT202
 INSERT INTO `log_ref_transaksi` VALUES (18, '0001/CHOUT/20210818', '0001CHOUT20210818_3', 3, 15, '850000', '2021-08-19', 'Y', '1', '2021-08-19 00:48:38', 1, 'delete', '2021-08-19 01:07:11', 28);
 INSERT INTO `log_ref_transaksi` VALUES (19, '0001/CHOUT/20210819', '0001CHOUT20210819_1', 3, 16, '1500000', '2021-08-19', 'Y', '1', '2021-08-19 01:27:14', 1, 'add', '2021-08-19 01:27:14', 29);
 INSERT INTO `log_ref_transaksi` VALUES (19, '0001/CHOUT/20210819', '0001CHOUT20210819_1', 3, 16, '1500000', '2021-08-19', 'Y', '1', '2021-08-19 01:27:14', 1, 'delete', '2021-08-19 01:31:29', 30);
+INSERT INTO `log_ref_transaksi` VALUES (21, '0001/CHOUT/20210819', '0001CHOUT20210819_1', 3, 16, '250000', '2021-08-19', 'Y', '1', '2021-08-19 09:04:43', 1, 'add', '2021-08-19 09:04:43', 31);
+INSERT INTO `log_ref_transaksi` VALUES (22, '0001/CHOUT/20210819', '0001CHOUT20210819_2', 3, 19, '4500000', '2021-08-19', 'Y', '1', '2021-08-19 09:04:43', 1, 'add', '2021-08-19 09:04:43', 32);
+INSERT INTO `log_ref_transaksi` VALUES (21, '0001/CHOUT/20210819', '0001CHOUT20210819_1', 3, 16, '250000', '2021-08-19', 'Y', '1', '2021-08-19 09:05:00', 1, 'edit', '2021-08-19 09:05:00', 33);
+INSERT INTO `log_ref_transaksi` VALUES (22, '0001/CHOUT/20210819', '0001CHOUT20210819_2', 3, 19, '450000', '2021-08-19', 'Y', '1', '2021-08-19 09:05:00', 1, 'edit', '2021-08-19 09:05:00', 34);
+INSERT INTO `log_ref_transaksi` VALUES (22, '0001/CHOUT/20210819', '0001CHOUT20210819_2', 3, 19, '450000', '2021-08-19', 'Y', '1', '2021-08-19 09:05:00', 1, 'delete', '2021-08-19 09:05:09', 35);
+INSERT INTO `log_ref_transaksi` VALUES (21, '0001/CHOUT/20210819', '0001CHOUT20210819_1', 3, 16, '250000', '2021-08-19', 'Y', '1', '2021-08-19 09:08:37', 1, 'edit', '2021-08-19 09:08:37', 36);
+INSERT INTO `log_ref_transaksi` VALUES (21, '0001/CHOUT/20210819', '0001CHOUT20210819_1', 3, 16, '250000', '2021-08-19', 'Y', '1', '2021-08-19 09:08:37', 1, 'delete', '2021-08-19 09:14:20', 37);
+INSERT INTO `log_ref_transaksi` VALUES (23, '0001/CHOUT/20210819', '0001CHOUT20210819_2', 3, 16, '640000', '2021-08-19', 'Y', '1', '2021-08-19 09:23:31', 1, 'add', '2021-08-19 09:23:31', 38);
+INSERT INTO `log_ref_transaksi` VALUES (23, '0001/CHOUT/20210819', '0001CHOUT20210819_2', 3, 16, '1000000', '2021-08-19', 'Y', '1', '2021-08-19 09:24:00', 1, 'edit', '2021-08-19 09:24:00', 39);
+INSERT INTO `log_ref_transaksi` VALUES (23, '0001/CHOUT/20210819', '0001CHOUT20210819_2', 3, 16, '500000', '2021-08-19', 'Y', '1', '2021-08-19 09:25:02', 1, 'edit', '2021-08-19 09:25:02', 40);
+INSERT INTO `log_ref_transaksi` VALUES (23, '0001/CHOUT/20210819', '0001CHOUT20210819_2', 3, 16, '500000', '2021-08-19', 'Y', '1', '2021-08-19 09:35:14', 1, 'edit', '2021-08-19 09:35:14', 41);
+INSERT INTO `log_ref_transaksi` VALUES (24, '0001/CHOUT/20210819', '0001CHOUT20210819_3', 3, 22, '6540000', '2021-08-19', 'Y', '1', '2021-08-19 09:35:14', 1, 'add', '2021-08-19 09:35:14', 42);
+INSERT INTO `log_ref_transaksi` VALUES (23, '0001/CHOUT/20210819', '0001CHOUT20210819_2', 3, 16, '500000', '2021-08-19', 'Y', '1', '2021-08-19 09:35:14', 1, 'delete', '2021-08-19 09:35:37', 43);
+INSERT INTO `log_ref_transaksi` VALUES (24, '0001/CHOUT/20210819', '0001CHOUT20210819_3', 3, 22, '6540000', '2021-08-19', 'Y', '1', '2021-08-19 09:35:14', 1, 'delete', '2021-08-19 09:35:37', 44);
 
 -- ----------------------------
 -- Table structure for log_sales_order
@@ -9257,10 +9319,10 @@ CREATE TABLE `log_sales_order`  (
   `so_id` int NOT NULL,
   `so_vendor_id` int NULL DEFAULT NULL,
   `so_district_id` int NULL DEFAULT NULL,
-  `so_no_trx` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `so_is_receive` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `so_no_trx` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `so_is_receive` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `so_created_date` date NULL DEFAULT NULL,
-  `so_is_pay` char(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `so_is_pay` char(2) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `so_is_active` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT 'Y',
   `last_user` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `last_datetime` datetime(0) NULL DEFAULT NULL,
@@ -9268,9 +9330,9 @@ CREATE TABLE `log_sales_order`  (
   `log_action` varchar(32) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `log_datetime` datetime(0) NOT NULL,
   `log_id` int UNSIGNED NOT NULL AUTO_INCREMENT,
-  `so_is_status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `so_is_status` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`log_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 29 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 29 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of log_sales_order
@@ -9282,11 +9344,11 @@ CREATE TABLE `log_sales_order`  (
 DROP TABLE IF EXISTS `log_sales_order_detail`;
 CREATE TABLE `log_sales_order_detail`  (
   `sod_id` int NOT NULL,
-  `sod_no_trx` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `sod_no_trx` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `sod_item_id` int NULL DEFAULT NULL,
   `sod_qty` int NULL DEFAULT NULL,
   `sod_realisasi` int NULL DEFAULT NULL,
-  `sod_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT 'N',
+  `sod_flag` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT 'N',
   `sod_is_active` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT 'Y',
   `last_user` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `last_datetime` datetime(0) NULL DEFAULT NULL,
@@ -9295,7 +9357,7 @@ CREATE TABLE `log_sales_order_detail`  (
   `log_datetime` datetime(0) NOT NULL,
   `log_id` int UNSIGNED NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`log_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 93 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 93 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of log_sales_order_detail
@@ -9402,7 +9464,7 @@ CREATE TABLE `log_shipping`  (
   `sh_rd_id` int NULL DEFAULT NULL,
   `sh_rsd_id` int NULL DEFAULT NULL,
   `sh_cost` decimal(50, 0) NULL DEFAULT NULL,
-  `sh_is_active` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT 'Y',
+  `sh_is_active` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT 'Y',
   `last_user` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `last_datetime` datetime(0) NULL DEFAULT NULL,
   `log_user_id` int UNSIGNED NOT NULL,
@@ -9410,7 +9472,7 @@ CREATE TABLE `log_shipping`  (
   `log_datetime` datetime(0) NOT NULL,
   `log_id` int UNSIGNED NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`log_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 26 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 26 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of log_shipping
@@ -9553,9 +9615,9 @@ INSERT INTO `log_user_sub_group` VALUES (2, 'Manager Operational', 'Manager Oper
 DROP TABLE IF EXISTS `log_vehicle`;
 CREATE TABLE `log_vehicle`  (
   `ve_id` int NOT NULL,
-  `ve_license_plate` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `ve_name` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL,
-  `ve_status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `ve_license_plate` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `ve_name` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+  `ve_status` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `ve_is_active` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT 'Y',
   `last_user` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `last_datetime` datetime(0) NULL DEFAULT NULL,
@@ -9564,7 +9626,7 @@ CREATE TABLE `log_vehicle`  (
   `log_datetime` datetime(0) NOT NULL,
   `log_id` int UNSIGNED NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`log_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of log_vehicle
@@ -9586,10 +9648,10 @@ INSERT INTO `log_vehicle` VALUES (3, 'BM 1757 SE ', 'Colt T', '2', 'N', '1', '20
 DROP TABLE IF EXISTS `log_vendor`;
 CREATE TABLE `log_vendor`  (
   `v_id` int NOT NULL,
-  `v_vendor_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `v_vendor_add` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL,
-  `v_vendor_phone` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `v_vendor_email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `v_vendor_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `v_vendor_add` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+  `v_vendor_phone` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `v_vendor_email` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `v_is_active` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT 'Y',
   `last_user` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `last_datetime` datetime(0) NULL DEFAULT NULL,
@@ -9598,7 +9660,7 @@ CREATE TABLE `log_vendor`  (
   `log_datetime` datetime(0) NOT NULL,
   `log_id` int UNSIGNED NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`log_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of log_vendor
@@ -9776,15 +9838,15 @@ INSERT INTO `menu_access_user` VALUES (58, 2, 42, 'Y', 1, '2020-09-27 23:46:19')
 DROP TABLE IF EXISTS `pelanggan`;
 CREATE TABLE `pelanggan`  (
   `p_id` int NOT NULL AUTO_INCREMENT,
-  `p_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `p_address` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL,
-  `p_phone` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `p_email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `p_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `p_address` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+  `p_phone` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `p_email` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `p_is_active` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT 'Y',
   `last_user` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `last_datetime` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`p_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of pelanggan
@@ -9901,16 +9963,16 @@ CREATE TABLE `ref_akun_detail`  (
   `rad_id` int NOT NULL AUTO_INCREMENT,
   `rad_parent_id` int NULL DEFAULT NULL,
   `rad_akun_header_id` int NULL DEFAULT NULL,
-  `rad_kode_akun` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `rad_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `rad_seq` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '1',
-  `rad_type` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `rad_kode_akun` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `rad_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `rad_seq` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '1',
+  `rad_type` varchar(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `rad_is_active` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT 'Y',
-  `rad_is_bank` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT 'N',
+  `rad_is_bank` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT 'N',
   `last_user` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `last_datetime` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`rad_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 23 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 23 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of ref_akun_detail
@@ -9938,14 +10000,14 @@ INSERT INTO `ref_akun_detail` VALUES (22, 14, 4, '4-1104', 'BBM &amp; Uang Jalan
 DROP TABLE IF EXISTS `ref_akun_header`;
 CREATE TABLE `ref_akun_header`  (
   `rah_id` int NOT NULL AUTO_INCREMENT,
-  `rah_code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `rah_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `rah_seq` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `rah_code` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `rah_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `rah_seq` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `rah_is_active` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT 'Y',
   `last_user` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `last_datetime` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`rah_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of ref_akun_header
@@ -9985,12 +10047,12 @@ DROP TABLE IF EXISTS `ref_district`;
 CREATE TABLE `ref_district`  (
   `rd_id` int NOT NULL AUTO_INCREMENT,
   `rd_province_id` int NULL DEFAULT NULL,
-  `rd_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `rd_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `rd_is_active` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT 'Y',
   `last_user` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `last_datetime` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`rd_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 814 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 814 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of ref_district
@@ -10568,12 +10630,12 @@ INSERT INTO `ref_menu` VALUES (73, 68, 'Kas Keluar', 'Kas Keluar', 'akuntansi/ka
 DROP TABLE IF EXISTS `ref_province`;
 CREATE TABLE `ref_province`  (
   `rp_id` int NOT NULL AUTO_INCREMENT,
-  `rp_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `rp_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `rp_is_active` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT 'Y',
   `last_user` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `last_datetime` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`rp_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 35 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 35 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of ref_province
@@ -10619,12 +10681,12 @@ INSERT INTO `ref_province` VALUES (34, 'Papua', 'Y', '1', '2021-07-19 08:54:39')
 DROP TABLE IF EXISTS `ref_status`;
 CREATE TABLE `ref_status`  (
   `rs_id` int NOT NULL AUTO_INCREMENT,
-  `rs_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `rs_is_active` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT 'Y',
+  `rs_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `rs_is_active` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT 'Y',
   `last_user` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `last_datetime` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`rs_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of ref_status
@@ -10639,12 +10701,12 @@ DROP TABLE IF EXISTS `ref_sub_district`;
 CREATE TABLE `ref_sub_district`  (
   `rsd_id` int NOT NULL AUTO_INCREMENT,
   `rsd_district_id` int NULL DEFAULT NULL,
-  `rsd_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `rsd_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `rsd_is_active` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT 'Y',
   `last_user` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `last_datetime` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`rsd_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 10589 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 10589 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of ref_sub_district
@@ -17382,23 +17444,22 @@ INSERT INTO `ref_sub_district` VALUES (10588, 813, ' Jayapura Utara', 'Y', '1', 
 DROP TABLE IF EXISTS `ref_transaksi`;
 CREATE TABLE `ref_transaksi`  (
   `trx_id` int NOT NULL AUTO_INCREMENT,
-  `trx_no_trx` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `trx_key_lock` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `trx_no_trx` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `trx_key_lock` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `trx_rad_id_from` int NULL DEFAULT NULL,
   `trx_rad_id_to` int NULL DEFAULT NULL,
-  `trx_total` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `trx_total` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `trx_created_date` date NULL DEFAULT NULL,
-  `trx_is_active` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT 'Y',
+  `trx_is_active` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT 'Y',
   `last_user` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `last_datetime` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`trx_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 15 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 15 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of ref_transaksi
 -- ----------------------------
-INSERT INTO `ref_transaksi` VALUES (12, '0001/CHIN/20210818', '0001CHIN20210818_1', 19, 3, '15000000', '2021-01-20', 'Y', '1', '2021-08-18 20:16:05');
-INSERT INTO `ref_transaksi` VALUES (13, '0001/CHIN/20210818', '0001CHIN20210818_1', 19, 3, '15000000', '2021-08-18', 'Y', '1', '2021-08-18 20:16:05');
+INSERT INTO `ref_transaksi` VALUES (20, '00001/CHIN/20210819', '00001CHIN20210819_1', 19, 3, '15000000', '2021-08-19', 'Y', '1', '2021-08-19 09:02:33');
 
 -- ----------------------------
 -- Table structure for sales_order
@@ -17408,15 +17469,15 @@ CREATE TABLE `sales_order`  (
   `so_id` int NOT NULL AUTO_INCREMENT,
   `so_vendor_id` int NULL DEFAULT NULL,
   `so_district_id` int NULL DEFAULT NULL,
-  `so_no_trx` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `so_no_trx` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `so_created_date` date NULL DEFAULT NULL,
-  `so_is_pay` char(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT 'BL',
-  `so_is_status` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT 'ORDER',
+  `so_is_pay` char(2) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT 'BL',
+  `so_is_status` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT 'ORDER',
   `so_is_active` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT 'Y',
   `last_user` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `last_datetime` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`so_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sales_order
@@ -17430,16 +17491,16 @@ INSERT INTO `sales_order` VALUES (9, 1, 131, '0002/SO/20210811', '2021-08-11', '
 DROP TABLE IF EXISTS `sales_order_detail`;
 CREATE TABLE `sales_order_detail`  (
   `sod_id` int NOT NULL AUTO_INCREMENT,
-  `sod_no_trx` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `sod_no_trx` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `sod_item_id` int NULL DEFAULT NULL,
   `sod_qty` int NULL DEFAULT 0,
   `sod_realisasi` int NULL DEFAULT 0,
-  `sod_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT 'N',
+  `sod_flag` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT 'N',
   `sod_is_active` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT 'Y',
   `last_user` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `last_datetime` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`sod_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 41 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 41 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sales_order_detail
@@ -17458,11 +17519,11 @@ CREATE TABLE `shipping`  (
   `sh_rd_id` int NULL DEFAULT NULL,
   `sh_rsd_id` int NULL DEFAULT NULL,
   `sh_cost` decimal(50, 0) NULL DEFAULT NULL,
-  `sh_is_active` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT 'Y',
+  `sh_is_active` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT 'Y',
   `last_user` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `last_datetime` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`sh_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 26 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 26 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of shipping
@@ -17573,14 +17634,14 @@ INSERT INTO `user_sub_group` VALUES (2, 'Manager Operational', 'Manager Operasio
 DROP TABLE IF EXISTS `vehicle`;
 CREATE TABLE `vehicle`  (
   `ve_id` int NOT NULL AUTO_INCREMENT,
-  `ve_license_plate` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `ve_name` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL,
-  `ve_status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `ve_license_plate` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `ve_name` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+  `ve_status` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `ve_is_active` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT 'Y',
   `last_user` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `last_datetime` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`ve_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of vehicle
@@ -17595,15 +17656,15 @@ INSERT INTO `vehicle` VALUES (4, 'BM 1442 AP', 'Fuso', '1', 'Y', '1', '2021-07-2
 DROP TABLE IF EXISTS `vendor`;
 CREATE TABLE `vendor`  (
   `v_id` int NOT NULL AUTO_INCREMENT,
-  `v_vendor_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `v_vendor_add` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL,
-  `v_vendor_phone` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `v_vendor_email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `v_vendor_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `v_vendor_add` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+  `v_vendor_phone` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `v_vendor_email` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `v_is_active` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT 'Y',
   `last_user` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `last_datetime` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`v_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of vendor

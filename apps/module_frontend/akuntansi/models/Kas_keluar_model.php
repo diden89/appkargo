@@ -149,7 +149,7 @@ class Kas_keluar_model extends NOOBS_Model
  	public function cek_cash_out_detail($params = array())
 	{
 		// print_r($params);exit;
-		$this->db->select('count(cod_id) as count_cod');
+		$this->db->select('max(cod_key_lock) as max');
 		$this->db->from('cash_out_detail');
 		
 		if (isset($params['cod_no_trx']) && ! empty($params['cod_no_trx']))
@@ -185,11 +185,11 @@ class Kas_keluar_model extends NOOBS_Model
 			'cod_total' => str_replace(',','',$params['cod_total']),
 			'cod_key_lock' => $params['cod_key_lock'],
 		);
-		if ($params['mode'] == 'add') 
+		if ($params['cod_id'] == false) 
 		{
 			$this->add($new_params, TRUE);
 		}
-		elseif ($params['mode'] == 'edit' && isset($params['cod_id']) && ! empty($params['cod_id'])) 
+		elseif (isset($params['cod_id']) && ! empty($params['cod_id'])) 
 		{
 			$this->edit($new_params, "cod_id = {$params['cod_id']}");
 

@@ -331,18 +331,9 @@ const daftarCashOutList = {
 							cod_keterangan = $('#cod_keterangan').val();
 							cod_total = $('#cod_total').val();							
 							co_no_trx = $('#co_no_trx_temp').val();		
-
-							if(mode == 'edit')
-							{
-								cod_id = $('#cod_id').val();
-								key_lock = $('#key_lock').val();
-							}
-							else
-							{
-								cod_id = false;
-								key_lock = false;
-							}
-
+							cod_id = $('#cod_id').val();
+							key_lock = $('#key_lock').val();		
+							
 						$.ajax({
 							url: siteUrl('akuntansi/kas_keluar/store_data_temporary'),
 							type: 'POST',
@@ -368,25 +359,9 @@ const daftarCashOutList = {
 									$('#cod_keterangan').val('');
 									$('#cod_total').val('');
 									$('#cod_id').val('');
+									$('#key_lock').val('');
 									
-									 $.ajax({
-										url: siteUrl('akuntansi/kas_keluar/total_amount_detail_cash_out'),
-										type: 'POST',
-										dataType: 'JSON',
-										data: {
-											action: 'total_amount_detail_cash_out',
-											co_no_trx: co_no_trx
-										},
-										success: function(result) {
-											if (result.success) {
-												$('#total_amount').html(result.total_amount);
-											}
-											
-										},
-										error: function(error) {
-											toastr.error(msgErr);
-										}
-									});
+									daftarCashOutList.getTotalAmount(co_no_trx);
 
 								} else if (typeof(result.msg) !== 'undefined') {
 									toastr.error(result.msg);
@@ -560,6 +535,26 @@ const daftarCashOutList = {
 			}
 		});
 	},
+	getTotalAmount: function(no_trx = false) {
+		$.ajax({
+			url: siteUrl('akuntansi/kas_keluar/total_amount_detail_cash_out'),
+			type: 'POST',
+			dataType: 'JSON',
+			data: {
+				action: 'total_amount_detail_cash_out',
+				co_no_trx: no_trx
+			},
+			success: function(result) {
+				if (result.success) {
+					$('#total_amount').html(result.total_amount);
+				}
+				
+			},
+			error: function(error) {
+				toastr.error(msgErr);
+			}
+		});
+	},
 	generateAkunDetail: function(rah_id, rad_id = false) {
 		var akun_detail = $('#akun_detail');
 
@@ -663,7 +658,7 @@ const daftarCashOutList = {
 	deleteDataTemp: function(el) {
 		const me = this;
 		const $this = $(el);
-			
+		
 		$.ajax({
 			url: siteUrl('akuntansi/kas_keluar/delete_data_temp'),
 			type: 'POST',
@@ -672,17 +667,26 @@ const daftarCashOutList = {
 				action: 'delete_data_temp',
 				id: $this.data('id'),
 				key_lock: $this.data('key_lock'),
-				cod_co_no_trx: $this.data('no_trx')
+				no_trx: $this.data('no_trx')
 			},
 			success: function(result) {
 				$('#temporaryDataTable tbody').html('');
 
 				if (result.success) {
 					 daftarCashOutList._generateTemporaryDataTable(result.data);
+					 daftarCashOutList.getTotalAmount($this.data('no_trx'));
+
+					$('#akun_header').prop('selectedIndex',0);
+					$('#akun_detail').prop('selectedIndex',0);
+					$('#cod_keterangan').val('');
+					$('#cod_total').val('');
+					$('#cod_id').val('');
+					$('#key_lock').val('');
 				}
 				else if (result.success == false)
 				{
 					daftarCashOutList._generateTemporaryDataTable(result.data);
+					daftarCashOutList.getTotalAmount($this.data('no_trx'));
 				}
 				else if (typeof(result.msg) !== 'undefined') {
 					$('#temporaryDataTable tbody').html('');

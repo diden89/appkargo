@@ -132,7 +132,7 @@
 			
 			<div class="form-group row">
 				<div class="col-sm-8">
-					<button id="btnAddDetail" class="btn btn-primary btn-flat" type="button" title="Add Data"><i class="fas fa-plus"></i> Add</button>
+					<button id="btnAddDetail" class="btn btn-primary btn-flat" type="button" title="Add Data"><i class="fas fa-save"></i> Save</button>
 				</div>
 			</div>
 		</div>	

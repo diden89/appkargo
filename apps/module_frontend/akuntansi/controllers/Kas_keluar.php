@@ -219,16 +219,18 @@ class Kas_Keluar extends NOOBS_Controller
 		{
 			$post = $this->input->post(NULL, TRUE);
 			// print_r($post);exit;
-			if($post['mode'] !== 'edit')
+			if($post['cod_id'] == false)
 			{
-				$cek_co_detail = $this->db_cash_out->cek_cash_out_detail($post)->row();
-
-				if($cek_co_detail->count_cod > 0)
+				$cek_co_detail = $this->db_cash_out->cek_cash_out_detail($post);
+				echo count($cek_co_detail->num_rows());exit;
+				if($cek_co_detail->num_rows() > 0)
 				{
-					$cek = $cek_co_detail->count_cod ;
+					$cek = $cek_co_detail->row() ;
 					$key = str_replace('/','',$post['cod_no_trx']);
-					$cek++;
-					$post['cod_key_lock'] = $key.'_'.$cek;
+					$exp = explode('_',$cek->max);
+					$val = $exp[1];
+					$val++;
+					$post['cod_key_lock'] = $key.'_'.$val;
 				
 				}
 				else
@@ -412,60 +414,6 @@ class Kas_Keluar extends NOOBS_Controller
 		else $this->show_404();
 	}
 
-	
-	
-	// public function store_data_temporary()
-	// {
-	// 	if (isset($_POST['action']) && $_POST['action'] == 'insert_temporary_data')
-	// 	{
-	// 		$post = $this->input->post(NULL, TRUE);
-
-	// 		$get_data_item = $this->db_cash_out->get_option_item_list($post)->row();
-			
-	// 		$idx = (! empty($this->session->userdata('temp_data'))) ? (count($this->session->userdata('temp_data')) - 1) +1 : 0;
-			
-	// 		if($idx == 0)
-	// 		{
-	// 			$temp[$idx] = (object) array(
-	// 				'qty' => $post['qty'],
-	// 				'il_item_name' => $get_data_item->il_item_name
-	// 			);				
-			
-	// 			$this->session->set_userdata(array(
-	// 				'temp_data' => $temp
-	// 			));
-	// 		}
-	// 		else
-	// 		{				
-	// 			$temp = (object) array(
-	// 				'qty' => $post['qty'],
-	// 				'il_item_name' => $get_data_item->il_item_name
-	// 			);
-
-	// 			array_push($_SESSION['temp_data'],$temp);
-				
-	// 		} 
-
-			
-	// 		// print_r($this->session);exit;
-	// 		if (count($this->session->userdata('temp_data')) > 0) 
-	// 		{
-	// 			$idx = 0;
-	// 			$temporary = $this->session->userdata('temp_data');
-	// 			foreach ($temporary as $k => $v)
-	// 			{
-	// 				$v->idx = $idx;
-
-	// 				$idx++;
-	// 			}
-				
-	// 			echo json_encode(array('success' => TRUE, 'data' => $temporary));
-	// 		}
-	// 		else echo json_encode(array('success' => FALSE, 'msg' => 'Data not found!'));
-	// 	}
-	// 	else $this->show_404();
-	// }
-
 	public function delete_data_item()
 	{
 		if (isset($_POST['action']) && $_POST['action'] == 'delete_data_item')
@@ -513,6 +461,7 @@ class Kas_Keluar extends NOOBS_Controller
 				foreach ($result as $k => $v)
 				{
 					$v->no = $number;
+					$v->cod_total = number_format($v->cod_total);
 
 					$number++;
 				}
