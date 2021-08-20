@@ -72,6 +72,8 @@ class Daftar_sales_order extends NOOBS_Controller
 				}
 				
 				$v->num = $num;
+				$v->total_progress = ($v->total !== '0') ? round(($v->progress * 100) / $v->total,2) : '0';	
+				$v->so_created_date = date('d-m-Y',strtotime($v->so_created_date));
 			}
 			// print_r($result);exit;
 			$this->store_params['item'] = $result;
@@ -196,9 +198,34 @@ class Daftar_sales_order extends NOOBS_Controller
 
 				foreach ($result as $k => $v)
 				{
-					$v->no = $number;
-
 					$number++;
+
+					$get_progress_so = $this->db_daftar_sales_order->get_progress_so(array('so_id' => $v->so_id,'dod_is_status' => 'SELESAI'));
+
+					$get_total_so = $this->db_daftar_sales_order->get_progress_so(array('so_id' => $v->so_id));
+
+					if($get_progress_so->num_rows() > 0) {
+						$progress = $get_progress_so->row();
+						$v->progress =  $progress->progress;
+					}
+					else
+					{
+						$v->progress = 0;
+					}
+
+					if($get_total_so->num_rows() > 0) {
+						$total = $get_total_so->row();
+						$v->total =  $total->progress;
+					}
+					else
+					{
+						$v->total = 0;
+					}
+					
+					$v->no = $number;
+					$v->total_progress = ($v->total !== '0') ? round(($progress->progress * 100) / $total->progress,2) : '0';	
+					$v->so_created_date = date('d-m-Y',strtotime($v->so_created_date));	
+					$v->so_total_amount = number_format($v->so_total_amount);	
 				}
 
 				echo json_encode(array('success' => TRUE, 'data' => $result));
@@ -249,9 +276,34 @@ class Daftar_sales_order extends NOOBS_Controller
 
 				foreach ($result as $k => $v)
 				{
-					$v->no = $number;
-
 					$number++;
+
+					$get_progress_so = $this->db_daftar_sales_order->get_progress_so(array('so_id' => $v->so_id,'dod_is_status' => 'SELESAI'));
+
+					$get_total_so = $this->db_daftar_sales_order->get_progress_so(array('so_id' => $v->so_id));
+
+					if($get_progress_so->num_rows() > 0) {
+						$progress = $get_progress_so->row();
+						$v->progress =  $progress->progress;
+					}
+					else
+					{
+						$v->progress = 0;
+					}
+
+					if($get_total_so->num_rows() > 0) {
+						$total = $get_total_so->row();
+						$v->total =  $total->progress;
+					}
+					else
+					{
+						$v->total = 0;
+					}
+					
+					$v->no = $number;
+					$v->total_progress = ($v->total !== '0') ? round(($progress->progress * 100) / $total->progress,2) : '0';	
+					$v->so_created_date = date('d-m-Y',strtotime($v->so_created_date));	
+					$v->so_total_amount = number_format($v->so_total_amount);	
 				}
 
 

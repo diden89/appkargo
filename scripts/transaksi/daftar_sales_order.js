@@ -117,15 +117,19 @@ const daftarSalesOrderList = {
 			body += '<td>' + item.so_no_trx + '</td>';
 			body += '<td>' + item.v_vendor_name + '</td>';
 			body += '<td>' + item.so_qty + '</td>';
+			body += '<td>' + item.so_total_amount + '</td>';
 			body += '<td>' + item.rd_name + '</td>';
-			body += '<td>' + item.date_create + '</td>';
-			body += '<td>' + item.so_is_status + '</td>';
+			body += '<td>' + item.so_created_date + '</td>';
+			body += '<td><div class="progress progress-sm">';
+			body += '<div class="progress-bar bg-green" role="progressbar" aria-valuenow="' + item.progress + '" aria-valuemin="0" aria-valuemax="' + item.total + '" style="width:' + item.total_progress +'%;">';
+			body += '</div></div><small>' + item.total_progress + '% Completed</small><br><b>' + item.so_is_status + '</b></td>';
+
 			body += '<td>' + item.paying + '</td>';
-			body += '<td>';
-				body += '<div class="btn-group btn-group-sm" role="group" aria-label="Action Button">';
-					body += '<button type="button" class="btn btn-success" data-id="' + item.so_id + '" data-no_trx="' + item.so_no_trx + '" data-rd_id="' + item.rd_id + '" data-rp_id="' + item.rd_province_id + '" onclick="daftarSalesOrderList.showItem(this, \'edit\');"><i class="fas fa-edit"></i></button>';
-					body += '<button type="button" class="btn btn-danger" data-id="' + item.so_id + '"  data-no_trx="' + item.so_no_trx + '" onclick="daftarSalesOrderList.deleteDataItem(this);"><i class="fas fa-trash-alt"></i></button>';
-				body += '</div>';
+
+			body += '<td><div class="btn-group btn-group-sm" role="group" aria-label="Action Button">';
+				body += '<button type="button" class="btn btn-success" data-id="' + item.so_id + '" data-no_trx="' + item.so_no_trx + '" data-rd_id="' + item.rd_id + '" data-rp_id="' + item.rd_province_id + '" onclick="daftarSalesOrderList.showItem(this, \'edit\');"><i class="fas fa-edit"></i></button>';
+				body += '<button type="button" class="btn btn-danger" data-id="' + item.so_id + '"  data-no_trx="' + item.so_no_trx + '" onclick="daftarSalesOrderList.deleteDataItem(this);"><i class="fas fa-trash-alt"></i></button>';
+			body += '</div>';
 			body += '</td>';
 			body += '</tr>';
 		});

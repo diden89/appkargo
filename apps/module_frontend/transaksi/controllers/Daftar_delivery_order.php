@@ -369,16 +369,25 @@ class Daftar_delivery_order extends NOOBS_Controller
 		if (isset($_POST['action']) && $_POST['action'] == 'insert_delivery_order')
 		{
 			$post = $this->input->post(NULL, TRUE);
-
+			// print_r($post);exit;
 			$store_data_daftar_delivery_order = $this->db_daftar_delivery_order->store_data_daftar_delivery_order($post);
 
-			$get_total_qty = $this->db_daftar_delivery_order->get_total_qty($post);
+			$get_total_qty = $this->db_daftar_delivery_order->get_total_qty($post,'sum(dod_shipping_qty) as total_qty');
+			$get_total_amount = $this->db_daftar_delivery_order->get_total_amount($post,'sum(dod.dod_ongkir) as total_amount');
 
 			if($get_total_qty->num_rows() > 0) {
 				$total = $get_total_qty->row();
 				$post['new_qty'] = $total->total_qty;
 			
 				$update_quantity_sales_order_detail = $this->db_daftar_delivery_order->update_quantity_sales_order_detail($post);
+
+			}
+
+			if($get_total_amount->num_rows() > 0) {
+				$total_a = $get_total_amount->row();
+				$post['total_amount'] = $total_a->total_amount;
+			
+				$update_amount_sales_order_detail = $this->db_daftar_delivery_order->update_amount_sales_order_detail($post);
 
 			}
 
@@ -415,6 +424,8 @@ class Daftar_delivery_order extends NOOBS_Controller
 			
 			$input_to_delivery_order_status = $this->db_daftar_delivery_order->store_delivery_order_status($post);
 
+			$update_status = $this->db_daftar_delivery_order->store_update_status_delivery_order($post); //update status
+
 			$get_total_status = $this->db_daftar_delivery_order->get_total_status($post,'total');
 
 			if($get_total_status->num_rows() > 0) {
@@ -432,8 +443,8 @@ class Daftar_delivery_order extends NOOBS_Controller
 					}
 				}
 			}
+			 // print_r($post);exit;
 			$update_status_sales_order = $this->db_daftar_delivery_order->store_update_status_sales_order($post);
-			$update_status = $this->db_daftar_delivery_order->store_update_status_delivery_order($post);
 
 			if ($update_status->num_rows() > 0) 
 			{

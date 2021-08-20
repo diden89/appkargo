@@ -65,6 +65,7 @@
 										<th>No Transaksi</th>
 										<th>Nama Vendor</th>
 										<th>Berat / Kg</th>
+										<th>Total Ongkir</th>
 										<th>Tujuan</th>
 										<th>Tanggal</th>
 										<th>Status</th>
@@ -79,15 +80,16 @@
 											<td><?php echo $v->so_no_trx; ?></td>
 											<td><?php echo $v->v_vendor_name; ?></td>
 											<td><?php echo number_format($v->so_qty); ?></td>
+											<td><?php echo number_format($v->so_total_amount); ?></td>
 											<td><?php echo $v->rd_name; ?></td>
-											<td><?php echo date('d-m-Y',strtotime($v->so_created_date)); ?></td>
+											<td><?php echo $v->so_created_date; ?></td>
 											<td>
 												<div class="progress progress-sm">
-													<div class="progress-bar bg-green" role="progressbar" aria-valuenow="<?php echo $v->progress; ?>" aria-valuemin="0" aria-valuemax="<?php echo $v->total; ?>" style="width: <?php echo ($v->total !== '0') ? round(($v->progress * 100) / $v->total,2) : '0'; ?>%">
+													<div class="progress-bar bg-green" role="progressbar" aria-valuenow="<?php echo $v->progress; ?>" aria-valuemin="0" aria-valuemax="<?php echo $v->total; ?>" style="width: <?php echo $v->total_progress; ?>%">
 													</div>
 												</div>
 						                        <small>
-						                            <?php echo ($v->total !== '0') ? round(($v->progress * 100) / $v->total,2) : '0'; ?>% Complete
+						                            <?php echo $v->total_progress; ?> % Complete
 						                        </small>
 						                        <br><b>
 												<?php echo $v->so_is_status; ?></b></td>

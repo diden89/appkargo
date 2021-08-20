@@ -70,6 +70,7 @@
 								<thead>
 									<tr role="row">
 										<th width="10">No</th>
+										<th>No Transaksi SO</th>
 										<th>No Transaksi</th>
 										<th>Nama Pelanggan</th>
 										<th>Nama Barang</th>
@@ -86,6 +87,7 @@
 									<?php foreach ($item as $k => $v): ?>
 										<tr>
 											<td><?php echo $v->num; ?></td>
+											<td><?php echo $v->so_no_trx; ?></td>
 											<td><?php echo $v->dod_no_trx; ?></td>
 											<td><?php echo $v->c_name; ?></td>
 											<td><?php echo $v->il_item_name; ?></td>

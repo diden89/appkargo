@@ -40,6 +40,11 @@ class Daftar_delivery_order_model extends NOOBS_Model
 			$this->db->where('so.so_no_trx', strtoupper($params['so_no_trx']));
 		}
 
+		if (isset($params['so_id']) && ! empty($params['so_id']))
+		{
+			$this->db->where('so.so_id', strtoupper($params['so_id']));
+		}
+
 		if (isset($params['date_range1']) && ! empty($params['date_range1']))
 		{
 			$this->db->where('dod.dod_created_date >=', $params['date_range1']);
@@ -47,8 +52,9 @@ class Daftar_delivery_order_model extends NOOBS_Model
 		}
 
 		$this->db->where('dod.dod_is_active', 'Y');
-		$this->db->order_by('dod.dod_created_date', 'ASC');
-		$this->db->order_by('il.il_item_name', 'ASC');
+		$this->db->where('dod.dod_is_status !=', 'SELESAI');
+		$this->db->order_by('dod.dod_id', 'DESC');
+		// $this->db->order_by('il.il_item_name', 'ASC');
 
 		return $this->db->get();
  	}
@@ -105,14 +111,29 @@ class Daftar_delivery_order_model extends NOOBS_Model
 		return $this->db->get('sales_order_detail');
  	}
 
- 	public function get_total_qty($params = array()) //dipakai
+ 	public function get_total_qty($params = array(),$select = '') //dipakai
 	{
-		$this->db->select('sum(dod_shipping_qty) as total_qty');
+		$this->db->select($select);
 		$this->db->from('delivery_order_detail');
 
 		if (isset($params['dod_sod_id']) && ! empty($params['dod_sod_id']))
 		{
 			$this->db->where('dod_sod_id', strtoupper($params['dod_sod_id']));
+		}
+		
+		return $this->db->get();
+ 	}
+
+ 	public function get_total_amount($params = array(),$select = '') //dipakai
+	{
+		$this->db->select($select);
+		$this->db->from('delivery_order_detail as dod');
+		$this->db->join('sales_order_detail as sod','dod.dod_sod_id = sod.sod_id', 'LEFT');
+		$this->db->join('sales_order as so','so.so_no_trx = sod.sod_no_trx', 'LEFT');
+
+		if (isset($params['so_id']) && ! empty($params['so_id']))
+		{
+			$this->db->where('so.so_id', strtoupper($params['so_id']));
 		}
 		
 		return $this->db->get();
@@ -160,6 +181,20 @@ class Daftar_delivery_order_model extends NOOBS_Model
 		);
 
 		$this->edit($new_params, "sod_id = {$params['dod_sod_id']}");
+
+		return $this->load_data_daftar_delivery_order();
+	}
+
+	public function update_amount_sales_order_detail($params = array()) //dipakai
+	{
+		$this->table = 'sales_order';
+
+		$new_params = array(
+			'so_total_amount' => $params['total_amount']
+
+		);
+
+		$this->edit($new_params, "so_id = {$params['so_id']}");
 
 		return $this->load_data_daftar_delivery_order();
 	}
