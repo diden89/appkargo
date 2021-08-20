@@ -411,9 +411,8 @@ const daftarDeliveryOrderList = {
 						$('#no_trx_do').val(params.no_trx);
 						$('#sod_shipping_qty').val(params.dod_shipping_qty);
 						$('#dod_id').val(params.dod_id);
-						console.log($('#txt_sales_order').val());
+						
 						if($('#txt_sales_order').val() !== '') {								
-							// $('#detail_sales_order').attr('disabled', true);
 							daftarDeliveryOrderList.generateDetailSO($('#txt_sales_order').val(),params.sod_id,'edit',params.dod_customer_id);
 							$('#printDO').attr('disabled', false);							
 						}
