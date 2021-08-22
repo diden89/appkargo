@@ -21,7 +21,7 @@
 					<div class="col-12">
 						<h4>Pembayaran Sales Order</h4>
 						<div class="row">
-							<div class="input-group col-lg-6">
+							<div class="input-group col-lg-5">
 								<input type="text" id="txtList" class="form-control" placeholder="Search data..." aria-describedby="btnSearchWord">
 							</div>
 							<div class="input-group col-lg-2">
@@ -44,7 +44,7 @@
 									<input type="text" name="ud_dob_new" class="form-control" id="range2" required="required" data-inputmask-alias="datetime" data-inputmask-inputformat="dd-mm-yyyy" data-mask value="">
 								</div>
 							</div>
-							<div class="col-lg-2">
+							<div class="col-lg-3">
 								<button id="btnSearchItem" class="btn btn-info" type="button"><i class="fas fa-search"></i> Cari</button>
 								<button id="btnReloadItem" class="btn btn-success" type="button"><i class="fas fa-sync-alt"></i> Refresh</button>
 								<button id="btnAddItem" class="btn btn-primary btn-flat" type="button" title="Add Data"><i class="fas fa-plus"></i> Add</button>

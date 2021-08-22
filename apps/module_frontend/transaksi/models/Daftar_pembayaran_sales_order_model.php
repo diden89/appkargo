@@ -109,6 +109,24 @@ class Daftar_pembayaran_sales_order_model extends NOOBS_Model
 
 		return $this->db->get();
  	}
+
+ 	public function store_data_daftar_pembayaran_sales_order($params = array())
+	{
+		$this->table = 'sales_order_payment';
+
+		$new_params = array(
+			'sop_no_trx' => $params['last_notrx'],
+			'so_district_id' => $params['txt_region'],
+			'so_no_trx' => $params['last_notrx'],
+			// 'so_is_status' => 'ORDER',
+			'so_created_date' => date('Y-m-d H:i:s', strtotime($params['so_created_date'])),
+		);
+
+		if ($params['mode'] == 'add') $this->add($new_params, TRUE);
+		else $this->edit($new_params, "so_id = {$params['txt_id']}");
+
+		return $this->load_data_daftar_pembayaran_sales_order();
+	}
 	// public function get_progress_so($params = array())
 	// {
 	// 	$this->db->select('count(dod.dod_id) as progress');
@@ -132,23 +150,7 @@ class Daftar_pembayaran_sales_order_model extends NOOBS_Model
  // 	}
 
 
-	// public function store_data_daftar_pembayaran_sales_order($params = array())
-	// {
-	// 	$this->table = 'sales_order';
-
-	// 	$new_params = array(
-	// 		'so_vendor_id' => $params['v_vendor_id'],
-	// 		'so_district_id' => $params['txt_region'],
-	// 		'so_no_trx' => $params['last_notrx'],
-	// 		// 'so_is_status' => 'ORDER',
-	// 		'so_created_date' => date('Y-m-d H:i:s', strtotime($params['so_created_date'])),
-	// 	);
-
-	// 	if ($params['mode'] == 'add') $this->add($new_params, TRUE);
-	// 	else $this->edit($new_params, "so_id = {$params['txt_id']}");
-
-	// 	return $this->load_data_daftar_pembayaran_sales_order();
-	// }
+	
 
 	// public function store_detail_so($params = array())
 	// {

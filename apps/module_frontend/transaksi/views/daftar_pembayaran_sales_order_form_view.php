@@ -14,6 +14,7 @@
 	<input type="hidden" name="action" value="store_data_daftar_pembayaran_sales_order">
 	<input type="hidden" name="mode" value="<?=$mode?>">
 	<input type="hidden" name="last_notrx" value="<?php echo $mode == 'add' ?  $last_notrx : $data->so_no_trx; ?>">
+	<input type="hidden" name="total_amount_st" id="total_amount_st">
 	
 	<?php if (isset($txt_id)): ?>
 		<input type="hidden" name="txt_id" value="<?php echo $txt_id; ?>">

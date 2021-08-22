@@ -95,12 +95,14 @@ const daftarPaySalesOrderList = {
 				if (result.success) {
 					toastr.success("Data succesfully added.");
 					daftarPaySalesOrderList._generateTemporaryDataTable(result.data);
+					$('#total_amount_st').val(result.amount);
 					$('#total_amount').html(result.total_amount);
 
 				} else if (typeof(result.msg) !== 'undefined') {
 					toastr.error(result.msg);
 					$('#temporaryDataTable tbody').html('');
 					$('#total_amount').html('');
+					$('#total_amount_st').val('');
 				} else {
 					toastr.error(msgErr);
 				}
@@ -153,7 +155,8 @@ const daftarPaySalesOrderList = {
 		$.each(data, (idx, item) => {
 			body += '<tr>';
 			body += '<td>' + item.no + '</td>';
-			body += '<td>' + item.so_no_trx + '</td>';
+			body += '<td>' + item.so_no_trx;
+			body += '<input type="hidden" name="so_no_trx[]" value="'+item.so_no_trx+'"></td>';
 			body += '<td>' + item.v_vendor_name + '</td>';
 			body += '<td>' + item.so_qty + '</td>';
 			body += '<td>' + item.so_total_amount + '</td>';

@@ -187,8 +187,8 @@ class Daftar_pembayaran_sales_order extends NOOBS_Controller
 					$v->so_created_date = date('d-m-Y', strtotime($v->so_created_date));
 				}
 				$array_sum = array_sum($sum);
-				// print_r($sum);exit;
-				echo json_encode(array('success' => TRUE, 'data' => $result,'total_amount' => 'Rp. '.number_format($array_sum)));
+				// print_r($array_sum);exit;
+				echo json_encode(array('success' => TRUE, 'data' => $result,'total_amount' => 'Rp. '.number_format($array_sum),'amount' => $array_sum));
 			}
 			else echo json_encode(array('success' => FALSE, 'msg' => 'Data not found!'));
 		}
