@@ -16,8 +16,8 @@
 	<input type="hidden" name="last_notrx" value="<?php echo $mode == 'add' ?  $last_notrx : $data->so_no_trx; ?>">
 	<input type="hidden" name="total_amount_st" id="total_amount_st">
 	
-	<?php if (isset($txt_id)): ?>
-		<input type="hidden" name="txt_id" value="<?php echo $txt_id; ?>">
+	<?php if (isset($sop_id)): ?>
+		<input type="hidden" name="sop_id" value="<?php echo $sop_id; ?>">
 	<?php endif; ?>
 	<div class="row">		
 		<div class="col-md-6">

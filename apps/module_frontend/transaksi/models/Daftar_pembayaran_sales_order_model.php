@@ -14,7 +14,10 @@ class Daftar_pembayaran_sales_order_model extends NOOBS_Model
 	public function load_data_daftar_pembayaran_sales_order($params = array())
 	{
 		// print_r($params);exit;
-		$this->db->select('*,DATE_FORMAT(so.so_created_date, "%d-%m-%Y") as date_create');
+		$this->db->select('*,(CASE 
+			WHEN so.so_is_pay = "BL" THEN "BELUM LUNAS"
+			WHEN so.so_is_pay = "LN" THEN "LUNAS"
+			ELSE "BELUM LENGKAP" END) as paying,DATE_FORMAT(so.so_created_date, "%d-%m-%Y") as date_create');
 		$this->db->from('sales_order_payment as sop');
 		$this->db->join('sales_order as so','so.so_no_trx = sop.sop_so_no_trx','LEFT');
 		$this->db->join('vendor as v','v.v_id = so.so_vendor_id','LEFT');
@@ -114,19 +117,29 @@ class Daftar_pembayaran_sales_order_model extends NOOBS_Model
 	{
 		$this->table = 'sales_order_payment';
 
+
+		if ($params['mode'] == 'add') return $this->add($params, TRUE);
+		else return $this->edit($new_params, "sop_id = {$params['sop_id']}");
+
+		// return $this->load_data_daftar_pembayaran_sales_order();
+	}
+
+	public function update_status_sales_order($params = array()) //dipakai
+	{
+		$this->table = 'sales_order';
+
 		$new_params = array(
-			'sop_no_trx' => $params['last_notrx'],
-			'so_district_id' => $params['txt_region'],
-			'so_no_trx' => $params['last_notrx'],
-			// 'so_is_status' => 'ORDER',
-			'so_created_date' => date('Y-m-d H:i:s', strtotime($params['so_created_date'])),
+			'so_is_pay' => $params['so_is_pay']
+
 		);
 
-		if ($params['mode'] == 'add') $this->add($new_params, TRUE);
-		else $this->edit($new_params, "so_id = {$params['txt_id']}");
+		$no_trx = $params['so_no_trx'];
 
-		return $this->load_data_daftar_pembayaran_sales_order();
+		return $this->edit($new_params, "so_no_trx = \"{$no_trx}\" ");
+
+		// return $this->load_data_daftar_delivery_order();
 	}
+
 	// public function get_progress_so($params = array())
 	// {
 	// 	$this->db->select('count(dod.dod_id) as progress');

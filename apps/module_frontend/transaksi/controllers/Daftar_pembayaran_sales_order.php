@@ -49,31 +49,10 @@ class Daftar_pembayaran_sales_order extends NOOBS_Controller
 			{
 				$num++;
 
-				$get_progress_so = $this->db_daftar_pso->get_progress_so(array('so_id' => $v->so_id,'dod_is_status' => 'SELESAI'));
-
-				$get_total_so = $this->db_daftar_pso->get_progress_so(array('so_id' => $v->so_id));
-
-				if($get_progress_so->num_rows() > 0) {
-					$progress = $get_progress_so->row();
-					$v->progress =  $progress->progress;
-				}
-				else
-				{
-					$v->progress = 0;
-				}
-
-				if($get_total_so->num_rows() > 0) {
-					$total = $get_total_so->row();
-					$v->total =  $total->progress;
-				}
-				else
-				{
-					$v->total = 0;
-				}
 				
 				$v->num = $num;
-				$v->total_progress = ($v->total !== '0') ? round(($v->progress * 100) / $v->total,2) : '0';	
-				$v->so_created_date = date('d-m-Y',strtotime($v->so_created_date));
+				$v->sop_created_date = date('d-m-Y',strtotime($v->sop_created_date));	
+				$v->so_total_amount = number_format($v->so_total_amount);	
 			}
 			// print_r($result);exit;
 			$this->store_params['item'] = $result;
@@ -183,6 +162,7 @@ class Daftar_pembayaran_sales_order extends NOOBS_Controller
 					$v->no = $number;
 					$v->so_qty = number_format($v->so_qty);
 					$sum[] = $v->so_total_amount;
+					$v->so_total_amount_so = $v->so_total_amount;
 					$v->so_total_amount = 'Rp. '.number_format($v->so_total_amount);
 					$v->so_created_date = date('d-m-Y', strtotime($v->so_created_date));
 				}
@@ -226,47 +206,51 @@ class Daftar_pembayaran_sales_order extends NOOBS_Controller
 		if (isset($_POST['action']) && $_POST['action'] == 'store_data_daftar_pembayaran_sales_order')
 		{
 			$post = $this->input->post(NULL, TRUE);
-		print_r($post);exit;
-			$store_data_daftar_pembayaran_sales_order = $this->db_daftar_pso->store_data_daftar_pembayaran_sales_order($post);
-
-			if ($store_data_daftar_pembayaran_sales_order->num_rows() > 0) 
+			$params = array();
+			$i=0;
+			foreach($post['so_no_trx'] as $k => $v)
 			{
-				$result = $store_data_daftar_pembayaran_sales_order->result();
+				$key_lock = str_replace('/','',$post['last_notrx']);
+				$key_lock = $key_lock.'_'.$i;
+				$params = array(
+					'sop_no_trx' => $post['last_notrx'],
+					'sop_so_no_trx' => $v,
+					'sop_key_lock' => $key_lock,
+					'sop_created_date' => date('Y-m-d',strtotime($post['so_created_date'])),
+					'sop_total_pay' => $post['total_amount_so'][$i],
+					'sop_type_pay' => $post['sop_type_pay'],
+					'mode' => $post['mode']
+				); 
+				$store_data_daftar_pembayaran_sales_order = $this->db_daftar_pso->store_data_daftar_pembayaran_sales_order($params);
+
+				$new_params = array(
+					'so_is_pay' => 'LN',
+					'so_no_trx' => $v
+				);
+				
+				$update_status_so = $this->db_daftar_pso->update_status_sales_order($new_params);
+
+
+				$i++;
+			}
+
+			$load_data = $this->db_daftar_pso->load_data_daftar_pembayaran_sales_order();
+			
+			if ($load_data->num_rows() > 0) 
+			{
+				$result = $load_data->result();
 				$number = 1;
 
 				foreach ($result as $k => $v)
-				{
-					$number++;
-
-					$get_progress_so = $this->db_daftar_pso->get_progress_so(array('so_id' => $v->so_id,'dod_is_status' => 'SELESAI'));
-
-					$get_total_so = $this->db_daftar_pso->get_progress_so(array('so_id' => $v->so_id));
-
-					if($get_progress_so->num_rows() > 0) {
-						$progress = $get_progress_so->row();
-						$v->progress =  $progress->progress;
-					}
-					else
-					{
-						$v->progress = 0;
-					}
-
-					if($get_total_so->num_rows() > 0) {
-						$total = $get_total_so->row();
-						$v->total =  $total->progress;
-					}
-					else
-					{
-						$v->total = 0;
-					}
-					
+				{					
 					$v->no = $number;
-					$v->total_progress = ($v->total !== '0') ? round(($progress->progress * 100) / $total->progress,2) : '0';	
-					$v->so_created_date = date('d-m-Y',strtotime($v->so_created_date));	
+					$v->sop_created_date = date('d-m-Y',strtotime($v->sop_created_date));	
 					$v->so_total_amount = number_format($v->so_total_amount);	
+
+					$number++;
 				}
 
-
+				// print_r($result);exit;
 				echo json_encode(array('success' => TRUE, 'data' => $result));
 			}
 			else echo json_encode(array('success' => FALSE, 'msg' => 'Data not found!'));

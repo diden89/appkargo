@@ -64,7 +64,8 @@
 										<th>Nama Vendor</th>
 										<th>Total Tagihan</th>
 										<th>Tanggal Pembayaran</th>
-										<th width="100">Action</th>
+										<th>Status Pembayaran</th>
+										<!-- <th width="100">Action</th> -->
 									</tr>
 								</thead>
 								<tbody>
@@ -73,14 +74,15 @@
 											<td><?php echo $v->num; ?></td>
 											<td><?php echo $v->sop_no_trx; ?></td>
 											<td><?php echo $v->v_vendor_name; ?></td>
-											<td><?php echo number_format($v->so_total_amount); ?></td>
-											<td><?php echo $v->so_created_date; ?></td>
-											<td>
+											<td><?php echo $v->so_total_amount; ?></td>
+											<td><?php echo $v->sop_created_date; ?></td>
+											<td><?php echo $v->paying; ?></td>
+											<!-- <td>
 												<div class="btn-group btn-group-sm" role="group" aria-label="Action Button">
-													<button type="button" class="btn btn-success" data-id="<?php echo $v->so_id; ?>" data-no_trx="<?php echo $v->so_no_trx; ?>" data-rd_id="<?php echo $v->rd_id; ?>" data-rp_id="<?php echo $v->rd_province_id; ?>" onclick="daftarPaySalesOrderList.showItem(this, 'edit');" ><i class="fas fa-edit"></i></button>
-													<button type="button" class="btn btn-danger" data-id="<?php echo $v->so_id; ?>" onclick="daftarPaySalesOrderList.deleteDataItem(this);" title="Delete Word"><i class="fas fa-trash-alt"></i></button>
+													// <button type="button" class="btn btn-success" data-id="<?php// echo $v->so_id; ?>" data-no_trx="<?php //echo $v->so_no_trx; ?>" onclick="daftarPaySalesOrderList.showItem(this, 'edit');" ><i class="fas fa-edit"></i></button>
+													<button type="button" class="btn btn-danger" data-id="<?php //echo $v->so_id; ?>" onclick="daftarPaySalesOrderList.deleteDataItem(this);" title="Delete Word"><i class="fas fa-trash-alt"></i></button>
 												</div>
-											</td>
+											</td> -->
 										</tr>
 									<?php endforeach; ?>
 								</tbody>

@@ -316,6 +316,7 @@ class NOOBS_Model extends CI_Model {
 
 	protected function edit($data = array(), $where = NULL)
 	{
+		// echo $where;exit;
 		if ( ! empty($this->table))
 		{
 			$decrypt_token = $this->decrypt_token();
