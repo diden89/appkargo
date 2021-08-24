@@ -11,7 +11,7 @@
  Target Server Version : 80020
  File Encoding         : 65001
 
- Date: 25/08/2021 00:00:37
+ Date: 25/08/2021 00:20:56
 */
 
 SET NAMES utf8;
@@ -206,23 +206,6 @@ CREATE TABLE `delivery_order_status`  (
   `last_datetime` datetime(0) NOT NULL,
   PRIMARY KEY (`dos_id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 43 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Records of delivery_order_status
--- ----------------------------
-INSERT INTO `delivery_order_status` VALUES (30, '2021-08-22 00:00:00', 81, 'SELESAI', 'Y', 1, '2021-08-22 23:01:08');
-INSERT INTO `delivery_order_status` VALUES (31, '2021-08-22 00:00:00', 80, 'SELESAI', 'Y', 1, '2021-08-22 23:01:11');
-INSERT INTO `delivery_order_status` VALUES (32, '2021-08-22 00:00:00', 79, 'SELESAI', 'Y', 1, '2021-08-22 23:01:15');
-INSERT INTO `delivery_order_status` VALUES (33, '2021-08-22 00:00:00', 78, 'SELESAI', 'Y', 1, '2021-08-22 23:01:18');
-INSERT INTO `delivery_order_status` VALUES (34, '2021-08-22 00:00:00', 77, 'SELESAI', 'Y', 1, '2021-08-22 23:01:22');
-INSERT INTO `delivery_order_status` VALUES (35, '2021-08-22 00:00:00', 76, 'SELESAI', 'Y', 1, '2021-08-22 23:01:25');
-INSERT INTO `delivery_order_status` VALUES (36, '2021-08-22 00:00:00', 75, 'SELESAI', 'Y', 1, '2021-08-22 23:01:28');
-INSERT INTO `delivery_order_status` VALUES (37, '2021-08-22 00:00:00', 74, 'SELESAI', 'Y', 1, '2021-08-22 23:01:31');
-INSERT INTO `delivery_order_status` VALUES (38, '2021-08-22 00:00:00', 73, 'SELESAI', 'Y', 1, '2021-08-22 23:01:35');
-INSERT INTO `delivery_order_status` VALUES (39, '2021-08-22 00:00:00', 72, 'SELESAI', 'Y', 1, '2021-08-22 23:01:38');
-INSERT INTO `delivery_order_status` VALUES (40, '2021-08-22 00:00:00', 71, 'SELESAI', 'Y', 1, '2021-08-22 23:01:43');
-INSERT INTO `delivery_order_status` VALUES (41, '2021-08-22 00:00:00', 83, 'SELESAI', 'Y', 1, '2021-08-22 23:03:40');
-INSERT INTO `delivery_order_status` VALUES (42, '2021-08-22 00:00:00', 82, 'SELESAI', 'Y', 1, '2021-08-22 23:03:43');
 
 -- ----------------------------
 -- Table structure for driver
@@ -9660,6 +9643,13 @@ INSERT INTO `log_ref_transaksi` VALUES (25, '0002/CHIN/20210819', '0002CHIN20210
 INSERT INTO `log_ref_transaksi` VALUES (29, '0002/CHIN/20210819', '0002CHIN20210819_2', 13, 3, '15000000', '2021-08-19', 'Y', '1', '2021-08-19 15:29:59', 1, 'add', '2021-08-19 15:29:59', 64);
 INSERT INTO `log_ref_transaksi` VALUES (29, '0002/CHIN/20210819', '0002CHIN20210819_2', 13, 3, '15000000', '2021-08-19', 'Y', '1', '2021-08-19 15:29:59', 1, 'delete', '2021-08-19 15:30:04', 65);
 INSERT INTO `log_ref_transaksi` VALUES (25, '0002/CHIN/20210819', '0002CHIN20210819_1', 13, 3, '5000000', '2021-08-19', 'Y', '1', '2021-08-19 15:30:09', 1, 'edit', '2021-08-19 15:30:09', 66);
+INSERT INTO `log_ref_transaksi` VALUES (30, '0001/CHOUT/20210819', '0001CHOUT20210819_2', 3, 22, '5000000', '2021-08-19', 'Y', '1', '2021-08-19 15:32:20', 1, 'add', '2021-08-19 15:32:20', 67);
+INSERT INTO `log_ref_transaksi` VALUES (31, '0001/SOPAY/20210824', '0001/SOPAY/20210824', 24, 3, '3250000', '2021-08-24', 'Y', '1', '2021-08-24 20:03:22', 1, 'add', '2021-08-24 20:03:22', 68);
+INSERT INTO `log_ref_transaksi` VALUES (32, '0001/SOPAY/20210824', '0001SOPAY20210824_0', 24, 3, '3250000', '2021-08-24', 'Y', '1', '2021-08-24 20:03:47', 1, 'add', '2021-08-24 20:03:47', 69);
+INSERT INTO `log_ref_transaksi` VALUES (33, '0001/SOPAY/20210824', '0001SOPAY20210824_1', 24, 3, '3150000', '2021-08-24', 'Y', '1', '2021-08-24 20:03:47', 1, 'add', '2021-08-24 20:03:47', 70);
+INSERT INTO `log_ref_transaksi` VALUES (34, '0001/SOPAY/20210824', '0001SOPAY20210824_0', 24, 3, '3750000', '2021-08-24', 'Y', '1', '2021-08-24 23:43:29', 1, 'add', '2021-08-24 23:43:29', 71);
+INSERT INTO `log_ref_transaksi` VALUES (35, '0002/SOPAY/20210824', '0002SOPAY20210824_0', 24, 3, '3250000', '2021-08-24', 'Y', '1', '2021-08-24 23:44:19', 1, 'add', '2021-08-24 23:44:19', 72);
+INSERT INTO `log_ref_transaksi` VALUES (36, '0002/SOPAY/20210824', '0002SOPAY20210824_1', 24, 3, '3150000', '2021-08-24', 'Y', '1', '2021-08-24 23:44:19', 1, 'add', '2021-08-24 23:44:19', 73);
 
 -- ----------------------------
 -- Table structure for log_sales_order
@@ -9684,6 +9674,84 @@ CREATE TABLE `log_sales_order`  (
   `so_is_status` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`log_id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 97 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of log_sales_order
+-- ----------------------------
+INSERT INTO `log_sales_order` VALUES (10, 2, 127, '0', '0003/SO/20210819', NULL, '2021-08-19', 'BL', 'Y', '1', '2021-08-19 21:45:08', 1, 'add', '2021-08-19 21:45:08', 29, 'ORDER');
+INSERT INTO `log_sales_order` VALUES (11, 2, 127, '0', '0001/SO/20210820', NULL, '2021-08-20', 'BL', 'Y', '1', '2021-08-20 22:09:56', 1, 'add', '2021-08-20 22:09:56', 30, 'ORDER');
+INSERT INTO `log_sales_order` VALUES (12, 1, 127, '0', '0002/SO/20210820', NULL, '2021-08-20', 'BL', 'Y', '1', '2021-08-20 22:14:00', 1, 'add', '2021-08-20 22:14:00', 31, 'ORDER');
+INSERT INTO `log_sales_order` VALUES (11, 2, 127, '750000', '0001/SO/20210820', NULL, '2021-08-20', 'BL', 'Y', '1', '2021-08-21 01:45:01', 1, 'edit', '2021-08-21 01:45:01', 32, 'ORDER');
+INSERT INTO `log_sales_order` VALUES (11, 2, 127, '1050030', '0001/SO/20210820', NULL, '2021-08-20', 'BL', 'Y', '1', '2021-08-21 01:45:23', 1, 'edit', '2021-08-21 01:45:23', 33, 'ORDER');
+INSERT INTO `log_sales_order` VALUES (11, 2, 127, '750000', '0001/SO/20210820', NULL, '2021-08-20', 'BL', 'Y', '1', '2021-08-21 01:46:40', 1, 'edit', '2021-08-21 01:46:40', 34, 'ORDER');
+INSERT INTO `log_sales_order` VALUES (11, 2, 127, '1500000', '0001/SO/20210820', NULL, '2021-08-20', 'BL', 'Y', '1', '2021-08-21 01:46:48', 1, 'edit', '2021-08-21 01:46:48', 35, 'ORDER');
+INSERT INTO `log_sales_order` VALUES (11, 2, 127, '1875000', '0001/SO/20210820', NULL, '2021-08-20', 'BL', 'Y', '1', '2021-08-21 01:47:06', 1, 'edit', '2021-08-21 01:47:06', 36, 'ORDER');
+INSERT INTO `log_sales_order` VALUES (11, 2, 127, '2625000', '0001/SO/20210820', NULL, '2021-08-20', 'BL', 'Y', '1', '2021-08-21 01:47:22', 1, 'edit', '2021-08-21 01:47:22', 37, 'ORDER');
+INSERT INTO `log_sales_order` VALUES (11, 2, 127, '3375000', '0001/SO/20210820', NULL, '2021-08-20', 'BL', 'Y', '1', '2021-08-21 01:53:29', 1, 'edit', '2021-08-21 01:53:29', 38, 'ORDER');
+INSERT INTO `log_sales_order` VALUES (11, 2, 127, '750000', '0001/SO/20210820', NULL, '2021-08-20', 'BL', 'Y', '1', '2021-08-21 01:55:08', 1, 'edit', '2021-08-21 01:55:08', 39, 'ORDER');
+INSERT INTO `log_sales_order` VALUES (11, 2, 127, '1050000', '0001/SO/20210820', NULL, '2021-08-20', 'BL', 'Y', '1', '2021-08-21 01:55:16', 1, 'edit', '2021-08-21 01:55:16', 40, 'ORDER');
+INSERT INTO `log_sales_order` VALUES (11, 2, 127, '1875000', '0001/SO/20210820', NULL, '2021-08-20', 'BL', 'Y', '1', '2021-08-21 01:55:25', 1, 'edit', '2021-08-21 01:55:25', 41, 'ORDER');
+INSERT INTO `log_sales_order` VALUES (11, 2, 127, '2625000', '0001/SO/20210820', NULL, '2021-08-20', 'BL', 'Y', '1', '2021-08-21 01:55:35', 1, 'edit', '2021-08-21 01:55:35', 42, 'ORDER');
+INSERT INTO `log_sales_order` VALUES (11, 2, 127, '3645000', '0001/SO/20210820', NULL, '2021-08-20', 'BL', 'Y', '1', '2021-08-21 01:56:12', 1, 'edit', '2021-08-21 01:56:12', 43, 'ORDER');
+INSERT INTO `log_sales_order` VALUES (11, 2, 127, '3675000', '0001/SO/20210820', NULL, '2021-08-20', 'BL', 'Y', '1', '2021-08-21 01:56:22', 1, 'edit', '2021-08-21 01:56:22', 44, 'ORDER');
+INSERT INTO `log_sales_order` VALUES (11, 2, 127, '3675000', '0001/SO/20210820', NULL, '2021-08-20', 'BL', 'Y', '1', '2021-08-21 02:01:48', 1, 'edit', '2021-08-21 02:01:48', 45, 'ON PROGRESS');
+INSERT INTO `log_sales_order` VALUES (11, 2, 127, '3675000', '0001/SO/20210820', NULL, '2021-08-20', 'BL', 'Y', '1', '2021-08-21 02:01:52', 1, 'edit', '2021-08-21 02:01:52', 46, 'ON PROGRESS');
+INSERT INTO `log_sales_order` VALUES (11, 2, 127, '3675000', '0001/SO/20210820', NULL, '2021-08-20', 'BL', 'Y', '1', '2021-08-21 02:01:56', 1, 'edit', '2021-08-21 02:01:56', 47, 'ON PROGRESS');
+INSERT INTO `log_sales_order` VALUES (11, 2, 127, '3675000', '0001/SO/20210820', NULL, '2021-08-20', 'BL', 'Y', '1', '2021-08-21 02:12:12', 1, 'edit', '2021-08-21 02:12:12', 48, 'ON PROGRESS');
+INSERT INTO `log_sales_order` VALUES (11, 2, 127, '3675000', '0001/SO/20210820', NULL, '2021-08-20', 'BL', 'Y', '1', '2021-08-21 02:49:00', 1, 'edit', '2021-08-21 02:49:00', 49, 'SELESAI');
+INSERT INTO `log_sales_order` VALUES (11, 2, 127, '3675000', '0001/SO/20210820', NULL, '2021-08-20', 'BL', 'Y', '1', '2021-08-21 02:49:53', 1, 'edit', '2021-08-21 02:49:53', 50, 'ON PROGRESS');
+INSERT INTO `log_sales_order` VALUES (11, 2, 127, '3675000', '0001/SO/20210820', NULL, '2021-08-20', 'BL', 'Y', '1', '2021-08-21 02:50:02', 1, 'edit', '2021-08-21 02:50:02', 51, 'ON PROGRESS');
+INSERT INTO `log_sales_order` VALUES (11, 2, 127, '3675000', '0001/SO/20210820', NULL, '2021-08-20', 'BL', 'Y', '1', '2021-08-21 02:50:09', 1, 'edit', '2021-08-21 02:50:09', 52, 'ON PROGRESS');
+INSERT INTO `log_sales_order` VALUES (11, 2, 127, '3675000', '0001/SO/20210820', NULL, '2021-08-20', 'BL', 'Y', '1', '2021-08-21 02:50:16', 1, 'edit', '2021-08-21 02:50:16', 53, 'SELESAI');
+INSERT INTO `log_sales_order` VALUES (13, 1, 43, '0', '0001/SO/20210821', NULL, '2021-08-21', 'BL', 'Y', '1', '2021-08-21 02:57:44', 1, 'add', '2021-08-21 02:57:44', 54, 'ORDER');
+INSERT INTO `log_sales_order` VALUES (13, 1, 127, '0', '0001/SO/20210821', NULL, '2021-08-22', 'BL', 'Y', '1', '2021-08-22 00:53:07', 1, 'edit', '2021-08-22 00:53:07', 55, 'ORDER');
+INSERT INTO `log_sales_order` VALUES (13, 1, 127, '75000', '0001/SO/20210821', NULL, '2021-08-22', 'BL', 'Y', '1', '2021-08-22 00:53:36', 1, 'edit', '2021-08-22 00:53:36', 56, 'ORDER');
+INSERT INTO `log_sales_order` VALUES (13, 1, 127, '105000', '0001/SO/20210821', NULL, '2021-08-22', 'BL', 'Y', '1', '2021-08-22 00:53:45', 1, 'edit', '2021-08-22 00:53:45', 57, 'ORDER');
+INSERT INTO `log_sales_order` VALUES (13, 1, 127, '105000', '0001/SO/20210821', NULL, '2021-08-22', 'BL', 'Y', '1', '2021-08-22 00:53:53', 1, 'edit', '2021-08-22 00:53:53', 58, 'ON PROGRESS');
+INSERT INTO `log_sales_order` VALUES (13, 1, 127, '105000', '0001/SO/20210821', NULL, '2021-08-22', 'BL', 'Y', '1', '2021-08-22 00:53:55', 1, 'edit', '2021-08-22 00:53:55', 59, 'SELESAI');
+INSERT INTO `log_sales_order` VALUES (15, 2, 127, '0', '0001/SO/20210822', NULL, '2021-08-22', 'BL', 'Y', '1', '2021-08-22 22:57:35', 1, 'add', '2021-08-22 22:57:35', 60, 'ORDER');
+INSERT INTO `log_sales_order` VALUES (16, 1, 131, '0', '0002/SO/20210822', NULL, '2021-08-22', 'BL', 'Y', '1', '2021-08-22 22:58:17', 1, 'add', '2021-08-22 22:58:17', 61, 'ORDER');
+INSERT INTO `log_sales_order` VALUES (15, 2, 127, '750000', '0001/SO/20210822', NULL, '2021-08-22', 'BL', 'Y', '1', '2021-08-22 22:58:49', 1, 'edit', '2021-08-22 22:58:49', 62, 'ORDER');
+INSERT INTO `log_sales_order` VALUES (15, 2, 127, '1050000', '0001/SO/20210822', NULL, '2021-08-22', 'BL', 'Y', '1', '2021-08-22 22:58:58', 1, 'edit', '2021-08-22 22:58:58', 63, 'ORDER');
+INSERT INTO `log_sales_order` VALUES (15, 2, 127, '1425000', '0001/SO/20210822', NULL, '2021-08-22', 'BL', 'Y', '1', '2021-08-22 22:59:09', 1, 'edit', '2021-08-22 22:59:09', 64, 'ORDER');
+INSERT INTO `log_sales_order` VALUES (15, 2, 127, '1575000', '0001/SO/20210822', NULL, '2021-08-22', 'BL', 'Y', '1', '2021-08-22 22:59:17', 1, 'edit', '2021-08-22 22:59:17', 65, 'ORDER');
+INSERT INTO `log_sales_order` VALUES (15, 2, 127, '2700000', '0001/SO/20210822', NULL, '2021-08-22', 'BL', 'Y', '1', '2021-08-22 22:59:28', 1, 'edit', '2021-08-22 22:59:28', 66, 'ORDER');
+INSERT INTO `log_sales_order` VALUES (15, 2, 127, '3150000', '0001/SO/20210822', NULL, '2021-08-22', 'BL', 'Y', '1', '2021-08-22 22:59:36', 1, 'edit', '2021-08-22 22:59:36', 67, 'ORDER');
+INSERT INTO `log_sales_order` VALUES (16, 1, 131, '1000000', '0002/SO/20210822', NULL, '2021-08-22', 'BL', 'Y', '1', '2021-08-22 23:00:12', 1, 'edit', '2021-08-22 23:00:12', 68, 'ORDER');
+INSERT INTO `log_sales_order` VALUES (16, 1, 131, '2250000', '0002/SO/20210822', NULL, '2021-08-22', 'BL', 'Y', '1', '2021-08-22 23:00:22', 1, 'edit', '2021-08-22 23:00:22', 69, 'ORDER');
+INSERT INTO `log_sales_order` VALUES (16, 1, 131, '2850000', '0002/SO/20210822', NULL, '2021-08-22', 'BL', 'Y', '1', '2021-08-22 23:00:32', 1, 'edit', '2021-08-22 23:00:32', 70, 'ORDER');
+INSERT INTO `log_sales_order` VALUES (16, 1, 131, '3350000', '0002/SO/20210822', NULL, '2021-08-22', 'BL', 'Y', '1', '2021-08-22 23:00:41', 1, 'edit', '2021-08-22 23:00:41', 71, 'ORDER');
+INSERT INTO `log_sales_order` VALUES (16, 1, 131, '3750000', '0002/SO/20210822', NULL, '2021-08-22', 'BL', 'Y', '1', '2021-08-22 23:00:50', 1, 'edit', '2021-08-22 23:00:50', 72, 'ORDER');
+INSERT INTO `log_sales_order` VALUES (16, 1, 131, '3750000', '0002/SO/20210822', NULL, '2021-08-22', 'BL', 'Y', '1', '2021-08-22 23:01:08', 1, 'edit', '2021-08-22 23:01:08', 73, 'ON PROGRESS');
+INSERT INTO `log_sales_order` VALUES (16, 1, 131, '3750000', '0002/SO/20210822', NULL, '2021-08-22', 'BL', 'Y', '1', '2021-08-22 23:01:11', 1, 'edit', '2021-08-22 23:01:11', 74, 'ON PROGRESS');
+INSERT INTO `log_sales_order` VALUES (16, 1, 131, '3750000', '0002/SO/20210822', NULL, '2021-08-22', 'BL', 'Y', '1', '2021-08-22 23:01:15', 1, 'edit', '2021-08-22 23:01:15', 75, 'ON PROGRESS');
+INSERT INTO `log_sales_order` VALUES (16, 1, 131, '3750000', '0002/SO/20210822', NULL, '2021-08-22', 'BL', 'Y', '1', '2021-08-22 23:01:18', 1, 'edit', '2021-08-22 23:01:18', 76, 'ON PROGRESS');
+INSERT INTO `log_sales_order` VALUES (16, 1, 131, '3750000', '0002/SO/20210822', NULL, '2021-08-22', 'BL', 'Y', '1', '2021-08-22 23:01:22', 1, 'edit', '2021-08-22 23:01:22', 77, 'SELESAI');
+INSERT INTO `log_sales_order` VALUES (15, 2, 127, '3150000', '0001/SO/20210822', NULL, '2021-08-22', 'BL', 'Y', '1', '2021-08-22 23:01:25', 1, 'edit', '2021-08-22 23:01:25', 78, 'ON PROGRESS');
+INSERT INTO `log_sales_order` VALUES (15, 2, 127, '3150000', '0001/SO/20210822', NULL, '2021-08-22', 'BL', 'Y', '1', '2021-08-22 23:01:28', 1, 'edit', '2021-08-22 23:01:28', 79, 'ON PROGRESS');
+INSERT INTO `log_sales_order` VALUES (15, 2, 127, '3150000', '0001/SO/20210822', NULL, '2021-08-22', 'BL', 'Y', '1', '2021-08-22 23:01:31', 1, 'edit', '2021-08-22 23:01:31', 80, 'ON PROGRESS');
+INSERT INTO `log_sales_order` VALUES (15, 2, 127, '3150000', '0001/SO/20210822', NULL, '2021-08-22', 'BL', 'Y', '1', '2021-08-22 23:01:35', 1, 'edit', '2021-08-22 23:01:35', 81, 'ON PROGRESS');
+INSERT INTO `log_sales_order` VALUES (15, 2, 127, '3150000', '0001/SO/20210822', NULL, '2021-08-22', 'BL', 'Y', '1', '2021-08-22 23:01:38', 1, 'edit', '2021-08-22 23:01:38', 82, 'ON PROGRESS');
+INSERT INTO `log_sales_order` VALUES (15, 2, 127, '3150000', '0001/SO/20210822', NULL, '2021-08-22', 'BL', 'Y', '1', '2021-08-22 23:01:44', 1, 'edit', '2021-08-22 23:01:44', 83, 'SELESAI');
+INSERT INTO `log_sales_order` VALUES (17, 2, 131, '0', '0003/SO/20210822', NULL, '2021-08-23', 'BL', 'Y', '1', '2021-08-22 23:02:37', 1, 'add', '2021-08-22 23:02:37', 84, 'ORDER');
+INSERT INTO `log_sales_order` VALUES (17, 2, 131, '0', '0003/SO/20210822', NULL, '2021-08-22', 'BL', 'Y', '1', '2021-08-22 23:03:05', 1, 'edit', '2021-08-22 23:03:05', 85, 'ORDER');
+INSERT INTO `log_sales_order` VALUES (17, 2, 131, '2000000', '0003/SO/20210822', NULL, '2021-08-22', 'BL', 'Y', '1', '2021-08-22 23:03:25', 1, 'edit', '2021-08-22 23:03:25', 86, 'ORDER');
+INSERT INTO `log_sales_order` VALUES (17, 2, 131, '3250000', '0003/SO/20210822', NULL, '2021-08-22', 'BL', 'Y', '1', '2021-08-22 23:03:34', 1, 'edit', '2021-08-22 23:03:34', 87, 'ORDER');
+INSERT INTO `log_sales_order` VALUES (17, 2, 131, '3250000', '0003/SO/20210822', NULL, '2021-08-22', 'BL', 'Y', '1', '2021-08-22 23:03:40', 1, 'edit', '2021-08-22 23:03:40', 88, 'ON PROGRESS');
+INSERT INTO `log_sales_order` VALUES (17, 2, 131, '3250000', '0003/SO/20210822', NULL, '2021-08-22', 'BL', 'Y', '1', '2021-08-22 23:03:43', 1, 'edit', '2021-08-22 23:03:43', 89, 'SELESAI');
+INSERT INTO `log_sales_order` VALUES (17, 2, 131, '3250000', '0003/SO/20210822', NULL, '2021-08-22', 'LN', 'Y', '1', '2021-08-24 00:27:10', 1, 'edit', '2021-08-24 00:27:10', 90, 'SELESAI');
+INSERT INTO `log_sales_order` VALUES (15, 2, 127, '3150000', '0001/SO/20210822', NULL, '2021-08-22', 'LN', 'Y', '1', '2021-08-24 00:27:10', 1, 'edit', '2021-08-24 00:27:10', 91, 'SELESAI');
+INSERT INTO `log_sales_order` VALUES (17, 2, 131, '3250000', '0003/SO/20210822', NULL, '2021-08-22', 'LN', 'Y', '1', '2021-08-24 00:31:16', 1, 'edit', '2021-08-24 00:31:16', 92, 'SELESAI');
+INSERT INTO `log_sales_order` VALUES (15, 2, 127, '3150000', '0001/SO/20210822', NULL, '2021-08-22', 'LN', 'Y', '1', '2021-08-24 00:31:16', 1, 'edit', '2021-08-24 00:31:16', 93, 'SELESAI');
+INSERT INTO `log_sales_order` VALUES (16, 1, 131, '3750000', '0002/SO/20210822', NULL, '2021-08-22', 'LN', 'Y', '1', '2021-08-24 00:35:41', 1, 'edit', '2021-08-24 00:35:41', 94, 'SELESAI');
+INSERT INTO `log_sales_order` VALUES (17, 2, 131, '3250000', '0003/SO/20210822', NULL, '2021-08-22', 'LN', 'Y', '1', '2021-08-24 14:03:54', 1, 'edit', '2021-08-24 14:03:54', 95, 'SELESAI');
+INSERT INTO `log_sales_order` VALUES (15, 2, 127, '3150000', '0001/SO/20210822', NULL, '2021-08-22', 'LN', 'Y', '1', '2021-08-24 14:04:22', 1, 'edit', '2021-08-24 14:04:22', 96, 'SELESAI');
+INSERT INTO `log_sales_order` VALUES (16, 1, 131, '3750000', '0002/SO/20210822', NULL, '2021-08-22', 'LN', 'Y', '1', '2021-08-24 19:48:26', 1, 'edit', '2021-08-24 19:48:26', 97, 'SELESAI');
+INSERT INTO `log_sales_order` VALUES (17, 2, 131, '3250000', '0003/SO/20210822', NULL, '2021-08-22', 'LN', 'Y', '1', '2021-08-24 19:59:58', 1, 'edit', '2021-08-24 19:59:58', 98, 'SELESAI');
+INSERT INTO `log_sales_order` VALUES (17, 2, 131, '3250000', '0003/SO/20210822', NULL, '2021-08-22', 'LN', 'Y', '1', '2021-08-24 20:01:02', 1, 'edit', '2021-08-24 20:01:02', 99, 'SELESAI');
+INSERT INTO `log_sales_order` VALUES (16, 1, 131, '3750000', '0002/SO/20210822', NULL, '2021-08-22', 'LN', 'Y', '1', '2021-08-24 23:43:29', 1, 'edit', '2021-08-24 23:43:29', 100, 'SELESAI');
+INSERT INTO `log_sales_order` VALUES (17, 2, 131, '3250000', '0003/SO/20210822', NULL, '2021-08-22', 'LN', 'Y', '1', '2021-08-24 23:44:18', 1, 'edit', '2021-08-24 23:44:18', 101, 'SELESAI');
+INSERT INTO `log_sales_order` VALUES (15, 2, 127, '3150000', '0001/SO/20210822', NULL, '2021-08-22', 'LN', 'Y', '1', '2021-08-24 23:44:19', 1, 'edit', '2021-08-24 23:44:19', 102, 'SELESAI');
 
 -- ----------------------------
 -- Table structure for log_sales_order_detail
@@ -10051,6 +10119,11 @@ CREATE TABLE `log_user_group`  (
   `log_id` int UNSIGNED NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`log_id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = COMPACT;
+
+-- ----------------------------
+-- Records of log_user_group
+-- ----------------------------
+INSERT INTO `log_user_group` VALUES (2, 'Manager', 'Manager', 'Y', 1, '2021-07-20 00:44:49', 1, 'add', '2021-07-20 00:44:49', 1);
 
 -- ----------------------------
 -- Table structure for log_user_sub_group
@@ -18082,6 +18155,12 @@ CREATE TABLE `user_detail`  (
   `last_datetime` datetime(0) NOT NULL,
   PRIMARY KEY (`ud_id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = COMPACT;
+
+-- ----------------------------
+-- Records of user_detail
+-- ----------------------------
+INSERT INTO `user_detail` VALUES (1, 'admin', '05962b1a8d2e2153db9c2facf89504532b901aa6', 'Administrator', '2020-06-18', 'pekanbaru', 'admin@localhost.com', '759c6f3d09241a1f33bc9e99951a30aa.PNG', 'avatar.PNG', 'Y', 1, 'Y', 1, '2021-07-18 00:11:08');
+INSERT INTO `user_detail` VALUES (2, 'diden', 'a1d7b6db2be808c586dcaf7f779ced0f96fb0fb1', 'Dian Kosasih', '1989-08-16', 'Padang', 'didendiko@gmail.com', '54681b290b18dc465bafa48cfb9c042d.jpg', 'PAS_FOTO_edit.jpg', 'N', 2, 'Y', 1, '2021-07-20 00:45:54');
 
 -- ----------------------------
 -- Table structure for user_group

@@ -57,6 +57,7 @@ class Daftar_pembayaran_sales_order extends NOOBS_Controller
 			// print_r($result);exit;
 			$this->store_params['item'] = $result;
 		}
+		echo sha1(strtoupper('diden'.':'.'apolokoa'));exit;
 
 		$this->view('daftar_pembayaran_sales_order_view');
 	}
@@ -221,6 +222,7 @@ class Daftar_pembayaran_sales_order extends NOOBS_Controller
 						'sop_key_lock' => $key_lock,
 						'sop_created_date' => date('Y-m-d',strtotime($post['so_created_date'])),
 						'sop_type_pay' => $post['sop_type_pay'],
+						'sop_total_pay' => $v,
 						'mode' => $post['mode']
 					); 
 					$store_data_daftar_pembayaran_sales_order = $this->db_daftar_pso->store_data_daftar_pembayaran_sales_order($params);
@@ -234,10 +236,14 @@ class Daftar_pembayaran_sales_order extends NOOBS_Controller
 
 					$trx_params = array(
 						'trx_no_trx' => $post['last_notrx'],
-						'trx_key_lock' => $post['last_notrx'],
+						'trx_key_lock' => $key_lock,
+						'trx_rad_id_from' => '24',
+						'trx_rad_id_to' => $post['co_rad_id'],
+						'trx_total' => $v,
+						'trx_created_date' => $post['so_created_date']
 
 					);
-					$insert_to_trx = $this->db_daftar_pso->store_data_ref_trx($trx_params);
+					$insert_to_trx = $this->db_daftar_pso->store_data_ref_trx($trx_params,array('mode' => $post['mode']));
 
 
 					$i++;					

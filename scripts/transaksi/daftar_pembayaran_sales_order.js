@@ -97,11 +97,12 @@ const daftarPaySalesOrderList = {
 					daftarPaySalesOrderList._generateTemporaryDataTable(result.data);
 					$('#total_amount_st').val(result.amount);
 					// $('#total_amount').html(result.total_amount);
+					$('#total_amount').html('');
 
 				} else if (typeof(result.msg) !== 'undefined') {
 					toastr.error(result.msg);
 					$('#temporaryDataTable tbody').html('');
-					// $('#total_amount').html('');
+					$('#total_amount').html('');
 					$('#total_amount_st').val('');
 				} else {
 					toastr.error(msgErr);
@@ -153,7 +154,7 @@ const daftarPaySalesOrderList = {
 			body += '<td>' + item.v_vendor_name + '</td>';
 			body += '<td>' + item.so_qty + '</td>';
 			body += '<td>' + item.so_total_amount + '</td>';
-			body += '<td><button type="button" class="btn btn-warning btn-circle" data-id="' + item.sod_id + '" data-amount_'+i+'="' + item.so_total_amount_so + '" onclick="daftarPaySalesOrderList.paymentSO(this,'+i+');"><i class="fas fa-dollar-sign"></i></button></td>';
+			body += '<td><button type="button" class="btn btn-warning btn-circle" data-id="' + item.so_id + '"  data-v_id="' + item.v_id + '" data-amount_'+i+'="' + item.so_total_amount_so + '" onclick="daftarPaySalesOrderList.paymentSO(this,'+i+');"><i class="fas fa-dollar-sign"></i></button></td>';
 			body += '<td><input type="text" id="bayar_so_'+i+'" class="form-control" value="" disabled>';
 			body += '<input type="hidden" name="bayar_so[]" id="bayar_sales_'+i+'" class="form-control" value=""></td>';
 			body += '<td>' + item.rd_name + '</td>';
@@ -302,7 +303,7 @@ const daftarPaySalesOrderList = {
 
 					$('#v_vendor_id').change(function() {
 						var me = $(this);
-						
+						arrZ = [];
 						new_params.mode = mode;
 						new_params.so_vendor_id = me.val();
 

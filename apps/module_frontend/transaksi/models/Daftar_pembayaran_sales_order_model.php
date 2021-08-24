@@ -38,6 +38,11 @@ class Daftar_pembayaran_sales_order_model extends NOOBS_Model
 			$this->db->where('sop.sop_created_date >=', $params['date_range1']);
 			$this->db->where('sop.sop_created_date <=', $params['date_range2']);
 		}
+		else
+		{
+			$this->db->where('month(sop.sop_created_date) >=', date('n'));
+			$this->db->where('years(sop.sop_created_date) >=', date('Y'));
+		}
 
 		$this->db->where('sop.sop_is_active', 'Y');
 		$this->db->order_by('sop.sop_created_date', 'DESC');
@@ -75,7 +80,7 @@ class Daftar_pembayaran_sales_order_model extends NOOBS_Model
 
  	public function get_sales_order_data($params = array())
 	{
-		$this->db->select('so.*,rd.*,v.v_vendor_name, (select sum(sod_qty) as so_qty from sales_order_detail where sod_no_trx = so.so_no_trx) as so_qty,
+		$this->db->select('so.*,rd.*,v.*, (select sum(sod_qty) as so_qty from sales_order_detail where sod_no_trx = so.so_no_trx) as so_qty,
 			(CASE 
 			WHEN so_is_pay = "BL" THEN "BELUM LUNAS"
 			WHEN so_is_pay = "LN" THEN "LUNAS"
