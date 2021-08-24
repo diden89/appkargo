@@ -140,6 +140,17 @@ class Daftar_pembayaran_sales_order_model extends NOOBS_Model
 		// return $this->load_data_daftar_delivery_order();
 	}
 
+	public function store_data_ref_trx($params = array(),$cond = array())
+	{
+		// print_r($params);exit;
+		$this->table = 'ref_transaksi';
+
+		if ($cond['mode'] == 'add') return $this->add($params, TRUE);
+		else return $this->edit($params, "trx_key_lock = '{$cond['trx_key_lock']}'");
+
+		// return $this->load_data_kas_masuk();
+	}
+
 	// public function get_progress_so($params = array())
 	// {
 	// 	$this->db->select('count(dod.dod_id) as progress');

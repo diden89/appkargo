@@ -206,32 +206,42 @@ class Daftar_pembayaran_sales_order extends NOOBS_Controller
 		if (isset($_POST['action']) && $_POST['action'] == 'store_data_daftar_pembayaran_sales_order')
 		{
 			$post = $this->input->post(NULL, TRUE);
+			// print_r($post);exit;
 			$params = array();
 			$i=0;
-			foreach($post['so_no_trx'] as $k => $v)
+			foreach($post['bayar_so'] as $k => $v)
 			{
-				$key_lock = str_replace('/','',$post['last_notrx']);
-				$key_lock = $key_lock.'_'.$i;
-				$params = array(
-					'sop_no_trx' => $post['last_notrx'],
-					'sop_so_no_trx' => $v,
-					'sop_key_lock' => $key_lock,
-					'sop_created_date' => date('Y-m-d',strtotime($post['so_created_date'])),
-					'sop_total_pay' => $post['total_amount_so'][$i],
-					'sop_type_pay' => $post['sop_type_pay'],
-					'mode' => $post['mode']
-				); 
-				$store_data_daftar_pembayaran_sales_order = $this->db_daftar_pso->store_data_daftar_pembayaran_sales_order($params);
+				if(! empty($v))
+				{
+					$key_lock = str_replace('/','',$post['last_notrx']);
+					$key_lock = $key_lock.'_'.$i;
+					$params = array(
+						'sop_no_trx' => $post['last_notrx'],
+						'sop_so_no_trx' => $post['so_no_trx'][$i],
+						'sop_key_lock' => $key_lock,
+						'sop_created_date' => date('Y-m-d',strtotime($post['so_created_date'])),
+						'sop_type_pay' => $post['sop_type_pay'],
+						'mode' => $post['mode']
+					); 
+					$store_data_daftar_pembayaran_sales_order = $this->db_daftar_pso->store_data_daftar_pembayaran_sales_order($params);
 
-				$new_params = array(
-					'so_is_pay' => 'LN',
-					'so_no_trx' => $v
-				);
-				
-				$update_status_so = $this->db_daftar_pso->update_status_sales_order($new_params);
+					$new_params = array(
+						'so_is_pay' => 'LN',
+						'so_no_trx' => $post['so_no_trx'][$i]
+					);
+					
+					$update_status_so = $this->db_daftar_pso->update_status_sales_order($new_params);
+
+					$trx_params = array(
+						'trx_no_trx' => $post['last_notrx'],
+						'trx_key_lock' => $post['last_notrx'],
+
+					);
+					$insert_to_trx = $this->db_daftar_pso->store_data_ref_trx($trx_params);
 
 
-				$i++;
+					$i++;					
+				}
 			}
 
 			$load_data = $this->db_daftar_pso->load_data_daftar_pembayaran_sales_order();
@@ -254,6 +264,66 @@ class Daftar_pembayaran_sales_order extends NOOBS_Controller
 				echo json_encode(array('success' => TRUE, 'data' => $result));
 			}
 			else echo json_encode(array('success' => FALSE, 'msg' => 'Data not found!'));
+		}
+		else $this->show_404();
+	}
+
+	public function store_data_ref_trx($params = array())
+	{
+		if (isset($params['action']) && $params['action'] == 'store_data_ref_trx')
+		{
+			// $params = $this->input->post(NULL, TRUE);
+			// print_r($params);exit;
+			$params['cid_ci_no_trx'] = $params['ci_no_trx_temp'];
+			
+
+			$cek_temp_data = $this->db_cash_in->load_data_cash_in_detail($params);
+
+			if($cek_temp_data->num_rows() > 0) 
+			{
+				$temp_result = $cek_temp_data->result();
+				foreach($temp_result as $k => $v)
+				{
+					$cek_trx_data = $this->db_cash_in->cek_ref_transaksi($v->cid_key_lock);
+					if($cek_trx_data->num_rows() > 0)
+					{
+						$new_params = array(
+							// 'trx_no_trx' => $params['ci_no_trx_temp'],
+							'trx_rad_id_from' => $v->cid_rad_id,
+							'trx_rad_id_to' => $params['ci_rad_id'],
+							'trx_total' => $v->cid_total,
+							'trx_created_date' => $params['ci_created_date'],	
+						);
+
+						$cond = array(
+							'trx_key_lock' => $v->cid_key_lock,
+							'mode' => $params['mode'],
+						);				
+
+					}
+					else
+					{
+						$new_params = array(
+							'trx_no_trx' => $params['ci_no_trx_temp'],
+							'trx_rad_id_from' => $v->cid_rad_id,
+							'trx_rad_id_to' => $params['ci_rad_id'],
+							'trx_total' => $v->cid_total,
+							'trx_created_date' => $params['ci_created_date'],	
+							'trx_key_lock' => $v->cid_key_lock,	
+						);
+
+						$cond = array(
+							'trx_key_lock' => $v->cid_key_lock,
+							'mode' =>'add',
+						);
+					}
+			
+			// print_r($new_params);
+			// print_r($cond);exit;
+					$store_data_kas_masuk = $this->db_cash_in->store_data_ref_trx($new_params,$cond);
+				}
+			}
+
 		}
 		else $this->show_404();
 	}

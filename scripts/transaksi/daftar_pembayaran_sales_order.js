@@ -7,6 +7,7 @@
  * @access Public
  * @path /rab_frontend/scripts/transaksi/daftar_pembayaran_sales_order.js
  */
+let arrZ = [];
 
 const daftarPaySalesOrderList = {
 	selectedData: '',
@@ -81,7 +82,6 @@ const daftarPaySalesOrderList = {
 	},
 	loadDataItemTemporary: function(params) {
 		const me = this;
-		console.log(params)
 		$.ajax({
 			url: siteUrl('transaksi/daftar_pembayaran_sales_order/get_sales_order_data'),
 			type: 'POST',
@@ -96,12 +96,12 @@ const daftarPaySalesOrderList = {
 					toastr.success("Data succesfully added.");
 					daftarPaySalesOrderList._generateTemporaryDataTable(result.data);
 					$('#total_amount_st').val(result.amount);
-					$('#total_amount').html(result.total_amount);
+					// $('#total_amount').html(result.total_amount);
 
 				} else if (typeof(result.msg) !== 'undefined') {
 					toastr.error(result.msg);
 					$('#temporaryDataTable tbody').html('');
-					$('#total_amount').html('');
+					// $('#total_amount').html('');
 					$('#total_amount_st').val('');
 				} else {
 					toastr.error(msgErr);
@@ -144,7 +144,7 @@ const daftarPaySalesOrderList = {
 		$this.html('');
 
 		let body = '';
-
+		i=0;
 		$.each(data, (idx, item) => {
 			body += '<tr>';
 			body += '<td>' + item.no + '</td>';
@@ -153,19 +153,35 @@ const daftarPaySalesOrderList = {
 			body += '<td>' + item.v_vendor_name + '</td>';
 			body += '<td>' + item.so_qty + '</td>';
 			body += '<td>' + item.so_total_amount + '</td>';
-			body += '<input type="hidden" name="total_amount_so[]" value="'+item.so_total_amount_so+'"></td>';
+			body += '<td><button type="button" class="btn btn-warning btn-circle" data-id="' + item.sod_id + '" data-amount_'+i+'="' + item.so_total_amount_so + '" onclick="daftarPaySalesOrderList.paymentSO(this,'+i+');"><i class="fas fa-dollar-sign"></i></button></td>';
+			body += '<td><input type="text" id="bayar_so_'+i+'" class="form-control" value="" disabled>';
+			body += '<input type="hidden" name="bayar_so[]" id="bayar_sales_'+i+'" class="form-control" value=""></td>';
 			body += '<td>' + item.rd_name + '</td>';
 			body += '<td>' + item.so_created_date + '</td>';
-			// body += '<td>';
-			// 	body += '<div class="btn-group btn-group-sm" role="group" aria-label="Action Button">';
-			// 		body += '<button type="button" class="btn btn-success" data-id="' + item.sod_id + '" data-no_trx="' + item.so_no_trx + '" data-il_id="' + item.il_id + '" data-v_id="' + item.so_vendor_id + '" data-sod_qty="' + item.sod_qty + '" onclick="daftarPaySalesOrderList.editDetailSO(this, \'edit\');"><i class="fas fa-edit"></i></button>';
-			// 		body += '<button type="button" class="btn btn-danger" data-id="' + item.sod_id + '" data-no_trx="' + item.sod_no_trx + '" onclick="daftarPaySalesOrderList.deleteDataTemp(this);"><i class="fas fa-trash-alt"></i></button>';
-			// 	body += '</div>';
-			// body += '</td>';
 			body += '</tr>';
+			i++;
 		});
 
 		$this.html(body);
+	},
+	paymentSO: function(el,value) {
+		const me = this;
+		
+		id = $(el).data('id');
+		amount = $(el).data('amount_'+value);
+		arrZ.push(amount);
+		
+		const reducer = (accumulator, curr) => accumulator + curr;
+		// console.log(arr.reduce(reducer));
+		// me.generateItemList(v_id,il_id);
+
+		var formatter = new Intl.NumberFormat();
+		tot_amount = 'Rp. ' +formatter.format(arrZ.reduce(reducer));
+		
+		$('#bayar_so_'+value).val('Rp. ' +formatter.format(amount));
+		$('#bayar_sales_'+value).val(amount);
+		$('#total_amount').html(tot_amount);
+		$('#sod_id').val(id);
 	},
 	editDetailSO: function(el) {
 		const me = this;
@@ -291,36 +307,7 @@ const daftarPaySalesOrderList = {
 						new_params.so_vendor_id = me.val();
 
 						if (me.val() !== '') {
-							daftarPaySalesOrderList.loadDataItemTemporary(new_params)
-							// $.ajax({
-							// 	url: siteUrl('transaksi/daftar_pembayaran_sales_order/get_sales_order_data'),
-							// 	type: 'POST',
-							// 	dataType: 'JSON',
-							// 	data: {
-							// 		action: 'get_sales_order_data',
-							// 		so_vendor_id: me.val(),
-							// 		mode : mode
-							// 	},
-							// 	success: function(result) {
-							// 		if (result.success) {
-							// 			toastr.success("Data succesfully added.");
-							// 			daftarPaySalesOrderList._generateTemporaryDataTable(result.data);
-							// 			$('#total_amount').html(result.total_amount);
-
-							// 		} else if (typeof(result.msg) !== 'undefined') {
-							// 			toastr.error(result.msg);
-							// 			$('#temporaryDataTable tbody').html('');
-							// 			$('#total_amount').html('');
-							// 		} else {
-							// 			toastr.error(msgErr);
-							// 		}
-									
-							// 	},
-							// 	error: function(error) {
-							// 		toastr.error(msgErr);
-							// 	}
-							// });		
-
+							daftarPaySalesOrderList.loadDataItemTemporary(new_params);
 						}
 					});
 				}

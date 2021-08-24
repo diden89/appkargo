@@ -91,8 +91,10 @@
 						<th>Nama Vendor</th>
 						<th>Berat / Kg</th>
 						<th>Total Ongkir</th>
+						<th></th>
+						<th>Total Bayar</th>
 						<th>Tujuan</th>
-						<th>Status</th>
+						<th>Tanggal Pengiriman</th>
 						<!-- <th width="100">Action</th> -->
 					</tr>
 				</thead>
@@ -100,7 +102,7 @@
 					
 				</tbody>
 				<tfoot>
-					<th colspan="4">Total :</th>
+					<th colspan="6">Total :</th>
 					<th id="total_amount"></th>
 				</tfoot>
 			</table>
