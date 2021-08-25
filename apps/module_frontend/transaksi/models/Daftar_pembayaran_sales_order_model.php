@@ -41,7 +41,7 @@ class Daftar_pembayaran_sales_order_model extends NOOBS_Model
 		else
 		{
 			$this->db->where('month(sop.sop_created_date) >=', date('n'));
-			$this->db->where('years(sop.sop_created_date) >=', date('Y'));
+			$this->db->where('year(sop.sop_created_date) >=', date('Y'));
 		}
 
 		$this->db->where('sop.sop_is_active', 'Y');
