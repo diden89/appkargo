@@ -37,7 +37,15 @@
 						<?php
 							foreach($province as $k => $v)
 							{
-								echo '<option value="'.$v->rp_id.'" '.(($data->rd_province_id == $v->rp_id) ? 'selected':"").'>'.$v->rp_name.'</option>';
+								if($mode == 'edit' && $data->rd_province_id == $v->rp_id)
+								{
+									$sel = 'selected';
+								}
+								else
+								{
+									$sel = '';
+								}
+								echo '<option value="'.$v->rp_id.'" '.$sel.'>'.$v->rp_name.'</option>';
 							}
 						?>
 					</select>
@@ -82,7 +90,15 @@
 					<?php
 						foreach($vendor as $k => $v)
 						{
-							echo '<option value="'.$v->v_id.'" '.(($data->so_vendor_id == $v->v_id) ? 'selected':"").'>'.$v->v_vendor_name.'</option>';
+							if($mode == 'edit' &&$data->so_vendor_id == $v->v_id)
+								{
+									$sel = 'selected';
+								}
+								else
+								{
+									$sel = '';
+								}
+							echo '<option value="'.$v->v_id.'" '.$sel.'>'.$v->v_vendor_name.'</option>';
 						}
 					?>
 				</select>

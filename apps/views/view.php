@@ -141,7 +141,7 @@ $avatar = empty($this->session->userdata('user_img')) ? 'unknown.png' : $this->s
 			var BASE_URL = '<?php echo base_url(); ?>';
 			var USER_FULLNAME = "<?php echo ucwords(strtolower($this->session->userdata('user_fullname'))); ?>";
 		</script>
-		<script src="<?php echo get_template_url(); ?>plugins/jquery/jquery.js"></script>
+		<script src="<?php echo get_template_url(); ?>plugins/jquery/jquery.js"></script> 
 		<script src="<?php echo get_template_url(); ?>plugins/jquery-ui/jquery-ui.js"></script>
 		<script type="text/javascript">
 			$.widget.bridge('uibutton', $.ui.button)
@@ -168,9 +168,9 @@ $avatar = empty($this->session->userdata('user_img')) ? 'unknown.png' : $this->s
 		<script src="<?php echo base_url('vendors/jquery_noobsdaterangepicker/js/noobsdaterangepicker.js'); ?>"></script>
 		<script src="<?php echo base_url('scripts/custom_validity.js'); ?>"></script>
 		<script src="<?php echo base_url('scripts/scripts.js'); ?>"></script>
-		<script src="<?php echo base_url('vendors/template/3.0.0/'); ?>plugins/chart.js/Chart.min.js"></script>
+		<!-- <script src="<?php //echo base_url('vendors/template/3.0.0/'); ?>plugins/chart.js/Chart.min.js"></script> -->
 		<script src="<?php echo base_url('vendors/template/3.0.0/'); ?>dist/js/demo.js"></script>
-		<script src="<?php echo base_url('vendors/template/3.0.0/'); ?>dist/js/pages/dashboard3.js"></script>
+		<!-- <script src="<?php //echo base_url('vendors/template/3.0.0/'); ?>dist/js/pages/dashboard3.js"></script> -->
 		<?php
 			if (isset($source_bot) && count($source_bot) > 0)
 			{
