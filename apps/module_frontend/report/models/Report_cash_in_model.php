@@ -5,10 +5,10 @@
  * @author diden89
  * @version 1.0
  * @access Public
- * @link /rab_frontend/apps/module_frontend/settings/models/User_model.php
+ * @link /rab_frontend/apps/module_frontend/report/models/Report_cash_in_model.php
  */
 
-class Menu_access_group_model extends NOOBS_Model
+class Report_cash_in_model extends NOOBS_Model
 {
 	public function get_user_group($where=array())
 	{

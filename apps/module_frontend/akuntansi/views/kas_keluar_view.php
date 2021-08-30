@@ -20,9 +20,7 @@
 				<div class="row">
 					<div class="col-12">
 						<h4>Filter data :</h4>
-						<di+
-
-						v class="row">
+						<div class="row">
 							<div class="input-group col-lg-6">
 								<input type="text" id="txtList" class="form-control" placeholder="Search data..." aria-describedby="btnSearchWord">
 								
@@ -54,6 +52,7 @@
 									<button id="btnAddItem" class="btn btn-lg btn-block btn-primary btn-flat" type="button" title="Add Data"><i class="fas fa-plus"></i> Add</button>
 								</div>
 							</div>
+						</div>
 					</div>
 				</div>
 					<hr />

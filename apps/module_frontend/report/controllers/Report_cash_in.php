@@ -13,7 +13,7 @@ class Report_cash_in extends NOOBS_Controller
 	function __construct()
 	{
 		parent::__construct();
-		$this->load->model('settings/Report_cash_in_model', 'db_rci');
+		$this->load->model('report/Report_cash_in_model', 'db_rci');
 	}
 
 	public function index()
@@ -23,7 +23,7 @@ class Report_cash_in extends NOOBS_Controller
 		$this->store_params['pages_title'] = 'Report Cash In List';
 		$this->store_params['breadcrumb'] = array(
 			array('', 'Home'),
-			array('settings/Report_cash_in', 'Report Cash In')
+			array('report/Report_cash_in', 'Report Cash In')
 		);
 		
 		$this->store_params['source_top'] = array(
@@ -31,7 +31,7 @@ class Report_cash_in extends NOOBS_Controller
 		);
 
 		$this->store_params['source_bot'] = array(
-			'<script src="'.base_url('scripts/settings/Report_cash_in.js').'"></script>',
+			'<script src="'.base_url('scripts/report/Report_cash_in.js').'"></script>',
 			'<script src="'.base_url('vendors/jquery_acollapsetable/jquery.aCollapTable.js').'"></script>'
 		);
 

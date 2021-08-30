@@ -9,41 +9,56 @@
  */
 ?>
 
-<div class="row">
-	<div class="col-12">
-		<div class="card">
-			<div class="card-header">
-				<h3 class="card-title"><?=$pages_title?></h3>
-			</div>
-			<div class="card-body">
-				<div class="row">
-					<div class="col-4">
-						<h4>Group List</h4>
-						<div class="list-group" id="listGroup">
-							<p class="text-muted">Menu Access Group</p>
+	<div class="card">
+		<div class="card-header">
+			<h3 class="card-title"><?=$pages_title?></h3>
+		</div>
+		<div class="card-body">
+			<div class="row">
+				<div class="col-6">
+					<h4>Report</h4>
+				</div>
+			</div>				
+			<div class="row">
+				<div class="col-lg-6">
+					<div class="form-group row">
+						<label for="caption" class="col-sm-4 col-form-label">Periode</label>
+						<div class="input-group col-8">
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<span class="input-group-text">
+										<i class="far fa-calendar-alt"></i>
+									</span>
+								</div>
+								<input type="text" name="co_created_date_1" class="form-control" id="date_range_1" required="required" data-inputmask-alias="datetime" data-inputmask-inputformat="dd-mm-yyyy" data-mask value="">
+							</div>
 						</div>
 					</div>
-					<div class="col-8">
-						<h4>Menu Access</h4>
-						<div class="excel-data-table-container">
-							<form id="addAccessGroup">
-							<table class="collaptable table table-striped" id="example1">
-								<thead>
-									<th scope="col"><a href="javascript:void(0);" class="act-button-expand" style="color: white;"><i class="fas fa-angle-double-down"></i></a></th>
-									<th scope="col">Caption</th>
-									<th scope="col" style="text-align:center;">Action</th>
-								</thead>
-								<tbody></tbody>
-							</table>
-							<div class="btn-group" role="group" aria-label="RAB Button Group">
-								<input type="hidden" name="action" value="store_data">
-								<button type="submit" id="btnSave" class="btn merekdagang-grid-btn btn-primary btn-md" disabled on><i class="fas fa-save"></i> Save</button>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-6">
+					<div class="form-group row">
+						<label for="caption" class="col-sm-4 col-form-label">S/D</label>
+						<div class="input-group col-8">
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<span class="input-group-text">
+										<i class="far fa-calendar-alt"></i>
+									</span>
+								</div>
+								<input type="text" name="co_created_date_2" class="form-control" id="date_range_2" required="required" data-inputmask-alias="datetime" data-inputmask-inputformat="dd-mm-yyyy" data-mask value="">
 							</div>
-							</form>
 						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">							
+				<div class="input-group col-lg-6">
+					<div class="input-group-append">
+						<button id="btnAddItem" class="btn btn-lg btn-block btn-warning btn-flat" type="button" title="Add Data"><i class="fas fa-plus"></i> Print</button>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-</div>
