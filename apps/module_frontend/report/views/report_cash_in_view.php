@@ -9,18 +9,14 @@
  */
 ?>
 
-	<div class="card">
+	<div class="card col-md-4">
 		<div class="card-header">
-			<h3 class="card-title"><?=$pages_title?></h3>
+			<!-- <h3 class="card-title"><?=$pages_title?></h3> -->
+			<h3 class="card-title">**</h3>
 		</div>
-		<div class="card-body">
+		<div class="card-body">			
 			<div class="row">
-				<div class="col-6">
-					<h4>Report</h4>
-				</div>
-			</div>				
-			<div class="row">
-				<div class="col-lg-6">
+				<div class="col-lg-12">
 					<div class="form-group row">
 						<label for="caption" class="col-sm-4 col-form-label">Periode</label>
 						<div class="input-group col-8">
@@ -37,7 +33,7 @@
 				</div>
 			</div>
 			<div class="row">
-				<div class="col-lg-6">
+				<div class="col-lg-12">
 					<div class="form-group row">
 						<label for="caption" class="col-sm-4 col-form-label">S/D</label>
 						<div class="input-group col-8">
@@ -56,7 +52,7 @@
 			<div class="row">							
 				<div class="input-group col-lg-6">
 					<div class="input-group-append">
-						<button id="btnAddItem" class="btn btn-lg btn-block btn-warning btn-flat" type="button" title="Add Data"><i class="fas fa-plus"></i> Print</button>
+						<a href="<?php echo base_url('report/report_cash_in/print_pdf'); ?>" target="_blank" class="btn btn-lg btn-block btn-warning btn-flat" type="button" title="Add Data"><i class="fas fa-plus"></i> Print</a>
 					</div>
 				</div>
 			</div>
