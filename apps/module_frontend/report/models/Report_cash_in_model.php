@@ -10,52 +10,35 @@
 
 class Report_cash_in_model extends NOOBS_Model
 {
-	public function get_user_group($where=array())
+	public function load_data_kas_masuk($params = array())
 	{
-		$this->db->where($where);
-		return $this->db->get('user_group');
-	}
-
-	public function get_access_group($where=array())
-	{
-		$this->db->where($where);
-		return $this->db->get('menu_access_group');
-	}
-
-	public function cek_access_group($params=array())
-	{
-		$this->db->where($params);
-
-		return $this->db->get('menu_access_group');
-	}
-
-	public function delete_access_group($params=array())
-	{
-		$this->db->where('mag_ug_id',$params['ug_id']);
-		if(isset($params['rm_id']))
+		// print_r($params);exit;
+		$this->db->select('*');
+		$this->db->from('cash_in as ci');
+		// $this->db->join('cash_in_detail as cid','ci.ci_no_trx = cid.cid_ci_no_trx','LEFT');
+		$this->db->join('user_detail as ud','ud.ud_id = ci.last_user','LEFT');
+		$this->db->join('ref_akun_detail as rad','rad.rad_id = ci.ci_rad_id','LEFT');
+		
+		if (isset($params['no_trx']) && ! empty($params['no_trx']))
 		{
-			$this->db->where_not_in('mag_rm_id',$params['rm_id']);
+			$this->db->like('UPPER(ci.ci_no_trx)', strtoupper($params['no_trx']));
 		}
 
-		return $this->db->delete('menu_access_group');
-	}
-	
-	public function get_menu($where=array())
-	{
-		$this->db->where($where);
-		$this->db->order_by('rm_sequence', 'asc');
-		return $this->db->get('ref_menu');
-	}
+		if (isset($params['txt_id']) && ! empty($params['txt_id']))
+		{
+			$this->db->where('ci.ci_id', strtoupper($params['txt_id']));
+		}
 
-	public function store_data($params = array())
-	{
-		$this->table = 'menu_access_group';
-		$new_params = array(
-			'mag_ug_id' => $params['mag_ug_id'],
-			'mag_rm_id' => $params['mag_rm_id'],
-		);
+		if (isset($params['date_range_1']) && ! empty($params['date_range_1']))
+		{
+			$this->db->where('ci.ci_created_date >=', date('Y-m-d', strtotime($params['date_range_1'])));
+			$this->db->where('ci.ci_created_date <=', date('Y-m-d', strtotime($params['date_range_2'])));
+		}
 
-		if ($params['mode'] == 'add') return $this->add($new_params, TRUE);
-		else return $this->edit($new_params, "mag_id = {$params['mag_id']}");
-	}
+		$this->db->where('ci.ci_is_active', 'Y');
+		$this->db->order_by('ci.ci_created_date', 'DESC');
+		$this->db->order_by('ci.ci_id', 'DESC');
+
+		return $this->db->get();
+ 	}
 }
