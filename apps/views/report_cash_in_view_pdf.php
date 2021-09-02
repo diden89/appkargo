@@ -58,33 +58,33 @@
 <head>
 	<meta charset="utf-8">
 	<title></title>
-	<style>
-		#customers {
-		  font-family: Arial, Helvetica, sans-serif;
-		  border-collapse: collapse;
-		  width: 100%;
-		}
-
-		#customers td, #customers th {
-		  border: 1px solid #ddd;
-		  padding: 8px;
-		}
-
-		#customers tr:nth-child(even){background-color: #f2f2f2;}
-
-		#customers tr:hover {background-color: #ddd;}
-
-		#customers th {
-		  padding-top: 12px;
-		  padding-bottom: 12px;
-		  text-align: left;
-		  background-color: #04AA6D;
-		  color: white;
-		}
-	</style>
 </head>
 <body>
-	<table id="customers">		
+	<table>
+		<tr>
+			<td rowspan="4">
+				<img src="<?php echo base_url('images/0b30659b-8f94-4d5f-9695-a8a3441d376a.jpg'); ?>" width="100px">
+			</td>
+			<td>
+				<h3>Laporan Kas Masuk</h3>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				Bintang Ekspedisi
+			</td>
+		</tr><tr>
+			<td>
+				Perumahan Citra Berlindo
+			</td>
+		</tr><tr>
+			<td>
+				0812-6666-7778
+			</td>
+		</tr>
+	</table>
+	<hr>
+	<table style="border-collapse:collapse;">		
 		<tr>
 			<th width="10">No</th>
 			<th>No Transaksi</th>
