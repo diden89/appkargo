@@ -56,7 +56,6 @@
 						<label for="caption" class="col-sm-4 col-form-label">Tipe Laporan</label>
 						<div class="input-group col-8">
 							<select name="type" class="form-control">
-								<option>--Pilih Tipe--</option>
 								<option value="rekap">Rekap</option>
 								<option value="detail">Detail</option>
 							</select>

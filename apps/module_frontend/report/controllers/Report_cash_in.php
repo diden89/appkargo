@@ -31,7 +31,7 @@ class Report_cash_in extends NOOBS_Controller
 		);
 
 		$this->store_params['source_bot'] = array(
-			'<script src="'.base_url('scripts/report/Report_cash_in.js').'"></script>',
+			'<script src="'.base_url('scripts/report/report_cash_in.js').'"></script>',
 			'<script src="'.base_url('vendors/jquery_acollapsetable/jquery.aCollapTable.js').'"></script>'
 		);
 

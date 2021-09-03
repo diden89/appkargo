@@ -5,7 +5,7 @@
  * @author diden89
  * @version 1.0
  * @access Public
- * @link /rab_frontend/apps/module_frontend/report/views/report_cash_in_view.php
+ * @link /rab_frontend/apps/module_frontend/report/views/report_cash_out_view.php
  */
 ?>
 
@@ -15,7 +15,7 @@
 			<h3 class="card-title">Laporan</h3>
 		</div>
 		<div class="card-body">
-		<form action="report_cash_in/print_pdf" method="post">			
+		<form action="report_cash_out/print_pdf" method="post">			
 			<div class="row">
 				<div class="col-lg-12">
 					<div class="form-group row">
@@ -55,8 +55,7 @@
 					<div class="form-group row">
 						<label for="caption" class="col-sm-4 col-form-label">Tipe Laporan</label>
 						<div class="input-group col-8">
-							<select name="type" class="form-control">
-								<option>--Pilih Tipe--</option>
+							<select name="type" class="form-control" required="required">
 								<option value="rekap">Rekap</option>
 								<option value="detail">Detail</option>
 							</select>

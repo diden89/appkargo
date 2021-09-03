@@ -6,7 +6,7 @@
  * @edit Diden89
  * @version 1.0
  * @access Public
- * @path /appkargo/apps/module_frontend/transaksi/views/kas_masuk_view.php
+ * @path /appkargo/apps/module_frontend/transaksi/views/kas_keluar_view.php
  */
 ?>
 <!DOCTYPE html>
@@ -69,7 +69,7 @@
 			<th width="10" class="tdth">No</th>
 			<th class="tdth">No Transaksi</th>
 			<th class="tdth">Tanggal</th>
-			<th class="tdth">Masuk Ke Akun</th>
+			<th class="tdth">Keluar dari Akun</th>
 			<th class="tdth">Keterangan</th>
 			<th class="tdth">Total</th>
 			<th class="tdth">User Buat</th>
@@ -80,15 +80,15 @@
 		if(! empty($item)) 
 		{
 			foreach ($item as $k => $v) {
-					$total[] = $v->ci_total;
+					$total[] = $v->co_total;
 			?>
 				<tr class="tr">
 					<td class="tdth"><?php echo $v->num; ?></td>
-					<td class="tdth"><?php echo $v->ci_no_trx; ?></td>
-					<td class="tdth"><?php echo date('d-m-Y',strtotime($v->ci_created_date)); ?></td>
+					<td class="tdth"><?php echo $v->co_no_trx; ?></td>
+					<td class="tdth"><?php echo date('d-m-Y',strtotime($v->co_created_date)); ?></td>
 					<td class="tdth"><?php echo $v->rad_name; ?></td>
-					<td class="tdth"><?php echo $v->ci_keterangan; ?></td>
-					<td class="tdth"><?php echo $v->ci_total_val; ?></td>
+					<td class="tdth"><?php echo $v->co_keterangan; ?></td>
+					<td class="tdth"><?php echo $v->co_total_val; ?></td>
 					<td class="tdth"><?php echo $v->ud_fullname; ?></td>
 				</tr>
 			<?php

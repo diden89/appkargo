@@ -6,7 +6,7 @@
  * @edit Diden89
  * @version 1.0
  * @access Public
- * @path /appkargo/apps/module_frontend/transaksi/views/kas_masuk_view.php
+ * @path /appkargo/apps/module_frontend/transaksi/views/kas_keluar_view.php
  */
 ?>
 <!DOCTYPE html>
@@ -67,12 +67,14 @@
 	<table class="table_strip">	
 		<?php 
 		// print_r($item);exit;
+		if(! empty($item)) 
+		{
 			foreach($item as $k => $v)
 			{
 				?>
 				<tr class="tr">
-					<th class="tdth" colspan="6"><?php echo $v['ci_no_trx'];?></th>
-					<th class="tdth" colspan="2"><?php echo 'Rp. '.$v['ci_total_val'];?></th>
+					<th class="tdth" colspan="6"><?php echo $v['co_no_trx'];?></th>
+					<th class="tdth" colspan="2"><?php echo 'Rp. '.$v['co_total_val'];?></th>
 				</tr>
 				<br>
 					<tr class="tr">
@@ -91,17 +93,18 @@
 					?>
 					<tr class="tr">
 						<td class="tdth"><?php echo $vk->num; ?></td>
-						<td class="tdth"><?php echo $vk->cid_ci_no_trx; ?></td>
-						<td class="tdth"><?php echo date('d-m-Y',strtotime($v['ci_created_date'])); ?></td>
+						<td class="tdth"><?php echo $vk->cod_co_no_trx; ?></td>
+						<td class="tdth"><?php echo date('d-m-Y',strtotime($v['co_created_date'])); ?></td>
 						<td class="tdth"><?php echo $v['rad_name']; ?></td>
 						<td class="tdth"><?php echo $vk->rad_name; ?></td>
-						<td class="tdth"><?php echo $vk->cid_keterangan; ?></td>
-						<td class="tdth"><?php echo $vk->cid_total_val; ?></td>
+						<td class="tdth"><?php echo $vk->cod_keterangan; ?></td>
+						<td class="tdth"><?php echo $vk->cod_total_val; ?></td>
 						<td class="tdth"><?php echo $vk->ud_fullname; ?></td>
 					</tr>
 					<?php
 				}
 			}
+		}
 
 		?>
 	</table>
