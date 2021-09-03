@@ -22,6 +22,13 @@ class Main_model extends NOOBS_Model {
 		return $this->db->get('user_detail');
 	}
 
+	public function get_company()
+	{
+		$this->db->where('rc_is_active', 'Y');
+		
+		return $this->db->get('ref_company');
+	}
+
 	public function store_biodata($data = array())
 	{
 		$this->table = 'user_detail';

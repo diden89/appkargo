@@ -41,12 +41,24 @@ class Report_cash_in extends NOOBS_Controller
 	
 	public function print_pdf()
 	{
-		// print_r($_POST);exit;
-		$data = array();
-		$this->store_params['header_title'] = 'Laporan Kas Masuk';
 		$post = $this->input->post();
 
-		$get_data = $this->db_rci->load_data_kas_masuk($post);
+		if($post['type'] == 'rekap')
+		{
+			$this->rekap_laporan_kas_masuk($post);
+		}
+		else
+		{
+			$this->detail_laporan_kas_masuk($post);
+		}
+
+	}
+	public function rekap_laporan_kas_masuk($params)
+	{
+		$data = array();
+
+		$get_data = $this->db_rci->load_data_kas_masuk($params);
+		$data_company = $this->db_main->get_company();
 
 		if ($get_data->num_rows() > 0)
 		{
@@ -58,15 +70,28 @@ class Report_cash_in extends NOOBS_Controller
 				$num++;
 
 				$v->num = $num;
-				$v->ci_total = number_format($v->ci_total);
+				$v->ci_total_val = number_format($v->ci_total);
 			}
 			
 			$data['item'] = $result;
 		}
 
-		$data['header_title'] = 'Laporan Kas Masuk';
-	
-		$view = $this->load->view('Report_cash_in_view_pdf', $data, TRUE);
+		// print_r($params);exit;
+		$data['header_title'] = 'Rekap Laporan Kas Masuk';
+
+		if($data_company->num_rows() > 0)
+		{
+			$data_company = $data_company->row();
+			$data['company_title'] = $data_company->rc_name;
+			$data['address'] = $data_company->rc_address;
+			$data['phone'] = $data_company->rc_phone;
+			$data['logo'] = $data_company->rc_logo;
+
+		}
+		$data['date_range_1'] = (isset($params['date_range_1'])) ? $params['date_range_1'] : '';
+		$data['date_range_2'] = (isset($params['date_range_2'])) ? $params['date_range_2'] : '';
+		
+		$view = $this->load->view('report/report_cash_in_rekap_pdf', $data, TRUE);
 
 				$this->load->library('pdf_creator');
 
@@ -79,8 +104,81 @@ class Report_cash_in extends NOOBS_Controller
 					'margin_footer' => 15
 				]);
 
+				$pdf_creator->setHtmlFooter($this->session->userdata('username').'|Created Date : '.date('d-m-Y'));
 				$pdf_creator->WriteHTML($view);
 
-				$pdf_creator->Output('Report Cash In_'.$row->txt_name.'_'.$row->txt_visit_date.'.pdf', 'I');
+				$pdf_creator->Output('Report Cash In_'.date('YmdHis').'_rekap.pdf', 'I');
+	}
+
+	public function detail_laporan_kas_masuk($params)
+	{
+		$data = array();
+
+		$get_data = $this->db_rci->load_data_kas_masuk($params);
+
+		$data_company = $this->db_main->get_company();
+
+		if ($get_data->num_rows() > 0)
+		{
+			$result = $get_data->result();
+			$i = 0;
+			foreach ($result as $k => $v)
+			{
+				$v->ci_total_val = number_format($v->ci_total);
+				$data['item'][$i]['ci_no_trx'] = $v->ci_no_trx; 
+				$data['item'][$i]['rad_name'] = $v->rad_name; 
+				$data['item'][$i]['ci_created_date'] = $v->ci_created_date; 
+				$data['item'][$i]['ci_total'] = $v->ci_total; 
+				$data['item'][$i]['ci_total_val'] = number_format($v->ci_total); 
+				$get_data_detail = $this->db_rci->load_data_kas_masuk_detail(array('no_trx' => $v->ci_no_trx));
+				if($get_data_detail->num_rows() > 0)
+				{
+					$num = 0;
+					$res_detail = $get_data_detail->result();
+					foreach ($res_detail as $key => $value) {
+						$num++;
+						$value->num = $num;
+						$value->cid_total_val = number_format($value->cid_total);
+					}
+
+					$data['item'][$i]['detail'] = $res_detail;
+				}
+				$i++;
+			}
+			
+		}
+
+		$data['header_title'] = 'Detail Laporan Kas Masuk';
+
+		if($data_company->num_rows() > 0)
+		{
+			$data_company = $data_company->row();
+			$data['company_title'] = $data_company->rc_name;
+			$data['address'] = $data_company->rc_address;
+			$data['phone'] = $data_company->rc_phone;
+			$data['logo'] = $data_company->rc_logo;
+
+		}
+		$data['date_range_1'] = (isset($params['date_range_1'])) ? $params['date_range_1'] : '';
+		$data['date_range_2'] = (isset($params['date_range_2'])) ? $params['date_range_2'] : '';
+		// print_r($data);exit;
+		
+		$view = $this->load->view('report/report_cash_in_detail_pdf', $data, TRUE);
+		// echo $view;exit;
+				$this->load->library('pdf_creator');
+
+				$pdf_creator = $this->pdf_creator->load([
+				    'mode' => 'utf-8',
+				    'format' => 'A4',
+				    'margin_top' => 5,
+				    'margin_bottom' => 25,
+					'margin_header' => 40,
+					'margin_footer' => 15
+				]);
+
+				$pdf_creator->setHtmlFooter($this->session->userdata('username').'|Created Date : '.date('d-m-Y'));
+				$pdf_creator->WriteHTML($view);
+
+				$pdf_creator->Output('Report Cash In_'.date('YmdHis').'_detail.pdf', 'I');
 	}
 }

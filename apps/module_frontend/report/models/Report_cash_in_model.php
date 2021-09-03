@@ -41,4 +41,22 @@ class Report_cash_in_model extends NOOBS_Model
 
 		return $this->db->get();
  	}
+
+ 	public function load_data_kas_masuk_detail($params = array())
+	{
+		$this->db->select('*');
+		$this->db->from('cash_in_detail as cid');
+		$this->db->join('user_detail as ud','ud.ud_id = cid.last_user','LEFT');
+		$this->db->join('ref_akun_detail as rad','rad.rad_id = cid.cid_rad_id','LEFT');
+		
+		if (isset($params['no_trx']) && ! empty($params['no_trx']))
+		{
+			$this->db->like('UPPER(cid.cid_ci_no_trx)', strtoupper($params['no_trx']));
+		}
+
+		$this->db->where('cid.cid_is_active', 'Y');
+		$this->db->order_by('cid.cid_id', 'DESC');
+
+		return $this->db->get();
+ 	}
 }
