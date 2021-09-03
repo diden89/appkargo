@@ -35,7 +35,7 @@ class Report_cash_in extends NOOBS_Controller
 			'<script src="'.base_url('vendors/jquery_acollapsetable/jquery.aCollapTable.js').'"></script>'
 		);
 
-		$this->view('Report_cash_in_view');
+		$this->view('report_cash_in_view');
 	}
 
 	
