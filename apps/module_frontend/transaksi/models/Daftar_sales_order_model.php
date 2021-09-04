@@ -26,7 +26,8 @@ class Daftar_sales_order_model extends NOOBS_Model
 		
 		if (isset($params['txt_item']) && ! empty($params['txt_item']))
 		{
-			$this->db->like('UPPER(so.so_no_trx)', strtoupper($params['txt_item']));
+			$this->db->like('UPPER(so.so_no_trx)', strtoupper($params['txt_item']),'both');
+			$this->db->or_like('UPPER(v.v_vendor_name)', strtoupper($params['txt_item']),'both');
 		}
 
 		if (isset($params['txt_id']) && ! empty($params['txt_id']))
@@ -36,8 +37,8 @@ class Daftar_sales_order_model extends NOOBS_Model
 
 		if (isset($params['date_range1']) && ! empty($params['date_range1']))
 		{
-			$this->db->where('so.so_created_date >=', $params['date_range1']);
-			$this->db->where('so.so_created_date <=', $params['date_range2']);
+			$this->db->where('so.so_created_date >=', date('Y-m-d',strtotime($params['date_range1'])));
+			$this->db->where('so.so_created_date <=', date('Y-m-d',strtotime($params['date_range2'])));
 		}
 
 		$this->db->where('so.so_is_active', 'Y');

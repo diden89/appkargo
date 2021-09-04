@@ -15,6 +15,7 @@ const daftarSalesOrderList = {
 
 		$('#btnSearchItem').click(function(e) {
 			e.preventDefault();
+
 			me.loadDataItem(this);
 		});
 		$('#btnReloadItem').click(function(e) {
@@ -58,14 +59,16 @@ const daftarSalesOrderList = {
 	loadDataItem: function(el) {
 		const me = this;
 		const $this = $(el);
-
+		console.log($('#range2').val())
 		$.ajax({
 			url: siteUrl('transaksi/daftar_sales_order/load_data_daftar_sales_order'),
 			type: 'POST',
 			dataType: 'JSON',
 			data: {
 				action: 'load_data_daftar_sales_order',
-				txt_item: $('#txtList').val()
+				txt_item: $('#txtList').val(),
+				date_range1: $('#range1').val(),
+				date_range2: $('#range2').val(),
 			},
 			success: function(result) {
 				$('#ignoredItemDataTable tbody').html('');
