@@ -1,308 +1,278 @@
 /*!
  * @package APPKARGO
  * @copyright Noobscript
- * @author Sikelopes
- * @edit Diden89
+ * @author Andy1t
  * @version 1.0
  * @access Public
- * @path /rab_frontend/scripts/master_data/pelanggan.js
+ * @link /rab_frontend/scripts/settings/customer.js
  */
 
-const customerList = {
-	selectedData: '',
-	init: function() {
-		const me = this;
-
-		$('#btnSearchItem').click(function(e) {
-			e.preventDefault();
-			me.loadDataItem(this);
-		});
-		$('#btnReloadItem').click(function(e) {
-			$('#txtList').val('')
-			e.preventDefault();
-			me.loadDataItem(this);
-		});
-
-		$('#txtList').keydown(function(e) {
-			const keyCode = (e.keyCode ? e.keyCode : e.which);
-
-			if (keyCode == 13) {
-				$('#btnSearchItem').trigger('click');
-			}
-		});
-
-		$('#btnAddItem').click(function(e) {
-			e.preventDefault();
-			me.showItem(this);
-		});
-	},
-	loadDataItem: function(el) {
-		const me = this;
-		const $this = $(el);
-
-		$.ajax({
-			url: siteUrl('master_data/customer/load_data_customer'),
-			type: 'POST',
-			dataType: 'JSON',
-			data: {
-				action: 'load_data_customer',
-				txt_item: $('#txtList').val()
-			},
-			success: function(result) {
-				$('#ignoredItemDataTable tbody').html('');
-
-				if (result.success !== false) me._generateItemDataTable(result.data);
-				else if (typeof(result.msg) !== 'undefined') toastr.error(result.msg);
-				else toastr.error(msgErr);
-			},
-			error: function(error) {
-				toastr.error(msgErr);
-			}
-		});
-	},
-	_generateItemDataTable: (data) => {
-		const $this = $('#ignoredItemDataTable tbody');
-
-		$this.html('');
-
-		var formatter = new Intl.NumberFormat();
-
-		let body = '';
-
-		$.each(data, (idx, item) => {
-			body += '<tr>';
-			body += '<td>' + item.no + '</td>';
-			body += '<td>' + item.c_name + '</td>';
-			body += '<td>' + item.c_address + '</td>';
-			body += '<td>' + item.c_phone + '</td>';
-			body += '<td>' + item.c_email + '</td>';
-			body += '<td>' + item.rsd_name + '</td>';
-			body += '<td>' + formatter.format(item.c_shipping_area) + '</td>';
-			body += '<td>' + item.c_distance_area + '</td>';
-			body += '<td>';
-				body += '<div class="btn-group btn-group-sm" role="group" aria-label="Action Button">';
-					body += '<button type="button" class="btn btn-success" data-id="' + item.c_id + '" data-rd_id="' + item.rd_id + '" data-rsd_id="' + item.c_district_id + '" data-item="' + item.c_name + '" onclick="customerList.showItem(this, \'edit\');"><i class="fas fa-edit"></i></button>';
-					body += '<button type="button" class="btn btn-danger" data-id="' + item.c_id + '" data-item="' + item.c_name + '" onclick="customerList.deleteDataItem(this);"><i class="fas fa-trash-alt"></i></button>';
-				body += '</div>';
-			body += '</td>';
-			body += '</tr>';
-		});
-
-		$this.html(body);
-	},
-	showItem: function(el, mode) {
-		const me = this;
-		let params = {action: 'load_customer_form'};
-		let title = 'Add New';
-
-		if (typeof(mode) !== 'undefined') {
-			params.mode = mode;
-			title = 'Edit';
-			params.txt_item = $(el).data('item');
-			params.txt_id = $(el).data('id');
-			params.rd_id = $(el).data('rd_id');
-			params.rsd_id = $(el).data('rsd_id');
-		}
-		else
-		{
-			params.mode = 'add';
-		}
-
-		
-			console.log('karambia')
-		$('#txt_province').on('select',function(){
-		});
-
-		$.popup({
-			title: title + ' Pelanggan',
-			id: 'showItem',
-			size: 'medium',
+$(document).ready(function() {
+	var CUSTOMER = {
+		gridCustomer : $('#gridCustomer').grid({
+			serverSide: true,
+			striped: true,
 			proxy: {
-				url: siteUrl('master_data/customer/load_customer_form'),
-				params: params
+				url: siteUrl('master_data/customer/load_data_customer'),
+				method: 'post',
+				data: {
+					action: 'load_data_customer'
+				},
 			},
-			buttons: [{
-				btnId: 'saveData',
-				btnText:'Save',
-				btnClass: 'info',
-				btnIcon: 'far fa-check-circle',
-				onclick: function(popup) {
-					const form  = popup.find('form');
-
-					if ($.validation(form)) {
-						const formData = new FormData(form[0]);
-
-						$.ajax({
-							url: siteUrl('master_data/customer/store_data_customer'),
-							type: 'POST',
-							dataType: 'JSON',
-							data: formData,
-							processData: false,
-							contentType: false,
-	         				cache: false,
-							success: function(result) {
-								if (result.success) {
-									toastr.success(msgSaveOk);
-									me._generateItemDataTable(result.data);
-								} else if (typeof(result.msg) !== 'undefined') toastr.error(result.msg);
-								else toastr.error(msgErr);
-
-								popup.close();
-
-							},
-							error: function(error) {
-								toastr.error(msgErr);
+			columns: [
+				{
+					title: 'No', 
+					data: 'num',
+					searchable: false,
+					orderable: false,
+					css: {
+						'text-align': 'center'
+					},
+					width: 10
+				},
+				{	
+					title: 'Nama Pelanggan', 
+					data: 'c_name',
+				},
+				{	
+					title: 'Alamat', 
+					data: 'c_address',
+				},
+				{	
+					title: 'No Telp', 
+					data: 'c_phone',
+				},
+				{	
+					title: 'Email', 
+					data: 'c_email',
+				},
+				{	
+					title: 'Area', 
+					data: 'rsd_name',
+				},
+				{	
+					title: 'Ongkir Area', 
+					data: 'c_shipping_area',
+				},
+				{	
+					title: 'Jarak Dari Gudang', 
+					data: 'c_distance_area',
+				},
+				{
+					title: 'Action',
+					size: 'medium',
+					type: 'buttons',
+					group: true,
+					css: {
+						'text-align' : 'center',
+						'width' : '150px'
+					},
+					content: [
+						{
+							text: '',
+							class: 'btn-success',
+							id: 'btnEdit',
+							icon: 'fas fa-edit',
+							click: function(row, rowData) {
+								// console.log(rowData)
+								CUSTOMER.popup('edit', 'Edit', rowData);
 							}
-						});
-					}
+						},
+						{
+							text: '',
+							class: 'btn-danger',
+							id: 'btnDelete',
+							icon: 'far fa-trash-alt',
+							click: function(row, rowData) {
+								Swal.fire({
+									title: 'Are you sure?',
+									text: "Data that has been deleted cannot be restored!",
+									type: 'warning',
+									showCancelButton: true,
+									confirmButtonColor: '#17a2b8',
+									cancelButtonColor: '#d33',
+									confirmButtonText: 'Yes, delete this data!'
+								}).then((result) => {
+									if (result.value) {
+										$.ajax({
+											url: siteUrl('settings/user/delete_data'),
+											type: 'POST',
+											dataType: 'JSON',
+											data: {
+												action: 'delete_data',
+												ud_id: rowData.ud_id
+											},
+											success: function(result) {
+												if (result.success) {
+													toastr.success("Data succesfully deleted.");
+												} else if (typeof(result.msg) !== 'undefined') {
+													toastr.error(result.msg);
+												} else {
+													toastr.error(msgErr);
+												}
+												
+												CUSTOMER.gridCUSTOMER.reloadData({
+													txt_id: $('#txtName').val()
+												});
+											},
+											error: function(error) {
+												toastr.error(msgErr);
+											}
+										});
+									}
+								});
+							}
+						},
+					],
 				}
-			}, {
-				btnId: 'closePopup',
-				btnText:'Close',
-				btnClass: 'secondary',
-				btnIcon: 'fas fa-times',
-				onclick: function(popup) {
-					popup.close();
-				}
-			}],
+			],
 			listeners: {
-				onshow: function(popup) {
-					if (mode == 'edit') {
-						customerList.generateRegion($('#txt_province').val(),$(el).data('rd_id'));
-						customerList.generateDistrict($(el).data('rd_id'),$(el).data('rsd_id'));
-					}
-
-					$('#txt_province').change(function() {
-						var me = $(this);
-						// console.log(me.val())
-
-							if (me.val() !== '') {
-								
-								customerList.generateRegion(me.val());
-
-							} else {
-								$('#txt_region').html($('<option>', {
-									value: '',
-									text: 'Pilih Provinsi'
-								}));
-
-								$('#txt_region').attr('disabled', true);
-							}
-							$('#txt_district').attr('disabled', true);
-							$('#txt_district').html($('<option>', {
-								value: '',
-								text: '--Pilih Kabupaten / Kota--'
-							}));
-					});	
-
-					$('#txt_region').change(function() {
-						var me = $(this);
-						// console.log(me)
-
-							if (me.val() !== '') {
-								
-								customerList.generateDistrict(me.val());
-
-							} else {
-								$('#txt_district').html($('<option>', {
-									value: '',
-									text: 'Pilih Kabupaten/Kota'
-								}));
-
-								$('#txt_district').attr('disabled', true);
-							}
-					});
-
-					// console.log(mode)				
+				ondblclick: function(row, rowData, idx) {
+					CUSTOMER.popup('edit', 'Edit', rowData);
 				}
 			}
-		});
-
-	},
-	generateRegion: function(provinceId, regionId = false) {
-		var region = $('#txt_region');
-			// console.log(provinceId)
-			$.ajax({
-				url: siteUrl('master_data/customer/get_region_option'),
-				type: 'POST',
-				dataType: 'JSON',
-				beforeSend: function() {},
-				complete: function() {},
-				data: {
-					action: 'get_region_option',
-					prov_id: provinceId
-				},
-				success: function (result) {
-					if (result.success) {
-						var data = result.data;
-
-						region.attr('disabled', false);
-
-						region.html($('<option>', {
-							value: '',
-							text: '--Pilih Kabupaten / Kota--'
-						}));
-						
-						data.forEach(function (newData) {
-							region.append($('<option>', {
-								value: newData.rd_id,
-								text: newData.rd_name
-							}));
-						});
-
-						if (regionId !== false) region.val(regionId);
-
-					} else {
-
-						region.html($('<option>', {
-							value: '',
-							text: 'Kabupaten tidak ditemukan!'
-						}));
+		}),
+		popup: function(mode = 'add', title= 'Add', data = false)
+		{
+			$.popup({
+				title: title + ' Pelanggan',
+				id: mode + 'CustomerPopup',
+				size: 'medium',
+				proxy: {
+					url: siteUrl('master_data/customer/load_customer_form'),
+					params: {
+						action: 'load_customer_form',
+						mode: mode,
+						data: data
 					}
 				},
-				error: function (error) {
-					toastr.error(msgErr);
+				buttons: [{
+					btnId: 'saveData',
+					btnText:'Save',
+					btnClass: 'info',
+					btnIcon: 'far fa-check-circle',
+					onclick: function(popup) {
+						var form  = popup.find('form');
+						if ($.validation(form)) {
+							var formData = new FormData(form[0]);
+							$.ajax({
+								url: siteUrl('settings/user/store_data'),
+								type: 'POST',
+								dataType: 'JSON',
+								data: formData,
+								processData: false,
+								contentType: false,
+		         				cache: false,
+		         				enctype: 'multipart/form-data',
+								success: function(result) {
+									if (result.success) {
+										toastr.success(msgSaveOk);
+									} else if (typeof(result.msg) !== 'undefined') {
+										toastr.error(result.msg);
+									} else {
+										toastr.error(msgErr);
+									}
+
+									CUSTOMER.gridCUSTOMER.reloadData({
+										txt_id: $('#txtName').val()
+									});
+
+									popup.close();
+
+								},
+								error: function(error) {
+									toastr.error(msgErr);
+								}
+							});
+						}
+					}
+				}, {
+					btnId: 'closePopup',
+					btnText:'Close',
+					btnClass: 'secondary',
+					btnIcon: 'fas fa-times',
+					onclick: function(popup) {
+						popup.close();
+					}
+				}],
+				listeners: {
+					onshow: function(popup) {
+						$('#userBirthday').inputmask('dd-mm-yyyy', { 'placeholder': 'DD-MM-YYYY' });
+						$('#userBirthday').noobsdaterangepicker({
+							parentEl: "#" + popup[0].id + " .modal-body",
+							showDropdowns: true,
+							singleDatePicker: true,
+							locale: {
+								format: 'DD-MM-YYYY'
+							}
+						});
+
+						if (mode == 'edit') {
+							CUSTOMER.generateUserSubGroup($('#userGroup').val(), data.ud_sub_group);
+						}
+
+						$('#userGroup').change(function() {
+							var me = $(this);
+
+							if (me.val() !== '') {
+								
+								CUSTOMER.generateUserSubGroup(me.val());
+
+							} else {
+								$('#userSubGroup').html($('<option>', {
+									value: '',
+									text: 'Select Sub Group First'
+								}));
+
+								$('#userSubGroup').attr('disabled', true);
+							}
+						});
+
+						$('#fileAvatar').change(function(a){
+							var $this = $(this);
+							var $next = $this.next();
+
+							$next.html($this[0].files[0].name);
+						});
+					}
 				}
 			});
-	},
-	generateDistrict: function(regionId, districtId = false) {
-		var district = $('#txt_district');
+		},
+		generateUserSubGroup: function(groupId, subGroupId = false) {
+			var userSubGroup = $('#userSubGroup');
 			
 			$.ajax({
-				url: siteUrl('master_data/customer/get_district_option'),
+				url: siteUrl('settings/user/get_user_sub_group'),
 				type: 'POST',
 				dataType: 'JSON',
 				beforeSend: function() {},
 				complete: function() {},
 				data: {
-					action: 'get_district_option',
-					district_id: regionId
+					action: 'get_user_sub_group',
+					usg_group: groupId
 				},
 				success: function (result) {
 					if (result.success) {
 						var data = result.data;
 
-						district.attr('disabled', false);
+						userSubGroup.attr('disabled', false);
 
-						district.html($('<option>', {
-							value: '',
-							text: '--Pilih Kecamatan--'
-						}));
+						userSubGroup.html('');
 						
 						data.forEach(function (newData) {
-							district.append($('<option>', {
-								value: newData.rsd_id,
-								text: newData.rsd_name
+							userSubGroup.append($('<option>', {
+								value: newData.usg_id,
+								text: newData.usg_caption
 							}));
 						});
 
-						if (districtId !== false) district.val(districtId);
+						if (subGroupId !== false) userSubGroup.val(subGroupId);
 
 					} else {
 
-						district.html($('<option>', {
+						userSubGroup.html($('<option>', {
 							value: '',
-							text: 'Kecamatan tidak ditemukan!'
+							text: 'Sub Group Not Found!'
 						}));
 					}
 				},
@@ -310,45 +280,34 @@ const customerList = {
 					toastr.error(msgErr);
 				}
 			});
-	},
-	deleteDataItem: function(el) {
-		const me = this;
-		const $this = $(el);
+		}
+	};
 
-		Swal.fire({
-			title: 'Are you sure?',
-			text: "Data that has been deleted cannot be restored!",
-			type: 'warning',
-			showCancelButton: true,
-			confirmButtonColor: '#17a2b8',
-			cancelButtonColor: '#d33',
-			confirmButtonText: 'Yes, delete this data!'
-		}).then((result) => {
-			if (result.value) {
-				$.ajax({
-					url: siteUrl('master_data/customer/delete_data_item'),
-					type: 'POST',
-					dataType: 'JSON',
-					data: {
-						action: 'delete_data_item',
-						txt_id: $this.data('id')
-					},
-					success: function(result) {
-						$('#ignoredItemDataTable tbody').html('');
-						
-						if (result.success) me._generateItemDataTable(result.data);
-						else if (typeof(result.msg) !== 'undefined') toastr.error(result.msg);
-						else toastr.error(msgErr);
-					},
-					error: function(error) {
-						toastr.error(msgErr);
-					}
+	$('#btnAdd').click(function(e) {
+		e.preventDefault();
+
+		CUSTOMER.popup();
+	});
+
+	$('#txtList').noobsautocomplete({
+		remote: true,
+		placeholder: 'Find data.',
+		proxy: {
+			url: siteUrl('master_data/customer/get_autocomplete_daa'),
+			method: 'post',
+			data: {
+				action: 'get_autocomplete_data'
+			},
+		},
+		listeners: {
+			onselect: function(data) {
+				CUSTOMER.gridCUSTOMER.reloadData({
+					txt_id: $('#txtList').val()
 				});
+			},
+			onclear: function(obj) {
+				CUSTOMER.gridCUSTOMER.reloadData({});
 			}
-		});
-	}
-};
-
-$(document).ready(function() {
-	customerList.init();
+		}
+	});
 });

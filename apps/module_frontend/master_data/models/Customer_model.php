@@ -33,7 +33,28 @@ class Customer_model extends NOOBS_Model
 		$this->db->where('c.c_is_active', 'Y');
 		$this->db->order_by('c.c_name', 'ASC');
 
-		return $this->db->get();
+		return $this->create_result($params);
+ 	}
+
+ 	public function get_autocomplete_data($params = array())
+	{
+		// print_r($params);exit;
+		$this->db->select('c.*,rp.rp_id,rd.rd_id,rsd.rsd_name');
+		$this->db->from('customer as c');
+		$this->db->join('ref_sub_district as rsd','rsd.rsd_id = c.c_district_id','LEFT');
+		$this->db->join('ref_district as rd','rd.rd_id = rsd.rsd_district_id','LEFT');
+		$this->db->join('ref_province as rp','rp.rp_id = rd.rd_province_id','LEFT');
+
+		if (isset($params['query']) && !empty($params['query'])) 
+		{
+			$query = $params['query'];
+			$this->db->where("(c.c_name LIKE '%{$query}%' OR c.c_address LIKE '%{$query}%')", NULL, FALSE);
+		}
+
+		$this->db->where('c.c_is_active', 'Y');
+		$this->db->order_by('c.c_name', 'ASC');
+
+		return $this->create_autocomplete_data($params);
  	}
 
 	public function store_data_customer($params = array())

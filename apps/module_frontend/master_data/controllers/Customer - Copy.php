@@ -29,23 +29,26 @@ class Customer extends NOOBS_Controller
 			'<script src="'.base_url('vendors/jquery-number-master/jquery.number.js').'"></script>',
 			'<script src="'.base_url('scripts/master_data/customer.js').'"></script>',
 		);
+
+		$this->store_params['item'] = [];
+
+		$load_data_customer = $this->db_customer->load_data_customer();
+
+		$num = 0;
+		
+		foreach ($load_data_customer->data as $k => $v)
+		{
+			$num++;
+
+			$v->num = $num;
+			$v->c_shipping_area = number_format($v->c_shipping_area);
+			$v->c_distance_area = $v->c_distance_area.' KM';
+		}
+
+		echo json_encode($load_data_customer);
 		
 		$this->view('customer_view');
 	}
-
-	public function get_autocomplete_data()
-	{
-		$post = $this->input->post(NULL, TRUE);
-		print_r($post);exit;
-		if (isset($post['action']) && !empty($post['action']) && $post['action'] == 'get_autocomplete_data') 
-		{
-			$get_autocomplete_data = $this->db_user->get_autocomplete_data($post);
-
-			echo json_encode($get_autocomplete_data);
-		}
-		else $this->show_404();
-	}
-
 
 	public function load_customer_form()
 	{
@@ -128,8 +131,6 @@ class Customer extends NOOBS_Controller
 
 				$num++;
 			}
-
-			// print_r($data);exit;
 			echo json_encode($data);
 		}
 		else $this->show_404();

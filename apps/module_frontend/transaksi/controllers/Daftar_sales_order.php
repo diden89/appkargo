@@ -31,13 +31,14 @@ class Daftar_sales_order extends NOOBS_Controller
 		);
 
 		$this->store_params['item'] = [];
-		$date = date('d-m-Y H:i:s');
-		$date = strtotime($date);
-		$date = strtotime("-7 day", $date);
+		
+		$date = date('Y-m-d');
+		// $date = strtotime($date);
+		// $date = strtotime("-7 day", $date);
 		// echo date('d-m-Y H:i:s', $date);
 
-		$params['date_range1'] = date('Y-m-d H:i:s', $date);
-		$params['date_range2'] = date('Y-m-d H:i:s');
+		$params['date_range1'] = date('Y-m-01');
+		$params['date_range2'] = date('Y-m-t',strtotime($date));
 		$load_data_daftar_sales_order = $this->db_daftar_sales_order->load_data_daftar_sales_order($params);
 
 		if ($load_data_daftar_sales_order->num_rows() > 0)
