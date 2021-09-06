@@ -36,11 +36,11 @@ class Customer extends NOOBS_Controller
 	public function get_autocomplete_data()
 	{
 		$post = $this->input->post(NULL, TRUE);
-		print_r($post);exit;
 		if (isset($post['action']) && !empty($post['action']) && $post['action'] == 'get_autocomplete_data') 
 		{
-			$get_autocomplete_data = $this->db_user->get_autocomplete_data($post);
+			$get_autocomplete_data = $this->db_customer->get_autocomplete_data($post);
 
+		// print_r($get_autocomplete_data);exit;
 			echo json_encode($get_autocomplete_data);
 		}
 		else $this->show_404();

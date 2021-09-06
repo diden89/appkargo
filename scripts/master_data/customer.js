@@ -289,11 +289,11 @@ $(document).ready(function() {
 		CUSTOMER.popup();
 	});
 
-	$('#txtList').noobsautocomplete({
+	$('#txtName').noobsautocomplete({
 		remote: true,
 		placeholder: 'Find data.',
 		proxy: {
-			url: siteUrl('master_data/customer/get_autocomplete_daa'),
+			url: siteUrl('master_data/customer/get_autocomplete_data'),
 			method: 'post',
 			data: {
 				action: 'get_autocomplete_data'
@@ -301,12 +301,12 @@ $(document).ready(function() {
 		},
 		listeners: {
 			onselect: function(data) {
-				CUSTOMER.gridCUSTOMER.reloadData({
-					txt_id: $('#txtList').val()
+				CUSTOMER.gridCustomer.reloadData({
+					txt_id: $('#txtName').val()
 				});
 			},
 			onclear: function(obj) {
-				CUSTOMER.gridCUSTOMER.reloadData({});
+				CUSTOMER.gridCustomer.reloadData({});
 			}
 		}
 	});

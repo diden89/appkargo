@@ -39,7 +39,7 @@ class Customer_model extends NOOBS_Model
  	public function get_autocomplete_data($params = array())
 	{
 		// print_r($params);exit;
-		$this->db->select('c.*,rp.rp_id,rd.rd_id,rsd.rsd_name');
+		$this->db->select('c.*,rp.rp_id,rd.rd_id,rsd.rsd_name,c.c_name as text, c.c_name as full_name,c.c_id as id');
 		$this->db->from('customer as c');
 		$this->db->join('ref_sub_district as rsd','rsd.rsd_id = c.c_district_id','LEFT');
 		$this->db->join('ref_district as rd','rd.rd_id = rsd.rsd_district_id','LEFT');

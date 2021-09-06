@@ -22,10 +22,10 @@
 						<h4>Nama Pelanggan</h4>
 						<div class="row">
 							<div class="input-group col-9">
-								<input type="text" id="txtList" class="form-control">
+								<select  id="txtName" class="form-control"></select>
 							</div>
 							<div class="col-3">
-								<button id="btnAddItem" class="btn btn-lg btn-block btn-primary btn-flat" type="button" title="Add Data"><i class="fas fa-plus"></i> Add</button>
+								<button id="btnAdd" class="btn btn-lg btn-block btn-primary btn-flat" type="button" title="Add Data"><i class="fas fa-plus"></i> Add</button>
 							</div>
 						</div>
 						<hr />
