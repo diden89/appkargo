@@ -56,7 +56,7 @@ $(document).ready(function() {
 				},
 				{	
 					title: 'Jarak Dari Gudang', 
-					data: 'c_distance_area',
+					data: 'c_distance_area_full',
 				},
 				{
 					title: 'Action',
@@ -95,12 +95,12 @@ $(document).ready(function() {
 								}).then((result) => {
 									if (result.value) {
 										$.ajax({
-											url: siteUrl('settings/user/delete_data'),
+											url: siteUrl('master_data/customer/delete_data'),
 											type: 'POST',
 											dataType: 'JSON',
 											data: {
 												action: 'delete_data',
-												ud_id: rowData.ud_id
+												txt_id: rowData.c_id
 											},
 											success: function(result) {
 												if (result.success) {
@@ -111,7 +111,7 @@ $(document).ready(function() {
 													toastr.error(msgErr);
 												}
 												
-												CUSTOMER.gridCUSTOMER.reloadData({
+												CUSTOMER.gridCustomer.reloadData({
 													txt_id: $('#txtName').val()
 												});
 											},
@@ -134,6 +134,7 @@ $(document).ready(function() {
 		}),
 		popup: function(mode = 'add', title= 'Add', data = false)
 		{
+			console.log(data.c_distance_area)
 			$.popup({
 				title: title + ' Pelanggan',
 				id: mode + 'CustomerPopup',
@@ -156,7 +157,7 @@ $(document).ready(function() {
 						if ($.validation(form)) {
 							var formData = new FormData(form[0]);
 							$.ajax({
-								url: siteUrl('settings/user/store_data'),
+								url: siteUrl('master_data/customer/store_data_customer'),
 								type: 'POST',
 								dataType: 'JSON',
 								data: formData,
@@ -173,7 +174,7 @@ $(document).ready(function() {
 										toastr.error(msgErr);
 									}
 
-									CUSTOMER.gridCUSTOMER.reloadData({
+									CUSTOMER.gridCustomer.reloadData({
 										txt_id: $('#txtName').val()
 									});
 
@@ -208,24 +209,49 @@ $(document).ready(function() {
 						});
 
 						if (mode == 'edit') {
-							CUSTOMER.generateUserSubGroup($('#userGroup').val(), data.ud_sub_group);
+							// CUSTOMER.generateUserSubGroup($('#userGroup').val(), data.ud_sub_group);
+							CUSTOMER.generateRegion($('#txt_province').val(),data.rd_id);
+							CUSTOMER.generateDistrict(data.rd_id,data.rsd_id);
 						}
 
-						$('#userGroup').change(function() {
-							var me = $(this);
-
+						$('#txt_province').change(function() {
+						var me = $(this);
+						
 							if (me.val() !== '') {
 								
-								CUSTOMER.generateUserSubGroup(me.val());
+								CUSTOMER.generateRegion(me.val());
 
 							} else {
-								$('#userSubGroup').html($('<option>', {
+								$('#txt_region').html($('<option>', {
 									value: '',
-									text: 'Select Sub Group First'
+									text: 'Pilih Provinsi'
 								}));
 
-								$('#userSubGroup').attr('disabled', true);
+								$('#txt_region').attr('disabled', true);
 							}
+							$('#txt_district').attr('disabled', true);
+							$('#txt_district').html($('<option>', {
+								value: '',
+								text: '--Pilih Kabupaten / Kota--'
+							}));
+						});	
+
+						$('#txt_region').change(function() {
+							var me = $(this);
+						
+
+								if (me.val() !== '') {
+									
+									CUSTOMER.generateDistrict(me.val());
+
+								} else {
+									$('#txt_district').html($('<option>', {
+										value: '',
+										text: 'Pilih Kabupaten/Kota'
+									}));
+
+									$('#txt_district').attr('disabled', true);
+								}
 						});
 
 						$('#fileAvatar').change(function(a){
@@ -238,41 +264,44 @@ $(document).ready(function() {
 				}
 			});
 		},
-		generateUserSubGroup: function(groupId, subGroupId = false) {
-			var userSubGroup = $('#userSubGroup');
-			
+		generateRegion: function(provinceId, regionId = false) {
+		var region = $('#txt_region');
+			// console.log(provinceId)
 			$.ajax({
-				url: siteUrl('settings/user/get_user_sub_group'),
+				url: siteUrl('master_data/customer/get_region_option'),
 				type: 'POST',
 				dataType: 'JSON',
 				beforeSend: function() {},
 				complete: function() {},
 				data: {
-					action: 'get_user_sub_group',
-					usg_group: groupId
+					action: 'get_region_option',
+					prov_id: provinceId
 				},
 				success: function (result) {
 					if (result.success) {
 						var data = result.data;
 
-						userSubGroup.attr('disabled', false);
+						region.attr('disabled', false);
 
-						userSubGroup.html('');
+						region.html($('<option>', {
+							value: '',
+							text: '--Pilih Kabupaten / Kota--'
+						}));
 						
 						data.forEach(function (newData) {
-							userSubGroup.append($('<option>', {
-								value: newData.usg_id,
-								text: newData.usg_caption
+							region.append($('<option>', {
+								value: newData.rd_id,
+								text: newData.rd_name
 							}));
 						});
 
-						if (subGroupId !== false) userSubGroup.val(subGroupId);
+						if (regionId !== false) region.val(regionId);
 
 					} else {
 
-						userSubGroup.html($('<option>', {
+						region.html($('<option>', {
 							value: '',
-							text: 'Sub Group Not Found!'
+							text: 'Kabupaten tidak ditemukan!'
 						}));
 					}
 				},
@@ -280,6 +309,52 @@ $(document).ready(function() {
 					toastr.error(msgErr);
 				}
 			});
+		},
+		generateDistrict: function(regionId, districtId = false) {
+			var district = $('#txt_district');
+				
+				$.ajax({
+					url: siteUrl('master_data/customer/get_district_option'),
+					type: 'POST',
+					dataType: 'JSON',
+					beforeSend: function() {},
+					complete: function() {},
+					data: {
+						action: 'get_district_option',
+						district_id: regionId
+					},
+					success: function (result) {
+						if (result.success) {
+							var data = result.data;
+
+							district.attr('disabled', false);
+
+							district.html($('<option>', {
+								value: '',
+								text: '--Pilih Kecamatan--'
+							}));
+							
+							data.forEach(function (newData) {
+								district.append($('<option>', {
+									value: newData.rsd_id,
+									text: newData.rsd_name
+								}));
+							});
+
+							if (districtId !== false) district.val(districtId);
+
+						} else {
+
+							district.html($('<option>', {
+								value: '',
+								text: 'Kecamatan tidak ditemukan!'
+							}));
+						}
+					},
+					error: function (error) {
+						toastr.error(msgErr);
+					}
+				});
 		}
 	};
 

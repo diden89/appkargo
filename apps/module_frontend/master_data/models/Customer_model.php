@@ -14,7 +14,7 @@ class Customer_model extends NOOBS_Model
 	public function load_data_customer($params = array())
 	{
 		// print_r($params);exit;
-		$this->db->select('c.*,rp.rp_id,rd.rd_id,rsd.rsd_name');
+		$this->db->select('c.*,rp.rp_id,rd.rd_id,rsd.rsd_name,rsd.rsd_id');
 		$this->db->from('customer as c');
 		$this->db->join('ref_sub_district as rsd','rsd.rsd_id = c.c_district_id','LEFT');
 		$this->db->join('ref_district as rd','rd.rd_id = rsd.rsd_district_id','LEFT');
@@ -71,10 +71,10 @@ class Customer_model extends NOOBS_Model
 			'c_distance_area' => $params['c_distance_area']
 		);
 
-		if ($params['mode'] == 'add') $this->add($new_params, TRUE);
-		else $this->edit($new_params, "c_id = {$params['txt_id']}");
+		if ($params['mode'] == 'add') return $this->add($new_params, TRUE);
+		else return $this->edit($new_params, "c_id = {$params['txt_id']}");
 
-		return $this->load_data_customer();
+		// return $this->load_data_customer();
 	}
 
 	public function delete_data_customer($params = array())
@@ -124,13 +124,12 @@ class Customer_model extends NOOBS_Model
 		return $this->db->get('customer');
  	}
 
-	public function delete_data_item($params = array())
+	public function delete_data($params = array())
 	{
 		$this->table = 'customer';
 
-		$this->edit(['c_is_active' => 'N'], "c_id = {$params['txt_id']}");
+		return $this->edit(['c_is_active' => 'N'], "c_id = {$params['txt_id']}");
 		
-		return $this->load_data_customer();
 	}
 
 	public function store_data($params = array())

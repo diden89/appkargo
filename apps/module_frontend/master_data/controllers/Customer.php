@@ -55,13 +55,13 @@ class Customer extends NOOBS_Controller
 			$params = array(
 				'table' => 'province'
 			);
-
+			// print_r($post);exit;
 			$post['province'] = $this->db_customer->get_option_province()->result();
-			$post['vendor'] = $this->db_customer->get_option_customer()->result();
-			if($post['mode'] == 'edit')
-			{
-				$post['data'] = $this->db_customer->load_data_customer($post)->row();
-			}
+			// $post['vendor'] = $this->db_customer->get_option_customer()->result();
+			// if($post['mode'] == 'edit')
+			// {
+			// 	$post['data'] = $this->db_customer->load_data_customer($post)->row();
+			// }
 	
 			$this->_view('customer_form_view', $post);
 		}
@@ -124,7 +124,7 @@ class Customer extends NOOBS_Controller
 			{
 				$v->num = $num;
 				$v->c_shipping_area = number_format($v->c_shipping_area);
-				$v->c_distance_area = $v->c_distance_area.' KM';
+				$v->c_distance_area_full = $v->c_distance_area.' KM';
 
 				$num++;
 			}
@@ -137,53 +137,29 @@ class Customer extends NOOBS_Controller
 
 	public function store_data_customer()
 	{
+		$post = $this->input->post(NULL, TRUE);
 		if (isset($_POST['action']) && $_POST['action'] == 'store_data_customer')
 		{
-			$post = $this->input->post(NULL, TRUE);
-			// print_r($post);exit;
+			unset($post['action']);
+			
 			$store_data_customer = $this->db_customer->store_data_customer($post);
-
-			if ($store_data_customer->num_rows() > 0) 
-			{
-				$result = $store_data_customer->result();
-				$number = 1;
-
-				foreach ($result as $k => $v)
-				{
-					$v->no = $number;
-
-					$number++;
-				}
-
-				echo json_encode(array('success' => TRUE, 'data' => $result));
-			}
-			else echo json_encode(array('success' => FALSE, 'msg' => 'Data not found!'));
+			
+			echo json_encode(array('success' => $store_data_customer));
+			
 		}
 		else $this->show_404();
 	}
 
-	public function delete_data_item()
+	public function delete_data()
 	{
-		if (isset($_POST['action']) && $_POST['action'] == 'delete_data_item')
+		$post = $this->input->post(NULL, TRUE);
+		
+		if (isset($_POST['action']) && $_POST['action'] == 'delete_data')
 		{
-			$post = $this->input->post(NULL, TRUE);
-			$delete_data_item = $this->db_customer->delete_data_item($post);
+			unset($post['action']);
+			$delete_data = $this->db_customer->delete_data($post);
 
-			if ($delete_data_item->num_rows() > 0) 
-			{
-				$result = $delete_data_item->result();
-				$number = 1;
-
-				foreach ($result as $k => $v)
-				{
-					$v->no = $number;
-
-					$number++;
-				}
-				
-				echo json_encode(array('success' => TRUE, 'data' => $result));
-			}
-			else echo json_encode(array('success' => FALSE, 'msg' => 'Data not found!'));
+			echo json_encode(array('success' => $delete_data));
 		}
 		else $this->show_404();
 	}
