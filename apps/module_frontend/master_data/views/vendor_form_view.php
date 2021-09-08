@@ -45,6 +45,20 @@
 					<input type="text" name="v_vendor_email" class="form-control" id="vendor_email" value="<?php echo $mode == 'edit' && $data !== FALSE ? $data->v_vendor_email : '' ?>" required="required" <?php echo $mode == 'edit' ? '' : ''; ?>>
 				</div>
 			</div>
-		</div>		
+			<div class="form-group row">					
+				<label for="userFullname" class="col-sm-4 col-form-label">User Akses</label>
+				<div class="col-sm-8">
+					<select id="select-meal-type" name="v_akses[]" multiple="multiple" class="form-control" disabled="disabled">
+					    <?php foreach ($vendor as $k => $v): ?>
+							<?php 
+								$selected = '';
+								if ($mode == 'edit' && $data !== FALSE && $v->ug_id == $data['usg_group']) $selected = 'selected';
+							?>
+							<option value="<?=$v->v_id ?>" <?php echo $selected; ?>><?=$v->v_vendor_name ?></option>
+						<?php endforeach ?>
+					</select>
+				</div>
+			</div>	
+		</div>
 	</div>
 </form>

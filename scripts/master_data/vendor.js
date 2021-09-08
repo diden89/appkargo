@@ -164,7 +164,24 @@ const itemList = {
 				onclick: function(popup) {
 					popup.close();
 				}
-			}]
+			}],
+			listeners : {
+				onShow : function(popup) {
+					$('#check_vendor').on('click',function() {
+						var check = $('#check_vendor').is(':checked');
+							akses = $('#select-meal-type');
+							console.log(akses)
+						if(check == true)
+						{
+							akses.attr('disabled', false);
+						}
+						else
+						{
+							akses.attr('disabled', true);
+						}
+					});
+				}
+			}
 		});
 	},
 	deleteDataVendor: function(el) {
