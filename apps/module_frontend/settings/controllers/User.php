@@ -84,7 +84,7 @@ class User extends NOOBS_Controller
 	public function store_data()
 	{
 		$post = $this->input->post(NULL, TRUE);
-		print_r($post);exit;
+		
 		if (isset($post['action']) && !empty($post['action']) && $post['action'] == 'store_data')
 		{
 			unset($post['action']);

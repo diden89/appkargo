@@ -11,7 +11,7 @@
 ?>
 
 <form role="form" id="addVendor" autocomplete="off">
-	<input type="hidden" name="action" value="store_data_vendor">
+	<input type="hidden" name="action" value="store_data">
 	<input type="hidden" name="mode" value="add">
 
 	<?php if (isset($txt_id)): ?>
@@ -51,20 +51,10 @@
 					<select id="select-meal-type" name="v_akses[]" multiple="multiple" class="form-control">
 					    <?php foreach ($user as $k => $v): ?>
 							<?php 
-							print_r($data->user_akses);
-							if (in_array($v->ud_id, $data->user_akses))
-							{
-								echo 'true';
-							}
-							else
-							{
-								echo 'false';
-							}
-								$selected = '';
-								if ($mode == 'edit' && $data !== FALSE && in_array($v->ud_id, $data->user_akses)) {;
+								if ($mode == 'edit' && $data !== FALSE && in_array($v->ud_id, $data->user_akses)) {
 							?>
 								<option value="<?=$v->ud_id ?>" selected><?=$v->ud_fullname ?></option>
-							<?php }else{ ?>
+							<?php } else { ?>
 								<option value="<?=$v->ud_id ?>"><?=$v->ud_fullname ?></option>
 							<?php } ?>
 						<?php endforeach ?>

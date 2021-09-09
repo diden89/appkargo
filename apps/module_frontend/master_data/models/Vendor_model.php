@@ -71,7 +71,7 @@ class Vendor_model extends NOOBS_Model
 		return $this->create_autocomplete_data($params);
 	}
 
-	public function store_data_vendor($params = array())
+	public function store_data($params = array())
 	{
 		$this->table = 'vendor';
 
@@ -79,13 +79,13 @@ class Vendor_model extends NOOBS_Model
 			'v_vendor_name' => $params['v_vendor_name'],
 			'v_vendor_add' => $params['v_vendor_add'],
 			'v_vendor_phone' => $params['v_vendor_phone'],
-			'v_vendor_email' => $params['v_vendor_email']
+			'v_vendor_email' => $params['v_vendor_email'],
+			'v_user_access' => $params['v_akses'],
+			'v_unique_access_key' => $params['v_unique_akses']
 		);
 
-		if ($params['mode'] == 'add') $this->add($new_params, TRUE);
-		else $this->edit($new_params, "v_id = {$params['txt_id']}");
-
-		return $this->load_data_vendor();
+		if ($params['mode'] == 'add') return $this->add($new_params, TRUE);
+		else return $this->edit($new_params, "v_id = {$params['txt_id']}");
 	}
 
 	public function delete_data($params = array())

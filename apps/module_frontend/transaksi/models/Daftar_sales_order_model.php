@@ -42,7 +42,8 @@ class Daftar_sales_order_model extends NOOBS_Model
 		}
 
 		$this->db->where('so.so_is_active', 'Y');
-		$this->db->or_where('so.so_is_pay', 'BL');
+		// $this->db->or_where('so.so_is_pay', 'BL');
+		$this->db->like('v.v_unique_access_key', md5($this->session->userdata('user_id')));
 		$this->db->order_by('so.so_created_date', 'DESC');
 		$this->db->order_by('so.so_id', 'DESC');
 
@@ -104,7 +105,9 @@ class Daftar_sales_order_model extends NOOBS_Model
 		if ($params['mode'] == 'add') $this->add($new_params, TRUE);
 		else $this->edit($new_params, "so_id = {$params['txt_id']}");
 
-		return $this->load_data_daftar_sales_order();
+		unset($params['txt_id']);
+
+		return $this->load_data_daftar_sales_order($params);
 	}
 
 	public function store_detail_so($params = array())
@@ -183,6 +186,7 @@ class Daftar_sales_order_model extends NOOBS_Model
 		}
 
 		$this->db->where('il.il_is_active', 'Y');
+		$this->db->like('v.v_unique_access_key', md5($this->session->userdata('user_id')));
 		$this->db->order_by('il.last_datetime', 'ASC');
 
 		return $this->db->get();
@@ -198,6 +202,7 @@ class Daftar_sales_order_model extends NOOBS_Model
 	public function get_option_vendor()
 	{		
 		$this->db->where('v_is_active', 'Y');
+		$this->db->like('v_unique_access_key', md5($this->session->userdata('user_id')));
 		$this->db->order_by('v_vendor_name', 'ASC');
 
 		return $this->db->get('vendor');

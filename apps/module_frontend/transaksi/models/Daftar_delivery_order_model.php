@@ -315,10 +315,14 @@ class Daftar_delivery_order_model extends NOOBS_Model
 
  	public function get_option_so()//dipakai
 	{
-		$this->db->where('so_is_status', 'ORDER');
-		$this->db->where('so_is_active', 'Y');
+		$this->db->select('*');
+		$this->db->from('sales_order as so');
+		$this->db->join('vendor as v','v.v_id = so.so_vendor_id','LEFT');
 		
-		return $this->db->get('sales_order');
+		$this->db->where('so.so_is_status', 'ORDER');
+		$this->db->where('so.so_is_active', 'Y');
+		
+		return $this->db->get();
  	}
 
  	public function get_realisasi_qty($params)//dipakai

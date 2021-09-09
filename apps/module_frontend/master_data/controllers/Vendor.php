@@ -55,6 +55,7 @@ class Vendor extends NOOBS_Controller
 
 	public function vendor_form()
 	{
+
 		if (isset($_POST['action']) && $_POST['action'] == 'vendor_form')
 		{
 			$post = $this->input->post(NULL, TRUE);
@@ -66,7 +67,7 @@ class Vendor extends NOOBS_Controller
 				$data = $this->db_vendor->get_data_vendor($post);
 				foreach($data->result() as $v => $k)
 				{
-					$akses = explode(',', str_replace(' ','',$k->v_user_access));
+					$akses = explode(',', $k->v_user_access);
 					$k->user_akses = $akses;
 				}
 
@@ -79,28 +80,28 @@ class Vendor extends NOOBS_Controller
 	}
 
 
-	public function store_data_vendor()
+	public function store_data()
 	{
-		if (isset($_POST['action']) && $_POST['action'] == 'store_data_vendor')
+		$post = $this->input->post(NULL, TRUE);
+		if (isset($_POST['action']) && $_POST['action'] == 'store_data')
 		{
-			$post = $this->input->post(NULL, TRUE);
-			$store_data_vendor = $this->db_vendor->store_data_vendor($post);
-
-			if ($store_data_vendor->num_rows() > 0) 
+			unset($post['action']);
+			$unique = '';
+			$i=0;
+			foreach($post['v_akses'] as $k)
 			{
-				$result = $store_data_vendor->result();
-				$number = 1;
-
-				foreach ($result as $k => $v)
-				{
-					$v->no = $number;
-
-					$number++;
-				}
-
-				echo json_encode(array('success' => TRUE, 'data' => $result));
+				
+				if($i == 0) { $unique .= md5($k); }
+				else { $unique .= ','.md5($k);}
+				$i++;
 			}
-			else echo json_encode(array('success' => FALSE, 'msg' => 'Data not found!'));
+			
+			$post['v_unique_akses'] = $unique;
+			$post['v_akses'] = implode(',',$post['v_akses']);
+			
+			$store_data = $this->db_vendor->store_data($post);
+
+			echo json_encode(array('success' => $store_data));
 		}
 		else $this->show_404();
 	}

@@ -33,10 +33,7 @@ class Daftar_sales_order extends NOOBS_Controller
 		$this->store_params['item'] = [];
 		
 		$date = date('Y-m-d');
-		// $date = strtotime($date);
-		// $date = strtotime("-7 day", $date);
-		// echo date('d-m-Y H:i:s', $date);
-
+	
 		$params['date_range1'] = date('Y-m-01');
 		$params['date_range2'] = date('Y-m-t',strtotime($date));
 		$load_data_daftar_sales_order = $this->db_daftar_sales_order->load_data_daftar_sales_order($params);
@@ -85,6 +82,7 @@ class Daftar_sales_order extends NOOBS_Controller
 
 	public function load_daftar_sales_order_form()
 	{
+
 		if (isset($_POST['action']) && $_POST['action'] == 'load_daftar_sales_order_form')
 		{
 			$post = $this->input->post(NULL, TRUE);
@@ -268,6 +266,9 @@ class Daftar_sales_order extends NOOBS_Controller
 		if (isset($_POST['action']) && $_POST['action'] == 'store_data_daftar_sales_order')
 		{
 			$post = $this->input->post(NULL, TRUE);
+			$date = date('Y-m-d');
+			$post['date_range1'] = date('Y-m-01');
+			$post['date_range2'] = date('Y-m-t',strtotime($date));
 			$store_data_daftar_sales_order = $this->db_daftar_sales_order->store_data_daftar_sales_order($post);
 
 			if ($store_data_daftar_sales_order->num_rows() > 0) 

@@ -66,7 +66,7 @@
 						<?php
 							foreach($sales_order as $k => $v)
 							{
-								echo '<option value="'.$v->so_id.'" '.(($so_no_trx == $v->so_no_trx) ? 'selected':"").'>'.$v->so_no_trx.'</option>';
+								echo '<option value="'.$v->so_id.'" '.(($so_no_trx == $v->so_no_trx) ? 'selected':"").'>'.$v->so_no_trx.' ** '.$v->v_vendor_name.'</option>';
 							}
 						?>
 					</select>

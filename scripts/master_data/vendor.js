@@ -46,6 +46,10 @@ $(document).ready(function() {
 					title: 'Email', 
 					data: 'v_vendor_email',
 				},
+				{	
+					title: 'User Access', 
+					data: 'v_user_access',
+				},
 				{
 					title: 'Action',
 					size: 'medium',
@@ -181,91 +185,7 @@ $(document).ready(function() {
 					onclick: function(popup) {
 						popup.close();
 					}
-				}],
-				listeners: {
-					onshow: function(popup) {
-						$('#userBirthday').inputmask('dd-mm-yyyy', { 'placeholder': 'DD-MM-YYYY' });
-						$('#userBirthday').noobsdaterangepicker({
-							parentEl: "#" + popup[0].id + " .modal-body",
-							showDropdowns: true,
-							singleDatePicker: true,
-							locale: {
-								format: 'DD-MM-YYYY'
-							}
-						});
-
-						if (mode == 'edit') {
-							VENDOR.generateUserSubGroup($('#userGroup').val(), data.ud_sub_group);
-						}
-
-						$('#userGroup').change(function() {
-							var me = $(this);
-
-							if (me.val() !== '') {
-								
-								VENDOR.generateUserSubGroup(me.val());
-
-							} else {
-								$('#userSubGroup').html($('<option>', {
-									value: '',
-									text: 'Select Sub Group First'
-								}));
-
-								$('#userSubGroup').attr('disabled', true);
-							}
-						});
-
-						$('#fileAvatar').change(function(a){
-							var $this = $(this);
-							var $next = $this.next();
-
-							$next.html($this[0].files[0].name);
-						});
-					}
-				}
-			});
-		},
-		generateUserSubGroup: function(groupId, subGroupId = false) {
-			var userSubGroup = $('#userSubGroup');
-			
-			$.ajax({
-				url: siteUrl('master_data/vendor/get_user_sub_group'),
-				type: 'POST',
-				dataType: 'JSON',
-				beforeSend: function() {},
-				complete: function() {},
-				data: {
-					action: 'get_user_sub_group',
-					usg_group: groupId
-				},
-				success: function (result) {
-					if (result.success) {
-						var data = result.data;
-
-						userSubGroup.attr('disabled', false);
-
-						userSubGroup.html('');
-						
-						data.forEach(function (newData) {
-							userSubGroup.append($('<option>', {
-								value: newData.usg_id,
-								text: newData.usg_caption
-							}));
-						});
-
-						if (subGroupId !== false) userSubGroup.val(subGroupId);
-
-					} else {
-
-						userSubGroup.html($('<option>', {
-							value: '',
-							text: 'Sub Group Not Found!'
-						}));
-					}
-				},
-				error: function (error) {
-					toastr.error(msgErr);
-				}
+				}]
 			});
 		}
 	};

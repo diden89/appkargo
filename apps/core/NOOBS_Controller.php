@@ -110,7 +110,8 @@ class NOOBS_Controller extends CI_Controller {
 					'user_sub_group' => $validate_login['data']['usg_id'],
 					'user_group' => $validate_login['data']['ug_id'],
 					'user_fullname' => $validate_login['data']['ud_fullname'],
-					'user_img' => $validate_login['data']['ud_img_filename']
+					'user_img' => $validate_login['data']['ud_img_filename'],
+					'user_id' => $validate_login['data']['ud_id']
 				));
 			}
 
