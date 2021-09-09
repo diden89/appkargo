@@ -13,6 +13,9 @@ class Vendor_model extends NOOBS_Model
 {
 	public function load_data_vendor($params = array())
 	{
+		$this->db->select('*');
+		$this->db->from('vendor');
+
 		if (isset($params['txt_item']) && ! empty($params['txt_item']))
 		{
 			$this->db->like('UPPER(v_vendor_name)', strtoupper($params['txt_item']));
@@ -26,8 +29,47 @@ class Vendor_model extends NOOBS_Model
 		$this->db->where('v_is_active', 'Y');
 		$this->db->order_by('v_vendor_name', 'ASC');
 
-		return $this->db->get('vendor');
+		return $this->create_result($params);
  	}
+
+ 	public function get_data_vendor($params = array())
+	{
+		$this->db->select('*');
+		$this->db->from('vendor');
+
+		if (isset($params['txt_id']) && ! empty($params['txt_id']))
+		{
+			$this->db->where('v_id', strtoupper($params['txt_id']));
+		}
+
+		$this->db->where('v_is_active', 'Y');
+		$this->db->order_by('v_vendor_name', 'ASC');
+
+		return $this->db->get();
+ 	}
+
+ 	public function get_autocomplete_data($params = array())
+	{
+		$this->db->select("
+			*,
+			v_id as id,
+			v_vendor_name as text,
+			v_vendor_name as full_name
+		", FALSE);
+
+		$this->db->from('vendor');
+
+		if (isset($params['query']) && !empty($params['query'])) 
+		{
+			$query = $params['query'];
+			$this->db->where("(v_vendor_name LIKE '%{$query}%' OR v_vendor_email LIKE '%{$query}%')", NULL, FALSE);
+		}
+
+		$this->db->where('v_is_active', 'Y');
+		$this->db->order_by('v_vendor_name', 'ASC');
+
+		return $this->create_autocomplete_data($params);
+	}
 
 	public function store_data_vendor($params = array())
 	{
@@ -46,76 +88,25 @@ class Vendor_model extends NOOBS_Model
 		return $this->load_data_vendor();
 	}
 
-	public function delete_data_vendor($params = array())
-	{
-		$this->table = 'vendor';
-
-		$this->edit(['v_is_active' => 'N'], "v_id = {$params['txt_id']}");
-		
-		return $this->load_data_vendor();
-	}
-	public function cek_before_delete($params = array(),$table,$initial)
-	{
-		$this->db->where($initial.'_vendor_id', $params['txt_id']);
-
-		$this->db->get($table);
-
-		return $this->load_data_vendor();
-	}
-
-	public function load_data($params = array())
-	{
-		$this->db->where('il_item', strtoupper($params['txt_item']));
-		$this->db->where('il_is_active', 'Y');
-
-		return $this->db->get('vendor');
- 	}
-
 	public function delete_data($params = array())
 	{
 		$this->table = 'vendor';
 
-		$this->db->where('il_id', $params['txt_id']);
-
-		$qry = $this->db->get($this->table);
-
-		if ($qry->num_rows() > 0)
-		{
-			$row = $qry->row();
-
-			$exp = explode(';', $row->il_similar_letter);
-			$data = [];
-
-			foreach ($exp as $k => $v)
-			{
-				if ($v == $params['txt_item']) continue;
-
-				$data[] = $v;
-			}
-
-			$this->edit(['il_similar_letter' => implode(';', $data)], "il_id = {$params['txt_id']}");
-
-			return $this->load_data(['txt_item' => $row->il_item]);
-		}
-		return FALSE;
+		return $this->edit(['v_is_active' => 'N'], "v_id = {$params['txt_id']}");
 	}
 
-	public function store_data($params = array())
+	public function cek_before_delete($params = array(),$table,$initial)
 	{
-		$this->table = 'vendor';
+		$this->db->where($initial.'_vendor_id', $params['txt_id']);
 
-		$this->db->where('il_item_name', $params['txt_item']);
-
-		$qry = $this->db->get($this->table);
-
-		if ($qry->num_rows() > 0)
-		{
-			$row = $qry->row();
-
-			$this->edit(['il_similar_letter' => $row->il_similar_letter.';'.$params['txt_similar_letter']], "il_id = {$row->il_id}");
-
-			return $this->load_data(['txt_item' => $row->il_item]);
-		}
-		return FALSE;
+		return $this->db->get($table);
 	}
+
+	public function get_user_akses($params = array())
+	{
+		$this->db->where('ud_is_active', 'Y');
+
+		return $this->db->get('user_detail');
+	}
+
 }

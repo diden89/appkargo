@@ -48,13 +48,25 @@
 			<div class="form-group row">					
 				<label for="userFullname" class="col-sm-4 col-form-label">User Akses</label>
 				<div class="col-sm-8">
-					<select id="select-meal-type" name="v_akses[]" multiple="multiple" class="form-control" disabled="disabled">
-					    <?php foreach ($vendor as $k => $v): ?>
+					<select id="select-meal-type" name="v_akses[]" multiple="multiple" class="form-control">
+					    <?php foreach ($user as $k => $v): ?>
 							<?php 
+							print_r($data->user_akses);
+							if (in_array($v->ud_id, $data->user_akses))
+							{
+								echo 'true';
+							}
+							else
+							{
+								echo 'false';
+							}
 								$selected = '';
-								if ($mode == 'edit' && $data !== FALSE && $v->ug_id == $data['usg_group']) $selected = 'selected';
+								if ($mode == 'edit' && $data !== FALSE && in_array($v->ud_id, $data->user_akses)) {;
 							?>
-							<option value="<?=$v->v_id ?>" <?php echo $selected; ?>><?=$v->v_vendor_name ?></option>
+								<option value="<?=$v->ud_id ?>" selected><?=$v->ud_fullname ?></option>
+							<?php }else{ ?>
+								<option value="<?=$v->ud_id ?>"><?=$v->ud_fullname ?></option>
+							<?php } ?>
 						<?php endforeach ?>
 					</select>
 				</div>

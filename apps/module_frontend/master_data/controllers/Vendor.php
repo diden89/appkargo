@@ -30,42 +30,7 @@ class Vendor extends NOOBS_Controller
 			'<script src="'.base_url('scripts/master_data/vendor.js').'"></script>',
 		);
 
-		$this->store_params['item'] = [];
-
-		$load_data_vendor = $this->db_vendor->load_data_vendor();
-
-		if ($load_data_vendor->num_rows() > 0)
-		{
-			$num = 0;
-			$result = $load_data_vendor->result();
-
-			foreach ($result as $k => $v)
-			{
-				$num++;
-
-				$v->num = $num;
-			}
-
-			$this->store_params['item'] = $result;
-		}
-
 		$this->view('vendor_view');
-	}
-
-	public function load_vendor_form()
-	{
-		if (isset($_POST['action']) && $_POST['action'] == 'load_vendor_form')
-		{
-			$post = $this->input->post(NULL, TRUE);
-			
-			if($post['mode'] == 'edit')
-			{
-				$post['data'] = $this->db_vendor->load_data_vendor($post)->row();
-			}
-			
-			$this->_view('vendor_form_view', $post);
-		}
-		else $this->show_404();
 	}
 
 	public function load_data_vendor()
@@ -74,25 +39,45 @@ class Vendor extends NOOBS_Controller
 		{
 			$post = $this->input->post(NULL, TRUE);
 			$load_data_vendor = $this->db_vendor->load_data_vendor($post);
-			// print_r($_POST);exit;
-			if ($load_data_vendor->num_rows() > 0) 
+			
+			$number = 1;
+
+			foreach ($load_data_vendor->data as $k => $v) 
 			{
-				$result = $load_data_vendor->result();
-				$number = 1;
+				$v->no = $number;
 
-				foreach ($result as $k => $v)
-				{
-					$v->no = $number;
-
-					$number++;
-				}
-
-				echo json_encode(array('success' => TRUE, 'data' => $result));
+				$number++;
 			}
-			else echo json_encode(array('success' => FALSE, 'msg' => 'Data not found!'));
+			echo json_encode($load_data_vendor);
 		}
 		else $this->show_404();
 	}
+
+	public function vendor_form()
+	{
+		if (isset($_POST['action']) && $_POST['action'] == 'vendor_form')
+		{
+			$post = $this->input->post(NULL, TRUE);
+			
+			$post['user'] = $this->db_vendor->get_user_akses($post)->result();
+			if($post['mode'] == 'edit')
+			{
+				$post['txt_id'] = $post['data']['v_id'];
+				$data = $this->db_vendor->get_data_vendor($post);
+				foreach($data->result() as $v => $k)
+				{
+					$akses = explode(',', str_replace(' ','',$k->v_user_access));
+					$k->user_akses = $akses;
+				}
+
+				$post['data'] = $data->row();
+			}
+			// print_r($post);exit;
+			$this->_view('vendor_form_view', $post);
+		}
+		else $this->show_404();
+	}
+
 
 	public function store_data_vendor()
 	{
@@ -120,32 +105,21 @@ class Vendor extends NOOBS_Controller
 		else $this->show_404();
 	}
 
-	public function delete_data_vendor()
+	public function delete_data()
 	{
+		$post = $this->input->post(NULL, TRUE);
 
-		if (isset($_POST['action']) && $_POST['action'] == 'delete_data_item')
+		if (isset($_POST['action']) && $_POST['action'] == 'delete_data')
 		{
-			$post = $this->input->post(NULL, TRUE);
+			unset($post['action']);
+
 			$cek_before_delete = $this->db_vendor->cek_before_delete($post,'item_list','il');
+			
 			if($cek_before_delete->num_rows() < 1)
 			{
-				$delete_data_item = $this->db_vendor->delete_data_item($post);
+				$delete_data = $this->db_vendor->delete_data($post);
 
-				if ($delete_data_item->num_rows() > 0) 
-				{
-					$result = $delete_data_item->result();
-					$number = 1;
-
-					foreach ($result as $k => $v)
-					{
-						$v->no = $number;
-
-						$number++;
-					}
-					
-					echo json_encode(array('success' => TRUE, 'data' => $result,'msg' => 'Success'));
-				}
-				else echo json_encode(array('success' => FALSE, 'msg' => 'Data not found!'));
+				echo json_encode(array('success' => $delete_data));
 			}
 			else
 			{
@@ -158,9 +132,23 @@ class Vendor extends NOOBS_Controller
 
 					$numb++;
 				}
-			 	echo json_encode(array('success' => TRUE, 'msg' => 'Cannot delete this data!','data' => $res));
+			 	echo json_encode(array('success' => FALSE, 'msg' => 'Cannot delete this data!','data' => $res));
 			}
 		}
 		else $this->show_404();
 	}
+
+	public function get_autocomplete_data()
+	{
+		$post = $this->input->post(NULL, TRUE);
+
+		if (isset($post['action']) && !empty($post['action']) && $post['action'] == 'get_autocomplete_data') 
+		{
+			$get_autocomplete_data = $this->db_vendor->get_autocomplete_data($post);
+
+			echo json_encode($get_autocomplete_data);
+		}
+		else $this->show_404();
+	}
+
 }

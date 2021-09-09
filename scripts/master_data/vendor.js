@@ -1,237 +1,300 @@
 /*!
  * @package APPKARGO
  * @copyright Noobscript
- * @author Sikelopes
- * @edit Diden89
+ * @author Andy1t
  * @version 1.0
  * @access Public
- * @path /rab_frontend/scripts/master_data/vendor.js
+ * @link /rab_frontend/scripts/master_data/vendor.js
  */
 
-const itemList = {
-	selectedData: '',
-	init: function() {
-		const me = this;
-
-		$('#btnSearchItem').click(function(e) {
-			e.preventDefault();
-			me.loadDataItem(this);
-		});
-		$('#btnReloadItem').click(function(e) {
-			$('#txtList').val('')
-			e.preventDefault();
-			me.loadDataItem(this);
-		});
-
-		$('#txtList').keydown(function(e) {
-			const keyCode = (e.keyCode ? e.keyCode : e.which);
-
-			if (keyCode == 13) {
-				$('#btnSearchItem').trigger('click');
-			}
-		});
-
-		$('#btnAddItem').click(function(e) {
-			e.preventDefault();
-			me.showItem(this);
-		});
-	},
-	loadDataItem: function(el) {
-		const me = this;
-		const $this = $(el);
-
-		$.ajax({
-			url: siteUrl('master_data/vendor/load_data_vendor'),
-			type: 'POST',
-			dataType: 'JSON',
-			data: {
-				action: 'load_data_vendor',
-				txt_item: $('#txtList').val()
-			},
-			success: function(result) {
-				$('#ignoredItemDataTable tbody').html('');
-				
-				if (result.success !== false)
-				{
-					if(result.msg !== undefined) toastr.info(result.msg);
-					me._generateItemDataTable(result.data);
-				} 
-				else if (typeof(result.msg) !== 'undefined')
-				{
-					toastr.error(result.msg);
-				} 
-				else
-				{
-					toastr.error(msgErr);
-				} 
-
-			},
-			error: function(error) {
-				toastr.error(msgErr);
-			}
-		});
-	},
-	_generateItemDataTable: (data) => {
-		const $this = $('#ignoredItemDataTable tbody');
-
-		$this.html('');
-
-		let body = '';
-
-		$.each(data, (idx, item) => {
-			body += '<tr>';
-			body += '<td>' + item.no + '</td>';
-			body += '<td>' + item.v_vendor_name + '</td>';
-			body += '<td>' + item.v_vendor_add + '</td>';
-			body += '<td>' + item.v_vendor_phone + '</td>';
-			body += '<td>' + item.v_vendor_email + '</td>';
-			body += '<td>';
-				body += '<div class="btn-group btn-group-sm" role="group" aria-label="Action Button">';
-					body += '<button type="button" class="btn btn-success" data-id="' + item.v_id + '" data-item="' + item.v_vendor_name + '" onclick="itemList.showItem(this, \'edit\');"><i class="fas fa-edit"></i></button>';
-					body += '<button type="button" class="btn btn-danger" data-id="' + item.v_id + '" data-item="' + item.v_vendor_name + '" onclick="itemList.deleteDataVendor(this);"><i class="fas fa-trash-alt"></i></button>';
-				body += '</div>';
-			body += '</td>';
-			body += '</tr>';
-		});
-
-		$this.html(body);
-	},
-	showItem: function(el, mode) {
-		
-		const me = this;
-		let params = {action: 'load_vendor_form'};
-		let title = 'Add New';
-
-		if (typeof(mode) !== 'undefined') {
-			params.mode = mode;
-			title = 'Edit';
-			params.txt_item = $(el).data('item');
-			params.txt_id = $(el).data('id');
-		}
-		else
-		{
-			params.mode = 'add';
-		}
-
-		$.popup({
-			title: title + ' Vendor',
-			id: 'showItem',
-			size: 'medium',
+$(document).ready(function() {
+	var VENDOR = {
+		gridVendor : $('#gridVendor').grid({
+			serverSide: true,
+			striped: true,
 			proxy: {
-				url: siteUrl('master_data/vendor/load_vendor_form'),
-				params: params
+				url: siteUrl('master_data/vendor/load_data_vendor'),
+				method: 'post',
+				data: {
+					action: 'load_data_vendor'
+				},
 			},
-			buttons: [{
-				btnId: 'saveData',
-				btnText:'Save',
-				btnClass: 'info',
-				btnIcon: 'far fa-check-circle',
-				onclick: function(popup) {
-					const form  = popup.find('form');
-
-					if ($.validation(form)) {
-						const formData = new FormData(form[0]);
-
-						$.ajax({
-							url: siteUrl('master_data/vendor/store_data_vendor'),
-							type: 'POST',
-							dataType: 'JSON',
-							data: formData,
-							processData: false,
-							contentType: false,
-	         				cache: false,
-							success: function(result) {
-								if (result.success) {
-									toastr.success(msgSaveOk);
-									me._generateItemDataTable(result.data);
-								} else if (typeof(result.msg) !== 'undefined') toastr.error(result.msg);
-								else toastr.error(msgErr);
-
-								popup.close();
-
-							},
-							error: function(error) {
-								toastr.error(msgErr);
+			columns: [
+				{
+					title: 'No', 
+					data: 'no',
+					searchable: false,
+					orderable: false,
+					css: {
+						'text-align': 'center'
+					},
+					width: 10
+				},
+				{	
+					title: 'Nama Vendor', 
+					data: 'v_vendor_name',
+				},
+				{	
+					title: 'Alamat', 
+					data: 'v_vendor_add',
+				},
+				{	
+					title: 'Telp', 
+					data: 'v_vendor_phone',
+				},
+				{	
+					title: 'Email', 
+					data: 'v_vendor_email',
+				},
+				{
+					title: 'Action',
+					size: 'medium',
+					type: 'buttons',
+					group: true,
+					css: {
+						'text-align' : 'center',
+						'width' : '150px'
+					},
+					content: [
+						{
+							text: '',
+							class: 'btn-success',
+							id: 'btnEdit',
+							icon: 'far fa-edit',
+							click: function(row, rowData) {
+								VENDOR.popup('edit', 'Edit', rowData);
 							}
+						},
+						{
+							text: '',
+							class: 'btn-danger',
+							id: 'btnDelete',
+							icon: 'far fa-trash-alt',
+							click: function(row, rowData) {
+								Swal.fire({
+									title: 'Are you sure?',
+									text: "Data that has been deleted cannot be restored!",
+									type: 'warning',
+									showCancelButton: true,
+									confirmButtonColor: '#17a2b8',
+									cancelButtonColor: '#d33',
+									confirmButtonText: 'Yes, delete this data!'
+								}).then((result) => {
+									if (result.value) {
+										$.ajax({
+											url: siteUrl('master_data/vendor/delete_data'),
+											type: 'POST',
+											dataType: 'JSON',
+											data: {
+												action: 'delete_data',
+												txt_id: rowData.v_id
+											},
+											success: function(result) {
+												if (result.success) {
+													toastr.success("Data succesfully deleted.");
+												} else if (typeof(result.msg) !== 'undefined') {
+													toastr.error(result.msg);
+												} else {
+													toastr.error(msgErr);
+												}
+												
+												VENDOR.gridVendor.reloadData({
+													txt_id: $('#txtName').val()
+												});
+											},
+											error: function(error) {
+												toastr.error(msgErr);
+											}
+										});
+									}
+								});
+							}
+						},
+					],
+				}
+			],
+			listeners: {
+				ondblclick: function(row, rowData, idx) {
+					VENDOR.popup('edit', 'Edit', rowData);
+				}
+			}
+		}),
+		popup: function(mode = 'add', title= 'Add', data = false)
+		{
+			$.popup({
+				title: title + ' User',
+				id: mode + 'UserPopup',
+				size: 'medium',
+				proxy: {
+					url: siteUrl('master_data/vendor/vendor_form'),
+					params: {
+						action: 'vendor_form',
+						mode: mode,
+						data: data
+					}
+				},
+				buttons: [{
+					btnId: 'saveData',
+					btnText:'Save',
+					btnClass: 'info',
+					btnIcon: 'far fa-check-circle',
+					onclick: function(popup) {
+						var form  = popup.find('form');
+						if ($.validation(form)) {
+							var formData = new FormData(form[0]);
+							$.ajax({
+								url: siteUrl('master_data/vendor/store_data'),
+								type: 'POST',
+								dataType: 'JSON',
+								data: formData,
+								processData: false,
+								contentType: false,
+		         				cache: false,
+		         				enctype: 'multipart/form-data',
+								success: function(result) {
+									if (result.success) {
+										toastr.success(msgSaveOk);
+									} else if (typeof(result.msg) !== 'undefined') {
+										toastr.error(result.msg);
+									} else {
+										toastr.error(msgErr);
+									}
+
+									VENDOR.gridVendor.reloadData({
+										txt_id: $('#txtName').val()
+									});
+
+									popup.close();
+
+								},
+								error: function(error) {
+									toastr.error(msgErr);
+								}
+							});
+						}
+					}
+				}, {
+					btnId: 'closePopup',
+					btnText:'Close',
+					btnClass: 'secondary',
+					btnIcon: 'fas fa-times',
+					onclick: function(popup) {
+						popup.close();
+					}
+				}],
+				listeners: {
+					onshow: function(popup) {
+						$('#userBirthday').inputmask('dd-mm-yyyy', { 'placeholder': 'DD-MM-YYYY' });
+						$('#userBirthday').noobsdaterangepicker({
+							parentEl: "#" + popup[0].id + " .modal-body",
+							showDropdowns: true,
+							singleDatePicker: true,
+							locale: {
+								format: 'DD-MM-YYYY'
+							}
+						});
+
+						if (mode == 'edit') {
+							VENDOR.generateUserSubGroup($('#userGroup').val(), data.ud_sub_group);
+						}
+
+						$('#userGroup').change(function() {
+							var me = $(this);
+
+							if (me.val() !== '') {
+								
+								VENDOR.generateUserSubGroup(me.val());
+
+							} else {
+								$('#userSubGroup').html($('<option>', {
+									value: '',
+									text: 'Select Sub Group First'
+								}));
+
+								$('#userSubGroup').attr('disabled', true);
+							}
+						});
+
+						$('#fileAvatar').change(function(a){
+							var $this = $(this);
+							var $next = $this.next();
+
+							$next.html($this[0].files[0].name);
 						});
 					}
 				}
-			}, {
-				btnId: 'closePopup',
-				btnText:'Close',
-				btnClass: 'secondary',
-				btnIcon: 'fas fa-times',
-				onclick: function(popup) {
-					popup.close();
-				}
-			}],
-			listeners : {
-				onShow : function(popup) {
-					$('#check_vendor').on('click',function() {
-						var check = $('#check_vendor').is(':checked');
-							akses = $('#select-meal-type');
-							console.log(akses)
-						if(check == true)
-						{
-							akses.attr('disabled', false);
-						}
-						else
-						{
-							akses.attr('disabled', true);
-						}
-					});
-				}
-			}
-		});
-	},
-	deleteDataVendor: function(el) {
-		const me = this;
-		const $this = $(el);
+			});
+		},
+		generateUserSubGroup: function(groupId, subGroupId = false) {
+			var userSubGroup = $('#userSubGroup');
+			
+			$.ajax({
+				url: siteUrl('master_data/vendor/get_user_sub_group'),
+				type: 'POST',
+				dataType: 'JSON',
+				beforeSend: function() {},
+				complete: function() {},
+				data: {
+					action: 'get_user_sub_group',
+					usg_group: groupId
+				},
+				success: function (result) {
+					if (result.success) {
+						var data = result.data;
 
-		Swal.fire({
-			title: 'Are you sure?',
-			text: "Data that has been deleted cannot be restored!",
-			type: 'warning',
-			showCancelButton: true,
-			confirmButtonColor: '#17a2b8',
-			cancelButtonColor: '#d33',
-			confirmButtonText: 'Yes, delete this data!'
-		}).then((result) => {
-			if (result.value) {
-				$.ajax({
-					url: siteUrl('master_data/vendor/delete_data_vendor'),
-					type: 'POST',
-					dataType: 'JSON',
-					data: {
-						action: 'delete_data_item',
-						txt_id: $this.data('id')
-					},
-					success: function(result) {
-						$('#ignoredItemDataTable tbody').html('');
+						userSubGroup.attr('disabled', false);
+
+						userSubGroup.html('');
 						
-						if (result.success !== false)
-						{
-							toastr.info(result.msg);
-							me._generateItemDataTable(result.data);
-						} 
-						else if (typeof(result.msg) !== 'undefined')
-						{
-							toastr.error(result.msg);
-						} 
-						else
-						{
-							toastr.error(msgErr);
-						} 
-					},
-					error: function(error) {
-						toastr.error(msgErr);
-					}
-				});
-			}
-		});
-	}
-};
+						data.forEach(function (newData) {
+							userSubGroup.append($('<option>', {
+								value: newData.usg_id,
+								text: newData.usg_caption
+							}));
+						});
 
-$(document).ready(function() {
-	itemList.init();
+						if (subGroupId !== false) userSubGroup.val(subGroupId);
+
+					} else {
+
+						userSubGroup.html($('<option>', {
+							value: '',
+							text: 'Sub Group Not Found!'
+						}));
+					}
+				},
+				error: function (error) {
+					toastr.error(msgErr);
+				}
+			});
+		}
+	};
+
+	$('#btnAdd').click(function(e) {
+		e.preventDefault();
+
+		VENDOR.popup();
+	});
+
+	$('#txtName').noobsautocomplete({
+		remote: true,
+		placeholder: 'Find data.',
+		proxy: {
+			url: siteUrl('master_data/vendor/get_autocomplete_data'),
+			method: 'post',
+			data: {
+				action: 'get_autocomplete_data'
+			},
+		},
+		listeners: {
+			onselect: function(data) {
+				VENDOR.gridVendor.reloadData({
+					txt_id: $('#txtName').val()
+				});
+			},
+			onclear: function(obj) {
+				VENDOR.gridVendor.reloadData({});
+			}
+		}
+	});
 });
