@@ -97,7 +97,7 @@ class Daftar_delivery_order_model extends NOOBS_Model
 		if ($params['mode'] == 'add') $this->add($new_params, TRUE);
 		else $this->edit($new_params, "dod_id = {$params['dod_id']}");
 
-		// return $this->load_data_daftar_delivery_order();
+		return $this->load_data_daftar_delivery_order();
 	}
 
 
@@ -260,7 +260,7 @@ class Daftar_delivery_order_model extends NOOBS_Model
 		if ($mode == 'add') $this->add($new_params, TRUE);
 		else $this->edit($new_params, "sod_id = {$params['so_id']}");
 
-		return $this->load_data_detail_so(array('no_trx' => $params['sod_no_trx']));
+		return $this->load_data_detail_do(array('no_trx' => $params['sod_no_trx']));
 	}
 
 	public function delete_data_daftar_delivery_order($params = array())
@@ -442,7 +442,7 @@ class Daftar_delivery_order_model extends NOOBS_Model
 
 		$this->delete('sod_id',$params['id']);
 		
-		return $this->load_data_detail_so(array('no_trx' => $params['sod_no_trx']));
+		return $this->load_data_detail_do(array('no_trx' => $params['sod_no_trx']));
 	}
 
 	public function store_data($params = array())

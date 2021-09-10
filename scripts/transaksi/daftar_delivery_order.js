@@ -38,7 +38,6 @@ const daftarDeliveryOrderList = {
 
 		$('#range1').inputmask('dd-mm-yyyy', { 'placeholder': 'DD-MM-YYYY' });
 		$('#range1').noobsdaterangepicker({
-			// parentEl: "#" + popup[0].id + " .modal-body",
 			showDropdowns: true,
 			singleDatePicker: true,
 			locale: {
@@ -47,7 +46,6 @@ const daftarDeliveryOrderList = {
 		});
 		$('#range2').inputmask('dd-mm-yyyy', { 'placeholder': 'DD-MM-YYYY' });
 		$('#range2').noobsdaterangepicker({
-			// parentEl: "#" + popup[0].id + " .modal-body",
 			showDropdowns: true,
 			singleDatePicker: true,
 			locale: {
@@ -79,30 +77,6 @@ const daftarDeliveryOrderList = {
 			}
 		});
 	},
-	// loadDataItemDelivery: function(el) {
-	// 	const me = this;
-	// 	const $this = $(el);
-		
-	// 	$.ajax({
-	// 		url: siteUrl('transaksi/daftar_delivery_order/load_data_delivery_detail_do'),
-	// 		type: 'POST',
-	// 		dataType: 'JSON',
-	// 		data: {
-	// 			action: 'load_data_delivery_detail_do',
-	// 			so_id:$('#txt_so').val()
-	// 		},
-	// 		success: function(result) {
-	// 			$('#deliveryDataTable tbody').html('');
-
-	// 			if (result.success !== false) me._generateDeliveryDataTable(result.data);
-	// 			else if (typeof(result.msg) !== 'undefined') toastr.error(result.msg);
-	// 			else toastr.error(msgErr);
-	// 		},
-	// 		error: function(error) {
-	// 			toastr.error(msgErr);
-	// 		}
-	// 	});
-	// },
 	_generateItemDataTable: (data) => {
 		const $this = $('#ignoredItemDataTable tbody');
 
@@ -127,7 +101,7 @@ const daftarDeliveryOrderList = {
 			if(item.dod_is_status !== 'SELESAI') {
 				body += '<div class="btn-group btn-group-sm" role="group" aria-label="Action Button">';
 					body += '<button type="button" class="btn btn-success" data-id="' + item.dod_id + '" data-no_trx="' + item.dod_no_trx + '" data-so_no_trx="' + item.so_no_trx + '" data-dod_customer_id="' + item.dod_customer_id + '" data-dod_driver_id="' + item.dod_driver_id + '" data-dod_sod_id="' + item.dod_sod_id + '" data-dod_vehicle_id="' + item.dod_vehicle_id + '" data-dod_shipping_qty="' + item.dod_shipping_qty + '" onclick="daftarDeliveryOrderList.showItem(this, \'edit\');"><i class="fas fa-edit"></i></button>';
-					body += '<button type="button" class="btn btn-danger" data-id="' + item.dod_id + '"  data-no_trx="' + item.dod_no_trx + '" onclick="daftarDeliveryOrderList.deleteDataItem(this);"><i class="fas fa-trash-alt"></i></button>';
+					body += '<button type="button" class="btn btn-danger" data-id="' + item.dod_id + '"  data-no_trx="' + item.dod_no_trx + '" onclick="daftarDeliveryOrderList.deleteDataDo(this);"><i class="fas fa-trash-alt"></i></button>';
 					body += '<button type="button" class="btn btn-primary" data-id="' + item.dod_id + '" data-no_trx="' + item.dod_no_trx + '" data-is_status="' + item.dod_is_status + '" data-so_id="' + item.so_id + '" data-so_no_trx="' + item.so_no_trx + '" onclick="daftarDeliveryOrderList.updateStatus(this, \'edit\');"><i class="fas fa-exchange-alt"></i></button>';
 				body += '</div>';
 			}
@@ -160,7 +134,7 @@ const daftarDeliveryOrderList = {
 				if(item.dod_is_status !== 'SELESAI') {
 					body += '<div class="btn-group btn-group-sm" role="group" aria-label="Action Button">';
 						body += '<button type="button" class="btn btn-success" data-id="' + item.dod_id + '" data-no_trx="' + item.dod_no_trx + '" data-so_no_trx="' + item.so_no_trx + '" data-dod_customer_id="' + item.dod_customer_id + '" data-dod_driver_id="' + item.dod_driver_id + '" data-dod_sod_id="' + item.dod_sod_id + '" data-dod_vehicle_id="' + item.dod_vehicle_id + '" data-dod_shipping_qty="' + item.dod_shipping_qty_ori + '" onclick="daftarDeliveryOrderList.editDetailDO(this, \'edit\');"><i class="fas fa-edit"></i></button>';
-						body += '<button type="button" class="btn btn-danger" data-id="' + item.dod_id + '"  data-no_trx="' + item.dod_no_trx + '" onclick="daftarDeliveryOrderList.deleteDataItem(this);"><i class="fas fa-trash-alt"></i></button>';
+						body += '<button type="button" class="btn btn-danger" data-id="' + item.dod_id + '"  data-no_trx="' + item.dod_no_trx + '" onclick="daftarDeliveryOrderList.deleteDataDoDetail(this);"><i class="fas fa-trash-alt"></i></button>';
 						body += '</div>';
 				}
 			body += '</td>';
@@ -318,30 +292,10 @@ const daftarDeliveryOrderList = {
 				btnClass: 'secondary',
 				btnIcon: 'fas fa-times',
 				onclick: function(popup) {
-
-					$.ajax({
-						url: siteUrl('transaksi/daftar_delivery_order/load_do_data'),
-						type: 'POST',
-						dataType: 'JSON',
-						data: {
-							action : 'load_data_daftar_delivery_order'
-						},
-						success: function(result) {
-							if (result.success) {
-								// toastr.success('msgSaveOk');
-								me._generateItemDataTable(result.data);
-							} else if (typeof(result.msg) !== 'undefined') toastr.error(result.msg);
-							else toastr.error(msgErr);
-
-							popup.close();
-
-						},
-						error: function(error) {
-							toastr.error(msgErr);
-						}
-					});
-					// popup.close();
+					daftarDeliveryOrderList.loadDataItem(this);
+					popup.close();
 				}
+
 			},
 			// {
 			// 	btnId: 'printDO',
@@ -1043,7 +997,7 @@ const daftarDeliveryOrderList = {
 			}
 		});
 	},
-	deleteDataTemp: function(el) {
+	deleteDataDoDetail: function(el) {
 		const me = this;
 		const $this = $(el);
 			

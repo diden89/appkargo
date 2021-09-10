@@ -60,41 +60,77 @@ class Daftar_delivery_order extends NOOBS_Controller
 		$this->view('daftar_delivery_order_view');
 	}
 
-	public function load_do_data()
+	public function load_data_daftar_delivery_order() // dipakai
 	{
-		$post = $this->input->post(NULL, TRUE);
-
-		// print_r($post);exit;
-		if (isset($post['action']) && ! empty($post['action']) && $post['action'] == 'load_data_daftar_delivery_order')
+		if (isset($_POST['action']) && $_POST['action'] == 'load_data_daftar_delivery_order')
 		{
-			unset($post['action']);
-
+			$post = $this->input->post(NULL, TRUE);
 			$load_data_daftar_delivery_order = $this->db_daftar_delivery_order->load_data_daftar_delivery_order($post);
-
+			// print_r($_POST);exit;
 			if ($load_data_daftar_delivery_order->num_rows() > 0) 
 			{
 				$result = $load_data_daftar_delivery_order->result();
-				$num = 0;
+				$number = 1;
 
 				foreach ($result as $k => $v)
 				{
-					$num++;
+					$v->num = $number;
 
-					$v->num = $num;
-					$v->dod_created_date = date('d-m-Y',strtotime($v->dod_created_date));
-					$v->dod_shipping_qty_ori = $v->dod_shipping_qty;
-					$v->dod_shipping_qty = number_format($v->dod_shipping_qty);
-					$v->dod_ongkir = number_format($v->dod_ongkir);
+					$number++;
 				}
-					// print_r($result);exit;
+				// print_r($result);exit;
 				echo json_encode(array('success' => TRUE, 'data' => $result));
+			}
+			else echo json_encode(array('success' => FALSE, 'msg' => 'Data not found!'));
+		}
+		else $this->show_404();
+	}
+
+	public function get_realisasi_qty() // dipakai
+	{
+		$post = $this->input->post(NULL, TRUE);
+
+
+		if (isset($post['action']) && ! empty($post['action']) && $post['action'] == 'get_realisasi_qty')
+		{
+			unset($post['action']);
+
+			$get_realisasi_qty = $this->db_daftar_delivery_order->get_realisasi_qty($post);
+
+			if ($get_realisasi_qty->num_rows() > 0) 
+			{
+				$res = $get_realisasi_qty->row();
+				$qty = (! empty($res->qty_real) && $res->qty_real !== "") ? $res->qty_real : '0';
+				echo json_encode(array('success' => TRUE, 'qty_real' => $qty));
 			}
 			else echo json_encode(array('success' => FALSE, 'msg' => 'Data Not Found!'));
 		}
 		else $this->show_404();
 	}
 
-	public function load_daftar_delivery_order_form()
+	public function get_ongkir_district() // dipakai
+	{
+		$post = $this->input->post(NULL, TRUE);
+
+
+		if (isset($post['action']) && ! empty($post['action']) && $post['action'] == 'get_ongkir_district')
+		{
+			unset($post['action']);
+
+			$get_ongkir_district = $this->db_daftar_delivery_order->get_ongkir_district($post);
+
+			if ($get_ongkir_district->num_rows() > 0) 
+			{
+				$res = $get_ongkir_district->row();
+
+				echo json_encode(array('success' => TRUE, 'ongkir_temp' => $res->c_shipping_area));
+			}
+			else echo json_encode(array('success' => FALSE, 'ongkir_temp' => '0'));
+		}
+		else $this->show_404();
+	}
+
+	public function load_daftar_delivery_order_form() // dipakai
 	{
 		if (isset($_POST['action']) && $_POST['action'] == 'load_daftar_delivery_order_form')
 		{
@@ -135,6 +171,97 @@ class Daftar_delivery_order extends NOOBS_Controller
 		else $this->show_404();
 	}
 
+	public function load_do_data() // dipakai
+	{
+		$post = $this->input->post(NULL, TRUE);
+
+		// print_r($post);exit;
+		if (isset($post['action']) && ! empty($post['action']) && $post['action'] == 'load_data_daftar_delivery_order')
+		{
+			unset($post['action']);
+
+			$load_data_daftar_delivery_order = $this->db_daftar_delivery_order->load_data_daftar_delivery_order($post);
+
+			if ($load_data_daftar_delivery_order->num_rows() > 0) 
+			{
+				$result = $load_data_daftar_delivery_order->result();
+				$num = 0;
+
+				foreach ($result as $k => $v)
+				{
+					$num++;
+
+					$v->num = $num;
+					$v->dod_created_date = date('d-m-Y',strtotime($v->dod_created_date));
+					$v->dod_shipping_qty_ori = $v->dod_shipping_qty;
+					$v->dod_shipping_qty = number_format($v->dod_shipping_qty);
+					$v->dod_ongkir = number_format($v->dod_ongkir);
+				}
+					// print_r($result);exit;
+				echo json_encode(array('success' => TRUE, 'data' => $result));
+			}
+			else echo json_encode(array('success' => FALSE, 'msg' => 'Data Not Found!'));
+		}
+		else $this->show_404();
+	}
+
+	public function store_data_detail_delivery_order()//dipakai
+	{
+		if (isset($_POST['action']) && $_POST['action'] == 'insert_delivery_order')
+		{
+			$post = $this->input->post(NULL, TRUE);
+			// print_r($post);exit;
+			$store_data_daftar_delivery_order = $this->db_daftar_delivery_order->store_data_daftar_delivery_order($post);
+
+			$get_total_qty = $this->db_daftar_delivery_order->get_total_qty($post,'sum(dod_shipping_qty) as total_qty');
+			$get_total_amount = $this->db_daftar_delivery_order->get_total_amount($post,'sum(dod.dod_ongkir) as total_amount');
+
+			if($get_total_qty->num_rows() > 0) {
+				$total = $get_total_qty->row();
+				$post['new_qty'] = $total->total_qty;
+			
+				$update_quantity_sales_order_detail = $this->db_daftar_delivery_order->update_quantity_sales_order_detail($post);
+
+			}
+
+			if($get_total_amount->num_rows() > 0) {
+				$total_a = $get_total_amount->row();
+				$post['total_amount'] = $total_a->total_amount;
+			
+				$update_amount_sales_order_detail = $this->db_daftar_delivery_order->update_amount_sales_order_detail($post);
+
+			}
+
+			$result = $this->db_daftar_delivery_order->load_data_daftar_delivery_order($post);
+			
+			if ($result->num_rows() > 0) 
+			{
+				$res = $result->result();
+				$number = 1;
+
+				foreach ($res as $k => $v)
+				{
+					$v->num = $number;
+					$v->dod_created_date = date('d-m-Y H:i:s',strtotime($v->dod_created_date));
+					$v->dod_shipping_qty = number_format($v->dod_shipping_qty);
+					$v->dod_ongkir = number_format($v->dod_ongkir);
+
+					$number++;
+				}
+				
+				echo json_encode(array('success' => TRUE, 'data' => $res));
+			}
+			else echo json_encode(array('success' => FALSE, 'msg' => 'Data not found!'));
+		}
+		else $this->show_404();
+	}
+
+
+
+	
+
+	
+
 	public function load_update_status_form()
 	{
 		if (isset($_POST['action']) && $_POST['action'] == 'load_update_status_form')
@@ -168,49 +295,9 @@ class Daftar_delivery_order extends NOOBS_Controller
 		else $this->show_404();
 	}
 
-	public function get_realisasi_qty() //dipakai
-	{
-		$post = $this->input->post(NULL, TRUE);
+	
 
-
-		if (isset($post['action']) && ! empty($post['action']) && $post['action'] == 'get_realisasi_qty')
-		{
-			unset($post['action']);
-
-			$get_realisasi_qty = $this->db_daftar_delivery_order->get_realisasi_qty($post);
-
-			if ($get_realisasi_qty->num_rows() > 0) 
-			{
-				$res = $get_realisasi_qty->row();
-				$qty = (! empty($res->qty_real) && $res->qty_real !== "") ? $res->qty_real : '0';
-				echo json_encode(array('success' => TRUE, 'qty_real' => $qty));
-			}
-			else echo json_encode(array('success' => FALSE, 'msg' => 'Data Not Found!'));
-		}
-		else $this->show_404();
-	}
-
-	public function get_ongkir_district()
-	{
-		$post = $this->input->post(NULL, TRUE);
-
-
-		if (isset($post['action']) && ! empty($post['action']) && $post['action'] == 'get_ongkir_district')
-		{
-			unset($post['action']);
-
-			$get_ongkir_district = $this->db_daftar_delivery_order->get_ongkir_district($post);
-
-			if ($get_ongkir_district->num_rows() > 0) 
-			{
-				$res = $get_ongkir_district->row();
-
-				echo json_encode(array('success' => TRUE, 'ongkir_temp' => $res->c_shipping_area));
-			}
-			else echo json_encode(array('success' => FALSE, 'ongkir_temp' => '0'));
-		}
-		else $this->show_404();
-	}
+	
 
 	public function get_item_list_option()
 	{
@@ -256,31 +343,7 @@ class Daftar_delivery_order extends NOOBS_Controller
 		else $this->show_404();
 	}
 
-	public function load_data_daftar_delivery_order()
-	{
-		if (isset($_POST['action']) && $_POST['action'] == 'load_data_daftar_delivery_order')
-		{
-			$post = $this->input->post(NULL, TRUE);
-			$load_data_daftar_delivery_order = $this->db_daftar_delivery_order->load_data_daftar_delivery_order($post);
-			// print_r($_POST);exit;
-			if ($load_data_daftar_delivery_order->num_rows() > 0) 
-			{
-				$result = $load_data_daftar_delivery_order->result();
-				$number = 1;
-
-				foreach ($result as $k => $v)
-				{
-					$v->num = $number;
-
-					$number++;
-				}
-				// print_r($result);exit;
-				echo json_encode(array('success' => TRUE, 'data' => $result));
-			}
-			else echo json_encode(array('success' => FALSE, 'msg' => 'Data not found!'));
-		}
-		else $this->show_404();
-	}
+	
 
 	public function load_data_delivery_detail_do()
 	{
@@ -364,56 +427,7 @@ class Daftar_delivery_order extends NOOBS_Controller
 		else $this->show_404();
 	}
 
-	public function store_data_detail_delivery_order()//dipakai
-	{
-		if (isset($_POST['action']) && $_POST['action'] == 'insert_delivery_order')
-		{
-			$post = $this->input->post(NULL, TRUE);
-			// print_r($post);exit;
-			$store_data_daftar_delivery_order = $this->db_daftar_delivery_order->store_data_daftar_delivery_order($post);
-
-			$get_total_qty = $this->db_daftar_delivery_order->get_total_qty($post,'sum(dod_shipping_qty) as total_qty');
-			$get_total_amount = $this->db_daftar_delivery_order->get_total_amount($post,'sum(dod.dod_ongkir) as total_amount');
-
-			if($get_total_qty->num_rows() > 0) {
-				$total = $get_total_qty->row();
-				$post['new_qty'] = $total->total_qty;
-			
-				$update_quantity_sales_order_detail = $this->db_daftar_delivery_order->update_quantity_sales_order_detail($post);
-
-			}
-
-			if($get_total_amount->num_rows() > 0) {
-				$total_a = $get_total_amount->row();
-				$post['total_amount'] = $total_a->total_amount;
-			
-				$update_amount_sales_order_detail = $this->db_daftar_delivery_order->update_amount_sales_order_detail($post);
-
-			}
-
-			$result = $this->db_daftar_delivery_order->load_data_daftar_delivery_order($post);
-			
-			if ($result->num_rows() > 0) 
-			{
-				$res = $result->result();
-				$number = 1;
-
-				foreach ($res as $k => $v)
-				{
-					$v->num = $number;
-					$v->dod_created_date = date('d-m-Y H:i:s',strtotime($v->dod_created_date));
-					$v->dod_shipping_qty = number_format($v->dod_shipping_qty);
-					$v->dod_ongkir = number_format($v->dod_ongkir);
-
-					$number++;
-				}
-				
-				echo json_encode(array('success' => TRUE, 'data' => $res));
-			}
-			else echo json_encode(array('success' => FALSE, 'msg' => 'Data not found!'));
-		}
-		else $this->show_404();
-	}
+	
 
 	public function store_update_status()//dipakai
 	{
