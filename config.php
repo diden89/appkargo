@@ -19,7 +19,7 @@
 	$noobs_default_controller = 'main/main';
 	$noobs_module_dir = 'module_frontend';
 	$noobs_module_url = 'appkargo';
-	
+	// print_r($_SERVER['SERVER_ADMIN']);exit;
 	switch ($_SERVER['HTTP_HOST'])
 	{
 		default:
@@ -39,7 +39,7 @@
 					$noobs_vendordir = 'vendors';
 					$noobs_sessdir = 'C:\Users\administrator\Downloads\tmp';
 				break;
-				
+
 				// KHUSUS UNTUK DEVELOPER, TAMBAHKAN DIBAWAH INI, COPAS AJA DARI case 'ITDEPT01-PKU': SAMPAI break;
 			}
 		break;

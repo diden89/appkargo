@@ -26,7 +26,7 @@
 			<div class="row">
 				<label for="userPassword" class="col-sm-4 col-form-label">Password</label>
 				<div class="col-sm-8">
-					<input type="password" name="ud_password" class="form-control" id="userPassword" <?php echo $mode == 'add' ? `required="required"` : ''; ?>>
+					<input type="password" name="ud_password" class="form-control" id="userPassword" <?php echo $mode == 'add' ? 'required="required"' : ''; ?>>
 					<?php if ($mode == 'edit'): ?>
 						<small class="form-text text-success help-block">Biarkan kosong jika tidak ada perubahan</small>
 					<?php endif ?>
