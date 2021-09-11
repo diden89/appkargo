@@ -32,6 +32,30 @@
 		</div>
 		<div class="col-md-12">
 			<div class="form-group row">
+				<label for="caption" class="col-sm-4 col-form-label">Total Order</label>
+				<div class="input-group col-8">
+					<input type="text" name="total_order" class="form-control" id="total_order" disabled="disabled">
+				</div>
+			</div>
+		</div>
+		<div class="col-md-12">
+			<div class="form-group row">
+				<label for="caption" class="col-sm-4 col-form-label">Total Terpenuhi</label>
+				<div class="input-group col-8">
+					<input type="text" name="total_terpenuhi" class="form-control" id="total_terpenuhi">
+				</div>
+			</div>
+		</div>
+		<div class="col-md-12">
+			<div class="form-group row">
+				<label for="caption" class="col-sm-4 col-form-label">Keterangan</label>
+				<div class="input-group col-8">
+					<textarea name="keterangan" class="form-control" placeholder="Enter content"></textarea>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-12">
+			<div class="form-group row">
 				<label for="caption" class="col-sm-4 col-form-label">Update Status</label>
 				<div class="col-sm-8">
 					<select class="form-control select2"  name="dod_is_status" id="dod_is_status">

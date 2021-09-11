@@ -53,6 +53,30 @@ const daftarDeliveryOrderList = {
 			}
 		});
 	},
+	loadDataDo: function(el) {
+		const me = this;
+		const $this = $(el);
+		
+		$.ajax({
+			url: siteUrl('transaksi/daftar_delivery_order/load_data_daftar_delivery_order'),
+			type: 'POST',
+			dataType: 'JSON',
+			data: {
+				action: 'load_data_daftar_delivery_order',
+				so_no_trx: el.so_no_trx
+			},
+			success: function(result) {
+				$('#ignoredItemDataTable tbody').html('');
+
+				if (result.success !== false) me._generateItemDataTable(result.data);
+				else if (typeof(result.msg) !== 'undefined') toastr.error(result.msg);
+				else toastr.error(msgErr);
+			},
+			error: function(error) {
+				toastr.error(msgErr);
+			}
+		});
+	},
 	loadDataItem: function(el) {
 		const me = this;
 		const $this = $(el);
@@ -292,7 +316,7 @@ const daftarDeliveryOrderList = {
 				btnClass: 'secondary',
 				btnIcon: 'fas fa-times',
 				onclick: function(popup) {
-					daftarDeliveryOrderList.loadDataItem(this);
+					daftarDeliveryOrderList.loadDataDo(this);
 					popup.close();
 				}
 
@@ -692,9 +716,9 @@ const daftarDeliveryOrderList = {
 		}
 
 		$.popup({
-			title: title + ' Update Status',
+			title: 'Form Status Pengiriman',
 			id: 'showItem',
-			size: 'small',
+			size: 'medium',
 			proxy: {
 				url: siteUrl('transaksi/daftar_delivery_order/load_update_status_form'),
 				params: params
