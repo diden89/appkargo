@@ -240,34 +240,34 @@ class Daftar_delivery_order_model extends NOOBS_Model
 		// return $this->load_data_daftar_delivery_order();
 	}
 
-	public function store_detail_do($params = array())
+	// public function store_detail_do($params = array())
+	// {
+	// 	$this->table = 'delivery_order_detail';
+
+	// 	$new_params = array(
+	// 		'sod_no_trx' => $params['sod_no_trx'],
+	// 		'sod_qty' => $params['sod_qty'],
+	// 		'sod_item_id' => $params['sod_item_id']
+	// 	);
+
+	// 	if(! empty($params['so_id'])) {
+	// 		$mode = $params['mode'];
+	// 	}
+	// 	else {
+	// 		$mode = 'add';
+	// 	}
+
+	// 	if ($mode == 'add') $this->add($new_params, TRUE);
+	// 	else $this->edit($new_params, "sod_id = {$params['so_id']}");
+
+	// 	return $this->load_data_detail_do(array('no_trx' => $params['sod_no_trx']));
+	// }
+
+	public function delete_data_daftar_delivery_order($params = array()) //di pakai
 	{
 		$this->table = 'delivery_order_detail';
 
-		$new_params = array(
-			'sod_no_trx' => $params['sod_no_trx'],
-			'sod_qty' => $params['sod_qty'],
-			'sod_item_id' => $params['sod_item_id']
-		);
-
-		if(! empty($params['so_id'])) {
-			$mode = $params['mode'];
-		}
-		else {
-			$mode = 'add';
-		}
-
-		if ($mode == 'add') $this->add($new_params, TRUE);
-		else $this->edit($new_params, "sod_id = {$params['so_id']}");
-
-		return $this->load_data_detail_do(array('no_trx' => $params['sod_no_trx']));
-	}
-
-	public function delete_data_daftar_delivery_order($params = array())
-	{
-		$this->table = 'customer';
-
-		$this->edit(['c_is_active' => 'N'], "c_id = {$params['txt_id']}");
+		$this->edit(['dod_is_active' => 'N'], "dod_id = {$params['txt_id']}");
 		
 		return $this->load_data_daftar_delivery_order();
 	}
@@ -436,7 +436,7 @@ class Daftar_delivery_order_model extends NOOBS_Model
 		return $this->db->get('item_list');
  	}
 
-	public function delete_data_so_detail($params = array())
+	public function delete_data_so_detail($params = array()) //di pakai
 	{
 		$this->table = 'sales_order_detail';
 

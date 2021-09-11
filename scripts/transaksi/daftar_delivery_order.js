@@ -969,11 +969,11 @@ const daftarDeliveryOrderList = {
 		}).then((result) => {
 			if (result.value) {
 				$.ajax({
-					url: siteUrl('transaksi/daftar_delivery_order/delete_data_item'),
+					url: siteUrl('transaksi/daftar_delivery_order/delete_data'),
 					type: 'POST',
 					dataType: 'JSON',
 					data: {
-						action: 'delete_data_item',
+						action: 'delete_data',
 						txt_id: $this.data('id')
 					},
 					success: function(result) {

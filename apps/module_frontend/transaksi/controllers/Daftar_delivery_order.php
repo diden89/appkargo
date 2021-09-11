@@ -258,7 +258,7 @@ class Daftar_delivery_order extends NOOBS_Controller
 
 
 
-	
+
 
 	
 
@@ -482,21 +482,38 @@ class Daftar_delivery_order extends NOOBS_Controller
 		else $this->show_404();
 	}
 	
-	public function delete_data_item()
+	public function delete_data()
 	{
-		if (isset($_POST['action']) && $_POST['action'] == 'delete_data_item')
+		if (isset($_POST['action']) && $_POST['action'] == 'delete_data')
 		{
 			$post = $this->input->post(NULL, TRUE);
-			$delete_data_item = $this->db_daftar_delivery_order->delete_data_item($post);
+			$params = array();
+			
+			$get_data = $this->db_daftar_delivery_order->load_data_daftar_delivery_order($post)->row();			
+			// print_r($get_data);
+			// exit;
+			$new_amount = $get_data->so_total_amount - $get_data->so_total_amount;
+			$params['total_amount'] = $new_amount;
+			$params['so_id'] = $get_data->so_id;
 
-			if ($delete_data_item->num_rows() > 0) 
+			$new_qty = $get_data->dod_shipping_qty - $get_data->sod_realisasi;
+			$params['new_qty'] = $new_qty;
+			$params['dod_sod_id'] = $get_data->dod_sod_id;
+
+			$update_amount = $this->db_daftar_delivery_order->update_amount_sales_order_detail($params);
+
+			$update_qty = $this->db_daftar_delivery_order->update_quantity_sales_order_detail($params);
+
+			$delete_do = $this->db_daftar_delivery_order->delete_data_daftar_delivery_order($post);
+
+			if ($delete_do->num_rows() > 0) 
 			{
-				$result = $delete_data_item->result();
+				$result = $delete_do->result();
 				$number = 1;
 
 				foreach ($result as $k => $v)
 				{
-					$v->no = $number;
+					$v->num = $number;
 
 					$number++;
 				}
