@@ -51,6 +51,14 @@ class Daftar_sales_order extends NOOBS_Controller
 
 				$get_total_so = $this->db_daftar_sales_order->get_progress_so(array('so_id' => $v->so_id));
 
+				$get_progress_do = $this->db_daftar_sales_order->get_progress_do(array('so_id' => $v->so_id));
+				
+				if($get_progress_do->num_rows() > 0) 
+				{
+					$prog = $get_progress_do->row();
+					$v->tot_prog =  (! empty($prog->total_progress)) ? $prog->total_progress : 0;
+				}
+
 				if($get_progress_so->num_rows() > 0) {
 					$progress = $get_progress_so->row();
 					$v->progress =  $progress->progress;
@@ -203,6 +211,18 @@ class Daftar_sales_order extends NOOBS_Controller
 
 					$get_total_so = $this->db_daftar_sales_order->get_progress_so(array('so_id' => $v->so_id));
 
+					$get_progress_do = $this->db_daftar_sales_order->get_progress_do(array('so_id' => $v->so_id));
+					
+					if($get_progress_do->num_rows() > 0) 
+					{
+						$prog = $get_progress_do->row();
+						$v->tot_prog =  (! empty($prog->total_progress)) ? $prog->total_progress : 0;
+					}
+					else
+					{
+						$v->tot_prog = 0;
+					}
+
 					if($get_progress_so->num_rows() > 0) {
 						$progress = $get_progress_so->row();
 						$v->progress =  $progress->progress;
@@ -249,6 +269,7 @@ class Daftar_sales_order extends NOOBS_Controller
 				foreach ($result as $k => $v)
 				{
 					$v->no = $number;
+					$v->sod_qty = number_format($v->sod_qty);
 
 					$number++;
 				}
@@ -269,6 +290,7 @@ class Daftar_sales_order extends NOOBS_Controller
 			$date = date('Y-m-d');
 			$post['date_range1'] = date('Y-m-01');
 			$post['date_range2'] = date('Y-m-t',strtotime($date));
+
 			$store_data_daftar_sales_order = $this->db_daftar_sales_order->store_data_daftar_sales_order($post);
 
 			if ($store_data_daftar_sales_order->num_rows() > 0) 
@@ -283,6 +305,8 @@ class Daftar_sales_order extends NOOBS_Controller
 					$get_progress_so = $this->db_daftar_sales_order->get_progress_so(array('so_id' => $v->so_id,'dod_is_status' => 'SELESAI'));
 
 					$get_total_so = $this->db_daftar_sales_order->get_progress_so(array('so_id' => $v->so_id));
+					
+					$get_progress_do = $this->db_daftar_sales_order->get_progress_do(array('so_id' => $v->so_id));
 
 					if($get_progress_so->num_rows() > 0) {
 						$progress = $get_progress_so->row();
@@ -301,14 +325,20 @@ class Daftar_sales_order extends NOOBS_Controller
 					{
 						$v->total = 0;
 					}
+
+					if($get_progress_do->num_rows() > 0) {
+						$prog = $get_progress_do->row();
+						$v->tot_prog =  (! empty($prog->total_progress)) ? $prog->total_progress : 0;
+					}
 					
 					$v->no = $number;
 					$v->total_progress = ($v->total !== '0') ? round(($progress->progress * 100) / $total->progress,2) : '0';	
 					$v->so_created_date = date('d-m-Y',strtotime($v->so_created_date));	
 					$v->so_total_amount = number_format($v->so_total_amount);	
+					$v->so_total_terpenuhi = number_format($v->so_total_amount);	
 				}
 
-
+				// print_r($result);exit;
 				echo json_encode(array('success' => TRUE, 'data' => $result));
 			}
 			else echo json_encode(array('success' => FALSE, 'msg' => 'Data not found!'));
@@ -322,6 +352,7 @@ class Daftar_sales_order extends NOOBS_Controller
 		{
 			$post = $this->input->post(NULL, TRUE);
 			// print_r($post);exit;
+			$post['sod_qty'] = str_replace(',','',$post['sod_qty']);
 			$store_detail_so = $this->db_daftar_sales_order->store_detail_so($post);
 
 			if ($store_detail_so->num_rows() > 0) 
@@ -332,6 +363,7 @@ class Daftar_sales_order extends NOOBS_Controller
 				foreach ($result as $k => $v)
 				{
 					$v->no = $number;
+					$v->sod_qty = number_format($v->sod_qty);
 
 					$number++;
 				}
@@ -343,58 +375,7 @@ class Daftar_sales_order extends NOOBS_Controller
 		else $this->show_404();
 	}
 	
-	// public function store_data_temporary()
-	// {
-	// 	if (isset($_POST['action']) && $_POST['action'] == 'insert_temporary_data')
-	// 	{
-	// 		$post = $this->input->post(NULL, TRUE);
-
-	// 		$get_data_item = $this->db_daftar_sales_order->get_option_item_list($post)->row();
-			
-	// 		$idx = (! empty($this->session->userdata('temp_data'))) ? (count($this->session->userdata('temp_data')) - 1) +1 : 0;
-			
-	// 		if($idx == 0)
-	// 		{
-	// 			$temp[$idx] = (object) array(
-	// 				'qty' => $post['qty'],
-	// 				'il_item_name' => $get_data_item->il_item_name
-	// 			);				
-			
-	// 			$this->session->set_userdata(array(
-	// 				'temp_data' => $temp
-	// 			));
-	// 		}
-	// 		else
-	// 		{				
-	// 			$temp = (object) array(
-	// 				'qty' => $post['qty'],
-	// 				'il_item_name' => $get_data_item->il_item_name
-	// 			);
-
-	// 			array_push($_SESSION['temp_data'],$temp);
-				
-	// 		} 
-
-			
-	// 		// print_r($this->session);exit;
-	// 		if (count($this->session->userdata('temp_data')) > 0) 
-	// 		{
-	// 			$idx = 0;
-	// 			$temporary = $this->session->userdata('temp_data');
-	// 			foreach ($temporary as $k => $v)
-	// 			{
-	// 				$v->idx = $idx;
-
-	// 				$idx++;
-	// 			}
-				
-	// 			echo json_encode(array('success' => TRUE, 'data' => $temporary));
-	// 		}
-	// 		else echo json_encode(array('success' => FALSE, 'msg' => 'Data not found!'));
-	// 	}
-	// 	else $this->show_404();
-	// }
-
+	
 	public function delete_data_item()
 	{
 		if (isset($_POST['action']) && $_POST['action'] == 'delete_data_item')

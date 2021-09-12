@@ -120,6 +120,7 @@ const daftarSalesOrderList = {
 			body += '<td>' + item.so_no_trx + '</td>';
 			body += '<td>' + item.v_vendor_name + '</td>';
 			body += '<td>' + item.so_qty + '</td>';
+			body += '<td>' + item.tot_prog + '</td>';
 			body += '<td>' + item.so_total_amount + '</td>';
 			body += '<td>' + item.rd_name + '</td>';
 			body += '<td>' + item.so_created_date + '</td>';
@@ -348,6 +349,24 @@ const daftarSalesOrderList = {
 							$('#il_id').attr('disabled', true);
 						}
 					});
+
+					if($('#v_vendor_id').val() !== "") {
+						var val = $('#v_vendor_id').val();
+						console.log(val)
+						if (val !== '') {
+							
+							daftarSalesOrderList.generateItemList(val);
+
+						} else {
+							$('#il_id').html($('<option>', {
+								value: '',
+								text: 'Item Barang'
+							}));
+
+							$('#il_id').attr('disabled', true);
+						}
+					}
+
 					$('#il_id').change(function() {
 						
 						$('#sod_qty').val('');
@@ -393,6 +412,20 @@ const daftarSalesOrderList = {
 
 								$('#txt_district').attr('disabled', true);
 							}
+					});
+
+					$('#sod_qty').keyup(function(event) {
+
+					  // skip for arrow keys
+					  if(event.which >= 37 && event.which <= 40) return;
+
+					  // format number
+					  $(this).val(function(index, value) {
+					    return value
+					    .replace(/\D/g, "")
+					    .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+					    ;
+					  });
 					});
 
 					// console.log(mode)				

@@ -14,11 +14,12 @@ class Driver_model extends NOOBS_Model
 	public function load_data_driver($params = array())
 	{
 		// print_r($params);exit;
-		$this->db->select('d.*,rp.rp_id,rd.rd_id,rsd.rsd_name');
+		$this->db->select('*,rp.rp_id,rd.rd_id,rsd.rsd_name,ud.ud_username');
 		$this->db->from('driver as d');
 		$this->db->join('ref_sub_district as rsd','rsd.rsd_id = d.d_district_id','LEFT');
 		$this->db->join('ref_district as rd','rd.rd_id = rsd.rsd_district_id','LEFT');
 		$this->db->join('ref_province as rp','rp.rp_id = rd.rd_province_id','LEFT');
+		$this->db->join('user_detail as ud','ud.ud_id = d.d_ud_id','LEFT');
 
 		if (isset($params['txt_item']) && ! empty($params['txt_item']))
 		{
@@ -33,10 +34,10 @@ class Driver_model extends NOOBS_Model
 		$this->db->where('d.d_is_active', 'Y');
 		$this->db->order_by('d.d_name', 'ASC');
 
-		return $this->db->get();
+		return $this->create_result($params);
  	}
 
-	public function store_data_driver($params = array())
+	public function store_data($params = array())
 	{
 		$this->table = 'driver';
 		// print_r($params);exit;
@@ -45,30 +46,42 @@ class Driver_model extends NOOBS_Model
 			'd_address' => $params['d_address'],
 			'd_phone' => $params['d_phone'],
 			'd_email' => $params['d_email'],
-			'd_district_id' => $params['d_district_id']
+			'd_district_id' => $params['d_district_id'],
+			'd_ud_id' => $params['txt_user_id']
 		);
 
-		if ($params['mode'] == 'add') $this->add($new_params, TRUE);
-		else $this->edit($new_params, "d_id = {$params['txt_id']}");
-
-		return $this->load_data_driver();
+		if ($params['mode'] == 'add') return $this->add($new_params, TRUE);
+		else return $this->edit($new_params, "d_id = {$params['txt_id']}");
 	}
 
-	public function delete_data_driver($params = array())
-	{
-		$this->table = 'driver';
+	// public function delete_data_driver($params = array())
+	// {
+	// 	$this->table = 'driver';
 
-		$this->edit(['d_is_active' => 'N'], "d_id = {$params['txt_id']}");
+	// 	$this->edit(['d_is_active' => 'N'], "d_id = {$params['txt_id']}");
 		
-		return $this->load_data_driver();
-	}
+	// 	return $this->load_data_driver();
+	// }
 
 	public function load_data($params = array())
 	{
-		$this->db->where('il_item', strtoupper($params['txt_item']));
-		$this->db->where('il_is_active', 'Y');
+		// print_r($params);exit;
+		$this->db->select('d.*,rp.rp_id,rd.rd_id,rsd.rsd_name,ud.ud_username');
+		$this->db->from('driver as d');
+		$this->db->join('ref_sub_district as rsd','rsd.rsd_id = d.d_district_id','LEFT');
+		$this->db->join('ref_district as rd','rd.rd_id = rsd.rsd_district_id','LEFT');
+		$this->db->join('ref_province as rp','rp.rp_id = rd.rd_province_id','LEFT');
+		$this->db->join('user_detail as ud','ud.ud_id = d.d_ud_id','LEFT');
 
-		return $this->db->get('driver');
+		if (isset($params['d_id']) && ! empty($params['d_id']))
+		{
+			$this->db->where('d.d_id', strtoupper($params['d_id']));
+		}
+
+		$this->db->where('d.d_is_active', 'Y');
+		$this->db->order_by('d.d_name', 'ASC');
+
+		return $this->db->get();
  	}
 
  	public function get_option_province()
@@ -86,6 +99,16 @@ class Driver_model extends NOOBS_Model
 		return $this->db->get('ref_district');
  	}
 
+ 	public function get_option_user_detail($id = "")
+	{
+		$this->db->from('user_detail');
+		$this->db->where('ud_id not in
+		(select d_ud_id from driver where d_ud_id is not null and d_ud_id not in ("'.$id.'"))');
+		$this->db->order_by('ud_fullname', 'ASC');
+		
+		return $this->db->get();
+ 	}
+
  	public function get_district_option($params)
 	{
 		$this->db->where('rsd_district_id', $params['district_id']);
@@ -101,12 +124,11 @@ class Driver_model extends NOOBS_Model
 		return $this->db->get('driver');
  	}
 
-	public function delete_data_item($params = array())
+	public function delete_data($params = array())
 	{
 		$this->table = 'driver';
 
-		$this->edit(['d_is_active' => 'N'], "d_id = {$params['txt_id']}");
-		
-		return $this->load_data_driver();
+		return $this->edit(['d_is_active' => 'N'], "d_id = {$params['txt_id']}");
+	
 	}
 }

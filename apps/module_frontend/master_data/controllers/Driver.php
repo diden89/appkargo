@@ -30,42 +30,54 @@ class Driver extends NOOBS_Controller
 			'<script src="'.base_url('scripts/master_data/driver.js').'"></script>',
 		);
 
-		$this->store_params['item'] = [];
-
-		$load_data_driver = $this->db_driver->load_data_driver();
-
-		if ($load_data_driver->num_rows() > 0)
-		{
-			$num = 0;
-			$result = $load_data_driver->result();
-
-			foreach ($result as $k => $v)
-			{
-				$num++;
-
-				$v->num = $num;
-			}
-
-			$this->store_params['item'] = $result;
-		}
-
 		$this->view('driver_view');
 	}
+
+	public function get_data()
+	{
+		if (isset($_POST['action']) && $_POST['action'] == 'get_data')
+		{
+			$post = $this->input->post(NULL, TRUE);
+			$load_data_driver = $this->db_driver->load_data_driver($post);
+
+			$result = $load_data_driver;
+			$number = 1;
+
+			foreach ($result->data as $k => $v)
+			{
+				$v->no = $number;
+
+				$number++;
+			}
+
+			echo json_encode($result);
+		}
+		else $this->show_404();
+	}
+
 
 	public function load_driver_form()
 	{
 		if (isset($_POST['action']) && $_POST['action'] == 'load_driver_form')
 		{
 			$post = $this->input->post(NULL, TRUE);
+
 			$params = array(
 				'table' => 'province'
 			);
 
 			$post['province'] = $this->db_driver->get_option_province()->result();
 			$post['vendor'] = $this->db_driver->get_option_driver()->result();
+			// print_r($post['data']);exit;
 			if($post['mode'] == 'edit')
 			{
-				$post['data'] = $this->db_driver->load_data_driver($post)->row();
+				$post['driver'] = $this->db_driver->load_data($post)->row();
+				$post['user_detail'] = $this->db_driver->get_option_user_detail($post['data']['d_ud_id'])->result();
+				
+			}
+			else
+			{
+				$post['user_detail'] = $this->db_driver->get_option_user_detail()->result();
 			}
 	
 			$this->_view('driver_form_view', $post);
@@ -116,69 +128,30 @@ class Driver extends NOOBS_Controller
 		else $this->show_404();
 	}
 
-	public function load_data_driver()
-	{
-		if (isset($_POST['action']) && $_POST['action'] == 'load_data_driver')
-		{
-			$post = $this->input->post(NULL, TRUE);
-			$load_data_driver = $this->db_driver->load_data_driver($post);
-			// print_r($_POST);exit;
-			if ($load_data_driver->num_rows() > 0) 
-			{
-				$result = $load_data_driver->result();
-				$number = 1;
 
-				foreach ($result as $k => $v)
-				{
-					$v->no = $number;
-
-					$number++;
-				}
-
-				echo json_encode(array('success' => TRUE, 'data' => $result));
-			}
-			else echo json_encode(array('success' => FALSE, 'msg' => 'Data not found!'));
-		}
-		else $this->show_404();
-	}
-
-	public function store_data_driver()
+	public function store_data()
 	{
 		// print_r($_POST);exit;
-		if (isset($_POST['action']) && $_POST['action'] == 'store_data_driver')
+		if (isset($_POST['action']) && $_POST['action'] == 'store_data')
 		{
 			$post = $this->input->post(NULL, TRUE);
-			$store_data_driver = $this->db_driver->store_data_driver($post);
+			$store_data = $this->db_driver->store_data($post);
 
-			if ($store_data_driver->num_rows() > 0) 
-			{
-				$result = $store_data_driver->result();
-				$number = 1;
-
-				foreach ($result as $k => $v)
-				{
-					$v->no = $number;
-
-					$number++;
-				}
-
-				echo json_encode(array('success' => TRUE, 'data' => $result));
-			}
-			else echo json_encode(array('success' => FALSE, 'msg' => 'Data not found!'));
+			echo json_encode(array('success' => $store_data));
 		}
 		else $this->show_404();
 	}
 
-	public function delete_data_item()
+	public function delete_data()
 	{
-		if (isset($_POST['action']) && $_POST['action'] == 'delete_data_item')
+		if (isset($_POST['action']) && $_POST['action'] == 'delete_data')
 		{
 			$post = $this->input->post(NULL, TRUE);
-			$delete_data_item = $this->db_driver->delete_data_item($post);
+			$delete_data = $this->db_driver->delete_data($post);
 
-			if ($delete_data_item->num_rows() > 0) 
+			if ($delete_data->num_rows() > 0) 
 			{
-				$result = $delete_data_item->result();
+				$result = $delete_data->result();
 				$number = 1;
 
 				foreach ($result as $k => $v)

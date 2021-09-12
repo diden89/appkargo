@@ -22,9 +22,23 @@
 	<div class="row">
 		<div class="col-md-12">
 			<div class="form-group row">
+				<label for="url" class="col-sm-4 col-form-label">User Login</label>
+				<div class="col-sm-8">
+					<select class="form-control select2"  name="txt_user_id" id="txt_user_id">
+						<option value="">-Select-</option>
+						<?php
+							foreach($user_detail as $k => $v)
+							{
+								echo '<option value="'.$v->ud_id.'" '.(($driver->d_ud_id) == $v->ud_id ? 'selected':"").'>'.$v->ud_username.'</option>';
+							}
+						?>
+					</select>
+				</div>
+			</div>
+			<div class="form-group row">
 				<label for="caption" class="col-sm-4 col-form-label">Nama Pengemudi</label>
 				<div class="col-sm-8">
-					<input type="text" name="d_name" class="form-control" id="vendor_name" value="<?php echo $mode == 'edit' && $data !== FALSE ? $data->d_name : '' ?>" required="required" <?php echo $mode == 'edit' ? '' : ''; ?>>
+					<input type="text" name="d_name" class="form-control" id="vendor_name" value="<?php echo $mode == 'edit' && $driver !== FALSE ? $driver->d_name : '' ?>" required="required" <?php echo $mode == 'edit' ? '' : ''; ?>>
 				</div>
 			</div>
 			<div class="form-group row">
@@ -35,7 +49,7 @@
 						<?php
 							foreach($province as $k => $v)
 							{
-								echo '<option value="'.$v->rp_id.'" '.(($data->rp_id == $v->rp_id) ? 'selected':"").'>'.$v->rp_name.'</option>';
+								echo '<option value="'.$v->rp_id.'" '.(($driver->rp_id == $v->rp_id) ? 'selected':"").'>'.$v->rp_name.'</option>';
 							}
 						?>
 					</select>
@@ -61,19 +75,19 @@
 			<div class="form-group row">
 				<label for="caption" class="col-sm-4 col-form-label">Alamat</label>
 				<div class="col-sm-8">
-					<textarea name="d_address" class="form-control" placeholder="Enter content"><?php echo (isset($data->d_address)) ? $data->d_address : ""; ?></textarea>
+					<textarea name="d_address" class="form-control" placeholder="Enter content"><?php echo (isset($driver->d_address)) ? $driver->d_address : ""; ?></textarea>
 				</div>
 			</div>
 			<div class="form-group row">
 				<label for="url" class="col-sm-4 col-form-label">Telpon</label>
 				<div class="col-sm-8">
-					<input type="text" name="d_phone" class="form-control" id="vendor_phone" value="<?php echo $mode == 'edit' && $data !== FALSE ? $data->d_phone : '' ?>" required="required" <?php echo $mode == 'edit' ? '' : ''; ?>>
+					<input type="text" name="d_phone" class="form-control" id="vendor_phone" value="<?php echo $mode == 'edit' && $driver !== FALSE ? $driver->d_phone : '' ?>" required="required" <?php echo $mode == 'edit' ? '' : ''; ?>>
 				</div>
 			</div>
 			<div class="form-group row">
 				<label for="url" class="col-sm-4 col-form-label">Email</label>
 				<div class="col-sm-8">
-					<input type="text" name="d_email" class="form-control" id="vendor_email" value="<?php echo $mode == 'edit' && $data !== FALSE ? $data->d_email : '' ?>" required="required" <?php echo $mode == 'edit' ? '' : ''; ?>>
+					<input type="text" name="d_email" class="form-control" id="vendor_email" value="<?php echo $mode == 'edit' && $driver !== FALSE ? $driver->d_email : '' ?>" required="required" <?php echo $mode == 'edit' ? '' : ''; ?>>
 				</div>
 			</div>
 		</div>		
