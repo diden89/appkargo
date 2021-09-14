@@ -428,9 +428,7 @@ class Daftar_delivery_order extends NOOBS_Controller
 			else echo json_encode(array('success' => FALSE, 'msg' => 'Data not found!'));
 		}
 		else $this->show_404();
-	}
-
-	
+	}	
 
 	public function store_update_status()//dipakai
 	{

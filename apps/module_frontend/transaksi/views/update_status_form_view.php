@@ -26,6 +26,7 @@
 			<div class="form-group row">
 				<label for="caption" class="col-md-4 col-form-label">No Trx</label>
 				<div class="input-group col-md-8">
+					
 					<input type="text" name="no_trx" class="form-control" id="no_trx" disabled="disabled" value="<?=$data->dod_no_trx?>">
 				</div>
 			</div>
