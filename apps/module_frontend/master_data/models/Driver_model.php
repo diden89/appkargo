@@ -84,6 +84,34 @@ class Driver_model extends NOOBS_Model
 		return $this->db->get();
  	}
 
+ 	public function get_autocomplete_data($params = array())
+	{
+		// print_r($params);exit;
+		$this->db->select('d.*,rp.rp_id,rd.rd_id,rsd.rsd_name,ud.ud_username,d_id as id,
+			d_name as text,
+			d_name as full_name');
+		$this->db->from('driver as d');
+		$this->db->join('ref_sub_district as rsd','rsd.rsd_id = d.d_district_id','LEFT');
+		$this->db->join('ref_district as rd','rd.rd_id = rsd.rsd_district_id','LEFT');
+		$this->db->join('ref_province as rp','rp.rp_id = rd.rd_province_id','LEFT');
+		$this->db->join('user_detail as ud','ud.ud_id = d.d_ud_id','LEFT');
+
+		if (isset($params['d_id']) && ! empty($params['d_id']))
+		{
+			$this->db->where('d.d_id', strtoupper($params['d_id']));
+		}
+
+		$this->db->where('d.d_is_active', 'Y');
+
+		if (isset($params['query']) && !empty($params['query'])) 
+		{
+			$query = $params['query'];
+			$this->db->where("(d.d_name LIKE '%{$query}%' OR d.d_address LIKE '%{$query}%')", NULL, FALSE);
+		}
+
+		return $this->create_autocomplete_data($params);
+	}
+
  	public function get_option_province()
 	{
 		$this->db->order_by('rp_name', 'ASC');

@@ -702,11 +702,11 @@ const daftarDeliveryOrderList = {
 		if (mode == 'edit') {
 			params.mode = mode;
 			title = 'Edit';
-			params.no_trx = $(el).data('no_trx');
-			params.dod_is_status = $(el).data('is_status');
-			params.id = $(el).data('id');
-			params.so_id = $(el).data('so_id');
-			params.so_no_trx = $(el).data('so_no_trx');
+			params.txt_id = $(el).data('id');
+			// params.no_trx = $(el).data('no_trx');
+			// params.dod_is_status = $(el).data('is_status');
+			// params.so_id = $(el).data('so_id');
+			// params.so_no_trx = $(el).data('so_no_trx');
 			// params.rsd_id = $(el).data('rsd_id');
 		}
 		else
@@ -789,16 +789,7 @@ const daftarDeliveryOrderList = {
 					});
 					// popup.close();
 				}
-			}],
-			listeners: {
-				onshow: function(popup) {					
-					$('#no_trx').val(params.no_trx);			
-					$('#dod_id').val(params.id);			
-					$('#no_trx_dod').val(params.no_trx);			
-					$('#so_id').val(params.so_id);			
-					$('#so_no_trx').val(params.so_no_trx);			
-				}
-			}
+			}]
 		});
 
 	},

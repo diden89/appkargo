@@ -204,7 +204,7 @@ $(document).ready(function() {
 
 								if (me.val() !== '') {
 									
-									driverList.generateRegion(me.val());
+									DRIVER.generateRegion(me.val());
 
 								} else {
 									$('#txt_region').html($('<option>', {
@@ -227,7 +227,7 @@ $(document).ready(function() {
 
 								if (me.val() !== '') {
 									
-									driverList.generateDistrict(me.val());
+									DRIVER.generateDistrict(me.val());
 
 								} else {
 									$('#txt_district').html($('<option>', {

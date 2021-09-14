@@ -62,8 +62,8 @@
 										<th width="10">No</th>
 										<th>No Transaksi</th>
 										<th>Nama Vendor</th>
-										<th>Total Order</th>
-										<th>Total Terpenuhi</th>
+										<th>Total Order / Kg</th>
+										<th>Total Terpenuhi / Kg</th>
 										<th>Total Ongkir</th>
 										<th>Tujuan</th>
 										<th>Tanggal</th>

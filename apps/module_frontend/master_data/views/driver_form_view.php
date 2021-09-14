@@ -11,12 +11,11 @@
 ?>
 
 <form role="form" id="addCustomer" autocomplete="off">
-	<input type="hidden" name="action" value="store_data_driver">
-	<input type="hidden" name="mode" value="add">
+	<input type="hidden" name="action" value="store_data">
+	<input type="hidden" name="mode" value="<?php echo $mode; ?>">
 
-	<?php if (isset($txt_id)): ?>
-		<input type="hidden" name="mode" value="edit">
-		<input type="hidden" name="txt_id" value="<?php echo $txt_id; ?>">
+	<?php if (isset($driver)): ?>
+		<input type="hidden" name="txt_id" value="<?php echo $driver->d_id; ?>">
 	<?php endif; ?>
 	
 	<div class="row">

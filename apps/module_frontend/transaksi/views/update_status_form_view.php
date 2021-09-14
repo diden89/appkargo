@@ -13,10 +13,10 @@
 <form role="form" id="addDaftarSalesOrder" autocomplete="off">
 	<input type="hidden" name="action" value="store_update_status">
 	<input type="hidden" name="mode" value="<?=$mode?>" id="mode">
-	<input type="hidden" name="dod_id" value="" id="dod_id">
-	<input type="hidden" name="no_trx" value="" id="no_trx_dod">
-	<input type="hidden" name="so_id" value="" id="so_id">
-	<input type="hidden" name="so_no_trx" value="" id="so_no_trx">
+	<input type="hidden" name="dod_id" value="<?=$data->dod_id?>" id="dod_id" >
+	<input type="hidden" name="no_trx" value="<?=$data->dod_no_trx?>" id="no_trx_dod">
+	<input type="hidden" name="so_id" value="<?=$data->so_id?>" id="so_id">
+	<input type="hidden" name="so_no_trx" value="<?=$data->so_no_trx?>" id="so_no_trx">
 
 	<?php if (isset($txt_id)): ?>
 		<input type="hidden" name="txt_id" value="<?php echo $txt_id; ?>">
@@ -24,47 +24,27 @@
 	<div class="row">		
 		<div class="col-md-12">
 			<div class="form-group row">
-				<label for="caption" class="col-sm-4 col-form-label">No Trx</label>
-				<div class="input-group col-8">
-					<input type="text" name="no_trx" class="form-control" id="no_trx" disabled="disabled">
+				<label for="caption" class="col-md-4 col-form-label">No Trx</label>
+				<div class="input-group col-md-8">
+					<input type="text" name="no_trx" class="form-control" id="no_trx" disabled="disabled" value="<?=$data->dod_no_trx?>">
 				</div>
 			</div>
-		</div>
-		<div class="col-md-12">
 			<div class="form-group row">
-				<label for="caption" class="col-sm-4 col-form-label">Total Order</label>
-				<div class="input-group col-8">
-					<input type="text" name="total_order" class="form-control" id="total_order" disabled="disabled">
+				<label for="caption" class="col-md-4 col-form-label">Total Order</label>
+				<div class="input-group col-md-8">
+					<input type="text" name="total_order" class="form-control" id="total_order" disabled="disabled" value="<?=$data->dod_shipping_qty?>">
 				</div>
 			</div>
-		</div>
-		<div class="col-md-12">
 			<div class="form-group row">
-				<label for="caption" class="col-sm-4 col-form-label">Total Terpenuhi</label>
-				<div class="input-group col-8">
+				<label for="caption" class="col-md-4 col-form-label">Total Terpenuhi</label>
+				<div class="input-group col-md-8">
 					<input type="text" name="total_terpenuhi" class="form-control" id="total_terpenuhi">
 				</div>
 			</div>
-		</div>
-		<div class="col-md-12">
 			<div class="form-group row">
-				<label for="caption" class="col-sm-4 col-form-label">Keterangan</label>
-				<div class="input-group col-8">
+				<label for="caption" class="col-md-4 col-form-label">Keterangan</label>
+				<div class="input-group col-md-8">
 					<textarea name="keterangan" class="form-control" placeholder="Enter content"></textarea>
-				</div>
-			</div>
-		</div>
-		<div class="col-md-12">
-			<div class="form-group row">
-				<label for="caption" class="col-sm-4 col-form-label">Update Status</label>
-				<div class="col-sm-8">
-					<select class="form-control select2"  name="dod_is_status" id="dod_is_status">
-						<option value="">-Select-</option>
-						<?php echo $sel = ($dod_is_status == 'ORDER') ? 'selected' : ''; ?>
-						<option value="ORDER" <?php echo $sel = ($dod_is_status == 'ORDER') ? 'selected' : ''; ?>>ORDER</option>
-						<option value="MUAT" <?php echo $sel = ($dod_is_status == 'MUAT') ? 'selected' : ''; ?>>MUAT</option>
-						<option value="SELESAI" <?php echo $sel = ($dod_is_status == 'SELESAI') ? 'selected' : ''; ?>>SELESAI</option>						
-					</select>
 				</div>
 			</div>
 		</div>

@@ -68,10 +68,9 @@ class Driver extends NOOBS_Controller
 
 			$post['province'] = $this->db_driver->get_option_province()->result();
 			$post['vendor'] = $this->db_driver->get_option_driver()->result();
-			// print_r($post['data']);exit;
 			if($post['mode'] == 'edit')
 			{
-				$post['driver'] = $this->db_driver->load_data($post)->row();
+				$post['driver'] = $this->db_driver->load_data($post['data'])->row();
 				$post['user_detail'] = $this->db_driver->get_option_user_detail($post['data']['d_ud_id'])->result();
 				
 			}
@@ -79,6 +78,7 @@ class Driver extends NOOBS_Controller
 			{
 				$post['user_detail'] = $this->db_driver->get_option_user_detail()->result();
 			}
+			// print_r($post);exit;
 	
 			$this->_view('driver_form_view', $post);
 		}
@@ -144,26 +144,26 @@ class Driver extends NOOBS_Controller
 
 	public function delete_data()
 	{
+		$post = $this->input->post(NULL, TRUE);
 		if (isset($_POST['action']) && $_POST['action'] == 'delete_data')
 		{
-			$post = $this->input->post(NULL, TRUE);
+			unset($post['action']);
 			$delete_data = $this->db_driver->delete_data($post);
 
-			if ($delete_data->num_rows() > 0) 
-			{
-				$result = $delete_data->result();
-				$number = 1;
+			echo json_encode(array('success' => $delete_data));
+		}
+		else $this->show_404();
+	}
 
-				foreach ($result as $k => $v)
-				{
-					$v->no = $number;
+	public function get_autocomplete_data()
+	{
+		$post = $this->input->post(NULL, TRUE);
 
-					$number++;
-				}
-				
-				echo json_encode(array('success' => TRUE, 'data' => $result));
-			}
-			else echo json_encode(array('success' => FALSE, 'msg' => 'Data not found!'));
+		if (isset($post['action']) && !empty($post['action']) && $post['action'] == 'get_autocomplete_data') 
+		{
+			$get_autocomplete_data = $this->db_driver->get_autocomplete_data($post);
+
+			echo json_encode($get_autocomplete_data);
 		}
 		else $this->show_404();
 	}

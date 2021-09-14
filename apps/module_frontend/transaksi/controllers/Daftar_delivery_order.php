@@ -267,7 +267,10 @@ class Daftar_delivery_order extends NOOBS_Controller
 		if (isset($_POST['action']) && $_POST['action'] == 'load_update_status_form')
 		{
 			$post = $this->input->post(NULL, TRUE);
-					
+
+			$post['data'] = $this->db_daftar_delivery_order->load_data_daftar_delivery_order($post)->row();
+			// print_r($post);exit;
+
 			$this->_view('update_status_form_view', $post);
 		}
 		else $this->show_404();
@@ -434,7 +437,7 @@ class Daftar_delivery_order extends NOOBS_Controller
 		if (isset($_POST['action']) && $_POST['action'] == 'store_update_status')
 		{
 			$post = $this->input->post(NULL, TRUE);
-			// print_r($post);exit;
+			print_r($post);exit;
 			
 			$input_to_delivery_order_status = $this->db_daftar_delivery_order->store_delivery_order_status($post);
 
