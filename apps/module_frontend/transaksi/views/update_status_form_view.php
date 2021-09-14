@@ -16,7 +16,7 @@
 	<input type="hidden" name="dod_id" value="<?=$data->dod_id?>" id="dod_id" >
 	<input type="hidden" name="no_trx" value="<?=$data->dod_no_trx?>" id="no_trx_dod">
 	<input type="hidden" name="so_id" value="<?=$data->so_id?>" id="so_id">
-	<input type="hidden" name="so_no_trx" value="<?=$data->so_no_trx?>" id="so_no_trx">
+	<input type="hidden" name="so_no_trx_" value="<?=$data->so_no_trx?>" id="so_no_trx">
 
 	<?php if (isset($txt_id)): ?>
 		<input type="hidden" name="txt_id" value="<?php echo $txt_id; ?>">
@@ -26,7 +26,7 @@
 			<div class="form-group row">
 				<label for="caption" class="col-md-4 col-form-label">No Trx</label>
 				<div class="input-group col-md-8">
-					
+
 					<input type="text" name="no_trx" class="form-control" id="no_trx" disabled="disabled" value="<?=$data->dod_no_trx?>">
 				</div>
 			</div>
