@@ -733,29 +733,47 @@ const daftarDeliveryOrderList = {
 
 					if ($.validation(form)) {
 						const formData = new FormData(form[0]);
+						var order = $('#total_order').val();
+							filled =  $('#total_terpenuhi').val();
 
-						$.ajax({
-							url: siteUrl('transaksi/daftar_delivery_order/store_update_status'),
-							type: 'POST',
-							dataType: 'JSON',
-							data: formData,
-							processData: false,
-							contentType: false,
-	         				cache: false,
-							success: function(result) {
-								if (result.success) {
-									toastr.success(msgSaveOk);
-									me._generateItemDataTable(result.data);
-								} else if (typeof(result.msg) !== 'undefined') toastr.error(result.msg);
-								else toastr.error(msgErr);
+						if(filled > order) 
+						{
+							Swal.fire({
+								title: 'Total Tidak Sesuai',
+								text: "Total tidak sesuai dengan jumlah order, periksa kembali!",
+								type: 'warning',
+								showCancelButton: false,
+								confirmButtonColor: '#17a2b8',
+								cancelButtonColor: '#d33',
+								confirmButtonText: 'Close!'
+							})
+						}
+						else
+						{
+							$.ajax({
+								url: siteUrl('transaksi/daftar_delivery_order/store_update_status'),
+								type: 'POST',
+								dataType: 'JSON',
+								data: formData,
+								processData: false,
+								contentType: false,
+		         				cache: false,
+								success: function(result) {
+									if (result.success) {
+										toastr.success(msgSaveOk);
+										me._generateItemDataTable(result.data);
+									} else if (typeof(result.msg) !== 'undefined') toastr.error(result.msg);
+									else toastr.error(msgErr);
 
-								popup.close();
+									popup.close();
 
-							},
-							error: function(error) {
-								toastr.error(msgErr);
-							}
-						});
+								},
+								error: function(error) {
+									toastr.error(msgErr);
+								}
+							});							
+						}
+
 					}
 				}
 			},
@@ -789,7 +807,24 @@ const daftarDeliveryOrderList = {
 					});
 					// popup.close();
 				}
-			}]
+			}],
+			listeners : {
+				onshow: function(popup) {
+					$('#total_terpenuhi').keyup(function(event) {
+
+					  // skip for arrow keys
+					  if(event.which >= 37 && event.which <= 40) return;
+
+					  // format number
+					  $(this).val(function(index, value) {
+					    return value
+					    .replace(/\D/g, "")
+					    .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+					    ;
+					  });
+					});
+				}
+			}
 		});
 
 	},

@@ -335,7 +335,7 @@ class Daftar_sales_order extends NOOBS_Controller
 					$v->total_progress = ($v->total !== '0') ? round(($progress->progress * 100) / $total->progress,2) : '0';	
 					$v->so_created_date = date('d-m-Y',strtotime($v->so_created_date));	
 					$v->so_total_amount = number_format($v->so_total_amount);	
-					$v->so_total_terpenuhi = number_format($v->so_total_amount);	
+					// $v->so_total_terpenuhi = number_format($v->so_total_amount);	
 				}
 
 				// print_r($result);exit;

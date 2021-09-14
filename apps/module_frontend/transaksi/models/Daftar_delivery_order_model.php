@@ -139,9 +139,9 @@ class Daftar_delivery_order_model extends NOOBS_Model
 		return $this->db->get();
  	}
 
- 	public function get_total_status($params = array(),$total = false) //dipakai
+ 	public function get_total_filled($params = array(),$total = false) //dipakai
 	{
-		$this->db->select('COUNT(dod.dod_id) as total_data');
+		$this->db->select('SUM(dod.dod_shipping_qty) as total_filled');
 		$this->db->from('delivery_order_detail as dod');
 		$this->db->join('sales_order_detail as sod','dod.dod_sod_id = sod.sod_id','LEFT');
 
@@ -161,7 +161,10 @@ class Daftar_delivery_order_model extends NOOBS_Model
 
 		$new_params = array(
 			'dos_date' => date('Y-m-d'),
-			'dos_delivery_id' => $params['dod_id'],
+			'dos_dod_id' => $params['dod_id'],
+			'dos_filled' => $params['total_terpenuhi'],
+			'dos_created_date' => date('Y-m-d H:i:s'),
+			'dos_keterangan' => $params['keterangan'],
 			'dos_status' => $params['dod_is_status']
 
 		);

@@ -254,13 +254,7 @@ class Daftar_delivery_order extends NOOBS_Controller
 			else echo json_encode(array('success' => FALSE, 'msg' => 'Data not found!'));
 		}
 		else $this->show_404();
-	}
-
-
-
-
-
-	
+	}	
 
 	public function load_update_status_form()
 	{
@@ -427,20 +421,21 @@ class Daftar_delivery_order extends NOOBS_Controller
 		if (isset($_POST['action']) && $_POST['action'] == 'store_update_status')
 		{
 			$post = $this->input->post(NULL, TRUE);
-			print_r($post);exit;
+			$post['total_terpenuhi'] = str_replace(',','',$post['total_terpenuhi']);
+			$post['dod_is_status'] = 'SELESAI';
 			
 			$input_to_delivery_order_status = $this->db_daftar_delivery_order->store_delivery_order_status($post);
 
 			$update_status = $this->db_daftar_delivery_order->store_update_status_delivery_order($post); //update status
+			print_r($post);exit;
 
-			$get_total_status = $this->db_daftar_delivery_order->get_total_status($post,'total');
+			$get_total_filled = $this->db_daftar_delivery_order->get_total_filled($post,'total');
 
-			if($get_total_status->num_rows() > 0) {
-				$post['dod_is_status'] = 'SELESAI';
-				$get_total_success = $this->db_daftar_delivery_order->get_total_status($post);
+			if($get_total_filled->num_rows() > 0) {
+				$get_total_success = $this->db_daftar_delivery_order->get_total_filled($post);
 
 				if($get_total_success->num_rows() > 0) {
-					$get_ttl = $get_total_status->row();
+					$get_ttl = $get_total_filled->row();
 					$get_suc = $get_total_success->row();
 
 					if($get_suc->total_data < $get_ttl->total_data) {
