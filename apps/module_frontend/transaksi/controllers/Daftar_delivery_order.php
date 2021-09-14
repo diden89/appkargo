@@ -296,11 +296,7 @@ class Daftar_delivery_order extends NOOBS_Controller
 			else echo json_encode(array('success' => FALSE, 'msg' => 'Data Not Found!'));
 		}
 		else $this->show_404();
-	}
-
-	
-
-	
+	}	
 
 	public function get_item_list_option()
 	{
@@ -344,9 +340,7 @@ class Daftar_delivery_order extends NOOBS_Controller
 			else echo json_encode(array('success' => FALSE, 'msg' => 'Data Not Found!'));
 		}
 		else $this->show_404();
-	}
-
-	
+	}	
 
 	public function load_data_delivery_detail_do()
 	{
@@ -399,8 +393,6 @@ class Daftar_delivery_order extends NOOBS_Controller
 		}
 		else $this->show_404();
 	}
-
-
 
 	public function store_data_daftar_delivery_order()
 	{
