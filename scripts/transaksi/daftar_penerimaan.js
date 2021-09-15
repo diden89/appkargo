@@ -5,7 +5,7 @@
  * @edit Diden89
  * @version 1.0
  * @access Public
- * @path /rab_frontend/scripts/transaksi/daftar_delivery_order.js
+ * @path /rab_frontend/scripts/transaksi/daftar_penerimaan.js
  */
 
 const daftarDeliveryOrderList = {
@@ -58,11 +58,11 @@ const daftarDeliveryOrderList = {
 		const $this = $(el);
 		
 		$.ajax({
-			url: siteUrl('transaksi/daftar_delivery_order/load_data_daftar_delivery_order'),
+			url: siteUrl('transaksi/daftar_penerimaan/load_data_daftar_penerimaan'),
 			type: 'POST',
 			dataType: 'JSON',
 			data: {
-				action: 'load_data_daftar_delivery_order',
+				action: 'load_data_daftar_penerimaan',
 				so_no_trx: el.so_no_trx
 			},
 			success: function(result) {
@@ -82,11 +82,11 @@ const daftarDeliveryOrderList = {
 		const $this = $(el);
 		console.log(el.so_no_trx)
 		$.ajax({
-			url: siteUrl('transaksi/daftar_delivery_order/load_data_daftar_delivery_order'),
+			url: siteUrl('transaksi/daftar_penerimaan/load_data_daftar_penerimaan'),
 			type: 'POST',
 			dataType: 'JSON',
 			data: {
-				action: 'load_data_daftar_delivery_order',
+				action: 'load_data_daftar_penerimaan',
 				so_no_trx: el.so_no_trx
 			},
 			success: function(result) {
@@ -170,7 +170,7 @@ const daftarDeliveryOrderList = {
 	editDetailDO: function(el, mode) { 
 		
 		const me = this;
-		let params = {action: 'load_daftar_delivery_order_form'};
+		let params = {action: 'load_daftar_penerimaan_form'};
 
 		if (mode == 'edit') {
 			params.mode = mode;
@@ -211,7 +211,7 @@ const daftarDeliveryOrderList = {
 			sod_id = $('#detail_sales_order').val();
 
 			$.ajax({
-				url: siteUrl('transaksi/daftar_delivery_order/get_realisasi_qty'),
+				url: siteUrl('transaksi/daftar_penerimaan/get_realisasi_qty'),
 				type: 'POST',
 				dataType: 'JSON',
 				beforeSend: function() {},
@@ -239,7 +239,7 @@ const daftarDeliveryOrderList = {
 			c_id = $('#c_id').val();
 
 			$.ajax({
-				url: siteUrl('transaksi/daftar_delivery_order/get_ongkir_district'),
+				url: siteUrl('transaksi/daftar_penerimaan/get_ongkir_district'),
 				type: 'POST',
 				dataType: 'JSON',
 				beforeSend: function() {},
@@ -280,7 +280,7 @@ const daftarDeliveryOrderList = {
 	showItem: function(el, mode) {
 		
 		const me = this;
-		let params = {action: 'load_daftar_delivery_order_form'};	
+		let params = {action: 'load_daftar_penerimaan_form'};	
 
 		if (mode == 'edit') {
 			params.mode = mode;
@@ -306,7 +306,7 @@ const daftarDeliveryOrderList = {
 			id: 'showItem',
 			size: 'large',
 			proxy: {
-				url: siteUrl('transaksi/daftar_delivery_order/load_daftar_delivery_order_form'),
+				url: siteUrl('transaksi/daftar_penerimaan/load_daftar_penerimaan_form'),
 				params: params
 			},
 			buttons: [
@@ -332,11 +332,11 @@ const daftarDeliveryOrderList = {
 			// 		var so_id = $('#txt_sales_order').val();
 
 			// 		$.ajax({
-			// 			url: siteUrl('transaksi/daftar_delivery_order/print_delivery_order'),
+			// 			url: siteUrl('transaksi/daftar_penerimaan/print_penerimaan'),
 			// 			type: 'POST',
 			// 			dataType: 'JSON',
 			// 			data: {
-			// 				action : 'print_delivery_order',
+			// 				action : 'print_penerimaan',
 			// 				so_id : so_id
 			// 			},
 			// 			success: function(result) {
@@ -396,7 +396,7 @@ const daftarDeliveryOrderList = {
 							sod_id = $('#detail_sales_order').val();
 
 							$.ajax({
-								url: siteUrl('transaksi/daftar_delivery_order/get_realisasi_qty'),
+								url: siteUrl('transaksi/daftar_penerimaan/get_realisasi_qty'),
 								type: 'POST',
 								dataType: 'JSON',
 								beforeSend: function() {},
@@ -424,7 +424,7 @@ const daftarDeliveryOrderList = {
 							c_id = $('#c_id').val();
 
 							$.ajax({
-								url: siteUrl('transaksi/daftar_delivery_order/get_ongkir_district'),
+								url: siteUrl('transaksi/daftar_penerimaan/get_ongkir_district'),
 								type: 'POST',
 								dataType: 'JSON',
 								beforeSend: function() {},
@@ -491,7 +491,7 @@ const daftarDeliveryOrderList = {
 
 					$('#btnAddDetail').click(function(){
 
-						let new_params = {action: 'insert_delivery_order'};
+						let new_params = {action: 'insert_penerimaan'};
 
 							new_params.qty = $('#sod_qty').val();
 							new_params.dod_sod_id = $('#detail_sales_order').val();
@@ -557,7 +557,7 @@ const daftarDeliveryOrderList = {
 							else
 							{
 								$.ajax({
-									url: siteUrl('transaksi/daftar_delivery_order/store_data_detail_delivery_order'),
+									url: siteUrl('transaksi/daftar_penerimaan/store_data_detail_penerimaan'),
 									type: 'POST',
 									dataType: 'JSON',
 									data : new_params,
@@ -621,7 +621,7 @@ const daftarDeliveryOrderList = {
 						sod_id = $('#detail_sales_order').val();
 
 						$.ajax({
-							url: siteUrl('transaksi/daftar_delivery_order/get_realisasi_qty'),
+							url: siteUrl('transaksi/daftar_penerimaan/get_realisasi_qty'),
 							type: 'POST',
 							dataType: 'JSON',
 							beforeSend: function() {},
@@ -661,7 +661,7 @@ const daftarDeliveryOrderList = {
 						c_id = $('#c_id').val();
 
 						$.ajax({
-							url: siteUrl('transaksi/daftar_delivery_order/get_ongkir_district'),
+							url: siteUrl('transaksi/daftar_penerimaan/get_ongkir_district'),
 							type: 'POST',
 							dataType: 'JSON',
 							beforeSend: function() {},
@@ -720,7 +720,7 @@ const daftarDeliveryOrderList = {
 			id: 'showItem',
 			size: 'medium',
 			proxy: {
-				url: siteUrl('transaksi/daftar_delivery_order/load_update_status_form'),
+				url: siteUrl('transaksi/daftar_penerimaan/load_update_status_form'),
 				params: params
 			},
 			buttons: [{
@@ -751,7 +751,7 @@ const daftarDeliveryOrderList = {
 						else
 						{
 							$.ajax({
-								url: siteUrl('transaksi/daftar_delivery_order/store_update_status'),
+								url: siteUrl('transaksi/daftar_penerimaan/store_update_status'),
 								type: 'POST',
 								dataType: 'JSON',
 								data: formData,
@@ -785,11 +785,11 @@ const daftarDeliveryOrderList = {
 				onclick: function(popup) {
 
 					$.ajax({
-						url: siteUrl('transaksi/daftar_delivery_order/load_do_data'),
+						url: siteUrl('transaksi/daftar_penerimaan/load_do_data'),
 						type: 'POST',
 						dataType: 'JSON',
 						data: {
-							action : 'load_data_daftar_delivery_order'
+							action : 'load_data_daftar_penerimaan'
 						},
 						success: function(result) {
 							if (result.success) {
@@ -834,7 +834,7 @@ const daftarDeliveryOrderList = {
 		var detailSO = $('#detail_sales_order');
 			
 			$.ajax({
-				url: siteUrl('transaksi/daftar_delivery_order/get_detail_so_option'),
+				url: siteUrl('transaksi/daftar_penerimaan/get_detail_so_option'),
 				type: 'POST',
 				dataType: 'JSON',
 				beforeSend: function() {},
@@ -869,11 +869,11 @@ const daftarDeliveryOrderList = {
 						});
 
 						$.ajax({
-							url: siteUrl('transaksi/daftar_delivery_order/load_do_data'),
+							url: siteUrl('transaksi/daftar_penerimaan/load_do_data'),
 							type: 'POST',
 							dataType: 'JSON',
 							data : {
-								action : 'load_data_daftar_delivery_order',
+								action : 'load_data_daftar_penerimaan',
 								so_id : so_id
 							},
 							success: function(result) {
@@ -918,7 +918,7 @@ const daftarDeliveryOrderList = {
 		var itemList = $('#il_id');
 			// console.log(provinceId)
 			$.ajax({
-				url: siteUrl('transaksi/daftar_delivery_order/get_item_list_option'),
+				url: siteUrl('transaksi/daftar_penerimaan/get_item_list_option'),
 				type: 'POST',
 				dataType: 'JSON',
 				beforeSend: function() {},
@@ -964,7 +964,7 @@ const daftarDeliveryOrderList = {
 		var customer = $('#c_id');
 			
 			$.ajax({
-				url: siteUrl('transaksi/daftar_delivery_order/get_customer_option'),
+				url: siteUrl('transaksi/daftar_penerimaan/get_customer_option'),
 				type: 'POST',
 				dataType: 'JSON',
 				beforeSend: function() {},
@@ -1019,7 +1019,7 @@ const daftarDeliveryOrderList = {
 		}).then((result) => {
 			if (result.value) {
 				$.ajax({
-					url: siteUrl('transaksi/daftar_delivery_order/delete_data'),
+					url: siteUrl('transaksi/daftar_penerimaan/delete_data'),
 					type: 'POST',
 					dataType: 'JSON',
 					data: {
@@ -1052,7 +1052,7 @@ const daftarDeliveryOrderList = {
 		const $this = $(el);
 			
 		$.ajax({
-			url: siteUrl('transaksi/daftar_delivery_order/delete_data_temp'),
+			url: siteUrl('transaksi/daftar_penerimaan/delete_data_temp'),
 			type: 'POST',
 			dataType: 'JSON',
 			data: {

@@ -6,12 +6,12 @@
  * @edit Diden89
  * @version 1.0
  * @access Public
- * @path /appkargo/apps/module_frontend/transaksi/models/Daftar_delivery_order_model.php
+ * @path /appkargo/apps/module_frontend/transaksi/models/Daftar_penerimaan_model.php
  */
 
-class Daftar_delivery_order_model extends NOOBS_Model
+class Daftar_penerimaan_model extends NOOBS_Model
 {
-	public function load_data_daftar_delivery_order($params = array())
+	public function load_data_daftar_penerimaan($params = array())
 	{
 		// print_r($params);exit;
 		// $this->db->select('*,(select (dod.dod_shipping_qty * sh_cost) as cost from shipping where sh_rsd_id = c.c_district_id) as ongkir');
@@ -78,7 +78,7 @@ class Daftar_delivery_order_model extends NOOBS_Model
 		return $this->db->get();
  	}
 
-	public function store_data_daftar_delivery_order($params = array()) //dipakai
+	public function store_data_daftar_penerimaan($params = array()) //dipakai
 	{
 		$this->table = 'delivery_order_detail';
 		
@@ -97,7 +97,7 @@ class Daftar_delivery_order_model extends NOOBS_Model
 		if ($params['mode'] == 'add') $this->add($new_params, TRUE);
 		else $this->edit($new_params, "dod_id = {$params['dod_id']}");
 
-		return $this->load_data_daftar_delivery_order();
+		return $this->load_data_daftar_penerimaan();
 	}
 
 
@@ -155,7 +155,7 @@ class Daftar_delivery_order_model extends NOOBS_Model
 		return $this->db->get();
  	}
 
-	public function store_delivery_order_status($params = array()) //dipakai
+	public function store_penerimaan_status($params = array()) //dipakai
 	{
 		$this->table = 'delivery_order_status';
 
@@ -171,7 +171,7 @@ class Daftar_delivery_order_model extends NOOBS_Model
 
 		return $this->add($new_params, TRUE);
 
-		// return $this->load_data_daftar_delivery_order();
+		// return $this->load_data_daftar_penerimaan();
 	}
 
 	public function update_quantity_sales_order_detail($params = array()) //dipakai
@@ -185,7 +185,7 @@ class Daftar_delivery_order_model extends NOOBS_Model
 
 		$this->edit($new_params, "sod_id = {$params['dod_sod_id']}");
 
-		return $this->load_data_daftar_delivery_order();
+		return $this->load_data_daftar_penerimaan();
 	}
 
 	public function update_amount_sales_order_detail($params = array()) //dipakai
@@ -199,10 +199,10 @@ class Daftar_delivery_order_model extends NOOBS_Model
 
 		$this->edit($new_params, "so_id = {$params['so_id']}");
 
-		return $this->load_data_daftar_delivery_order();
+		return $this->load_data_daftar_penerimaan();
 	}
 
-	public function store_update_status_delivery_order($params = array()) //dipakai
+	public function store_update_status_penerimaan($params = array()) //dipakai
 	{
 		$this->table = 'delivery_order_detail';
 
@@ -213,7 +213,7 @@ class Daftar_delivery_order_model extends NOOBS_Model
 
 		$this->edit($new_params, "dod_id = {$params['dod_id']}");
 
-		return $this->load_data_daftar_delivery_order();
+		return $this->load_data_daftar_penerimaan();
 	}
 
 	public function store_update_status_sales_order($params = array()) //dipakai
@@ -227,7 +227,7 @@ class Daftar_delivery_order_model extends NOOBS_Model
 
 		return $this->edit($new_params, "so_id = {$params['so_id']}");
 
-		// return $this->load_data_daftar_delivery_order();
+		// return $this->load_data_daftar_penerimaan();
 	}
 
 	public function update_status_sales_order_detail($params = array()) //dipakai
@@ -240,7 +240,7 @@ class Daftar_delivery_order_model extends NOOBS_Model
 
 		return $this->edit($new_params, "sod_id = {$params['dod_sod_id']}");
 
-		// return $this->load_data_daftar_delivery_order();
+		// return $this->load_data_daftar_penerimaan();
 	}
 
 	// public function store_detail_do($params = array())
@@ -266,13 +266,13 @@ class Daftar_delivery_order_model extends NOOBS_Model
 	// 	return $this->load_data_detail_do(array('no_trx' => $params['sod_no_trx']));
 	// }
 
-	public function delete_data_daftar_delivery_order($params = array()) //di pakai
+	public function delete_data_daftar_penerimaan($params = array()) //di pakai
 	{
 		$this->table = 'delivery_order_detail';
 
 		$this->edit(['dod_is_active' => 'N'], "dod_id = {$params['txt_id']}");
 		
-		return $this->load_data_daftar_delivery_order();
+		return $this->load_data_daftar_penerimaan();
 	}
 
 	public function load_data($params = array())
