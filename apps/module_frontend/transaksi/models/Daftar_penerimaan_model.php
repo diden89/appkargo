@@ -24,6 +24,7 @@ class Daftar_penerimaan_model extends NOOBS_Model
 		$this->db->join('vehicle as ve','ve.ve_id = dod.dod_vehicle_id','LEFT');
 		$this->db->join('driver as d','d.d_id = dod.dod_driver_id','LEFT');
 		$this->db->join('item_list as il','il.il_id = sod.sod_item_id','LEFT');
+		$this->db->join('delivery_order_status as dos','dos.dos_dod_id = dod.dod_id','LEFT');
 		
 		if (isset($params['txt_item']) && ! empty($params['txt_item']))
 		{

@@ -77,7 +77,8 @@
 										<th>Nama Barang</th>
 										<th>Pengemudi / Kendaraan</th>
 										<th >Alamat Pengiriman</th>
-										<th>Berat / Kg</th>
+										<th>Total Kirim</th>
+										<th>Total terima</th>
 										<th>Biaya</th>
 										<th>Tanggal Pengiriman</th>
 										<th>Status</th>
@@ -95,15 +96,14 @@
 											<td><?php echo $v->d_name.' / '.$v->ve_license_plate; ?></td>
 											<td><?php echo $v->c_address.'<br>Kec. '.$v->rsd_name; ?></td>
 											<td><?php echo number_format($v->dod_shipping_qty); ?></td>
-											<td><?php echo number_format($v->dod_ongkir); ?></td>
+											<td><?php echo number_format($v->dos_filled); ?></td>
+											<td id="biaya"><?php echo number_format($v->dod_ongkir); ?></td>
 											<td><?php echo date('d-m-Y',strtotime($v->dod_created_date)); ?></td>
 											<td><?php echo $v->dod_is_status; ?></td>
 											<td>
 												<div class="btn-group btn-group-sm" role="group" aria-label="Action Button">
 													<?php if($v->dod_is_status !== 'SELESAI') { ?>
-														<button type="button" class="btn btn-success" data-id="<?php echo $v->dod_id; ?>" data-no_trx="<?php echo $v->dod_no_trx; ?>" data-so_no_trx="<?php echo $v->so_no_trx; ?>" data-dod_customer_id="<?php echo $v->dod_customer_id; ?>"data-dod_driver_id="<?php echo $v->dod_driver_id; ?>" data-dod_sod_id="<?php echo $v->dod_sod_id; ?>" data-dod_vehicle_id="<?php echo $v->dod_vehicle_id; ?>" data-dod_shipping_qty="<?php echo $v->dod_shipping_qty; ?>" onclick="daftarDeliveryOrderList.showItem(this, 'edit');" ><i class="fas fa-edit"></i></button>
-														<button type="button" class="btn btn-danger" data-id="<?php echo $v->dod_id; ?>" onclick="daftarDeliveryOrderList.deleteDataItem(this);" title="Delete Word"><i class="fas fa-trash-alt"></i></button>
-														<!-- <button type="button" class="btn btn-primary" data-id="<?php //echo $v->dod_id; ?>" data-no_trx="<?php //echo $v->dod_no_trx; ?>" data-is_status="<?php //echo $v->dod_is_status; ?>" data-so_id="<?php //echo $v->so_id; ?>"  data-so_no_trx="<?php //echo $v->so_no_trx; ?>"onclick="daftarDeliveryOrderList.updateStatus(this, 'edit');" title="Update Status"><i class="fas fa-exchange-alt"></i></button> -->
+														<button type="button" class="btn btn-success" data-id="<?php echo $v->dod_id; ?>" data-no_trx="<?php echo $v->dod_no_trx; ?>" data-is_status="<?php echo $v->dod_is_status; ?>" data-so_id="<?php echo $v->so_id; ?>"  data-so_no_trx="<?php echo $v->so_no_trx; ?>"onclick="daftarDeliveryOrderList.updateStatus(this, 'edit');" title="Update Status"><i class="fas fa-check-double"></i> Finish</button>
 													<?php }?>
 												</div>
 											</td>

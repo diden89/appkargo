@@ -43,6 +43,12 @@
 				</div>
 			</div>
 			<div class="form-group row">
+				<label for="caption" class="col-md-4 col-form-label">Total Ongkir</label>
+				<div class="input-group col-md-8">
+					<input type="text" name="total_ongkir_upd" class="form-control" id="total_ongkir_upd">
+				</div>
+			</div>
+			<div class="form-group row">
 				<label for="caption" class="col-md-4 col-form-label">Keterangan</label>
 				<div class="input-group col-md-8">
 					<textarea name="keterangan" class="form-control" placeholder="Enter content"></textarea>

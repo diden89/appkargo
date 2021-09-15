@@ -263,7 +263,7 @@ class Daftar_penerimaan extends NOOBS_Controller
 			$post = $this->input->post(NULL, TRUE);
 
 			$post['data'] = $this->db_daftar_penerimaan->load_data_daftar_penerimaan($post)->row();
-			// print_r($post);exit;
+			print_r($post);exit;
 
 			$this->_view('update_status_form_view', $post);
 		}
