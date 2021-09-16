@@ -164,6 +164,7 @@ class Daftar_penerimaan_model extends NOOBS_Model
 			'dos_date' => date('Y-m-d'),
 			'dos_dod_id' => $params['dod_id'],
 			'dos_filled' => $params['total_terpenuhi'],
+			'dos_ongkir' => $params['total_ongkir_upd_hidden'],
 			'dos_created_date' => date('Y-m-d H:i:s'),
 			'dos_keterangan' => $params['keterangan'],
 			'dos_status' => $params['dod_is_status']

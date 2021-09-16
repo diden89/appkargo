@@ -52,6 +52,16 @@ class Daftar_penerimaan extends NOOBS_Controller
 				$num++;
 
 				$v->num = $num;
+				if(! empty($v->dos_filled)) 
+				{
+					$v->new_ongkir = $v->dos_ongkir;
+					$v->dod_is_status = $v->dos_status;
+				}
+				else
+				{
+					$v->new_ongkir = $v->dod_ongkir;
+					$v->dod_is_status = $v->dod_is_status;
+				}
 			}
 
 			$this->store_params['item'] = $result;
@@ -75,6 +85,16 @@ class Daftar_penerimaan extends NOOBS_Controller
 				foreach ($result as $k => $v)
 				{
 					$v->num = $number;
+					if(! empty($v->dos_filled)) 
+					{
+						$v->new_ongkir = $v->dos_ongkir;
+						$v->dod_is_status = $v->dos_status;
+					}
+					else
+					{
+						$v->new_ongkir = $v->dod_ongkir;
+						$v->dod_is_status = $v->dod_is_status;
+					}
 
 					$number++;
 				}
@@ -82,50 +102,6 @@ class Daftar_penerimaan extends NOOBS_Controller
 				echo json_encode(array('success' => TRUE, 'data' => $result));
 			}
 			else echo json_encode(array('success' => FALSE, 'msg' => 'Data not found!'));
-		}
-		else $this->show_404();
-	}
-
-	public function get_realisasi_qty() // dipakai
-	{
-		$post = $this->input->post(NULL, TRUE);
-
-
-		if (isset($post['action']) && ! empty($post['action']) && $post['action'] == 'get_realisasi_qty')
-		{
-			unset($post['action']);
-
-			$get_realisasi_qty = $this->db_daftar_penerimaan->get_realisasi_qty($post);
-
-			if ($get_realisasi_qty->num_rows() > 0) 
-			{
-				$res = $get_realisasi_qty->row();
-				$qty = (! empty($res->qty_real) && $res->qty_real !== "") ? $res->qty_real : '0';
-				echo json_encode(array('success' => TRUE, 'qty_real' => $qty));
-			}
-			else echo json_encode(array('success' => FALSE, 'msg' => 'Data Not Found!'));
-		}
-		else $this->show_404();
-	}
-
-	public function get_ongkir_district() // dipakai
-	{
-		$post = $this->input->post(NULL, TRUE);
-
-
-		if (isset($post['action']) && ! empty($post['action']) && $post['action'] == 'get_ongkir_district')
-		{
-			unset($post['action']);
-
-			$get_ongkir_district = $this->db_daftar_penerimaan->get_ongkir_district($post);
-
-			if ($get_ongkir_district->num_rows() > 0) 
-			{
-				$res = $get_ongkir_district->row();
-
-				echo json_encode(array('success' => TRUE, 'ongkir_temp' => $res->c_shipping_area));
-			}
-			else echo json_encode(array('success' => FALSE, 'ongkir_temp' => '0'));
 		}
 		else $this->show_404();
 	}
@@ -196,6 +172,7 @@ class Daftar_penerimaan extends NOOBS_Controller
 					$v->dod_shipping_qty_ori = $v->dod_shipping_qty;
 					$v->dod_shipping_qty = number_format($v->dod_shipping_qty);
 					$v->dod_ongkir = number_format($v->dod_ongkir);
+					$v->new_ongkir = number_format($v->dod_ongkir);
 				}
 					// print_r($result);exit;
 				echo json_encode(array('success' => TRUE, 'data' => $result));
@@ -205,57 +182,7 @@ class Daftar_penerimaan extends NOOBS_Controller
 		else $this->show_404();
 	}
 
-	public function store_data_detail_penerimaan()//dipakai
-	{
-		if (isset($_POST['action']) && $_POST['action'] == 'insert_penerimaan')
-		{
-			$post = $this->input->post(NULL, TRUE);
-			// print_r($post);exit;
-			$store_data_daftar_penerimaan = $this->db_daftar_penerimaan->store_data_daftar_penerimaan($post);
-
-			$get_total_qty = $this->db_daftar_penerimaan->get_total_qty($post,'sum(dod_shipping_qty) as total_qty');
-			$get_total_amount = $this->db_daftar_penerimaan->get_total_amount($post,'sum(dod.dod_ongkir) as total_amount');
-
-			if($get_total_qty->num_rows() > 0) {
-				$total = $get_total_qty->row();
-				$post['new_qty'] = $total->total_qty;
-			
-				$update_quantity_sales_order_detail = $this->db_daftar_penerimaan->update_quantity_sales_order_detail($post);
-
-			}
-
-			if($get_total_amount->num_rows() > 0) {
-				$total_a = $get_total_amount->row();
-				$post['total_amount'] = $total_a->total_amount;
-			
-				$update_amount_sales_order_detail = $this->db_daftar_penerimaan->update_amount_sales_order_detail($post);
-
-			}
-
-			$result = $this->db_daftar_penerimaan->load_data_daftar_penerimaan($post);
-			
-			if ($result->num_rows() > 0) 
-			{
-				$res = $result->result();
-				$number = 1;
-
-				foreach ($res as $k => $v)
-				{
-					$v->num = $number;
-					$v->dod_created_date = date('d-m-Y H:i:s',strtotime($v->dod_created_date));
-					$v->dod_shipping_qty = number_format($v->dod_shipping_qty);
-					$v->dod_ongkir = number_format($v->dod_ongkir);
-
-					$number++;
-				}
-				
-				echo json_encode(array('success' => TRUE, 'data' => $res));
-			}
-			else echo json_encode(array('success' => FALSE, 'msg' => 'Data not found!'));
-		}
-		else $this->show_404();
-	}	
-
+	
 	public function load_update_status_form()
 	{
 		if (isset($_POST['action']) && $_POST['action'] == 'load_update_status_form')
@@ -263,104 +190,13 @@ class Daftar_penerimaan extends NOOBS_Controller
 			$post = $this->input->post(NULL, TRUE);
 
 			$post['data'] = $this->db_daftar_penerimaan->load_data_daftar_penerimaan($post)->row();
-			print_r($post);exit;
+			// print_r($post);exit;
 
 			$this->_view('update_status_form_view', $post);
 		}
 		else $this->show_404();
 	}
 
-	public function get_detail_so_option()
-	{
-		$post = $this->input->post(NULL, TRUE);
-
-		// print_r($post);exit;
-		if (isset($post['action']) && ! empty($post['action']) && $post['action'] == 'get_detail_so_option')
-		{
-			unset($post['action']);
-
-			$get_detail_so_option = $this->db_daftar_penerimaan->get_detail_so_option($post);
-
-			if ($get_detail_so_option->num_rows() > 0) 
-			{
-				$result = $get_detail_so_option->result();
-
-				echo json_encode(array('success' => TRUE, 'data' => $result));
-			}
-			else echo json_encode(array('success' => FALSE, 'msg' => 'Data Not Found!'));
-		}
-		else $this->show_404();
-	}	
-
-	public function get_item_list_option()
-	{
-		$post = $this->input->post(NULL, TRUE);
-
-
-		if (isset($post['action']) && ! empty($post['action']) && $post['action'] == 'get_item_list_option')
-		{
-			unset($post['action']);
-
-			$get_item_list_option = $this->db_daftar_penerimaan->get_item_list_option($post);
-
-			if ($get_item_list_option->num_rows() > 0) 
-			{
-				$result = $get_item_list_option->result();
-
-				echo json_encode(array('success' => TRUE, 'data' => $result));
-			}
-			else echo json_encode(array('success' => FALSE, 'msg' => 'Data Not Found!'));
-		}
-		else $this->show_404();
-	}
-
-	public function get_customer_option() //dipakai
-	{
-		$post = $this->input->post(NULL, TRUE);
-
-
-		if (isset($post['action']) && ! empty($post['action']) && $post['action'] == 'get_customer_option')
-		{
-			unset($post['action']);
-
-			$get_customer_option = $this->db_daftar_penerimaan->get_customer_option($post);
-
-			if ($get_customer_option->num_rows() > 0) 
-			{
-				$result = $get_customer_option->result();
-
-				echo json_encode(array('success' => TRUE, 'data' => $result));
-			}
-			else echo json_encode(array('success' => FALSE, 'msg' => 'Data Not Found!'));
-		}
-		else $this->show_404();
-	}	
-
-	public function load_data_delivery_detail_do()
-	{
-		if (isset($_POST['action']) && $_POST['action'] == 'load_data_delivery_detail_do')
-		{
-			// print_r($_POST);exit;
-			$post = $this->input->post(NULL, TRUE);
-			$load_data_detail_do = $this->db_daftar_penerimaan->load_data_detail_do($post);
-			if ($load_data_detail_do->num_rows() > 0) 
-			{
-				$result = $load_data_detail_do->result();
-				$number = 1;
-
-				foreach ($result as $k => $v)
-				{
-					$v->no = $number;
-
-					$number++;
-				}
-				
-				echo json_encode(array('success' => TRUE, 'data' => $result));
-			}
-			else echo json_encode(array('success' => FALSE, 'msg' => 'Data not found!'));
-		}
-		else $this->show_404();
-	}
 
 	public function print_penerimaan() //dipakai
 	{
@@ -386,34 +222,6 @@ class Daftar_penerimaan extends NOOBS_Controller
 			else echo json_encode(array('success' => FALSE, 'msg' => 'Data not found!'));
 		}
 		else $this->show_404();
-	}
-
-	public function store_data_daftar_penerimaan()
-	{
-		// print_r($_POST);exit;
-		if (isset($_POST['action']) && $_POST['action'] == 'store_data_daftar_penerimaan')
-		{
-			$post = $this->input->post(NULL, TRUE);
-			$store_data_daftar_penerimaan = $this->db_daftar_penerimaan->store_data_daftar_penerimaan($post);
-
-			if ($store_data_daftar_penerimaan->num_rows() > 0) 
-			{
-				$result = $store_data_daftar_penerimaan->result();
-				$number = 1;
-
-				foreach ($result as $k => $v)
-				{
-					$v->no = $number;
-
-					$number++;
-				}
-
-
-				echo json_encode(array('success' => TRUE, 'data' => $result));
-			}
-			else echo json_encode(array('success' => FALSE, 'msg' => 'Data not found!'));
-		}
-		else $this->show_404();
 	}	
 
 	public function store_update_status()//dipakai
@@ -425,9 +233,9 @@ class Daftar_penerimaan extends NOOBS_Controller
 			$post['dod_is_status'] = 'SELESAI';
 			
 			$input_to_penerimaan_status = $this->db_daftar_penerimaan->store_penerimaan_status($post);
+			print_r($post);exit;
 
 			$update_status = $this->db_daftar_penerimaan->store_update_status_penerimaan($post); //update status
-			print_r($post);exit;
 
 			$get_total_filled = $this->db_daftar_penerimaan->get_total_filled($post,'total');
 
@@ -513,30 +321,4 @@ class Daftar_penerimaan extends NOOBS_Controller
 		else $this->show_404();
 	}
 
-	public function delete_data_temp()
-	{
-		// print_r($_POST);exit;
-		if (isset($_POST['action']) && $_POST['action'] == 'delete_data_temp')
-		{
-			$post = $this->input->post(NULL, TRUE);
-			$delete_data_sod = $this->db_daftar_penerimaan->delete_data_so_detail($post);
-
-			if ($delete_data_sod->num_rows() > 0) 
-			{
-				$result = $delete_data_sod->result();
-				$number = 1;
-
-				foreach ($result as $k => $v)
-				{
-					$v->no = $number;
-
-					$number++;
-				}
-				
-				echo json_encode(array('success' => TRUE, 'data' => $result));
-			}
-			else echo json_encode(array('success' => FALSE, 'msg' => 'Data not found!','data' => array()));
-		}
-		else $this->show_404();
-	}
 }

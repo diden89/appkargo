@@ -17,6 +17,8 @@
 	<input type="hidden" name="no_trx" value="<?=$data->dod_no_trx?>" id="no_trx_dod">
 	<input type="hidden" name="so_id" value="<?=$data->so_id?>" id="so_id">
 	<input type="hidden" name="so_no_trx" value="<?=$data->so_no_trx?>" id="so_no_trx">
+	<input type="hidden" name="shipping" value="<?=$data->c_shipping_area?>" id="shipping">
+	<input type="hidden" name="total_ongkir_upd_hidden" value="<?=$data->dos_ongkir?>" id="total_ongkir_upd_hidden">
 
 	<?php if (isset($txt_id)): ?>
 		<input type="hidden" name="txt_id" value="<?php echo $txt_id; ?>">
@@ -39,13 +41,13 @@
 			<div class="form-group row">
 				<label for="caption" class="col-md-4 col-form-label">Jumlah Terima</label>
 				<div class="input-group col-md-8">
-					<input type="text" name="total_terpenuhi" class="form-control" id="total_terpenuhi">
+					<input type="text" name="total_terpenuhi" class="form-control" id="total_terpenuhi" required>
 				</div>
 			</div>
 			<div class="form-group row">
 				<label for="caption" class="col-md-4 col-form-label">Total Ongkir</label>
 				<div class="input-group col-md-8">
-					<input type="text" name="total_ongkir_upd" class="form-control" id="total_ongkir_upd">
+					<input type="text" name="total_ongkir_upd" class="form-control" id="total_ongkir_upd" disabled>
 				</div>
 			</div>
 			<div class="form-group row">
