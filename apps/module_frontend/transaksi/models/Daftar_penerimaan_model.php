@@ -142,14 +142,24 @@ class Daftar_penerimaan_model extends NOOBS_Model
 
  	public function get_total_filled($params = array(),$total = false) //dipakai
 	{
-		$this->db->select('SUM(dod.dod_shipping_qty) as total_filled');
-		$this->db->from('delivery_order_detail as dod');
+		$this->db->select('SUM(dos.dos_filled) as total_filled');
+		$this->db->from('delivery_order_status as dos');
+		$this->db->join('delivery_order_detail as dod','dod.dod_id = dos.dos_dod_id','LEFT');
 		$this->db->join('sales_order_detail as sod','dod.dod_sod_id = sod.sod_id','LEFT');
 
 		if ($total !== 'total')
 		{
 			$this->db->where('dod_is_status', strtoupper($params['dod_is_status']));
 		}
+		
+		$this->db->where('sod.sod_no_trx', $params['so_no_trx']);
+		
+		return $this->db->get();
+ 	}
+ 	public function get_total_sod_total($params = array()) //dipakai
+	{
+		$this->db->select('SUM(sod.sod_qty) as total_sod');
+		$this->db->from('sales_order_detail as sod');
 		
 		$this->db->where('sod.sod_no_trx', $params['so_no_trx']);
 		

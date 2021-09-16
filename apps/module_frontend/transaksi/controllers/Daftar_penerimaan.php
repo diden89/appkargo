@@ -233,27 +233,29 @@ class Daftar_penerimaan extends NOOBS_Controller
 			$post['dod_is_status'] = 'SELESAI';
 			
 			$input_to_penerimaan_status = $this->db_daftar_penerimaan->store_penerimaan_status($post);
-			print_r($post);exit;
 
 			$update_status = $this->db_daftar_penerimaan->store_update_status_penerimaan($post); //update status
 
-			$get_total_filled = $this->db_daftar_penerimaan->get_total_filled($post,'total');
+			$get_total_filled = $this->db_daftar_penerimaan->get_total_filled($post,'total')->row();
+			$get_total_sod = $this->db_daftar_penerimaan->get_total_sod_total($post)->row();
+			
 
-			if($get_total_filled->num_rows() > 0) {
-				$get_total_success = $this->db_daftar_penerimaan->get_total_filled($post);
-
-				if($get_total_success->num_rows() > 0) {
-					$get_ttl = $get_total_filled->row();
-					$get_suc = $get_total_success->row();
-
-					if($get_suc->total_data < $get_ttl->total_data) {
-						$post['is_status'] = 'ON PROGRESS';
-					} else if($get_suc->total_data == $get_ttl->total_data) {
-						$post['is_status'] = $post['dod_is_status'];
-					}
-				}
+			if($get_total_filled->total_filled !== 0)
+			{
+				$get_ttl = $get_total_filled->total_filled;
 			}
-			 // print_r($post);exit;
+
+			if($get_total_sod->total_sod !== 0)
+			{
+				$get_ttl_sod = $get_total_sod->total_sod;
+			}
+
+			if($get_ttl < $get_ttl_sod) {
+				$post['is_status'] = 'ON PROGRESS';
+			} else if($get_ttl == $get_ttl_sod) {
+				$post['is_status'] = $post['dod_is_status'];
+			}
+
 			$update_status_sales_order = $this->db_daftar_penerimaan->store_update_status_sales_order($post);
 
 			if ($update_status->num_rows() > 0) 
