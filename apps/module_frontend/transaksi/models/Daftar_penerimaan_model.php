@@ -53,7 +53,7 @@ class Daftar_penerimaan_model extends NOOBS_Model
 		}
 
 		$this->db->where('dod.dod_is_active', 'Y');
-		$this->db->where('dod.dod_is_status !=', 'SELESAI');
+		// $this->db->where('dod.dod_is_status !=', 'SELESAI');
 		$this->db->order_by('dod.dod_id', 'DESC');
 		// $this->db->order_by('il.il_item_name', 'ASC');
 
@@ -180,10 +180,13 @@ class Daftar_penerimaan_model extends NOOBS_Model
 			'dos_status' => $params['dod_is_status']
 
 		);
-
-		return $this->add($new_params, TRUE);
+		// print_r($params);exit;
+		// return $this->add($new_params, TRUE);
 
 		// return $this->load_data_daftar_penerimaan();
+
+		if (empty($params['dos_id'])) return $this->add($new_params, TRUE);
+		else return $this->edit($new_params, "dos_id = {$params['dos_id']}");
 	}
 
 	public function update_quantity_sales_order_detail($params = array()) //dipakai

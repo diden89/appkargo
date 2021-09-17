@@ -98,17 +98,13 @@
 											<td><?php echo $v->c_address.'<br>Kec. '.$v->rsd_name; ?></td>
 											<td><?php echo number_format($v->dod_shipping_qty); ?></td>
 											<td><?php echo number_format($v->dos_filled); ?></td>
-											<td id="biaya"><?php echo number_format($v->dod_ongkir); ?></td>
+											<td id="biaya"><?php echo number_format($v->new_ongkir); ?></td>
 											<td><?php echo date('d-m-Y',strtotime($v->dod_created_date)); ?></td>
 											<td><?php echo $v->dod_is_status; ?></td>
 											<td><?php echo $v->dos_keterangan; ?></td>
 											<td>
-												<div class="btn-group btn-group-sm" role="group" aria-label="Action Button">
-													<?php if($v->dod_is_status === 'SELESAI') { ?>
-														<button type="button" class="btn btn-success" data-id="<?php echo $v->dod_id; ?>" data-no_trx="<?php echo $v->dod_no_trx; ?>" data-is_status="<?php echo $v->dod_is_status; ?>" data-so_id="<?php echo $v->so_id; ?>"  data-so_no_trx="<?php echo $v->so_no_trx; ?>"onclick="daftarDeliveryOrderList.updateStatus(this, 'edit');" title="Update Status" disabled><i class="fas fa-check-double"></i> Finish</button>
-													<?php } else {?>
-														<button type="button" class="btn btn-success" data-id="<?php echo $v->dod_id; ?>" data-no_trx="<?php echo $v->dod_no_trx; ?>" data-is_status="<?php echo $v->dod_is_status; ?>" data-so_id="<?php echo $v->so_id; ?>"  data-so_no_trx="<?php echo $v->so_no_trx; ?>"onclick="daftarDeliveryOrderList.updateStatus(this, 'edit');" title="Update Status"><i class="fas fa-check-double"></i> Finish</button>
-													<?php }?>
+												<div class="btn-group btn-group-sm" role="group" aria-label="Action Button">											
+													<button type="button" class="btn btn-success" data-id="<?php echo $v->dod_id; ?>" data-no_trx="<?php echo $v->dod_no_trx; ?>" data-is_status="<?php echo $v->dod_is_status; ?>" data-so_id="<?php echo $v->so_id; ?>"  data-so_no_trx="<?php echo $v->so_no_trx; ?>"onclick="daftarDeliveryOrderList.updateStatus(this, 'edit');" title="Update Status"><i class="fas fa-check-double"></i> Finish</button>													
 												</div>
 											</td>
 										</tr>

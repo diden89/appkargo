@@ -93,6 +93,29 @@ class Daftar_sales_order_model extends NOOBS_Model
 		return $this->db->get();
  	}
 
+ 	public function get_progress_dos($params = array())
+	{
+		$this->db->select($params['sel']);
+		$this->db->from('delivery_order_status as dos');
+		$this->db->join('delivery_order_detail as dod','dos.dos_dod_id = dod.dod_id','LEFT');
+		$this->db->join('sales_order_detail as sod','sod.sod_id = dod.dod_sod_id','LEFT');
+		$this->db->join('sales_order as so','so.so_no_trx = sod.sod_no_trx','LEFT');
+
+		if (isset($params['so_id']) && ! empty($params['so_id']))
+		{
+			$this->db->where('so.so_id', strtoupper($params['so_id']));
+		}
+
+		if (isset($params['dod_is_status']) && ! empty($params['dod_is_status']))
+		{
+			$this->db->where('dod.dod_is_status', $params['dod_is_status']);
+		}
+		
+		$this->db->where('dod.dod_is_active', 'Y');
+
+		return $this->db->get();
+ 	}
+
  	public function load_data_detail_so($params = array())
 	{
 		$this->db->select('*');

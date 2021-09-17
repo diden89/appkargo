@@ -63,6 +63,7 @@ class Daftar_penerimaan extends NOOBS_Controller
 					$v->dod_is_status = $v->dod_is_status;
 				}
 			}
+			// print_r($result);exit;
 
 			$this->store_params['item'] = $result;
 		}
@@ -231,7 +232,6 @@ class Daftar_penerimaan extends NOOBS_Controller
 			$post = $this->input->post(NULL, TRUE);
 			$post['total_terpenuhi'] = str_replace(',','',$post['total_terpenuhi']);
 			$post['dod_is_status'] = 'SELESAI';
-			
 			$input_to_penerimaan_status = $this->db_daftar_penerimaan->store_penerimaan_status($post);
 
 			$update_status = $this->db_daftar_penerimaan->store_update_status_penerimaan($post); //update status
@@ -256,6 +256,7 @@ class Daftar_penerimaan extends NOOBS_Controller
 				$post['is_status'] = $post['dod_is_status'];
 			}
 
+			// print_r($post);exit;
 			$update_status_sales_order = $this->db_daftar_penerimaan->store_update_status_sales_order($post);
 
 			if ($update_status->num_rows() > 0) 
@@ -268,7 +269,17 @@ class Daftar_penerimaan extends NOOBS_Controller
 					$v->num = $number;
 					$v->dod_created_date = date('d-m-Y',strtotime($v->dod_created_date));
 					$v->dod_shipping_qty = number_format($v->dod_shipping_qty);
-					$v->dod_ongkir = number_format($v->dod_ongkir);
+					
+					if(! empty($v->dos_filled)) 
+					{
+						$v->new_ongkir = number_format($v->dos_ongkir);
+						$v->dod_is_status = $v->dos_status;
+					}
+					else
+					{
+						$v->new_ongkir = number_format($v->dos_ongkir);
+						$v->dod_is_status = $v->dod_is_status;
+					}
 
 					$number++;
 				}

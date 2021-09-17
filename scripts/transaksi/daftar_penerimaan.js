@@ -87,7 +87,6 @@ const daftarDeliveryOrderList = {
 		$.each(data, (idx, item) => {
 			body += '<tr>';
 			body += '<td>' + item.num + '</td>';
-			body += '<td>' + item.so_no_trx + '</td>';
 			body += '<td>' + item.dod_no_trx + '</td>';
 			body += '<td>' + item.c_name + '</td>';
 			body += '<td>' + item.il_item_name + '</td>';
@@ -95,15 +94,15 @@ const daftarDeliveryOrderList = {
 			body += '<td>' + item.c_address + '<br>' + item.rsd_name + '</td>';
 			body += '<td>' + item.dod_shipping_qty + '</td>';
 			body += '<td>' + item.dos_filled + '</td>';
-			body += '<td>' + item.dod_ongkir + '</td>';
+			body += '<td>' + item.new_ongkir + '</td>';
 			body += '<td>' + item.dod_created_date + '</td>';
+			body += '<td>' + item.dos_keterangan + '</td>';
 			body += '<td>' + item.dod_is_status + '</td>';
-			body += '<td>';
-			if(item.dod_is_status !== 'SELESAI') {
-				body += '<div class="btn-group btn-group-sm" role="group" aria-label="Action Button">';
-					body += '<button type="button" class="btn btn-success" data-id="' + item.dod_id + '" data-no_trx="' + item.dod_no_trx + '" data-is_status="' + item.dod_is_status + '" data-so_id="' + item.so_id + '" data-so_no_trx="' + item.so_no_trx + '" onclick="daftarDeliveryOrderList.updateStatus(this, \'edit\');"><i class="fas fa-check-double"></i> Finish</button>';
-				body += '</div>';
-			}
+			body += '<td>';			
+			body += '<div class="btn-group btn-group-sm" role="group" aria-label="Action Button">';
+				body += '<button type="button" class="btn btn-success" data-id="' + item.dod_id + '" data-no_trx="' + item.dod_no_trx + '" data-is_status="' + item.dod_is_status + '" data-so_id="' + item.so_id + '" data-so_no_trx="' + item.so_no_trx + '" onclick="daftarDeliveryOrderList.updateStatus(this, \'edit\');"><i class="fas fa-check-double"></i> Finish</button>';
+			body += '</div>';
+		
 			body += '</td>';
 			body += '</tr>';
 		});

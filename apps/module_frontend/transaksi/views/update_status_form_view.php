@@ -19,10 +19,8 @@
 	<input type="hidden" name="so_no_trx" value="<?=$data->so_no_trx?>" id="so_no_trx">
 	<input type="hidden" name="shipping" value="<?=$data->c_shipping_area?>" id="shipping">
 	<input type="hidden" name="total_ongkir_upd_hidden" value="<?=$data->dos_ongkir?>" id="total_ongkir_upd_hidden">
+	<input type="hidden" name="dos_id" value="<?=$data->dos_id?>" id="dos_id">
 
-	<?php if (isset($txt_id)): ?>
-		<input type="hidden" name="txt_id" value="<?php echo $txt_id; ?>">
-	<?php endif; ?>
 	<div class="row">		
 		<div class="col-md-12">
 			<div class="form-group row">
@@ -41,19 +39,19 @@
 			<div class="form-group row">
 				<label for="caption" class="col-md-4 col-form-label">Jumlah Terima</label>
 				<div class="input-group col-md-8">
-					<input type="text" name="total_terpenuhi" class="form-control" id="total_terpenuhi" required>
+					<input type="text" name="total_terpenuhi" class="form-control" id="total_terpenuhi" value="<?=number_format($data->dos_filled)?>" required>
 				</div>
 			</div>
 			<div class="form-group row">
 				<label for="caption" class="col-md-4 col-form-label">Total Ongkir</label>
 				<div class="input-group col-md-8">
-					<input type="text" name="total_ongkir_upd" class="form-control" id="total_ongkir_upd" disabled>
+					<input type="text" name="total_ongkir_upd" class="form-control" id="total_ongkir_upd" value="<?=number_format($data->dos_ongkir)?>" disabled>
 				</div>
 			</div>
 			<div class="form-group row">
 				<label for="caption" class="col-md-4 col-form-label">Keterangan</label>
 				<div class="input-group col-md-8">
-					<textarea name="keterangan" class="form-control" placeholder="Enter content"></textarea>
+					<textarea name="keterangan" class="form-control" placeholder="Enter content" ><?=$data->dos_keterangan?></textarea>
 				</div>
 			</div>
 		</div>

@@ -52,7 +52,7 @@ class Daftar_delivery_order_model extends NOOBS_Model
 		}
 
 		$this->db->where('dod.dod_is_active', 'Y');
-		$this->db->where('dod.dod_is_status !=', 'SELESAI');
+		// $this->db->where('dod.dod_is_status !=', 'SELESAI');
 		$this->db->order_by('dod.dod_id', 'DESC');
 		// $this->db->order_by('il.il_item_name', 'ASC');
 
@@ -322,7 +322,7 @@ class Daftar_delivery_order_model extends NOOBS_Model
 		$this->db->from('sales_order as so');
 		$this->db->join('vendor as v','v.v_id = so.so_vendor_id','LEFT');
 		
-		$this->db->where('so.so_is_status', 'ORDER');
+		$this->db->where('so.so_is_status !=', 'SELESAI');
 		$this->db->where('so.so_is_active', 'Y');
 		
 		return $this->db->get();
@@ -412,7 +412,7 @@ class Daftar_delivery_order_model extends NOOBS_Model
 
  	public function get_customer_option($params) //dipakai
 	{
-		$query = "select * from customer where c_district_id in (select rsd.rsd_id from ref_sub_district as rsd left join sales_order as so on rsd.rsd_district_id = so.so_district_id where so.so_id = {$params['so_id']} order by c_name ASC)";
+		$query = "select * from customer where c_district_id in (select rsd.rsd_id from ref_sub_district as rsd left join sales_order as so on rsd.rsd_district_id = so.so_district_id where so.so_id = {$params['so_id']} order by c_name ASC) and c_is_active = 'Y'";
 		
 		return $this->db->query($query);
  	}

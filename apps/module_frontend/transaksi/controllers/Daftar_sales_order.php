@@ -52,11 +52,27 @@ class Daftar_sales_order extends NOOBS_Controller
 				$get_total_so = $this->db_daftar_sales_order->get_progress_so(array('so_id' => $v->so_id));
 
 				$get_progress_do = $this->db_daftar_sales_order->get_progress_do(array('so_id' => $v->so_id));
+
+				$get_progress_dos = $this->db_daftar_sales_order->get_progress_dos(array('so_id' => $v->so_id, 'sel'=> 'sum(dos.dos_filled) as total_progress_dos'));
+				
+				$get_amount_dos = $this->db_daftar_sales_order->get_progress_dos(array('so_id' => $v->so_id, 'sel'=> 'sum(dos.dos_ongkir) as total_amount_dos'));
 				
 				if($get_progress_do->num_rows() > 0) 
 				{
 					$prog = $get_progress_do->row();
 					$v->tot_prog =  (! empty($prog->total_progress)) ? $prog->total_progress : 0;
+				}
+
+				if($get_progress_dos->num_rows() > 0) 
+				{
+					$prog_dos = $get_progress_dos->row();
+					$v->tot_prog_dos =  (! empty($prog_dos->total_progress_dos)) ? $prog_dos->total_progress_dos : 0;
+				}
+				
+				if($get_amount_dos->num_rows() > 0) 
+				{
+					$amount_dos = $get_amount_dos->row();
+					$v->so_total_amount =  (! empty($amount_dos->total_amount_dos)) ? $amount_dos->total_amount_dos : 0;
 				}
 
 				if($get_progress_so->num_rows() > 0) {

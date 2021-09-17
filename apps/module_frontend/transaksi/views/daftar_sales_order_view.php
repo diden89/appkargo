@@ -62,7 +62,9 @@
 										<th width="10">No</th>
 										<th>No Transaksi</th>
 										<th>Nama Vendor</th>
-										<th>Total Order / Terpenuhi</th>
+										<th>Total Order</th>
+										<th>Total Kirim</th>
+										<th>Total Terima</th>
 										<th>Total Ongkir</th>
 										<th>Tujuan</th>
 										<th>Tanggal</th>
@@ -77,7 +79,9 @@
 											<td><?php echo $v->num; ?></td>
 											<td><?php echo $v->so_no_trx; ?></td>
 											<td><?php echo $v->v_vendor_name; ?></td>
-											<td><?php echo number_format($v->so_qty).' Kg / <b>'.number_format($v->tot_prog); ?> Kg</b></td>
+											<td><?php echo number_format($v->so_qty);?> Kg</b></td>
+											<td><?php echo '<b>'.number_format($v->tot_prog); ?> Kg</b></td>
+											<td><?php echo '<b>'.number_format($v->tot_prog_dos); ?> Kg</b></td>
 											<td><?php echo number_format($v->so_total_amount); ?></td>
 											<td><?php echo $v->rd_name; ?></td>
 											<td><?php echo $v->so_created_date; ?></td>
