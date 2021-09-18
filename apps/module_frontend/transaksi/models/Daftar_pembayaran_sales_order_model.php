@@ -80,7 +80,26 @@ class Daftar_pembayaran_sales_order_model extends NOOBS_Model
 
  	public function get_sales_order_data($params = array())
 	{
-		$this->db->select('so.*,rd.*,v.*, (select sum(sod_qty) as so_qty from sales_order_detail where sod_no_trx = so.so_no_trx) as so_qty,
+		$this->db->select('so.*,rd.*,v.*, 
+			(select sum(sod_qty) as so_qty from sales_order_detail where sod_no_trx = so.so_no_trx) as so_qty,
+			(select sum(dos.dos_filled) as total_progress_dos FROM delivery_order_status as dos 
+			LEFT JOIN delivery_order_detail as dod ON dos.dos_dod_id = dod.dod_id
+			LEFT JOIN sales_order_detail as sod ON sod.sod_id = dod.dod_sod_id
+			LEFT JOIN sales_order as so1 ON so1.so_no_trx = sod.sod_no_trx
+			WHERE so1.so_id = so.so_id
+			AND dod.dod_is_status = "SELESAI"
+			AND dod.dod_is_active = "Y"
+			AND dos.dos_is_active = "Y"
+			)total_progress_dos,
+			(select sum(dos.dos_ongkir) as total_amount_dos FROM delivery_order_status as dos 
+			LEFT JOIN delivery_order_detail as dod ON dos.dos_dod_id = dod.dod_id
+			LEFT JOIN sales_order_detail as sod ON sod.sod_id = dod.dod_sod_id
+			LEFT JOIN sales_order as so1 ON so1.so_no_trx = sod.sod_no_trx
+			WHERE so1.so_id = so.so_id
+			AND dod.dod_is_status = "SELESAI"
+			AND dod.dod_is_active = "Y"
+			AND dos.dos_is_active = "Y"
+			)total_amount_dos,
 			(CASE 
 			WHEN so_is_pay = "BL" THEN "BELUM LUNAS"
 			WHEN so_is_pay = "LN" THEN "LUNAS"

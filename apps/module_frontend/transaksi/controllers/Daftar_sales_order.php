@@ -324,6 +324,8 @@ class Daftar_sales_order extends NOOBS_Controller
 					
 					$get_progress_do = $this->db_daftar_sales_order->get_progress_do(array('so_id' => $v->so_id));
 
+					$get_progress_dos = $this->db_daftar_sales_order->get_progress_dos(array('so_id' => $v->so_id, 'sel'=> 'sum(dos.dos_filled) as total_progress_dos'));
+				
 					if($get_progress_so->num_rows() > 0) {
 						$progress = $get_progress_so->row();
 						$v->progress =  $progress->progress;
@@ -340,6 +342,12 @@ class Daftar_sales_order extends NOOBS_Controller
 					else
 					{
 						$v->total = 0;
+					}
+
+					if($get_progress_dos->num_rows() > 0) 
+					{
+						$prog_dos = $get_progress_dos->row();
+						$v->tot_prog_dos =  (! empty($prog_dos->total_progress_dos)) ? $prog_dos->total_progress_dos : 0;
 					}
 
 					if($get_progress_do->num_rows() > 0) {

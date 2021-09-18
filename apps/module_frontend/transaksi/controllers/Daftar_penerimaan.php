@@ -20,6 +20,8 @@ class Daftar_penerimaan extends NOOBS_Controller
 
 	public function index()
 	{
+		$params['user_id'] = $this->session->userdata('user_id');
+
 		$this->store_params['header_title'] = 'Daftar Penerimaan';
 		$this->store_params['breadcrumb'] = array(
 			array('', 'Home'),
@@ -39,6 +41,16 @@ class Daftar_penerimaan extends NOOBS_Controller
 
 		$params['date_range1'] = date('Y-m-d', $date);
 		$params['date_range2'] = date('Y-m-d');
+
+		$cek_driver_akses = $this->db_daftar_penerimaan->cek_driver_akses($params);
+		if($cek_driver_akses->num_rows() > 0)
+		{
+			$params['akses_driver'] = $params['user_id'];
+		}
+		else
+		{
+			$params['akses_driver'] = "";
+		}
 
 		$load_data_daftar_penerimaan = $this->db_daftar_penerimaan->load_data_daftar_penerimaan($params);
 
@@ -236,13 +248,13 @@ class Daftar_penerimaan extends NOOBS_Controller
 
 			$update_status = $this->db_daftar_penerimaan->store_update_status_penerimaan($post); //update status
 
-			$get_total_filled = $this->db_daftar_penerimaan->get_total_filled($post,'total')->row();
+			$get_total_do = $this->db_daftar_penerimaan->get_total_do($post,'total')->row();
 			$get_total_sod = $this->db_daftar_penerimaan->get_total_sod_total($post)->row();
 			
-
-			if($get_total_filled->total_filled !== 0)
+			// print_r($get_total_do);exit;
+			if($get_total_do->total_order !== 0)
 			{
-				$get_ttl = $get_total_filled->total_filled;
+				$get_ttl = $get_total_do->total_order;
 			}
 
 			if($get_total_sod->total_sod !== 0)

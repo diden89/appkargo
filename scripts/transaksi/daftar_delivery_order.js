@@ -312,9 +312,9 @@ const daftarDeliveryOrderList = {
 			buttons: [
 			{
 				btnId: 'closePopup',
-				btnText:'Close',
-				btnClass: 'secondary',
-				btnIcon: 'fas fa-times',
+				btnText:'Selesai',
+				btnClass: 'warning',
+				btnIcon: 'fas fa-check',
 				onclick: function(popup) {
 					daftarDeliveryOrderList.loadDataDo(this);
 					popup.close();

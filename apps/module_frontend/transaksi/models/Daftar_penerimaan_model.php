@@ -46,6 +46,11 @@ class Daftar_penerimaan_model extends NOOBS_Model
 			$this->db->where('so.so_id', strtoupper($params['so_id']));
 		}
 
+		if (isset($params['akses_driver']) && ! empty($params['akses_driver']))
+		{
+			$this->db->where('d.d_ud_id', strtoupper($params['akses_driver']));
+		}
+
 		if (isset($params['date_range1']) && ! empty($params['date_range1']))
 		{
 			$this->db->where('dod.dod_created_date >=', $params['date_range1']);
@@ -59,7 +64,18 @@ class Daftar_penerimaan_model extends NOOBS_Model
 
 		return $this->db->get();
  	}
-	public function load_data_detail_do($params = array())
+
+	public function cek_driver_akses($params = array())
+	{
+		if (isset($params['user_id']) && ! empty($params['user_id']))
+		{
+			$this->db->where('d_ud_id', strtoupper($params['user_id']));
+		}
+
+		return $this->db->get('driver');
+ 	}
+
+ 	public function load_data_detail_do($params = array())
 	{
 		$this->db->select('*');
 		$this->db->from('sales_order_detail as sod');
@@ -140,14 +156,14 @@ class Daftar_penerimaan_model extends NOOBS_Model
 		return $this->db->get();
  	}
 
- 	public function get_total_filled($params = array(),$total = false) //dipakai
+ 	public function get_total_do($params = array(),$total = false) //dipakai
 	{
-		$this->db->select('SUM(dos.dos_filled) as total_filled');
-		$this->db->from('delivery_order_status as dos');
-		$this->db->join('delivery_order_detail as dod','dod.dod_id = dos.dos_dod_id','LEFT');
+		$this->db->select('SUM(dod.dod_shipping_qty) as total_order');
+		// $this->db->from('delivery_order_status as dos');
+		$this->db->from('delivery_order_detail as dod');
 		$this->db->join('sales_order_detail as sod','dod.dod_sod_id = sod.sod_id','LEFT');
 
-		if ($total !== 'total')
+		if ($total == 'total')
 		{
 			$this->db->where('dod_is_status', strtoupper($params['dod_is_status']));
 		}

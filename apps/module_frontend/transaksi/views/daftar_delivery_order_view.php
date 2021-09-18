@@ -19,7 +19,7 @@
 			<div class="card-body">
 				<div class="row">
 					<div class="col-12">
-						<h4>Delivery Order</h4>
+						<h4>Cari</h4>
 						<div class="row">
 							<div class="input-group col-md-9">
 								<input type="text" id="txtList" class="form-control" placeholder="Search data..." aria-describedby="btnSearchWord">

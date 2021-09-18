@@ -53,6 +53,7 @@ class Daftar_pembayaran_sales_order extends NOOBS_Controller
 				$v->num = $num;
 				$v->sop_created_date = date('d-m-Y',strtotime($v->sop_created_date));	
 				$v->so_total_amount = number_format($v->so_total_amount);	
+				$v->sop_total_pay = number_format($v->sop_total_pay);	
 			}
 			// print_r($result);exit;
 			$this->store_params['item'] = $result;
@@ -161,9 +162,12 @@ class Daftar_pembayaran_sales_order extends NOOBS_Controller
 					$number++;
 					$v->no = $number;
 					$v->so_qty = number_format($v->so_qty);
+					$v->total_progress_dos = number_format($v->total_progress_dos);
 					$sum[] = $v->so_total_amount;
 					$v->so_total_amount_so = $v->so_total_amount;
 					$v->so_total_amount = 'Rp. '.number_format($v->so_total_amount);
+					$v->ttl_dos = $v->total_amount_dos;
+					$v->total_amount_dos = 'Rp. '.number_format($v->total_amount_dos);
 					$v->so_created_date = date('d-m-Y', strtotime($v->so_created_date));
 				}
 				$array_sum = array_sum($sum);
@@ -261,6 +265,7 @@ class Daftar_pembayaran_sales_order extends NOOBS_Controller
 					$v->no = $number;
 					$v->sop_created_date = date('d-m-Y',strtotime($v->sop_created_date));	
 					$v->so_total_amount = number_format($v->so_total_amount);	
+					$v->sop_total_pay = number_format($v->sop_total_pay);	
 
 					$number++;
 				}

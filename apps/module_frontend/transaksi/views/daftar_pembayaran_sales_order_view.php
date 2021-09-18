@@ -74,7 +74,7 @@
 											<td><?php echo $v->num; ?></td>
 											<td><?php echo $v->sop_no_trx; ?></td>
 											<td><?php echo $v->v_vendor_name; ?></td>
-											<td><?php echo $v->so_total_amount; ?></td>
+											<td><?php echo $v->sop_total_pay; ?></td>
 											<td><?php echo $v->sop_created_date; ?></td>
 											<td><?php echo $v->paying; ?></td>
 											<!-- <td>

@@ -126,7 +126,7 @@ const daftarPaySalesOrderList = {
 			body += '<td>' + item.no + '</td>';
 			body += '<td>' + item.sop_no_trx + '</td>';
 			body += '<td>' + item.v_vendor_name + '</td>';
-			body += '<td>' + item.so_total_amount + '</td>';
+			body += '<td>' + item.sop_total_pay + '</td>';
 			body += '<td>' + item.sop_created_date + '</td>';
 			body += '<td>' + item.paying + '</td>';
 			// body += '<td><div class="btn-group btn-group-sm" role="group" aria-label="Action Button">';
@@ -152,9 +152,9 @@ const daftarPaySalesOrderList = {
 			body += '<td>' + item.so_no_trx;
 			body += '<input type="hidden" name="so_no_trx[]" value="'+item.so_no_trx+'"></td>';
 			body += '<td>' + item.v_vendor_name + '</td>';
-			body += '<td>' + item.so_qty + '</td>';
-			body += '<td>' + item.so_total_amount + '</td>';
-			body += '<td><button type="button" class="btn btn-warning btn-circle" data-id="' + item.so_id + '"  data-v_id="' + item.v_id + '" data-amount_'+i+'="' + item.so_total_amount_so + '" onclick="daftarPaySalesOrderList.paymentSO(this,'+i+');"><i class="fas fa-dollar-sign"></i></button></td>';
+			body += '<td>' + item.total_progress_dos + '</td>';
+			body += '<td>' + item.total_amount_dos + '</td>';
+			body += '<td><button type="button" class="btn btn-warning btn-circle" data-id="' + item.so_id + '"  data-v_id="' + item.v_id + '" data-amount_'+i+'="' + item.ttl_dos + '" onclick="daftarPaySalesOrderList.paymentSO(this,'+i+');"><i class="fas fa-dollar-sign"></i></button></td>';
 			body += '<td><input type="text" id="bayar_so_'+i+'" class="form-control" value="" disabled>';
 			body += '<input type="hidden" name="bayar_so[]" id="bayar_sales_'+i+'" class="form-control" value=""></td>';
 			body += '<td>' + item.rd_name + '</td>';

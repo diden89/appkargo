@@ -19,18 +19,15 @@
 			<div class="card-body">
 				<div class="row">
 					<div class="col-12">
-						<h4>Delivery Order</h4>
+						<h4>Cari</h4>
 						<div class="row">
-							<div class="input-group col-md-9">
+							<div class="input-group col-md-12">
 								<input type="text" id="txtList" class="form-control" placeholder="Search data..." aria-describedby="btnSearchWord">
 								<div class="input-group-append">
 									<button id="btnSearchItem" class="btn btn-info" type="button"><i class="fas fa-search"></i></button>
 									<button id="btnReloadItem" class="btn btn-success" type="button"><i class="fas fa-sync-alt"></i></button>
 								</div>
 							</div>							
-							<div class="col-md-3">
-								<button id="btnAddItem" class="btn btn-lg btn-block btn-primary btn-flat" type="button" title="Add Data"><i class="fas fa-plus"></i> Add</button>
-							</div>
 						</div><br/>
 						<div class="row">
 							<div class="input-group col-md-6">
