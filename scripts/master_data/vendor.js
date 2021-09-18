@@ -8,6 +8,24 @@
  */
 
 $(document).ready(function() {
+
+	$('#range1').inputmask('dd-mm-yyyy', { 'placeholder': 'DD-MM-YYYY' });
+		$('#range1').noobsdaterangepicker({
+			showDropdowns: true,
+			singleDatePicker: true,
+			locale: {
+				format: 'DD-MM-YYYY'
+			}
+		});
+		$('#range2').inputmask('dd-mm-yyyy', { 'placeholder': 'DD-MM-YYYY' });
+		$('#range2').noobsdaterangepicker({
+			showDropdowns: true,
+			singleDatePicker: true,
+			locale: {
+				format: 'DD-MM-YYYY'
+			}
+		});
+
 	var VENDOR = {
 		gridVendor : $('#gridVendor').grid({
 			serverSide: true,
@@ -217,4 +235,13 @@ $(document).ready(function() {
 			}
 		}
 	});
+
+	// $('#daterangedata').on('click',function() {
+	// 	VENDOR.gridVendor.reloadData({
+	// 		date_range1: $('#range1').val(),
+	// 		date_range2: $('#range2').val(),
+	// 	});
+
+	// });
+
 });

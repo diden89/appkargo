@@ -83,29 +83,31 @@
 	<hr>
 	<div class="row">
 		<div class="col-md-12">
-			<table id="temporaryDataTable" style="width: 100%;" class="table table-hover table-striped no-footer" role="grid" aria-describedby="wordDataTable_info">
-				<thead>
-					<tr role="row">
-						<th width="10">No</th>
-						<th>No Transaksi</th>
-						<th>Nama Vendor</th>
-						<th>Berat / Kg</th>
-						<th>Total Ongkir</th>
-						<th></th>
-						<th>Total Bayar</th>
-						<th>Tujuan</th>
-						<th>Tanggal Pengiriman</th>
-						<!-- <th width="100">Action</th> -->
-					</tr>
-				</thead>
-				<tbody>
-					
-				</tbody>
-				<tfoot>
-					<th colspan="6">Total :</th>
-					<th id="total_amount"></th>
-				</tfoot>
-			</table>
+			<div class="excel-data-table-container">
+				<table id="temporaryDataTable" style="width: 100%;" class="table table-hover table-striped no-footer" role="grid" aria-describedby="wordDataTable_info">
+					<thead>
+						<tr role="row">
+							<th width="10">No</th>
+							<th>No Transaksi</th>
+							<th>Nama Vendor</th>
+							<th>Berat / Kg</th>
+							<th>Total Ongkir</th>
+							<th></th>
+							<th>Total Bayar</th>
+							<th>Tujuan</th>
+							<th>Tanggal Pengiriman</th>
+							<!-- <th width="100">Action</th> -->
+						</tr>
+					</thead>
+					<tbody>
+						
+					</tbody>
+					<tfoot>
+						<th colspan="6">Total :</th>
+						<th id="total_amount"></th>
+					</tfoot>
+				</table>
+			</div>
 		</div>	
 	</div>
 </form>

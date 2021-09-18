@@ -168,6 +168,7 @@ $avatar = empty($this->session->userdata('user_img')) ? 'unknown.png' : $this->s
 		<script src="<?php echo base_url('vendors/jquery_noobsdaterangepicker/js/noobsdaterangepicker.js'); ?>"></script>
 		<script src="<?php echo base_url('scripts/custom_validity.js'); ?>"></script>
 		<script src="<?php echo base_url('scripts/scripts.js'); ?>"></script>
+		<!-- <script src="https://cdn.datatables.net/datetime/1.1.1/js/dataTables.dateTime.min.js"></script> -->
 		<!-- <script src="<?php //echo base_url('vendors/template/3.0.0/'); ?>plugins/chart.js/Chart.min.js"></script> -->
 		<script src="<?php echo base_url('vendors/template/3.0.0/'); ?>dist/js/demo.js"></script>
 		<!-- <script src="<?php //echo base_url('vendors/template/3.0.0/'); ?>dist/js/pages/dashboard3.js"></script> -->

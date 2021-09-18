@@ -30,6 +30,33 @@
 		</div>
 		<div class="col-md-6">
 			<div class="form-group row">
+				<label for="caption" class="col-sm-4 col-form-label">Vendor</label>
+				<div class="col-sm-8">
+				<select class="form-control select2"  name="v_vendor_id" id="v_vendor_id">
+					<option value="">-Select-</option>
+					<?php
+						foreach($vendor as $k => $v)
+						{
+							if($mode == 'edit' &&$data->so_vendor_id == $v->v_id)
+								{
+									$sel = 'selected';
+								}
+								else
+								{
+									$sel = '';
+								}
+							echo '<option value="'.$v->v_id.'" '.$sel.'>'.$v->v_vendor_name.'</option>';
+						}
+					?>
+				</select>
+				</div>
+				
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-6">
+			<div class="form-group row">
 				<label for="url" class="col-sm-4 col-form-label">Provinsi</label>
 				<div class="col-sm-8">
 					<select class="form-control select2"  name="txt_province" id="txt_province">
@@ -50,23 +77,7 @@
 						?>
 					</select>
 				</div>
-			</div>
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-md-6">
-			<div class="form-group row">
-				<label for="caption" class="col-sm-4 col-form-label">Tanggal</label>
-				<div class="input-group col-8">
-					<div class="input-group">
-						<div class="input-group-prepend">
-							<span class="input-group-text">
-								<i class="far fa-calendar-alt"></i>
-							</span>
-						</div>
-						<input type="text" name="so_created_date" class="form-control" id="created_date" required="required" data-inputmask-alias="datetime" data-inputmask-inputformat="dd-mm-yyyy" data-mask value="">
-					</div>
-				</div>
+				
 			</div>
 		</div>
 		<div class="col-md-6">
@@ -83,25 +94,16 @@
 	<div class="row">
 		<div class="col-md-6">
 			<div class="form-group row">
-				<label for="caption" class="col-sm-4 col-form-label">Vendor</label>
-				<div class="col-sm-8">
-				<select class="form-control select2"  name="v_vendor_id" id="v_vendor_id">
-					<option value="">-Select-</option>
-					<?php
-						foreach($vendor as $k => $v)
-						{
-							if($mode == 'edit' &&$data->so_vendor_id == $v->v_id)
-								{
-									$sel = 'selected';
-								}
-								else
-								{
-									$sel = '';
-								}
-							echo '<option value="'.$v->v_id.'" '.$sel.'>'.$v->v_vendor_name.'</option>';
-						}
-					?>
-				</select>
+				<label for="caption" class="col-md-4 col-form-label">Tanggal</label>
+				<div class="input-group col-md-8">
+					<div class="input-group">
+						<div class="input-group-prepend">
+							<span class="input-group-text">
+								<i class="far fa-calendar-alt"></i>
+							</span>
+						</div>
+						<input type="text" name="so_created_date" class="form-control" id="created_date" required="required" data-inputmask-alias="datetime" data-inputmask-inputformat="dd-mm-yyyy" data-mask value="">
+					</div>
 				</div>
 			</div>
 		</div>

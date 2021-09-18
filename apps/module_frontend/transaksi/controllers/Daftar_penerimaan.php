@@ -85,9 +85,22 @@ class Daftar_penerimaan extends NOOBS_Controller
 
 	public function load_data_daftar_penerimaan() // dipakai
 	{
+		$params['user_id'] = $this->session->userdata('user_id');
+
 		if (isset($_POST['action']) && $_POST['action'] == 'load_data_daftar_penerimaan')
 		{
 			$post = $this->input->post(NULL, TRUE);
+
+			$cek_driver_akses = $this->db_daftar_penerimaan->cek_driver_akses($params);
+			if($cek_driver_akses->num_rows() > 0)
+			{
+				$post['akses_driver'] = $post['user_id'];
+			}
+			else
+			{
+				$post['akses_driver'] = "";
+			}
+
 			$load_data_daftar_penerimaan = $this->db_daftar_penerimaan->load_data_daftar_penerimaan($post);
 			// print_r($_POST);exit;
 			if ($load_data_daftar_penerimaan->num_rows() > 0) 
@@ -128,6 +141,8 @@ class Daftar_penerimaan extends NOOBS_Controller
 				'table' => 'province'
 			);
 
+			$new_params['user_id'] = $this->session->userdata('user_id');
+
 			$post['sales_order'] = $this->db_daftar_penerimaan->get_option_so()->result();
 			$post['customer'] = $this->db_daftar_penerimaan->get_option_customer()->result();
 			$post['vehicle'] = $this->db_daftar_penerimaan->get_option_vehicle()->result();
@@ -144,6 +159,16 @@ class Daftar_penerimaan extends NOOBS_Controller
 			else
 			{
 				$last_notrx = 1;
+			}
+
+			$cek_driver_akses = $this->db_daftar_penerimaan->cek_driver_akses($new_params);
+			if($cek_driver_akses->num_rows() > 0)
+			{
+				$post['akses_driver'] = $post['user_id'];
+			}
+			else
+			{
+				$post['akses_driver'] = "";
 			}
 
 			$post['last_notrx'] = sprintf('%04d',$last_notrx);
@@ -163,11 +188,22 @@ class Daftar_penerimaan extends NOOBS_Controller
 	public function load_do_data() // dipakai
 	{
 		$post = $this->input->post(NULL, TRUE);
+		$new_params['user_id'] = $this->session->userdata('user_id');
 
 		// print_r($post);exit;
 		if (isset($post['action']) && ! empty($post['action']) && $post['action'] == 'load_data_daftar_penerimaan')
 		{
 			unset($post['action']);
+
+			$cek_driver_akses = $this->db_daftar_penerimaan->cek_driver_akses($new_params);
+			if($cek_driver_akses->num_rows() > 0)
+			{
+				$post['akses_driver'] = $post['user_id'];
+			}
+			else
+			{
+				$post['akses_driver'] = "";
+			}
 
 			$load_data_daftar_penerimaan = $this->db_daftar_penerimaan->load_data_daftar_penerimaan($post);
 
@@ -185,7 +221,7 @@ class Daftar_penerimaan extends NOOBS_Controller
 					$v->dod_shipping_qty_ori = $v->dod_shipping_qty;
 					$v->dod_shipping_qty = number_format($v->dod_shipping_qty);
 					$v->dod_ongkir = number_format($v->dod_ongkir);
-					$v->new_ongkir = number_format($v->dod_ongkir);
+					$v->new_ongkir = $v->dod_ongkir;
 				}
 					// print_r($result);exit;
 				echo json_encode(array('success' => TRUE, 'data' => $result));
@@ -198,9 +234,21 @@ class Daftar_penerimaan extends NOOBS_Controller
 	
 	public function load_update_status_form()
 	{
+		$new_params['user_id'] = $this->session->userdata('user_id');
+
 		if (isset($_POST['action']) && $_POST['action'] == 'load_update_status_form')
 		{
 			$post = $this->input->post(NULL, TRUE);
+
+			$cek_driver_akses = $this->db_daftar_penerimaan->cek_driver_akses($new_params);
+			if($cek_driver_akses->num_rows() > 0)
+			{
+				$post['akses_driver'] = $post['user_id'];
+			}
+			else
+			{
+				$post['akses_driver'] = "";
+			}
 
 			$post['data'] = $this->db_daftar_penerimaan->load_data_daftar_penerimaan($post)->row();
 			// print_r($post);exit;
@@ -239,6 +287,8 @@ class Daftar_penerimaan extends NOOBS_Controller
 
 	public function store_update_status()//dipakai
 	{
+		$new_params['user_id'] = $this->session->userdata('user_id');
+
 		if (isset($_POST['action']) && $_POST['action'] == 'store_update_status')
 		{
 			$post = $this->input->post(NULL, TRUE);
@@ -246,6 +296,16 @@ class Daftar_penerimaan extends NOOBS_Controller
 			$post['dod_is_status'] = 'SELESAI';
 			$input_to_penerimaan_status = $this->db_daftar_penerimaan->store_penerimaan_status($post);
 
+			$cek_driver_akses = $this->db_daftar_penerimaan->cek_driver_akses($new_params);
+			if($cek_driver_akses->num_rows() > 0)
+			{
+				$post['akses_driver'] = $post['user_id'];
+			}
+			else
+			{
+				$post['akses_driver'] = "";
+			}
+			// print_r($post);exit;
 			$update_status = $this->db_daftar_penerimaan->store_update_status_penerimaan($post); //update status
 
 			$get_total_do = $this->db_daftar_penerimaan->get_total_do($post,'total')->row();

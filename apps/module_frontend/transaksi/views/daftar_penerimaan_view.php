@@ -63,7 +63,7 @@
 				</div>
 				<div class="row">
 					<div class="col-12">
-						<div class="excel-data-table-container">
+						<!-- <div class="excel-data-table-container"> -->
 							<table id="ignoredItemDataTable" style="width: 100%;" class="table table-hover table-striped no-footer" role="grid" aria-describedby="wordDataTable_info">
 								<thead>
 									<tr role="row">
@@ -108,7 +108,7 @@
 									<?php endforeach; ?>
 								</tbody>
 							</table>
-						</div>
+						<!-- </div> -->
 					</div>
 				</div>
 			</div>

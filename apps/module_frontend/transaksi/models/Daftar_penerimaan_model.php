@@ -244,7 +244,9 @@ class Daftar_penerimaan_model extends NOOBS_Model
 
 		$this->edit($new_params, "dod_id = {$params['dod_id']}");
 
-		return $this->load_data_daftar_penerimaan();
+		$post['akses_driver'] = $params['akses_driver'];
+
+		return $this->load_data_daftar_penerimaan($post);
 	}
 
 	public function store_update_status_sales_order($params = array()) //dipakai

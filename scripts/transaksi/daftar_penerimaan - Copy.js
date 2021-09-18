@@ -312,5 +312,5 @@ const daftarDeliveryOrderList = {
 
 $(document).ready(function() {
 	daftarDeliveryOrderList.init();
-	
+
 });

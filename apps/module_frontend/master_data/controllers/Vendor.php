@@ -38,6 +38,8 @@ class Vendor extends NOOBS_Controller
 		if (isset($_POST['action']) && $_POST['action'] == 'load_data_vendor')
 		{
 			$post = $this->input->post(NULL, TRUE);
+			// $post['date_range1'] = (! empty($post['date_range1'])) ? date('Y-m-d',strtotime($post['date_range1'])) : date('Y-m-01');
+			// $post['date_range2'] = (! empty($post['date_range2'])) ? date('Y-m-d',strtotime($post['date_range2'])) : date('Y-m-t');
 			$load_data_vendor = $this->db_vendor->load_data_vendor($post);
 			
 			$number = 1;

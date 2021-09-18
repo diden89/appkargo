@@ -26,6 +26,12 @@ class Vendor_model extends NOOBS_Model
 			$this->db->where('v_id', strtoupper($params['txt_id']));
 		}
 
+		// if (isset($params['date_range1']) && ! empty($params['date_range1']))
+		// {
+		// 	$this->db->where('last_datetime >=', $params['date_range1']);
+		// 	$this->db->where('last_datetime <=', $params['date_range2']);
+		// }
+
 		$this->db->where('v_is_active', 'Y');
 		$this->db->order_by('v_vendor_name', 'ASC');
 
