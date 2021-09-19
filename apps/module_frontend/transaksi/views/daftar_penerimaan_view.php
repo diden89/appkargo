@@ -24,13 +24,12 @@
 							<div class="input-group col-md-12">
 								<input type="text" id="txtList" class="form-control" placeholder="Search data..." aria-describedby="btnSearchWord">
 								<div class="input-group-append">
-									<button id="btnSearchItem" class="btn btn-info" type="button"><i class="fas fa-search"></i></button>
-									<button id="btnReloadItem" class="btn btn-success" type="button"><i class="fas fa-sync-alt"></i></button>
+									<button id="btnReloadItem" class="btn btn-success" type="button"><i class="fas fa-sync-alt"></i> Reload</button>
 								</div>
 							</div>							
 						</div><br/>
-						<div class="row">
-							<div class="input-group col-md-6">
+						<div class="form-group row">
+							<div class="input-group col-md-12 col-lg-6 col-12">
 								<label for="caption" class="col-sm-3 col-form-label">Periode</label>
 								<div class="col-9">
 									<div class="input-group">
@@ -44,7 +43,9 @@
 									</div>
 								</div>
 							</div>
-							<div class="input-group col-md-6">
+						</div>
+						<div class="form-group row">
+							<div class="input-group col-md-12 col-lg-6 col-12">
 								<label for="caption" class="col-sm-3 col-form-label">S/d</label>
 								<div class="col-9">
 									<div class="input-group">
@@ -58,58 +59,16 @@
 								</div>
 							</div>
 						</div>
+						<div class="form-group row">
+							<div class="input-group col-md-12 col-lg-6 col-12">
+								<button id="daterangedata" class="btn btn-warning" type="button"><i class="fas fa-search"></i> Filter</button>
+							</div>
+						</div>
 						<hr />
 					</div>
 				</div>
 				<div class="row">
-					<div class="col-12">
-						<!-- <div class="excel-data-table-container"> -->
-							<table id="ignoredItemDataTable" style="width: 100%;" class="table table-hover table-striped no-footer" role="grid" aria-describedby="wordDataTable_info">
-								<thead>
-									<tr role="row">
-										<th width="10">No</th>
-									<!-- 	<th>No Transaksi SO</th> -->
-										<th>No Transaksi</th>
-										<th>Nama Pelanggan</th>
-										<th>Nama Barang</th>
-										<th>Pengemudi / Kendaraan</th>
-										<th >Alamat Pengiriman</th>
-										<th>Total Kirim</th>
-										<th>Total terima</th>
-										<th>Biaya</th>
-										<th>Tanggal Pengiriman</th>
-										<th>Status</th>
-										<th>Keterangan</th>
-										<th width="100">Action</th>
-									</tr>
-								</thead>
-								<tbody>
-									<?php foreach ($item as $k => $v): ?>
-										<tr>
-											<td><?php echo $v->num; ?></td>
-											<!-- <td><?php //echo $v->so_no_trx; ?></td> -->
-											<td><?php echo $v->dod_no_trx; ?></td>
-											<td><?php echo $v->c_name; ?></td>
-											<td><?php echo $v->il_item_name; ?></td>
-											<td><?php echo $v->d_name.' / '.$v->ve_license_plate; ?></td>
-											<td><?php echo $v->c_address.'<br>Kec. '.$v->rsd_name; ?></td>
-											<td><?php echo number_format($v->dod_shipping_qty); ?></td>
-											<td><?php echo number_format($v->dos_filled); ?></td>
-											<td id="biaya"><?php echo number_format($v->new_ongkir); ?></td>
-											<td><?php echo date('d-m-Y',strtotime($v->dod_created_date)); ?></td>
-											<td><?php echo $v->dod_is_status; ?></td>
-											<td><?php echo $v->dos_keterangan; ?></td>
-											<td>
-												<div class="btn-group btn-group-sm" role="group" aria-label="Action Button">											
-													<button type="button" class="btn btn-success" data-id="<?php echo $v->dod_id; ?>" data-no_trx="<?php echo $v->dod_no_trx; ?>" data-is_status="<?php echo $v->dod_is_status; ?>" data-so_id="<?php echo $v->so_id; ?>"  data-so_no_trx="<?php echo $v->so_no_trx; ?>"onclick="daftarDeliveryOrderList.updateStatus(this, 'edit');" title="Update Status"><i class="fas fa-check-double"></i> Finish</button>													
-												</div>
-											</td>
-										</tr>
-									<?php endforeach; ?>
-								</tbody>
-							</table>
-						<!-- </div> -->
-					</div>
+					<div id="gridPenerimaan"></div>
 				</div>
 			</div>
 		</div>

@@ -2,53 +2,14 @@
 /*!
  * @package APPKARGO
  * @copyright Noobscript
- * @author Sikelopes
- * @edit Diden89
+ * @author diden89
  * @version 1.0
  * @access Public
- * @path /appkargo/apps/module_frontend/transaksi/models/Daftar_sales_order_model.php
+ * @link /rab_frontend/apps/module_frontend/transaksi/models/Tagihan_pembayaran_model.php
  */
 
-class Daftar_sales_order_model extends NOOBS_Model
+class Tagihan_pembayaran_model extends NOOBS_Model
 {
-	public function load_data_daftar_sales_order($params = array())
-	{
-		// print_r($params);exit;
-		$this->db->select('so.*,rd.*,v.v_vendor_name, (select sum(sod_qty) as so_qty from sales_order_detail where sod_no_trx = so.so_no_trx) as so_qty,
-			(CASE 
-			WHEN so_is_pay = "BL" THEN "BELUM LUNAS"
-			WHEN so_is_pay = "LN" THEN "LUNAS"
-			ELSE "BELUM LENGKAP" END) as paying, DATE_FORMAT(so.so_created_date, "%d-%m-%Y") as date_create');
-		$this->db->from('sales_order as so');
-		// $this->db->join('sales_order_detail as sod','sod.sod_no_trx = so.so_id','LEFT');
-		$this->db->join('vendor as v','v.v_id = so.so_vendor_id','LEFT');
-		$this->db->join('ref_district as rd','rd.rd_id = so.so_district_id','LEFT');
-		
-		if (isset($params['txt_item']) && ! empty($params['txt_item']))
-		{
-			$this->db->like('UPPER(so.so_no_trx)', strtoupper($params['txt_item']),'both');
-			$this->db->or_like('UPPER(v.v_vendor_name)', strtoupper($params['txt_item']),'both');
-		}
-
-		if (isset($params['txt_id']) && ! empty($params['txt_id']))
-		{
-			$this->db->where('so.so_id', strtoupper($params['txt_id']));
-		}
-
-		if (isset($params['date_range1']) && ! empty($params['date_range1']))
-		{
-			$this->db->where('so.so_created_date >=', date('Y-m-d',strtotime($params['date_range1'])));
-			$this->db->where('so.so_created_date <=', date('Y-m-d',strtotime($params['date_range2'])));
-		}
-
-		$this->db->where('so.so_is_active', 'Y');
-		// $this->db->or_where('so.so_is_pay', 'BL');
-		$this->db->like('v.v_unique_access_key', md5($this->session->userdata('user_id')));
-		$this->db->order_by('so.so_created_date', 'DESC');
-		$this->db->order_by('so.so_id', 'DESC');
-
-		return $this->db->get();
- 	}
 	public function get_progress_so($params = array())
 	{
 		$this->db->select('count(dod.dod_id) as progress');
@@ -135,58 +96,6 @@ class Daftar_sales_order_model extends NOOBS_Model
 		return $this->db->get();
  	}
 
-	public function store_data_daftar_sales_order($params = array())
-	{
-		$this->table = 'sales_order';
-
-		$new_params = array(
-			'so_vendor_id' => $params['v_vendor_id'],
-			'so_district_id' => $params['txt_region'],
-			'so_no_trx' => $params['last_notrx'],
-			// 'so_is_status' => 'ORDER',
-			'so_created_date' => date('Y-m-d H:i:s', strtotime($params['so_created_date'])),
-		);
-
-		if ($params['mode'] == 'add') $this->add($new_params, TRUE);
-		else $this->edit($new_params, "so_id = {$params['txt_id']}");
-
-		unset($params['txt_id']);
-
-		return $this->load_data_daftar_sales_order($params);
-	}
-
-	public function store_detail_so($params = array())
-	{
-		$this->table = 'sales_order_detail';
-
-		$new_params = array(
-			'sod_no_trx' => $params['sod_no_trx'],
-			'sod_qty' => $params['sod_qty'],
-			'sod_item_id' => $params['sod_item_id']
-		);
-
-		if(! empty($params['so_id'])) {
-			$mode = $params['mode'];
-		}
-		else {
-			$mode = 'add';
-		}
-
-		if ($mode == 'add') $this->add($new_params, TRUE);
-		else $this->edit($new_params, "sod_id = {$params['so_id']}");
-
-		return $this->load_data_detail_so(array('no_trx' => $params['sod_no_trx']));
-	}
-
-	public function delete_data_daftar_sales_order($params = array())
-	{
-		$this->table = 'customer';
-
-		$this->edit(['c_is_active' => 'N'], "c_id = {$params['txt_id']}");
-		
-		return $this->load_data_daftar_sales_order();
-	}
-
 	public function load_data($params = array())
 	{
 		$this->db->where('il_item', strtoupper($params['txt_item']));
@@ -244,7 +153,7 @@ class Daftar_sales_order_model extends NOOBS_Model
 		
 		return $this->db->get('ref_sub_district');
  	}
-	public function get_option_vendor()
+	public function load_vendor() // di pakai
 	{		
 		$this->db->where('v_is_active', 'Y');
 		$this->db->like('v_unique_access_key', md5($this->session->userdata('user_id')));
@@ -297,27 +206,58 @@ class Daftar_sales_order_model extends NOOBS_Model
 
 	public function load_data_rekap_tagihan($params = array())
 	{
-		$this->db->select('so.*,rd.*,v.v_vendor_name, (select sum(sod_qty) as so_qty from sales_order_detail where sod_no_trx = so.so_no_trx) as so_qty,
-			(CASE 
-			WHEN so_is_pay = "BL" THEN "BELUM LUNAS"
-			WHEN so_is_pay = "LN" THEN "LUNAS"
-			ELSE "BELUM LENGKAP" END) as paying, DATE_FORMAT(so.so_created_date, "%d-%m-%Y") as date_create');
-		$this->db->from('sales_order as so');
-		$this->db->join('vendor as v','v.v_id = so.so_vendor_id','LEFT');
-		$this->db->join('ref_district as rd','rd.rd_id = so.so_district_id','LEFT');
+		// print_r($params);exit;
+		// $this->db->select('*,(select (dod.dod_shipping_qty * sh_cost) as cost from shipping where sh_rsd_id = c.c_district_id) as ongkir');
+		$this->db->select('*');
+		$this->db->from('delivery_order_detail as dod');
+		$this->db->join('customer as c','c.c_id = dod.dod_customer_id','LEFT');
+		$this->db->join('sales_order_detail as sod','sod.sod_id = dod.dod_sod_id','LEFT');
+		$this->db->join('sales_order as so','sod.sod_no_trx = so.so_no_trx','LEFT');
+		$this->db->join('ref_sub_district as rsd','rsd.rsd_id = c.c_district_id','LEFT');
+		$this->db->join('vehicle as ve','ve.ve_id = dod.dod_vehicle_id','LEFT');
+		$this->db->join('driver as d','d.d_id = dod.dod_driver_id','LEFT');
+		$this->db->join('item_list as il','il.il_id = sod.sod_item_id','LEFT');
+		$this->db->join('delivery_order_status as dos','dos.dos_dod_id = dod.dod_id','LEFT');
 		
-		// if (isset($params['date_range1']) && ! empty($params['date_range1']))
-		// {
-		// 	$this->db->where('so.so_created_date >=', date('Y-m-d',strtotime($params['date_range1'])));
-		// 	$this->db->where('so.so_created_date <=', date('Y-m-d',strtotime($params['date_range2'])));
-		// }
+		if (isset($params['txt_item']) && ! empty($params['txt_item']))
+		{
+			$this->db->like('UPPER(dod.dod_no_trx)', strtoupper($params['txt_item']));
+			$this->db->or_like('UPPER(c.c_name)', strtoupper($params['txt_item']));
+			$this->db->or_like('UPPER(il.il_item_name)', strtoupper($params['txt_item']));
+		}
 
-		$this->db->where('so.so_is_active', 'Y');
-		$this->db->or_where('so.so_is_pay', 'BL');
-		$this->db->or_where('so.so_is_status', 'SELESAI');
-		$this->db->like('v.v_unique_access_key', md5($this->session->userdata('user_id')));
-		$this->db->order_by('so.so_created_date', 'DESC');
-		$this->db->order_by('so.so_id', 'DESC');
+		if (isset($params['txt_id']) && ! empty($params['txt_id']))
+		{
+			$this->db->where('dod.dod_id', strtoupper($params['txt_id']));
+		}
+
+		if (isset($params['so_no_trx']) && ! empty($params['so_no_trx']))
+		{
+			$this->db->where('so.so_no_trx', strtoupper($params['so_no_trx']));
+		}
+
+		if (isset($params['so_id']) && ! empty($params['so_id']))
+		{
+			$this->db->where('so.so_id', strtoupper($params['so_id']));
+		}
+
+		if (isset($params['akses_driver']) && ! empty($params['akses_driver']))
+		{
+			$this->db->where('d.d_ud_id', strtoupper($params['akses_driver']));
+		}
+
+		if (isset($params['date_range1']) && ! empty($params['date_range1']))
+		{
+			$this->db->where('dod.dod_created_date >=', $params['date_range1']);
+			$this->db->where('dod.dod_created_date <=', $params['date_range2']);
+		}
+
+		$this->db->where('dod.dod_is_active', 'Y');
+		$this->db->where('so.so_is_pay', 'BL');
+		$this->db->where('so.so_is_status', 'SELESAI');
+		// $this->db->where('dod.dod_is_status !=', 'SELESAI');
+		$this->db->order_by('dod.dod_id', 'DESC');
+		// $this->db->order_by('il.il_item_name', 'ASC');
 
 		return $this->db->get();
  	}

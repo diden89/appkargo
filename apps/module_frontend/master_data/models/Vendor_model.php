@@ -87,7 +87,8 @@ class Vendor_model extends NOOBS_Model
 			'v_vendor_phone' => $params['v_vendor_phone'],
 			'v_vendor_email' => $params['v_vendor_email'],
 			'v_user_access' => $params['v_akses'],
-			'v_unique_access_key' => $params['v_unique_akses']
+			'v_unique_access_key' => $params['v_unique_akses'],
+			'v_code' => $params['v_code']
 		);
 
 		if ($params['mode'] == 'add') return $this->add($new_params, TRUE);

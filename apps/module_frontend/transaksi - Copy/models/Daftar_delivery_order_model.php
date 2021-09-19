@@ -6,12 +6,12 @@
  * @edit Diden89
  * @version 1.0
  * @access Public
- * @path /appkargo/apps/module_frontend/transaksi/models/Daftar_penerimaan_model.php
+ * @path /appkargo/apps/module_frontend/transaksi/models/Daftar_delivery_order_model.php
  */
 
-class Daftar_penerimaan_model extends NOOBS_Model
+class Daftar_delivery_order_model extends NOOBS_Model
 {
-	public function load_data_daftar_penerimaan($params = array())
+	public function load_data_daftar_delivery_order($params = array())
 	{
 		// print_r($params);exit;
 		// $this->db->select('*,(select (dod.dod_shipping_qty * sh_cost) as cost from shipping where sh_rsd_id = c.c_district_id) as ongkir');
@@ -24,13 +24,10 @@ class Daftar_penerimaan_model extends NOOBS_Model
 		$this->db->join('vehicle as ve','ve.ve_id = dod.dod_vehicle_id','LEFT');
 		$this->db->join('driver as d','d.d_id = dod.dod_driver_id','LEFT');
 		$this->db->join('item_list as il','il.il_id = sod.sod_item_id','LEFT');
-		$this->db->join('delivery_order_status as dos','dos.dos_dod_id = dod.dod_id','LEFT');
 		
 		if (isset($params['txt_item']) && ! empty($params['txt_item']))
 		{
 			$this->db->like('UPPER(dod.dod_no_trx)', strtoupper($params['txt_item']));
-			$this->db->or_like('UPPER(c.c_name)', strtoupper($params['txt_item']));
-			$this->db->or_like('UPPER(il.il_item_name)', strtoupper($params['txt_item']));
 		}
 
 		if (isset($params['txt_id']) && ! empty($params['txt_id']))
@@ -46,11 +43,6 @@ class Daftar_penerimaan_model extends NOOBS_Model
 		if (isset($params['so_id']) && ! empty($params['so_id']))
 		{
 			$this->db->where('so.so_id', strtoupper($params['so_id']));
-		}
-
-		if (isset($params['akses_driver']) && ! empty($params['akses_driver']))
-		{
-			$this->db->where('d.d_ud_id', strtoupper($params['akses_driver']));
 		}
 
 		if (isset($params['date_range1']) && ! empty($params['date_range1']))
@@ -64,77 +56,9 @@ class Daftar_penerimaan_model extends NOOBS_Model
 		$this->db->order_by('dod.dod_id', 'DESC');
 		// $this->db->order_by('il.il_item_name', 'ASC');
 
-		// return $this->db->get();
-		return $this->create_result($params);
- 	}
-
- 	public function load_data_form($params = array())
-	{
-		$this->db->select('*');
-		$this->db->from('delivery_order_detail as dod');
-		$this->db->join('customer as c','c.c_id = dod.dod_customer_id','LEFT');
-		$this->db->join('sales_order_detail as sod','sod.sod_id = dod.dod_sod_id','LEFT');
-		$this->db->join('sales_order as so','sod.sod_no_trx = so.so_no_trx','LEFT');
-		$this->db->join('ref_sub_district as rsd','rsd.rsd_id = c.c_district_id','LEFT');
-		$this->db->join('vehicle as ve','ve.ve_id = dod.dod_vehicle_id','LEFT');
-		$this->db->join('driver as d','d.d_id = dod.dod_driver_id','LEFT');
-		$this->db->join('item_list as il','il.il_id = sod.sod_item_id','LEFT');
-		$this->db->join('delivery_order_status as dos','dos.dos_dod_id = dod.dod_id','LEFT');
-		
-		if (isset($params['txt_item']) && ! empty($params['txt_item']))
-		{
-			$this->db->like('UPPER(dod.dod_no_trx)', strtoupper($params['txt_item']));
-		}
-
-		if (isset($params['txt_id']) && ! empty($params['txt_id']))
-		{
-			$this->db->where('dod.dod_id', strtoupper($params['txt_id']));
-		}
-
-		if (isset($params['dod_id']) && ! empty($params['dod_id']))
-		{
-			$this->db->where('dod.dod_id', strtoupper($params['dod_id']));
-		}
-
-		if (isset($params['so_no_trx']) && ! empty($params['so_no_trx']))
-		{
-			$this->db->where('so.so_no_trx', strtoupper($params['so_no_trx']));
-		}
-
-		if (isset($params['so_id']) && ! empty($params['so_id']))
-		{
-			$this->db->where('so.so_id', strtoupper($params['so_id']));
-		}
-
-		if (isset($params['akses_driver']) && ! empty($params['akses_driver']))
-		{
-			$this->db->where('d.d_ud_id', strtoupper($params['akses_driver']));
-		}
-
-		if (isset($params['date_range1']) && ! empty($params['date_range1']))
-		{
-			$this->db->where('dod.dod_created_date >=', $params['date_range1']);
-			$this->db->where('dod.dod_created_date <=', $params['date_range2']);
-		}
-
-		$this->db->where('dod.dod_is_active', 'Y');		
-		$this->db->order_by('dod.dod_id', 'DESC');
-		
 		return $this->db->get();
-
  	}
-
-	public function cek_driver_akses($params = array())
-	{
-		if (isset($params['user_id']) && ! empty($params['user_id']))
-		{
-			$this->db->where('d_ud_id', strtoupper($params['user_id']));
-		}
-
-		return $this->db->get('driver');
- 	}
-
- 	public function load_data_detail_do($params = array())
+	public function load_data_detail_do($params = array())
 	{
 		$this->db->select('*');
 		$this->db->from('sales_order_detail as sod');
@@ -154,7 +78,7 @@ class Daftar_penerimaan_model extends NOOBS_Model
 		return $this->db->get();
  	}
 
-	public function store_data_daftar_penerimaan($params = array()) //dipakai
+	public function store_data_daftar_delivery_order($params = array()) //dipakai
 	{
 		$this->table = 'delivery_order_detail';
 		
@@ -173,7 +97,7 @@ class Daftar_penerimaan_model extends NOOBS_Model
 		if ($params['mode'] == 'add') $this->add($new_params, TRUE);
 		else $this->edit($new_params, "dod_id = {$params['dod_id']}");
 
-		return $this->load_data_daftar_penerimaan();
+		return $this->load_data_daftar_delivery_order();
 	}
 
 
@@ -215,14 +139,13 @@ class Daftar_penerimaan_model extends NOOBS_Model
 		return $this->db->get();
  	}
 
- 	public function get_total_do($params = array(),$total = false) //dipakai
+ 	public function get_total_filled($params = array(),$total = false) //dipakai
 	{
-		$this->db->select('SUM(dod.dod_shipping_qty) as total_order');
-		// $this->db->from('delivery_order_status as dos');
+		$this->db->select('SUM(dod.dod_shipping_qty) as total_filled');
 		$this->db->from('delivery_order_detail as dod');
 		$this->db->join('sales_order_detail as sod','dod.dod_sod_id = sod.sod_id','LEFT');
 
-		if ($total == 'total')
+		if ($total !== 'total')
 		{
 			$this->db->where('dod_is_status', strtoupper($params['dod_is_status']));
 		}
@@ -231,17 +154,8 @@ class Daftar_penerimaan_model extends NOOBS_Model
 		
 		return $this->db->get();
  	}
- 	public function get_total_sod_total($params = array()) //dipakai
-	{
-		$this->db->select('SUM(sod.sod_qty) as total_sod');
-		$this->db->from('sales_order_detail as sod');
-		
-		$this->db->where('sod.sod_no_trx', $params['so_no_trx']);
-		
-		return $this->db->get();
- 	}
 
-	public function store_penerimaan_status($params = array()) //dipakai
+	public function store_delivery_order_status($params = array()) //dipakai
 	{
 		$this->table = 'delivery_order_status';
 
@@ -249,19 +163,15 @@ class Daftar_penerimaan_model extends NOOBS_Model
 			'dos_date' => date('Y-m-d'),
 			'dos_dod_id' => $params['dod_id'],
 			'dos_filled' => $params['total_terpenuhi'],
-			'dos_ongkir' => $params['total_ongkir_upd_hidden'],
 			'dos_created_date' => date('Y-m-d H:i:s'),
 			'dos_keterangan' => $params['keterangan'],
 			'dos_status' => $params['dod_is_status']
 
 		);
-		// print_r($params);exit;
-		// return $this->add($new_params, TRUE);
 
-		// return $this->load_data_daftar_penerimaan();
+		return $this->add($new_params, TRUE);
 
-		if (empty($params['dos_id'])) return $this->add($new_params, TRUE);
-		else return $this->edit($new_params, "dos_id = {$params['dos_id']}");
+		// return $this->load_data_daftar_delivery_order();
 	}
 
 	public function update_quantity_sales_order_detail($params = array()) //dipakai
@@ -275,7 +185,7 @@ class Daftar_penerimaan_model extends NOOBS_Model
 
 		$this->edit($new_params, "sod_id = {$params['dod_sod_id']}");
 
-		return $this->load_data_daftar_penerimaan();
+		return $this->load_data_daftar_delivery_order();
 	}
 
 	public function update_amount_sales_order_detail($params = array()) //dipakai
@@ -289,10 +199,10 @@ class Daftar_penerimaan_model extends NOOBS_Model
 
 		$this->edit($new_params, "so_id = {$params['so_id']}");
 
-		return $this->load_data_daftar_penerimaan();
+		return $this->load_data_daftar_delivery_order();
 	}
 
-	public function store_update_status_penerimaan($params = array()) //dipakai
+	public function store_update_status_delivery_order($params = array()) //dipakai
 	{
 		$this->table = 'delivery_order_detail';
 
@@ -301,11 +211,9 @@ class Daftar_penerimaan_model extends NOOBS_Model
 
 		);
 
-		return $this->edit($new_params, "dod_id = {$params['dod_id']}");
+		$this->edit($new_params, "dod_id = {$params['dod_id']}");
 
-		// $post['akses_driver'] = $params['akses_driver'];
-
-		// return $this->load_data_daftar_penerimaan($post);
+		return $this->load_data_daftar_delivery_order();
 	}
 
 	public function store_update_status_sales_order($params = array()) //dipakai
@@ -319,7 +227,7 @@ class Daftar_penerimaan_model extends NOOBS_Model
 
 		return $this->edit($new_params, "so_id = {$params['so_id']}");
 
-		// return $this->load_data_daftar_penerimaan();
+		// return $this->load_data_daftar_delivery_order();
 	}
 
 	public function update_status_sales_order_detail($params = array()) //dipakai
@@ -332,7 +240,7 @@ class Daftar_penerimaan_model extends NOOBS_Model
 
 		return $this->edit($new_params, "sod_id = {$params['dod_sod_id']}");
 
-		// return $this->load_data_daftar_penerimaan();
+		// return $this->load_data_daftar_delivery_order();
 	}
 
 	// public function store_detail_do($params = array())
@@ -358,13 +266,13 @@ class Daftar_penerimaan_model extends NOOBS_Model
 	// 	return $this->load_data_detail_do(array('no_trx' => $params['sod_no_trx']));
 	// }
 
-	public function delete_data_daftar_penerimaan($params = array()) //di pakai
+	public function delete_data_daftar_delivery_order($params = array()) //di pakai
 	{
 		$this->table = 'delivery_order_detail';
 
 		$this->edit(['dod_is_active' => 'N'], "dod_id = {$params['txt_id']}");
 		
-		return $this->load_data_daftar_penerimaan();
+		return $this->load_data_daftar_delivery_order();
 	}
 
 	public function load_data($params = array())
@@ -414,7 +322,7 @@ class Daftar_penerimaan_model extends NOOBS_Model
 		$this->db->from('sales_order as so');
 		$this->db->join('vendor as v','v.v_id = so.so_vendor_id','LEFT');
 		
-		$this->db->where('so.so_is_status', 'ORDER');
+		$this->db->where('so.so_is_status !=', 'SELESAI');
 		$this->db->where('so.so_is_active', 'Y');
 		
 		return $this->db->get();
@@ -504,7 +412,7 @@ class Daftar_penerimaan_model extends NOOBS_Model
 
  	public function get_customer_option($params) //dipakai
 	{
-		$query = "select * from customer where c_district_id in (select rsd.rsd_id from ref_sub_district as rsd left join sales_order as so on rsd.rsd_district_id = so.so_district_id where so.so_id = {$params['so_id']} order by c_name ASC)";
+		$query = "select * from customer where c_district_id in (select rsd.rsd_id from ref_sub_district as rsd left join sales_order as so on rsd.rsd_district_id = so.so_district_id where so.so_id = {$params['so_id']} order by c_name ASC) and c_is_active = 'Y'";
 		
 		return $this->db->query($query);
  	}

@@ -22,6 +22,12 @@
 	<div class="row">
 		<div class="col-md-12">
 			<div class="form-group row">
+				<label for="caption" class="col-sm-4 col-form-label">Kode Vendor</label>
+				<div class="col-sm-8">
+					<input type="text" name="v_code" class="form-control" id="vendor_code" value="<?php echo $mode == 'edit' && $data !== FALSE ? $data->v_code : '' ?>" required="required" <?php echo $mode == 'edit' ? '' : ''; ?> <?php echo $mode == 'edit' && $data !== FALSE ? 'disabled': '' ?>>
+				</div>
+			</div>
+			<div class="form-group row">
 				<label for="caption" class="col-sm-4 col-form-label">Nama Vendor</label>
 				<div class="col-sm-8">
 					<input type="text" name="v_vendor_name" class="form-control" id="vendor_name" value="<?php echo $mode == 'edit' && $data !== FALSE ? $data->v_vendor_name : '' ?>" required="required" <?php echo $mode == 'edit' ? '' : ''; ?>>

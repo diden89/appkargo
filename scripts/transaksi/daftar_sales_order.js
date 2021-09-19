@@ -37,6 +37,11 @@ const daftarSalesOrderList = {
 			me.showItem(this,'add');
 		});
 
+		$('#btnRekap').click(function(e) {
+			e.preventDefault();
+			me.rekapTagihan(this);
+		});
+
 		$('#range1').inputmask('dd-mm-yyyy', { 'placeholder': 'DD-MM-YYYY' });
 		$('#range1').noobsdaterangepicker({
 			// parentEl: "#" + popup[0].id + " .modal-body",
@@ -174,6 +179,10 @@ const daftarSalesOrderList = {
 		me.generateItemList(v_id,il_id);
 		$('#sod_qty').val(sod_qty);
 		$('#sod_id').val(id);
+	},
+	rekapTagihan: function(el) {
+		var url = 'daftar_sales_order/rekap_tagihan'
+		window.open(url);
 	},
 	showItem: function(el, mode) {
 		console.log(mode)

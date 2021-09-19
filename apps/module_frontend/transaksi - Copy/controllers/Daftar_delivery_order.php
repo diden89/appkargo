@@ -75,9 +75,6 @@ class Daftar_delivery_order extends NOOBS_Controller
 				foreach ($result as $k => $v)
 				{
 					$v->num = $number;
-					$v->dod_shipping_qty = number_format($v->dod_shipping_qty);
-					$v->dod_ongkir = number_format($v->dod_ongkir);
-					$v->dod_created_date = date('d-m-Y',strtotime($v->dod_created_date));
 
 					$number++;
 				}

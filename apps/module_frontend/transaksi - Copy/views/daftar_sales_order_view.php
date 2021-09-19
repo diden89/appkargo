@@ -48,7 +48,6 @@
 								<button id="btnSearchItem" class="btn btn-info" type="button"><i class="fas fa-search"></i></button>
 								<button id="btnReloadItem" class="btn btn-success" type="button"><i class="fas fa-sync-alt"></i></button>
 								<button id="btnAddItem" class="btn btn-primary" type="button" title="Add Data"><i class="fas fa-plus"></i> Add</button>
-								<!-- <button id="btnRekap" class="btn btn-warning" type="button" title="Rekap Tagihan"><i class="fas fa-print"></i> Rekap Tagihan</button> -->
 							</div>
 						</div>
 						<hr />

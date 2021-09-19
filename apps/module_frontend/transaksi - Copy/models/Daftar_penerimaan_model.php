@@ -29,8 +29,6 @@ class Daftar_penerimaan_model extends NOOBS_Model
 		if (isset($params['txt_item']) && ! empty($params['txt_item']))
 		{
 			$this->db->like('UPPER(dod.dod_no_trx)', strtoupper($params['txt_item']));
-			$this->db->or_like('UPPER(c.c_name)', strtoupper($params['txt_item']));
-			$this->db->or_like('UPPER(il.il_item_name)', strtoupper($params['txt_item']));
 		}
 
 		if (isset($params['txt_id']) && ! empty($params['txt_id']))
@@ -64,64 +62,7 @@ class Daftar_penerimaan_model extends NOOBS_Model
 		$this->db->order_by('dod.dod_id', 'DESC');
 		// $this->db->order_by('il.il_item_name', 'ASC');
 
-		// return $this->db->get();
-		return $this->create_result($params);
- 	}
-
- 	public function load_data_form($params = array())
-	{
-		$this->db->select('*');
-		$this->db->from('delivery_order_detail as dod');
-		$this->db->join('customer as c','c.c_id = dod.dod_customer_id','LEFT');
-		$this->db->join('sales_order_detail as sod','sod.sod_id = dod.dod_sod_id','LEFT');
-		$this->db->join('sales_order as so','sod.sod_no_trx = so.so_no_trx','LEFT');
-		$this->db->join('ref_sub_district as rsd','rsd.rsd_id = c.c_district_id','LEFT');
-		$this->db->join('vehicle as ve','ve.ve_id = dod.dod_vehicle_id','LEFT');
-		$this->db->join('driver as d','d.d_id = dod.dod_driver_id','LEFT');
-		$this->db->join('item_list as il','il.il_id = sod.sod_item_id','LEFT');
-		$this->db->join('delivery_order_status as dos','dos.dos_dod_id = dod.dod_id','LEFT');
-		
-		if (isset($params['txt_item']) && ! empty($params['txt_item']))
-		{
-			$this->db->like('UPPER(dod.dod_no_trx)', strtoupper($params['txt_item']));
-		}
-
-		if (isset($params['txt_id']) && ! empty($params['txt_id']))
-		{
-			$this->db->where('dod.dod_id', strtoupper($params['txt_id']));
-		}
-
-		if (isset($params['dod_id']) && ! empty($params['dod_id']))
-		{
-			$this->db->where('dod.dod_id', strtoupper($params['dod_id']));
-		}
-
-		if (isset($params['so_no_trx']) && ! empty($params['so_no_trx']))
-		{
-			$this->db->where('so.so_no_trx', strtoupper($params['so_no_trx']));
-		}
-
-		if (isset($params['so_id']) && ! empty($params['so_id']))
-		{
-			$this->db->where('so.so_id', strtoupper($params['so_id']));
-		}
-
-		if (isset($params['akses_driver']) && ! empty($params['akses_driver']))
-		{
-			$this->db->where('d.d_ud_id', strtoupper($params['akses_driver']));
-		}
-
-		if (isset($params['date_range1']) && ! empty($params['date_range1']))
-		{
-			$this->db->where('dod.dod_created_date >=', $params['date_range1']);
-			$this->db->where('dod.dod_created_date <=', $params['date_range2']);
-		}
-
-		$this->db->where('dod.dod_is_active', 'Y');		
-		$this->db->order_by('dod.dod_id', 'DESC');
-		
 		return $this->db->get();
-
  	}
 
 	public function cek_driver_akses($params = array())
@@ -301,11 +242,11 @@ class Daftar_penerimaan_model extends NOOBS_Model
 
 		);
 
-		return $this->edit($new_params, "dod_id = {$params['dod_id']}");
+		$this->edit($new_params, "dod_id = {$params['dod_id']}");
 
-		// $post['akses_driver'] = $params['akses_driver'];
+		$post['akses_driver'] = $params['akses_driver'];
 
-		// return $this->load_data_daftar_penerimaan($post);
+		return $this->load_data_daftar_penerimaan($post);
 	}
 
 	public function store_update_status_sales_order($params = array()) //dipakai

@@ -34,7 +34,6 @@
 				<label for="caption" class="col-md-4 col-form-label">Total Order</label>
 				<div class="input-group col-md-8">
 					<input type="text" name="total_order" class="form-control" id="total_order" disabled="disabled" value="<?=number_format($data->dod_shipping_qty)?>">
-					<input type="hidden" name="total_order_hidden" class="form-control" id="total_order" disabled="disabled" value="<?=$data->dod_shipping_qty?>">
 				</div>
 			</div>
 			<div class="form-group row">

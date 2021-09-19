@@ -49,6 +49,10 @@ $(document).ready(function() {
 					width: 10
 				},
 				{	
+					title: 'Kode Vendor', 
+					data: 'v_code',
+				},
+				{	
 					title: 'Nama Vendor', 
 					data: 'v_vendor_name',
 				},
