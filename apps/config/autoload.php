@@ -58,7 +58,7 @@ $autoload['packages'] = array();
 |
 |	$autoload['libraries'] = array('user_agent' => 'ua');
 */
-$autoload['libraries'] = array('session', 'encryption', 'pagination');
+$autoload['libraries'] = array('session', 'encryption', 'pagination','terbilang');
 
 if (NOOBS_DB_START !== FALSE && ! in_array('database', $autoload['libraries'])) array_push($autoload['libraries'], 'database');
 
