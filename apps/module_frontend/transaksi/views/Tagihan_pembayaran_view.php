@@ -25,7 +25,8 @@
 						</div>
 					</div>
 				</div>
-			</div><div class="row">
+			</div>
+			<div class="row">
 				<div class="col-lg-12">
 					<div class="form-group row">
 						<label for="caption" class="col-sm-4 col-form-label">Periode</label>
@@ -66,12 +67,22 @@
 						<div class="input-group col-8">
 							<select name="vendor" class="form-control">
 								<option value="">-- Select --</option>
-								<option value="PKPHN">POKPHAN</option>
-								<option value="CIOPRM">PT. CIOMAS ADI SATWA Unit PARIAMAN</option>
-								<option value="CIOBGO">PT. CIOMAS ADISATWA unit MUARO BUNGO</option>
+								<?php foreach($vendor as $k => $v) {?>
+									<option value="<?=$v->v_id?>"><?=$v->v_vendor_name?></option>
+								<?php }?>
 								
 								
 							</select>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="form-group row">
+						<label for="caption" class="col-sm-4 col-form-label">Catatan</label>
+						<div class="input-group col-8">
+							<textarea name="note" class="form-control"></textarea>
 						</div>
 					</div>
 				</div>

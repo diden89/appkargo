@@ -6,73 +6,77 @@
  * @edit Diden89
  * @version 1.0
  * @access Public
- * @path /appkargo/apps/module_frontend/master_data/models/Vendor_model.php
+ * @path /appkargo/apps/module_frontend/settings/models/Template_laporan_model.php
  */
 
-class Vendor_model extends NOOBS_Model
+class Template_laporan_model extends NOOBS_Model
 {
-	public function load_data_vendor($params = array())
+	public function load_data($params = array())
 	{
 		$this->db->select('*');
-		$this->db->from('vendor');
+		$this->db->from('template_laporan as tl');
+		$this->db->join('vendor as v','v.v_id = tl.tl_vendor_id','LEFT');
 
 		if (isset($params['txt_item']) && ! empty($params['txt_item']))
 		{
-			$this->db->like('UPPER(v_vendor_name)', strtoupper($params['txt_item']));
+			$this->db->like('UPPER(tl.tl_name)', strtoupper($params['txt_item']));
 		}
 
 		if (isset($params['txt_id']) && ! empty($params['txt_id']))
 		{
-			$this->db->where('v_id', strtoupper($params['txt_id']));
+			$this->db->where('tl.tl_id', strtoupper($params['txt_id']));
 		}
 
-		// if (isset($params['date_range1']) && ! empty($params['date_range1']))
-		// {
-		// 	$this->db->where('last_datetime >=', $params['date_range1']);
-		// 	$this->db->where('last_datetime <=', $params['date_range2']);
-		// }
 
-		$this->db->where('v_is_active', 'Y');
-		$this->db->order_by('v_vendor_name', 'ASC');
+		$this->db->where('tl.tl_is_active', 'Y');
+		$this->db->order_by('tl.tl_id', 'DESC');
 
 		return $this->create_result($params);
  	}
 
- 	public function get_data_vendor($params = array())
+ 	public function get_data($params = array())
 	{
 		$this->db->select('*');
-		$this->db->from('vendor');
+		$this->db->from('template_laporan as tl');
+		$this->db->join('vendor as v','v.v_id = tl.tl_vendor_id','LEFT');
 
-		if (isset($params['txt_id']) && ! empty($params['txt_id']))
+		if (isset($params['tl_id']) && ! empty($params['tl_id']))
 		{
-			$this->db->where('v_id', strtoupper($params['txt_id']));
+			$this->db->where('tl.tl_id', strtoupper($params['tl_id']));
 		}
+		$this->db->where('tl.tl_is_active', 'Y');
+		$this->db->order_by('tl.tl_id', 'DESC');
 
+		return $this->db->get();
+ 	}
+
+ 	public function vendor_option()
+	{	
 		$this->db->where('v_is_active', 'Y');
 		$this->db->order_by('v_vendor_name', 'ASC');
 
-		return $this->db->get();
+		return $this->db->get('vendor');
  	}
 
  	public function get_autocomplete_data($params = array())
 	{
 		$this->db->select("
 			*,
-			v_id as id,
-			v_vendor_name as text,
-			v_vendor_name as full_name
+			tl_id as id,
+			tl_name as text,
+			tl_name as full_name
 		", FALSE);
 
-		$this->db->from('vendor');
+		$this->db->from('template_laporan');
 
 		if (isset($params['query']) && !empty($params['query'])) 
 		{
 			$query = $params['query'];
-			$this->db->where("(v_vendor_name LIKE '%{$query}%' OR v_vendor_email LIKE '%{$query}%')", NULL, FALSE);
+			$this->db->where("(tl_name LIKE '%{$query}%' OR tl_file_template LIKE '%{$query}%')", NULL, FALSE);
 		}
 
-		$this->db->where('v_is_active', 'Y');
-		$this->db->order_by('v_vendor_name', 'ASC');
+		$this->db->where('tl_is_active', 'Y');
+		$this->db->order_by('tl_name', 'ASC');
 
 		return $this->create_autocomplete_data($params);
 	}
@@ -82,10 +86,10 @@ class Vendor_model extends NOOBS_Model
 		$this->table = 'vendor';
 
 		$new_params = array(
-			'v_vendor_name' => $params['v_vendor_name'],
-			'v_vendor_add' => $params['v_vendor_add'],
-			'v_vendor_phone' => $params['v_vendor_phone'],
-			'v_vendor_email' => $params['v_vendor_email'],
+			'v_name' => $params['v_name'],
+			'v_add' => $params['v_add'],
+			'v_phone' => $params['v_phone'],
+			'v_email' => $params['v_email'],
 			'v_user_access' => $params['v_akses'],
 			'v_unique_access_key' => $params['v_unique_akses'],
 			'v_code' => $params['v_code']
@@ -104,7 +108,7 @@ class Vendor_model extends NOOBS_Model
 
 	public function cek_before_delete($params = array(),$table,$initial)
 	{
-		$this->db->where($initial.'_vendor_id', $params['txt_id']);
+		$this->db->where($initial.'_id', $params['txt_id']);
 
 		return $this->db->get($table);
 	}

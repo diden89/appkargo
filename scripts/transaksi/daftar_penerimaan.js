@@ -203,7 +203,7 @@ $(document).ready(function() {
 				}],
 				listeners : {
 					onshow: function(popup) {
-						$('#total_terpenuhi').keydown(function(event) {
+						$('#total_terpenuhi').keyup(function(event) {
 							var  ttl = $('#total_terpenuhi').val();
 								 shp = $('#shipping').val();
 						  		new_ttl = ttl.replace(',','');

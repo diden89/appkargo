@@ -148,7 +148,7 @@ $(document).ready(function() {
 		popup: function(mode = 'add', title= 'Add', data = false)
 		{
 			$.popup({
-				title: title + ' User',
+				title: title + ' Vendor',
 				id: mode + 'UserPopup',
 				size: 'medium',
 				proxy: {

@@ -64,7 +64,7 @@
 		</tr>
 		<tr>
 			<td>
-				<?=$no_tagihan?>
+				No.<?=$no_tagihan?>
 			</td>		
 		</tr>
 		<tr>

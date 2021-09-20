@@ -44,32 +44,28 @@ class Tagihan_pembayaran extends NOOBS_Controller
 	public function print_pdf()
 	{
 		$post = $this->input->post();
-		// print_r($post);
-		$this->rekap_tagihan_pembayaran($post);
+		// print_r($post);exit;
+		$get_file_template = $this->db_tp->load_template_laporan($post);
+		if($get_file_template->num_rows() > 0)
+		{
+			$temp = $get_file_template->row();
+			$post['temp'] = $temp->tl_file_template;
+			$post['tl_name'] = str_replace(" ","_",$temp->tl_name);
+			$this->rekap_tagihan_pembayaran($post);
 
-		// if($post['vendor'] == 'PKPHN')
-		// {
-		// }
-		// elseif($post['vendor'] == 'CIOPRM')
-		// {
-		// 	$this->detail_laporan_kas_masuk($post);
-		// }
-		// elseif($post['vendor'] == 'CIOBGO')
-		// {
-		// 	$this->detail_laporan_kas_masuk($post);
-		// }
+		}
 
 	}
 	public function rekap_tagihan_pembayaran($params)
 	{
 		$data = array();
-
+		// print_r($params);exit;
 		$get_data = $this->db_tp->load_data_rekap_tagihan($params);
 
 		$data_company = $this->db_main->get_company();
 
 		$result = $get_data->result();
-		$number = 0;
+		$number = 1;
 		$total_ong = array();
 		foreach ($result as $k => $v) 
 		{
@@ -115,23 +111,24 @@ class Tagihan_pembayaran extends NOOBS_Controller
 		$data['date_range_1'] = (isset($params['date_range_1'])) ? $params['date_range_1'] : '';
 		$data['date_range_2'] = (isset($params['date_range_2'])) ? $params['date_range_2'] : '';
 		$data['no_tagihan'] = $params['no_tagihan'];
+		$data['note'] = $params['note'];
 
 		$ong = array_sum($total_ong);
 		
 		$data['terbilang'] = $this->penyebut($ong);
 		
-		if($params['vendor'] == 'PKPHN')
-		{
-			$view = $this->load->view('tagihan/tagihan_pembayaran_pokphan_pdf', $data, TRUE);
-		}
-		elseif($params['vendor'] == 'CIOPRM')
-		{
-			$view = $this->load->view('tagihan/tagihan_pembayaran_cioprm_pdf', $data, TRUE);
-		}
-		elseif($params['vendor'] == 'CIOBGO')
-		{
-			$view = $this->load->view('tagihan/tagihan_pembayaran_ciobgo_pdf', $data, TRUE);
-		}
+		// if($params['vendor'] == 'PKPHN')
+		// {
+		// 	$view = $this->load->view('tagihan/tagihan_pembayaran_pokphan_pdf', $data, TRUE);
+		// }
+		// elseif($params['vendor'] == 'CIOPRM')
+		// {
+		// 	$view = $this->load->view('tagihan/tagihan_pembayaran_cioprm_pdf', $data, TRUE);
+		// }
+		// elseif($params['vendor'] == 'CIOBGO')
+		// {
+		// }
+			$view = $this->load->view('tagihan/'.$params['temp'], $data, TRUE);
 
 				$this->load->library('pdf_creator');
 
@@ -147,7 +144,7 @@ class Tagihan_pembayaran extends NOOBS_Controller
 				$pdf_creator->setHtmlFooter($this->session->userdata('username').'|Created Date : '.date('d-m-Y'));
 				$pdf_creator->WriteHTML($view);
 
-				$pdf_creator->Output('Tagihan Pembayaran_'.$params['vendor'].'_'.date('YmdHis').'.pdf', 'I');
+				$pdf_creator->Output('Tagihan Pembayaran_'.$params['tl_name'].'_'.date('YmdHis').'.pdf', 'I');
 
 				
 	}
