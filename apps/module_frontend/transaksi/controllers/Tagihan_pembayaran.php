@@ -19,11 +19,11 @@ class Tagihan_pembayaran extends NOOBS_Controller
 	public function index()
 	{
 		$this->store_params['page_active'] = isset($this->store_params['page_active']) ? $this->store_params['page_active'] : 'Home';
-		$this->store_params['header_title'] = 'Laporan Tagihan Pembayaran';
-		$this->store_params['pages_title'] = 'Laporan Tagihan Pembayaran List';
+		$this->store_params['header_title'] = 'Tagihan Pembayaran';
+		$this->store_params['pages_title'] = 'Tagihan Pembayaran List';
 		$this->store_params['breadcrumb'] = array(
 			array('', 'Home'),
-			array('transaksi/tagihan_pembayaran', 'Laporan Tagihan Pembayaran')
+			array('transaksi/tagihan_pembayaran', 'Tagihan Pembayaran')
 		);
 		
 		$this->store_params['source_top'] = array(
