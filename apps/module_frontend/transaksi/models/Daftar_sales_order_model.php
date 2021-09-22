@@ -143,7 +143,7 @@ class Daftar_sales_order_model extends NOOBS_Model
 			'so_vendor_id' => $params['v_vendor_id'],
 			'so_district_id' => $params['txt_region'],
 			'so_no_trx' => $params['last_notrx'],
-			// 'so_is_status' => 'ORDER',
+			'so_tipe' => $params['tipe_so'],
 			'so_created_date' => date('Y-m-d H:i:s', strtotime($params['so_created_date'])),
 		);
 

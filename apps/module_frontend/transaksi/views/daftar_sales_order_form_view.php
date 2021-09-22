@@ -60,7 +60,7 @@
 				<label for="url" class="col-sm-4 col-form-label">Provinsi</label>
 				<div class="col-sm-8">
 					<select class="form-control select2"  name="txt_province" id="txt_province">
-						<option value="">-Select-</option>
+						<option value="">--PILIH PROVINSI--</option>
 						<?php
 							foreach($province as $k => $v)
 							{
@@ -72,7 +72,7 @@
 								{
 									$sel = '';
 								}
-								echo '<option value="'.$v->rp_id.'" '.$sel.'>'.$v->rp_name.'</option>';
+								echo '<option value="'.$v->rp_id.'" '.$sel.'>'.strtoupper($v->rp_name).'</option>';
 							}
 						?>
 					</select>
@@ -104,6 +104,17 @@
 						</div>
 						<input type="text" name="so_created_date" class="form-control" id="created_date" required="required" data-inputmask-alias="datetime" data-inputmask-inputformat="dd-mm-yyyy" data-mask value="">
 					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-6">
+			<div class="form-group row">
+				<label for="caption" class="col-md-4 col-form-label">Tipe SO</label>
+				<div class="input-group col-md-8">
+					<select name="tipe_so" class="form-control">
+						<option value="so">ORDER BARU</option>
+						<option value="tf">TRANSFER</option>
+					</select>
 				</div>
 			</div>
 		</div>
