@@ -11,12 +11,12 @@
 ?>
 
 <form role="form" id="addDaftarSalesOrder" autocomplete="off">
-	<input type="hidden" name="action" value="store_data_daftar_sales_order">
+	<input type="hidden" name="action" value="store_data">
 	<input type="hidden" name="mode" value="<?=$mode?>" id="mode">
 	<input type="hidden" name="last_notrx" value="<?php echo $mode == 'add' ?  $last_notrx.'/SO/'.date('Ymd') : $data->so_no_trx; ?>">
 	<input type="hidden" name="sod_id" value="" id="sod_id">
 	<input type="hidden" name="so_id" value="" id="so_id">
-	<input type="hidden" name="dod_id" value="" id="dod_id">
+	<input type="hidden" name="dotd_id" value="" id="dotd_id">
 
 	<?php 
 	if (isset($txt_id)): ?>
@@ -40,14 +40,14 @@
 		</div>
 		<div class="col-md-6">
 			<div class="form-group row">
-				<label for="caption" class="col-sm-4 col-form-label">Transportasi</label>
+				<label for="caption" class="col-sm-4 col-form-label">No Kendaraan</label>
 				<div class="col-sm-8">
-					<select class="form-control select2"  name="dod_vehicle_id" id="dod_vehicle_id" disabled="disabled">
+					<select class="form-control select2"  name="dotd_vehicle_id" id="dotd_vehicle_id" disabled="disabled">
 						<option value="">-Select-</option>
 						<?php
 							foreach($vehicle as $k => $v)
 							{
-								echo '<option value="'.$v->ve_id.'" '.(($dod_vehicle_id == $v->ve_id) ? 'selected':"").'>'.$v->ve_license_plate.'</option>';
+								echo '<option value="'.$v->ve_id.'" '.(($dotd_vehicle_id == $v->ve_id) ? 'selected':"").'>'.$v->ve_license_plate.'</option>';
 							}
 						?>
 					</select>
@@ -59,7 +59,7 @@
 		
 		<div class="col-md-6">
 			<div class="form-group row">
-				<label for="url" class="col-sm-4 col-form-label">No Transaksi SO</label>
+				<label for="url" class="col-sm-4 col-form-label">Vendor</label>
 				<div class="col-sm-8">
 					<select class="form-control select2"  name="txt_sales_order" id="txt_sales_order">
 						<option value="">-Select-</option>
@@ -77,12 +77,12 @@
 			<div class="form-group row">
 				<label for="caption" class="col-sm-4 col-form-label">Pengemudi</label>
 				<div class="col-sm-8">
-					<select class="form-control select2"  name="dod_driver_id" id="dod_driver_id" disabled="disabled">
+					<select class="form-control select2"  name="dotd_driver_id" id="dotd_driver_id" disabled="disabled">
 						<option value="">-Select-</option>
 						<?php
 							foreach($driver as $k => $v)
 							{
-								echo '<option value="'.$v->d_id.'" '.(($dod_driver_id == $v->d_id) ? 'selected':"").'>'.$v->d_name.'</option>';
+								echo '<option value="'.$v->d_id.'" '.(($dotd_driver_id == $v->d_id) ? 'selected':"").'>'.$v->d_name.'</option>';
 							}
 						?>
 					</select>
@@ -94,22 +94,33 @@
 	<div class="row">
 		<div class="col-md-4">
 			<div class="form-group row">
-				<label for="caption" class="col-sm-4 col-form-label">No Trx DO</label>
+				<label for="caption" class="col-sm-4 col-form-label">No Transaksi</label>
 				<div class="col-sm-8">
 					<input type="text" name="no_trx_do" class="form-control" id="no_trx_do" value="" disabled="disabled">
 				</div>
 			</div>
 			<div class="form-group row">
-				<label for="caption" class="col-sm-4 col-form-label">Detail SO</label>
+				<label for="caption" class="col-sm-4 col-form-label">Item Barang</label>
 				<div class="col-sm-8">
 					<select class="form-control select2"  name="detail_sales_order" id="detail_sales_order" disabled="disabled">
 					</select>
 				</div>
 			</div>
+			<hr>
+			<b>Ambil dari :</b>
 			<div class="form-group row">
 				<label for="caption" class="col-sm-4 col-form-label">Nama Pelanggan</label>
 				<div class="col-sm-8">
-					<select class="form-control select2"  name="c_id" id="c_id" disabled="disabled">
+					<select class="form-control select2"  name="c_id_from" id="c_id_from" disabled="disabled">
+					</select>
+				</div>
+			</div>
+			<hr>
+			<b>Antar ke :</b>
+			<div class="form-group row">
+				<label for="caption" class="col-sm-4 col-form-label">Nama Pelanggan</label>
+				<div class="col-sm-8">
+					<select class="form-control select2"  name="c_id_to" id="c_id_to" disabled="disabled">
 					</select>
 				</div>
 			</div>
@@ -128,14 +139,14 @@
 			<div class="form-group row">
 				<label for="caption" class="col-sm-4 col-form-label">Ongkir</label>
 				<div class="col-sm-8">
-					<input type="text"  class="form-control" id="dod_ongkir_temp" value="" disabled="disabled">
+					<input type="text"  class="form-control" id="dotd_ongkir_temp" value="" disabled="disabled">
 				</div>
 			</div>
 			<div class="form-group row">
 				<label for="caption" class="col-sm-4 col-form-label">Total Ongkir</label>
 				<div class="col-sm-8">
-					<input type="text" name="dod_ongkir" class="form-control" id="dod_ongkir" value="" >
-					<input type="hidden"  class="form-control" id="dod_ongkir_temp_2" value="">
+					<input type="text" name="dotd_ongkir" class="form-control" id="dotd_ongkir" value="" >
+					<input type="hidden"  class="form-control" id="dotd_ongkir_temp_2" value="">
 				</div>
 			</div>
 			<!-- <div class="form-group row">

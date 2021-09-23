@@ -6,33 +6,34 @@
  * @edit Diden89
  * @version 1.0
  * @access Public
- * @path /appkargo/apps/module_frontend/transaksi/models/Daftar_delivery_order_model.php
+ * @path /appkargo/apps/module_frontend/transaksi/models/Daftar_delivery_order_transfer_model.php
  */
 
-class Daftar_delivery_order_model extends NOOBS_Model
+class Daftar_delivery_order_transfer_model extends NOOBS_Model
 {
-	public function load_data_daftar_delivery_order($params = array())
+	public function load_data_daftar_transfer($params = array())
 	{
 		// print_r($params);exit;
-		// $this->db->select('*,(select (dod.dod_shipping_qty * sh_cost) as cost from shipping where sh_rsd_id = c.c_district_id) as ongkir');
-		$this->db->select('*');
-		$this->db->from('delivery_order_detail as dod');
-		$this->db->join('customer as c','c.c_id = dod.dod_customer_id','LEFT');
-		$this->db->join('sales_order_detail as sod','sod.sod_id = dod.dod_sod_id','LEFT');
+		// $this->db->select('*,(select (dotd.dotd_shipping_qty * sh_cost) as cost from shipping where sh_rsd_id = c.c_district_id) as ongkir');
+		$this->db->select('*,c.c_name as c_name_from,c_i.c_name as c_name_to');
+		$this->db->from('delivery_order_transfer_detail as dotd');
+		$this->db->join('customer as c','c.c_id = dotd.dotd_customer_id_from','LEFT');
+		$this->db->join('customer as c_i','c_i.c_id = dotd.dotd_customer_id_to','LEFT');
+		$this->db->join('sales_order_detail as sod','sod.sod_id = dotd.dotd_sod_id','LEFT');
 		$this->db->join('sales_order as so','sod.sod_no_trx = so.so_no_trx','LEFT');
 		$this->db->join('ref_sub_district as rsd','rsd.rsd_id = c.c_district_id','LEFT');
-		$this->db->join('vehicle as ve','ve.ve_id = dod.dod_vehicle_id','LEFT');
-		$this->db->join('driver as d','d.d_id = dod.dod_driver_id','LEFT');
+		$this->db->join('vehicle as ve','ve.ve_id = dotd.dotd_vehicle_id','LEFT');
+		$this->db->join('driver as d','d.d_id = dotd.dotd_driver_id','LEFT');
 		$this->db->join('item_list as il','il.il_id = sod.sod_item_id','LEFT');
 		
 		if (isset($params['txt_item']) && ! empty($params['txt_item']))
 		{
-			$this->db->like('UPPER(dod.dod_no_trx)', strtoupper($params['txt_item']));
+			$this->db->like('UPPER(dotd.dotd_no_trx)', strtoupper($params['txt_item']));
 		}
 
 		if (isset($params['txt_id']) && ! empty($params['txt_id']))
 		{
-			$this->db->where('dod.dod_id', strtoupper($params['txt_id']));
+			$this->db->where('dotd.dotd_id', strtoupper($params['txt_id']));
 		}
 
 		if (isset($params['so_no_trx']) && ! empty($params['so_no_trx']))
@@ -47,13 +48,13 @@ class Daftar_delivery_order_model extends NOOBS_Model
 
 		if (isset($params['date_range1']) && ! empty($params['date_range1']))
 		{
-			$this->db->where('dod.dod_created_date >=', $params['date_range1']);
-			$this->db->where('dod.dod_created_date <=', $params['date_range2']);
+			$this->db->where('dotd.dotd_created_date >=', $params['date_range1']);
+			$this->db->where('dotd.dotd_created_date <=', $params['date_range2']);
 		}
 
-		$this->db->where('dod.dod_is_active', 'Y');
-		// $this->db->where('dod.dod_is_status !=', 'SELESAI');
-		$this->db->order_by('dod.dod_id', 'DESC');
+		$this->db->where('dotd.dotd_is_active', 'Y');
+		// $this->db->where('dotd.dotd_is_status !=', 'SELESAI');
+		$this->db->order_by('dotd.dotd_id', 'DESC');
 		// $this->db->order_by('il.il_item_name', 'ASC');
 
 		return $this->db->get();
@@ -64,7 +65,7 @@ class Daftar_delivery_order_model extends NOOBS_Model
 		$this->db->from('sales_order_detail as sod');
 		$this->db->join('sales_order as so','sod.sod_no_trx = so.so_no_trx','LEFT');
 		$this->db->join('item_list as il','sod.sod_item_id = il.il_id','LEFT');
-		// $this->db->join('customer as c','c.c_id = dod.dod_customer_id','LEFT');
+		// $this->db->join('customer as c','c.c_id = dotd.dotd_customer_id','LEFT');
 		
 
 		if (isset($params['so_id']) && ! empty($params['so_id']))
@@ -83,29 +84,29 @@ class Daftar_delivery_order_model extends NOOBS_Model
 		$this->table = 'delivery_order_detail';
 		
 		$new_params = array(
-			'dod_no_trx' => $params['no_trx'],
-			'dod_sod_id' => $params['dod_sod_id'],
-			'dod_driver_id' => $params['dod_driver_id'],
-			'dod_customer_id' => $params['dod_customer_id'],
-			'dod_vehicle_id' => $params['dod_vehicle_id'],
-			'dod_shipping_qty' => $params['dod_shipping_qty'],
-			'dod_ongkir' => str_replace(',','',$params['dod_ongkir']),
-			'dod_is_status' => 'MUAT',
-			'dod_created_date' => date('Y-m-d H:i:s', strtotime($params['dod_created_date'])),
+			'dotd_no_trx' => $params['no_trx'],
+			'dotd_sod_id' => $params['dotd_sod_id'],
+			'dotd_driver_id' => $params['dotd_driver_id'],
+			'dotd_customer_id' => $params['dotd_customer_id'],
+			'dotd_vehicle_id' => $params['dotd_vehicle_id'],
+			'dotd_shipping_qty' => $params['dotd_shipping_qty'],
+			'dotd_ongkir' => str_replace(',','',$params['dotd_ongkir']),
+			'dotd_is_status' => 'MUAT',
+			'dotd_created_date' => date('Y-m-d H:i:s', strtotime($params['dotd_created_date'])),
 		);
 
 		if ($params['mode'] == 'add') $this->add($new_params, TRUE);
-		else $this->edit($new_params, "dod_id = {$params['dod_id']}");
+		else $this->edit($new_params, "dotd_id = {$params['dotd_id']}");
 
-		return $this->load_data_daftar_delivery_order();
+		return $this->load_data_daftar_transfer();
 	}
 
 
 	public function get_quantity($params = array()) //dipakai
 	{
-		if (isset($params['dod_sod_id']) && ! empty($params['dod_sod_id']))
+		if (isset($params['dotd_sod_id']) && ! empty($params['dotd_sod_id']))
 		{
-			$this->db->where('sod_id', strtoupper($params['dod_sod_id']));
+			$this->db->where('sod_id', strtoupper($params['dotd_sod_id']));
 		}
 		
 		return $this->db->get('sales_order_detail');
@@ -116,9 +117,9 @@ class Daftar_delivery_order_model extends NOOBS_Model
 		$this->db->select($select);
 		$this->db->from('delivery_order_detail');
 
-		if (isset($params['dod_sod_id']) && ! empty($params['dod_sod_id']))
+		if (isset($params['dotd_sod_id']) && ! empty($params['dotd_sod_id']))
 		{
-			$this->db->where('dod_sod_id', strtoupper($params['dod_sod_id']));
+			$this->db->where('dotd_sod_id', strtoupper($params['dotd_sod_id']));
 		}
 		
 		return $this->db->get();
@@ -127,8 +128,8 @@ class Daftar_delivery_order_model extends NOOBS_Model
  	public function get_total_amount($params = array(),$select = '') //dipakai
 	{
 		$this->db->select($select);
-		$this->db->from('delivery_order_detail as dod');
-		$this->db->join('sales_order_detail as sod','dod.dod_sod_id = sod.sod_id', 'LEFT');
+		$this->db->from('delivery_order_transfer_detail as dotd');
+		$this->db->join('sales_order_detail as sod','dotd.dotd_sod_id = sod.sod_id', 'LEFT');
 		$this->db->join('sales_order as so','so.so_no_trx = sod.sod_no_trx', 'LEFT');
 
 		if (isset($params['so_id']) && ! empty($params['so_id']))
@@ -141,13 +142,13 @@ class Daftar_delivery_order_model extends NOOBS_Model
 
  	public function get_total_filled($params = array(),$total = false) //dipakai
 	{
-		$this->db->select('SUM(dod.dod_shipping_qty) as total_filled');
-		$this->db->from('delivery_order_detail as dod');
-		$this->db->join('sales_order_detail as sod','dod.dod_sod_id = sod.sod_id','LEFT');
+		$this->db->select('SUM(dotd.dotd_shipping_qty) as total_filled');
+		$this->db->from('delivery_order_transfer_detail as dotd');
+		$this->db->join('sales_order_detail as sod','dotd.dotd_sod_id = sod.sod_id','LEFT');
 
 		if ($total !== 'total')
 		{
-			$this->db->where('dod_is_status', strtoupper($params['dod_is_status']));
+			$this->db->where('dotd_is_status', strtoupper($params['dotd_is_status']));
 		}
 		
 		$this->db->where('sod.sod_no_trx', $params['so_no_trx']);
@@ -155,23 +156,23 @@ class Daftar_delivery_order_model extends NOOBS_Model
 		return $this->db->get();
  	}
 
-	public function store_delivery_order_status($params = array()) //dipakai
+	public function store_delivery_order_transfer_status($params = array()) //dipakai
 	{
-		$this->table = 'delivery_order_status';
+		$this->table = 'delivery_order_transfer_status';
 
 		$new_params = array(
-			'dos_date' => date('Y-m-d'),
-			'dos_dod_id' => $params['dod_id'],
-			'dos_filled' => $params['total_terpenuhi'],
-			'dos_created_date' => date('Y-m-d H:i:s'),
-			'dos_keterangan' => $params['keterangan'],
-			'dos_status' => $params['dod_is_status']
+			'dots_date' => date('Y-m-d'),
+			'dots_dotd_id' => $params['dotd_id'],
+			'dots_filled' => $params['total_terpenuhi'],
+			'dots_created_date' => date('Y-m-d H:i:s'),
+			'dots_keterangan' => $params['keterangan'],
+			'dots_status' => $params['dotd_is_status']
 
 		);
 
 		return $this->add($new_params, TRUE);
 
-		// return $this->load_data_daftar_delivery_order();
+		// return $this->load_data_daftar_transfer();
 	}
 
 	public function update_quantity_sales_order_detail($params = array()) //dipakai
@@ -183,9 +184,9 @@ class Daftar_delivery_order_model extends NOOBS_Model
 
 		);
 
-		$this->edit($new_params, "sod_id = {$params['dod_sod_id']}");
+		$this->edit($new_params, "sod_id = {$params['dotd_sod_id']}");
 
-		return $this->load_data_daftar_delivery_order();
+		return $this->load_data_daftar_transfer();
 	}
 
 	public function update_amount_sales_order_detail($params = array()) //dipakai
@@ -199,7 +200,7 @@ class Daftar_delivery_order_model extends NOOBS_Model
 
 		$this->edit($new_params, "so_id = {$params['so_id']}");
 
-		return $this->load_data_daftar_delivery_order();
+		return $this->load_data_daftar_transfer();
 	}
 
 	public function store_update_status_delivery_order($params = array()) //dipakai
@@ -207,13 +208,13 @@ class Daftar_delivery_order_model extends NOOBS_Model
 		$this->table = 'delivery_order_detail';
 
 		$new_params = array(
-			'dod_is_status' => $params['dod_is_status']
+			'dotd_is_status' => $params['dotd_is_status']
 
 		);
 
-		$this->edit($new_params, "dod_id = {$params['dod_id']}");
+		$this->edit($new_params, "dotd_id = {$params['dotd_id']}");
 
-		return $this->load_data_daftar_delivery_order();
+		return $this->load_data_daftar_transfer();
 	}
 
 	public function store_update_status_sales_order($params = array()) //dipakai
@@ -227,7 +228,7 @@ class Daftar_delivery_order_model extends NOOBS_Model
 
 		return $this->edit($new_params, "so_id = {$params['so_id']}");
 
-		// return $this->load_data_daftar_delivery_order();
+		// return $this->load_data_daftar_transfer();
 	}
 
 	public function update_status_sales_order_detail($params = array()) //dipakai
@@ -238,9 +239,9 @@ class Daftar_delivery_order_model extends NOOBS_Model
 			'so_is_status' => $params['new_qty']
 		);
 
-		return $this->edit($new_params, "sod_id = {$params['dod_sod_id']}");
+		return $this->edit($new_params, "sod_id = {$params['dotd_sod_id']}");
 
-		// return $this->load_data_daftar_delivery_order();
+		// return $this->load_data_daftar_transfer();
 	}
 
 	// public function store_detail_do($params = array())
@@ -270,9 +271,9 @@ class Daftar_delivery_order_model extends NOOBS_Model
 	{
 		$this->table = 'delivery_order_detail';
 
-		$this->edit(['dod_is_active' => 'N'], "dod_id = {$params['txt_id']}");
+		$this->edit(['dotd_is_active' => 'N'], "dotd_id = {$params['txt_id']}");
 		
-		return $this->load_data_daftar_delivery_order();
+		return $this->load_data_daftar_transfer();
 	}
 
 	public function load_data($params = array())
@@ -305,6 +306,7 @@ class Daftar_delivery_order_model extends NOOBS_Model
 		}
 
 		$this->db->where('sod.sod_flag', 'N');
+		// $this->db->where('so.so_tipe', 'so');
 		$this->db->where('sod_is_active', 'Y');
 		if (isset($params['mode']) && ! $params['mode'] == 'add')
 		{
@@ -323,6 +325,7 @@ class Daftar_delivery_order_model extends NOOBS_Model
 		$this->db->join('vendor as v','v.v_id = so.so_vendor_id','LEFT');
 		
 		$this->db->where('so.so_is_status !=', 'SELESAI');
+		$this->db->where('so.so_tipe', 'tf');
 		$this->db->where('so.so_is_active', 'Y');
 		
 		return $this->db->get();
@@ -330,7 +333,7 @@ class Daftar_delivery_order_model extends NOOBS_Model
 
  	public function get_realisasi_qty($params)//dipakai
 	{
-		// $this->db->select('*,sod.sod_qty - (select sum(dod_shipping_qty) from delivery_order_detail where dod_sod_id = sod.sod_id) as qty_real');
+		// $this->db->select('*,sod.sod_qty - (select sum(dotd_shipping_qty) from delivery_order_detail where dotd_sod_id = sod.sod_id) as qty_real');
 		$this->db->select('*,(sod.sod_qty - sod.sod_realisasi) as qty_real');
 		$this->db->from('sales_order_detail as sod');
 		$this->db->where('sod.sod_is_active', 'Y');
