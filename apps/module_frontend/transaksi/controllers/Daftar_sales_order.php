@@ -96,6 +96,7 @@ class Daftar_sales_order extends NOOBS_Controller
 				$v->num = $num;
 				$v->total_progress = ($v->total !== '0') ? round(($v->progress * 100) / $v->total,2) : '0';	
 				$v->so_created_date = date('d-m-Y',strtotime($v->so_created_date));
+				$v->so_tipe_view = ($v->so_tipe == 'tf') ? 'TRANSFER' : 'NEW ORDER';
 			}
 			// print_r($result);exit;
 			$this->store_params['item'] = $result;
@@ -261,6 +262,7 @@ class Daftar_sales_order extends NOOBS_Controller
 					$v->total_progress = ($v->total !== '0') ? round(($progress->progress * 100) / $total->progress,2) : '0';	
 					$v->so_created_date = date('d-m-Y',strtotime($v->so_created_date));	
 					$v->so_total_amount = number_format($v->so_total_amount);	
+					$v->so_tipe_view = ($v->so_tipe == 'tf') ? 'TRANSFER' : 'NEW ORDER';
 				}
 
 				echo json_encode(array('success' => TRUE, 'data' => $result));
@@ -359,6 +361,7 @@ class Daftar_sales_order extends NOOBS_Controller
 					$v->total_progress = ($v->total !== '0') ? round(($progress->progress * 100) / $total->progress,2) : '0';	
 					$v->so_created_date = date('d-m-Y',strtotime($v->so_created_date));	
 					$v->so_total_amount = number_format($v->so_total_amount);	
+					$v->so_tipe_view = ($v->so_tipe == 'tf') ? 'TRANSFER' : 'NEW ORDER';
 					// $v->so_total_terpenuhi = number_format($v->so_total_amount);	
 				}
 

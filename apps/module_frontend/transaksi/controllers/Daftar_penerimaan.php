@@ -28,9 +28,23 @@ class Daftar_penerimaan extends NOOBS_Controller
 			array('transaksi/daftar_penerimaan', 'Daftar Penerimaan')
 		);
 
+		$cek_driver_akses = $this->db_daftar_penerimaan->cek_driver_akses($params);
+
+		if($cek_driver_akses->num_rows() > 0)
+		{
+			$is_driver = 'Y';
+		}
+		else
+		{
+			$is_driver = 'N';
+		}	
+
 		$this->store_params['source_bot'] = array(
 			'<script src="'.base_url('vendors/jquery-number-master/jquery.number.js').'"></script>',
 			'<script src="'.base_url('scripts/transaksi/daftar_penerimaan.js').'"></script>',
+			'<script>
+				var is_driver = "'.$is_driver.'";
+			</script>',
 		);
 
 		$this->view('daftar_penerimaan_view');
@@ -53,7 +67,7 @@ class Daftar_penerimaan extends NOOBS_Controller
 			else
 			{
 				$post['akses_driver'] = "";
-			}
+			}	
 
 			$post['date_range1'] = (! empty($post['date_range1'])) ? date('Y-m-d',strtotime($post['date_range1'])) : date('Y-m-01');
 			$post['date_range2'] = (! empty($post['date_range2'])) ? date('Y-m-d',strtotime($post['date_range2'])) : date('Y-m-t');

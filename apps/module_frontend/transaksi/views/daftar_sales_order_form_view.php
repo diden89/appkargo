@@ -111,7 +111,7 @@
 			<div class="form-group row">
 				<label for="caption" class="col-md-4 col-form-label">Tipe SO</label>
 				<div class="input-group col-md-8">
-					<select name="tipe_so" class="form-control">
+					<select name="tipe_so" id="tipe_so" class="form-control">
 						<option value="so">ORDER BARU</option>
 						<option value="tf">TRANSFER</option>
 					</select>

@@ -9,37 +9,8 @@
  */
 
 $(document).ready(function() {
-
-	$('#range1').inputmask('dd-mm-yyyy', { 'placeholder': 'DD-MM-YYYY' });
-		$('#range1').noobsdaterangepicker({
-			showDropdowns: true,
-			singleDatePicker: true,
-			locale: {
-				format: 'DD-MM-YYYY'
-			}
-		});
-		$('#range2').inputmask('dd-mm-yyyy', { 'placeholder': 'DD-MM-YYYY' });
-		$('#range2').noobsdaterangepicker({
-			showDropdowns: true,
-			singleDatePicker: true,
-			locale: {
-				format: 'DD-MM-YYYY'
-			}
-		});
-
-	var PENERIMAAN = {
-		gridPenerimaan : $('#gridPenerimaan').grid({
-			serverSide: true,
-			striped: true,
-			pageLength : 10,
-			proxy: {
-				url: siteUrl('transaksi/daftar_penerimaan/load_data'),
-				method: 'post',
-				data: {
-					action: 'load_data'
-				},
-			},
-			columns: [
+	if(is_driver == 'N') {
+	var column = [
 				{
 					title: 'No', 
 					data: 'no',
@@ -110,7 +81,110 @@ $(document).ready(function() {
 						}
 					],
 				}
-			],
+			];
+		}
+		else
+		{
+			var column = [
+				{
+					title: 'No', 
+					data: 'no',
+					searchable: false,
+					orderable: false,
+					css: {
+						'text-align': 'center'
+					},
+					width: 10
+				},
+				{	
+					title: 'No Transaksi', 
+					data: 'dod_no_trx',
+				},
+				{	
+					title: 'Nama Pelanggan', 
+					data: 'c_name',
+				},
+				{	
+					title: 'Nama Barang', 
+					data: 'il_item_name',
+				},
+				{	
+					title: 'Pengemudi / Kendaraan', 
+					data: 'd_name_pengemudi',
+				},
+				{	
+					title: 'Alamat Pengiriman', 
+					data: 'd_address_area',
+				},{	
+					title: 'Total Kirim', 
+					data: 'dod_shipping_qty',
+				},{	
+					title: 'Total terima', 
+					data: 'dos_filled',
+				},{	
+					title: 'Tanggal Pengiriman', 
+					data: 'dos_created_date',
+				},{	
+					title: 'Status', 
+					data: 'dod_is_status',
+				},{	
+					title: 'Keterangan', 
+					data: 'dos_keterangan',
+				},
+				{
+					title: 'Action',
+					size: 'medium',
+					type: 'buttons',
+					group: true,
+					css: {
+						'text-align' : 'center',
+						'width' : '150px'
+					},
+					content: [
+						{
+							text: 'Finish',
+							class: 'btn-success',
+							id: 'btnEdit',
+							icon: 'fas fa-check-double',
+							click: function(row, rowData) {
+								PENERIMAAN.updateStatus('edit', 'Edit', rowData);
+							}
+						}
+					],
+				}
+			];
+		}
+
+	$('#range1').inputmask('dd-mm-yyyy', { 'placeholder': 'DD-MM-YYYY' });
+		$('#range1').noobsdaterangepicker({
+			showDropdowns: true,
+			singleDatePicker: true,
+			locale: {
+				format: 'DD-MM-YYYY'
+			}
+		});
+		$('#range2').inputmask('dd-mm-yyyy', { 'placeholder': 'DD-MM-YYYY' });
+		$('#range2').noobsdaterangepicker({
+			showDropdowns: true,
+			singleDatePicker: true,
+			locale: {
+				format: 'DD-MM-YYYY'
+			}
+		});
+
+	var PENERIMAAN = {
+		gridPenerimaan : $('#gridPenerimaan').grid({
+			serverSide: true,
+			striped: true,
+			pageLength : 10,
+			proxy: {
+				url: siteUrl('transaksi/daftar_penerimaan/load_data'),
+				method: 'post',
+				data: {
+					action: 'load_data'
+				},
+			},
+			columns: column,
 			listeners: {
 				ondblclick: function(row, rowData, idx) {
 					PENERIMAAN.popup('edit', 'Edit', rowData);

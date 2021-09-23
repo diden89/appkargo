@@ -61,6 +61,7 @@
 								<thead>
 									<tr role="row">
 										<th width="10">No</th>
+										<th>Tipe SO</th>
 										<th>No Transaksi</th>
 										<th>Nama Vendor</th>
 										<th>Total Order</th>
@@ -78,6 +79,7 @@
 									<?php foreach ($item as $k => $v): ?>
 										<tr>
 											<td><?php echo $v->num; ?></td>
+											<td><?php echo $v->so_tipe; ?></td>
 											<td><?php echo $v->so_no_trx; ?></td>
 											<td><?php echo $v->v_vendor_name; ?></td>
 											<td><?php echo number_format($v->so_qty);?> Kg</b></td>
@@ -102,7 +104,7 @@
 											<td><b><?php echo $v->paying; ?></b></td>
 											<td>
 												<div class="btn-group btn-group-sm" role="group" aria-label="Action Button">
-													<button type="button" class="btn btn-success" data-id="<?php echo $v->so_id; ?>" data-no_trx="<?php echo $v->so_no_trx; ?>" data-rd_id="<?php echo $v->rd_id; ?>" data-rp_id="<?php echo $v->rd_province_id; ?>" onclick="daftarSalesOrderList.showItem(this, 'edit');" ><i class="fas fa-edit"></i></button>
+													<button type="button" class="btn btn-success" data-id="<?php echo $v->so_id; ?>" data-no_trx="<?php echo $v->so_no_trx; ?>" data-rd_id="<?php echo $v->rd_id; ?>" data-rp_id="<?php echo $v->rd_province_id; ?>" data-so_tipe="<?php echo $v->so_tipe; ?>" onclick="daftarSalesOrderList.showItem(this, 'edit');" ><i class="fas fa-edit"></i></button>
 													<button type="button" class="btn btn-danger" data-id="<?php echo $v->so_id; ?>" onclick="daftarSalesOrderList.deleteDataItem(this);" title="Delete Word"><i class="fas fa-trash-alt"></i></button>
 												</div>
 											</td>

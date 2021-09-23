@@ -122,6 +122,7 @@ const daftarSalesOrderList = {
 		$.each(data, (idx, item) => {
 			body += '<tr>';
 			body += '<td>' + item.no + '</td>';
+			body += '<td>' + item.so_tipe + '</td>';
 			body += '<td>' + item.so_no_trx + '</td>';
 			body += '<td>' + item.v_vendor_name + '</td>';
 			body += '<td>' + item.so_qty + ' Kg</td>';
@@ -137,7 +138,7 @@ const daftarSalesOrderList = {
 			body += '<td>' + item.paying + '</td>';
 
 			body += '<td><div class="btn-group btn-group-sm" role="group" aria-label="Action Button">';
-				body += '<button type="button" class="btn btn-success" data-id="' + item.so_id + '" data-no_trx="' + item.so_no_trx + '" data-rd_id="' + item.rd_id + '" data-rp_id="' + item.rd_province_id + '" onclick="daftarSalesOrderList.showItem(this, \'edit\');"><i class="fas fa-edit"></i></button>';
+				body += '<button type="button" class="btn btn-success" data-id="' + item.so_id + '" data-no_trx="' + item.so_no_trx + '" data-rd_id="' + item.rd_id + '" data-rp_id="' + item.rd_province_id + '" data-so_tipe="' + item.so_tipe + '" onclick="daftarSalesOrderList.showItem(this, \'edit\');"><i class="fas fa-edit"></i></button>';
 				body += '<button type="button" class="btn btn-danger" data-id="' + item.so_id + '"  data-no_trx="' + item.so_no_trx + '" onclick="daftarSalesOrderList.deleteDataItem(this);"><i class="fas fa-trash-alt"></i></button>';
 			body += '</div>';
 			body += '</td>';
@@ -197,6 +198,7 @@ const daftarSalesOrderList = {
 			params.txt_id = $(el).data('id');
 			params.rd_id = $(el).data('rd_id');
 			params.rsd_id = $(el).data('rsd_id');
+			params.so_tipe = $(el).data('so_tipe');
 		}
 		else
 		{
@@ -264,6 +266,7 @@ const daftarSalesOrderList = {
 					if (mode == 'edit') {
 						daftarSalesOrderList.generateRegion($('#txt_province').val(),$(el).data('rd_id'));
 						daftarSalesOrderList.loadDataItemTemporary();
+						$('#tipe_so').val(params.so_tipe);
 					}
 
 					if (typeof(mode) !== 'undefined') {
