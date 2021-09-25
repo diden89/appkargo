@@ -22,6 +22,10 @@ $(document).ready(function() {
 					width: 10
 				},
 				{	
+					title: 'Type Order', 
+					data: 'so_tipe',
+				},
+				{	
 					title: 'No Transaksi', 
 					data: 'dod_no_trx',
 				},
@@ -95,6 +99,10 @@ $(document).ready(function() {
 						'text-align': 'center'
 					},
 					width: 10
+				},
+				{	
+					title: 'Type Order', 
+					data: 'so_tipe',
 				},
 				{	
 					title: 'No Transaksi', 

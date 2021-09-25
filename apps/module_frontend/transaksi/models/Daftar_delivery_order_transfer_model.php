@@ -15,7 +15,7 @@ class Daftar_delivery_order_transfer_model extends NOOBS_Model
 	{
 		// print_r($params);exit;
 		// $this->db->select('*,(select (dotd.dotd_shipping_qty * sh_cost) as cost from shipping where sh_rsd_id = c.c_district_id) as ongkir');
-		$this->db->select('*,c.c_name as c_name_from,c_i.c_name as c_name_to');
+		$this->db->select('*,c.c_name as c_name_from,c_i.c_name as c_name_to,c_i.c_address as ci_address');
 		$this->db->from('delivery_order_transfer_detail as dotd');
 		$this->db->join('customer as c','c.c_id = dotd.dotd_customer_id_from','LEFT');
 		$this->db->join('customer as c_i','c_i.c_id = dotd.dotd_customer_id_to','LEFT');
@@ -53,9 +53,7 @@ class Daftar_delivery_order_transfer_model extends NOOBS_Model
 		}
 
 		$this->db->where('dotd.dotd_is_active', 'Y');
-		// $this->db->where('dotd.dotd_is_status !=', 'SELESAI');
 		$this->db->order_by('dotd.dotd_id', 'DESC');
-		// $this->db->order_by('il.il_item_name', 'ASC');
 
 		return $this->db->get();
  	}
@@ -79,15 +77,16 @@ class Daftar_delivery_order_transfer_model extends NOOBS_Model
 		return $this->db->get();
  	}
 
-	public function store_data_daftar_delivery_order($params = array()) //dipakai
+	public function store_data_daftar_delivery_order_transfer($params = array()) //dipakai
 	{
-		$this->table = 'delivery_order_detail';
+		$this->table = 'delivery_order_transfer_detail';
 		
 		$new_params = array(
 			'dotd_no_trx' => $params['no_trx'],
 			'dotd_sod_id' => $params['dotd_sod_id'],
 			'dotd_driver_id' => $params['dotd_driver_id'],
-			'dotd_customer_id' => $params['dotd_customer_id'],
+			'dotd_customer_id_from' => $params['c_id_from'],
+			'dotd_customer_id_to' => $params['c_id_to'],
 			'dotd_vehicle_id' => $params['dotd_vehicle_id'],
 			'dotd_shipping_qty' => $params['dotd_shipping_qty'],
 			'dotd_ongkir' => str_replace(',','',$params['dotd_ongkir']),
@@ -115,7 +114,7 @@ class Daftar_delivery_order_transfer_model extends NOOBS_Model
  	public function get_total_qty($params = array(),$select = '') //dipakai
 	{
 		$this->db->select($select);
-		$this->db->from('delivery_order_detail');
+		$this->db->from('delivery_order_transfer_detail');
 
 		if (isset($params['dotd_sod_id']) && ! empty($params['dotd_sod_id']))
 		{
@@ -205,7 +204,7 @@ class Daftar_delivery_order_transfer_model extends NOOBS_Model
 
 	public function store_update_status_delivery_order($params = array()) //dipakai
 	{
-		$this->table = 'delivery_order_detail';
+		$this->table = 'delivery_order_transfer_detail';
 
 		$new_params = array(
 			'dotd_is_status' => $params['dotd_is_status']
@@ -246,7 +245,7 @@ class Daftar_delivery_order_transfer_model extends NOOBS_Model
 
 	// public function store_detail_do($params = array())
 	// {
-	// 	$this->table = 'delivery_order_detail';
+	// 	$this->table = 'delivery_order_transfer_detail';
 
 	// 	$new_params = array(
 	// 		'sod_no_trx' => $params['sod_no_trx'],
@@ -269,7 +268,7 @@ class Daftar_delivery_order_transfer_model extends NOOBS_Model
 
 	public function delete_data_daftar_delivery_order($params = array()) //di pakai
 	{
-		$this->table = 'delivery_order_detail';
+		$this->table = 'delivery_order_transfer_detail';
 
 		$this->edit(['dotd_is_active' => 'N'], "dotd_id = {$params['txt_id']}");
 		
@@ -333,7 +332,7 @@ class Daftar_delivery_order_transfer_model extends NOOBS_Model
 
  	public function get_realisasi_qty($params)//dipakai
 	{
-		// $this->db->select('*,sod.sod_qty - (select sum(dotd_shipping_qty) from delivery_order_detail where dotd_sod_id = sod.sod_id) as qty_real');
+		// $this->db->select('*,sod.sod_qty - (select sum(dotd_shipping_qty) from delivery_order_transfer_detail where dotd_sod_id = sod.sod_id) as qty_real');
 		$this->db->select('*,(sod.sod_qty - sod.sod_realisasi) as qty_real');
 		$this->db->from('sales_order_detail as sod');
 		$this->db->where('sod.sod_is_active', 'Y');
@@ -416,6 +415,13 @@ class Daftar_delivery_order_transfer_model extends NOOBS_Model
  	public function get_customer_option($params) //dipakai
 	{
 		$query = "select * from customer where c_district_id in (select rsd.rsd_id from ref_sub_district as rsd left join sales_order as so on rsd.rsd_district_id = so.so_district_id where so.so_id = {$params['so_id']} order by c_name ASC) and c_is_active = 'Y'";
+		
+		return $this->db->query($query);
+ 	}
+
+	public function get_customer_option_to($params) //dipakai
+	{
+		$query = "select * from customer where c_district_id in (select rsd.rsd_id from ref_sub_district as rsd left join sales_order as so on rsd.rsd_district_id = so.so_district_id where so.so_id = {$params['so_id']} order by c_name ASC) and c_is_active = 'Y' and c_id not in ({$params['c_id_from']})";
 		
 		return $this->db->query($query);
  	}

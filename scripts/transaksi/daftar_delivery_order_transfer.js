@@ -117,7 +117,7 @@ const daftarDeliveryOrderTrf = {
 			body += '<td>' + item.c_name_to + '</td>';
 			body += '<td>' + item.il_item_name + '</td>';
 			body += '<td>' + item.d_name + ' / ' + item.ve_license_plate + '</td>';
-			body += '<td>' + item.c_address + '<br>' + item.rsd_name + '</td>';
+			body += '<td>' + item.ci_address + '<br>' + item.rsd_name + '</td>';
 			body += '<td>' + item.dotd_shipping_qty + '</td>';
 			body += '<td>' + item.dotd_ongkir + '</td>';
 			body += '<td>' + item.dotd_created_date + '</td>';
@@ -348,7 +348,7 @@ const daftarDeliveryOrderTrf = {
 		}
 
 		$.popup({
-			title: title + ' Delivery Order',
+			title: title + ' DO Transfer',
 			id: 'showItem',
 			size: 'large',
 			proxy: {
@@ -543,7 +543,8 @@ const daftarDeliveryOrderTrf = {
 							new_params.qty = $('#sod_qty').val();
 							new_params.dotd_sod_id = $('#detail_sales_order').val();
 							new_params.so_id = $('#so_id').val();
-							new_params.dotd_customer_id = $('#c_id_from').val();
+							new_params.c_id_from = $('#c_id_from').val();
+							new_params.c_id_to = $('#c_id_to').val();
 							new_params.dotd_vehicle_id = $('#dotd_vehicle_id').val();
 							new_params.dotd_driver_id = $('#dotd_driver_id').val();
 							new_params.dotd_shipping_qty = $('#sod_shipping_qty').val();
@@ -604,7 +605,7 @@ const daftarDeliveryOrderTrf = {
 							else
 							{
 								$.ajax({
-									url: siteUrl('transaksi/daftar_delivery_order_transfer/store_data_detail_delivery_order'),
+									url: siteUrl('transaksi/daftar_delivery_order_transfer/store_data_transfer'),
 									type: 'POST',
 									dataType: 'JSON',
 									data : new_params,
@@ -681,7 +682,7 @@ const daftarDeliveryOrderTrf = {
 							success: function (result) {
 								if (result.success) {									
 									 $('#sod_qty').val(result.qty_real);
-									 $('#sod_qty_real').val(result.qty_real);
+									 // $('#sod_qty_real').val(result.qty_real);
 
 								} 
 							},
@@ -703,9 +704,21 @@ const daftarDeliveryOrderTrf = {
 						$('#dotd_ongkir').val(ongkir);
 					});
 
+					$('#dotd_ongkir_temp').on('keyup',function() {
+						sod_shipp = $('#sod_shipping_qty').val();
+						ongkir_temp = $('#dotd_ongkir_temp').val();
+
+						var formatter = new Intl.NumberFormat();
+
+						ongkir = formatter.format(sod_shipp*ongkir_temp);
+						
+						$('#dotd_ongkir').val(ongkir);
+					});
+
 					$('#c_id_from').change(function() {
 						
 						c_id_from = $('#c_id_from').val();
+						so_id = $('#txt_sales_order').val();
 
 						$.ajax({
 							url: siteUrl('transaksi/daftar_delivery_order_transfer/get_ongkir_district'),
@@ -719,7 +732,8 @@ const daftarDeliveryOrderTrf = {
 							},
 							success: function (result) {
 								if (result.success) {
-									
+									$('#c_id_to').attr('disabled', false);
+									daftarDeliveryOrderTrf.generateCustomerTo(so_id,c_id_from);
 									// $('#dotd_ongkir_temp').val('');
 									// $('#dotd_ongkir_temp').val(result.ongkir_temp);
 
@@ -753,13 +767,13 @@ const daftarDeliveryOrderTrf = {
 							success: function (result) {
 								if (result.success) {
 									
-									$('#dotd_ongkir_temp').val('');
-									$('#dotd_ongkir_temp').val(result.ongkir_temp);
+									// $('#dotd_ongkir_temp').val('');
+									// $('#dotd_ongkir_temp').val(result.ongkir_temp);
 
 								}
 								else
 								{
-									$('#dotd_ongkir_temp').val(result.ongkir_temp);
+									// $('#dotd_ongkir_temp').val(result.ongkir_temp);
 								}
 							},
 							error: function (error) {
@@ -767,6 +781,46 @@ const daftarDeliveryOrderTrf = {
 							}
 						});
 						
+					});	
+
+					$('#dotd_ongkir_temp').keyup(function() {
+						
+						ongkir = $('#dotd_ongkir_temp').val();
+
+						var formatter = new Intl.NumberFormat();
+
+						ongkir = formatter.format(sod_shipp*ongkir_temp);
+
+						$('#dotd_ongkir').val(ongkir);
+
+						// $.ajax({
+						// 	url: siteUrl('transaksi/daftar_delivery_order_transfer/get_ongkir_district'),
+						// 	type: 'POST',
+						// 	dataType: 'JSON',
+						// 	beforeSend: function() {},
+						// 	complete: function() {},
+						// 	data: {
+						// 		action: 'get_ongkir_district',
+						// 		c_id_to: c_id_to
+						// 	},
+						// 	success: function (result) {
+						// 		if (result.success) {
+									
+						// 			// $('#dotd_ongkir_temp').val('');
+						// 			// $('#dotd_ongkir_temp').val(result.ongkir_temp);
+
+						// 		}
+						// 		else
+						// 		{
+						// 			// $('#dotd_ongkir_temp').val(result.ongkir_temp);
+						// 		}
+						// 	},
+						// 	error: function (error) {
+						// 		toastr.error(msgErr);
+						// 	}
+						// });
+						
+
 					});		
 				}
 			}
@@ -795,7 +849,7 @@ const daftarDeliveryOrderTrf = {
 
 						detailSO.attr('disabled', false);
 						 $('#c_id_from').attr('disabled', false);
-						 $('#c_id_to').attr('disabled', false);
+						 // $('#c_id_to').attr('disabled', false);
 						 $('#no_trx_do').attr('disabled', false);
 						 $('#dotd_vehicle_id').attr('disabled', false);
 						 $('#dotd_driver_id').attr('disabled', false);
@@ -951,18 +1005,19 @@ const daftarDeliveryOrderTrf = {
 				}
 			});
 	},
-	generateCustomerTo: function(so_id, c_id = false) {
+	generateCustomerTo: function(so_id, c_id_from = false, c_id = false) {
 		var customerTo = $('#c_id_to');
 			
 			$.ajax({
-				url: siteUrl('transaksi/daftar_delivery_order_transfer/get_customer_option'),
+				url: siteUrl('transaksi/daftar_delivery_order_transfer/get_customer_option_to'),
 				type: 'POST',
 				dataType: 'JSON',
 				beforeSend: function() {},
 				complete: function() {},
 				data: {
-					action: 'get_customer_option',
-					so_id : so_id
+					action: 'get_customer_option_to',
+					so_id : so_id,
+					c_id_from : c_id_from
 				},
 				success: function (result) {
 					if (result.success) {

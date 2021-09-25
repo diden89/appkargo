@@ -208,7 +208,7 @@ class Daftar_delivery_order_transfer extends NOOBS_Controller
 		else $this->show_404();
 	}
 
-	public function store_data_detail_delivery_order()//dipakai
+	public function store_data_transfer()//dipakai
 	{
 		if (isset($_POST['action']) && $_POST['action'] == 'insert_delivery_order')
 		{
@@ -217,7 +217,7 @@ class Daftar_delivery_order_transfer extends NOOBS_Controller
 			$store_data_daftar_delivery_order_transfer = $this->db_ddo_trx->store_data_daftar_delivery_order_transfer($post);
 
 			$get_total_qty = $this->db_ddo_trx->get_total_qty($post,'sum(dotd_shipping_qty) as total_qty');
-			$get_total_amount = $this->db_ddo_trx->get_total_amount($post,'sum(dod.dotd_ongkir) as total_amount');
+			$get_total_amount = $this->db_ddo_trx->get_total_amount($post,'sum(dotd.dotd_ongkir) as total_amount');
 
 			if($get_total_qty->num_rows() > 0) {
 				$total = $get_total_qty->row();
@@ -331,6 +331,28 @@ class Daftar_delivery_order_transfer extends NOOBS_Controller
 			if ($get_customer_option->num_rows() > 0) 
 			{
 				$result = $get_customer_option->result();
+
+				echo json_encode(array('success' => TRUE, 'data' => $result));
+			}
+			else echo json_encode(array('success' => FALSE, 'msg' => 'Data Not Found!'));
+		}
+		else $this->show_404();
+	}
+
+	public function get_customer_option_to() //dipakai
+	{
+		$post = $this->input->post(NULL, TRUE);
+
+
+		if (isset($post['action']) && ! empty($post['action']) && $post['action'] == 'get_customer_option_to')
+		{
+			unset($post['action']);
+
+			$get_customer_option_to = $this->db_ddo_trx->get_customer_option_to($post);
+
+			if ($get_customer_option_to->num_rows() > 0) 
+			{
+				$result = $get_customer_option_to->result();
 
 				echo json_encode(array('success' => TRUE, 'data' => $result));
 			}

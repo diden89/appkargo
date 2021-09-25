@@ -139,7 +139,7 @@
 			<div class="form-group row">
 				<label for="caption" class="col-sm-4 col-form-label">Ongkir</label>
 				<div class="col-sm-8">
-					<input type="text"  class="form-control" id="dotd_ongkir_temp" value="" disabled="disabled">
+					<input type="text"  class="form-control" id="dotd_ongkir_temp" value="" required="required">
 				</div>
 			</div>
 			<div class="form-group row">
@@ -170,7 +170,8 @@
 						<tr role="row">
 							<th width="10">No</th>
 							<th>No Transaksi</th>
-							<th>Nama Pelanggan</th>
+							<th>Dari</th>
+							<th>Ke</th>
 							<th>Nama Barang</th>
 							<th>Pengemudi / Kendaraan</th>
 							<th >Alamat Pengiriman</th>

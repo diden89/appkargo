@@ -74,6 +74,7 @@ class Daftar_penerimaan extends NOOBS_Controller
 
 			$load_data = $this->db_daftar_penerimaan->load_data_daftar_penerimaan($post);
 			
+			// print_r($load_data);exit;
 			$number = 1;
 
 			foreach ($load_data->data as $k => $v) 
@@ -85,6 +86,7 @@ class Daftar_penerimaan extends NOOBS_Controller
 				$v->dos_filled = number_format($v->dos_filled);
 				$v->dod_created_date = date('d-m-Y',strtotime($v->dod_created_date));
 				$v->dos_created_date = date('d-m-Y H:i:s',strtotime($v->dos_created_date));
+				$v->so_tipe = ($v->so_tipe == 'so') ? 'NEW ORDER' : 'TRANSFER';
 
 				if(! empty($v->dos_filled)) 
 				{
@@ -122,8 +124,8 @@ class Daftar_penerimaan extends NOOBS_Controller
 			{
 				$post['akses_driver'] = "";
 			}
-
-			$post['data'] = $this->db_daftar_penerimaan->load_data_form($post['data'])->row();
+			if($post['data']['so_tipe'] == 'NEW ORDER') $post['data'] = $this->db_daftar_penerimaan->load_data_form_order($post['data'])->row();
+			if($post['data']['so_tipe'] == 'TRANSFER') $post['data'] = $this->db_daftar_penerimaan->load_data_form_transfer($post['data'])->row();
 			// print_r($post);exit;
 
 			$this->_view('update_status_form_view', $post);
