@@ -150,12 +150,11 @@ class Daftar_pembayaran_sales_order extends NOOBS_Controller
 		if (isset($_POST['action']) && $_POST['action'] == 'get_sales_order_data')
 		{
 			$post = $this->input->post(NULL, TRUE);
-			// print_r($post);exit;
 			$get_sales_order_data = $this->db_daftar_pso->get_sales_order_data($post);
-			if ($get_sales_order_data->num_rows() > 0) 
-			{
-				$result = $get_sales_order_data->result();
+			
+				$result = $get_sales_order_data->data;
 				$number = 1;
+			// print_r($result);exit;
 
 				foreach ($result as $k => $v)
 				{
@@ -173,8 +172,6 @@ class Daftar_pembayaran_sales_order extends NOOBS_Controller
 				$array_sum = array_sum($sum);
 				// print_r($array_sum);exit;
 				echo json_encode(array('success' => TRUE, 'data' => $result,'total_amount' => 'Rp. '.number_format($array_sum),'amount' => $array_sum));
-			}
-			else echo json_encode(array('success' => FALSE, 'msg' => 'Data not found!'));
 		}
 		else $this->show_404();
 	}

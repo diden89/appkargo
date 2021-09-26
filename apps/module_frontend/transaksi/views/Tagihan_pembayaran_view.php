@@ -80,6 +80,19 @@
 			<div class="row">
 				<div class="col-lg-12">
 					<div class="form-group row">
+						<label for="caption" class="col-md-4 col-form-label">Tipe SO</label>
+					<div class="input-group col-md-8">
+						<select name="tipe_so" id="tipe_so" class="form-control">
+							<option value="so">ORDER BARU</option>
+							<option value="tf">TRANSFER</option>
+						</select>
+					</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="form-group row">
 						<label for="caption" class="col-sm-4 col-form-label">Catatan</label>
 						<div class="input-group col-8">
 							<textarea name="note" class="form-control"></textarea>

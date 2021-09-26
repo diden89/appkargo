@@ -728,7 +728,7 @@ const daftarDeliveryOrderTrf = {
 							complete: function() {},
 							data: {
 								action: 'get_ongkir_district',
-								c_id_from: c_id_from
+								c_id: c_id_from
 							},
 							success: function (result) {
 								if (result.success) {
@@ -762,13 +762,13 @@ const daftarDeliveryOrderTrf = {
 							complete: function() {},
 							data: {
 								action: 'get_ongkir_district',
-								c_id_to: c_id_to
+								c_id: c_id_to
 							},
 							success: function (result) {
 								if (result.success) {
 									
-									// $('#dotd_ongkir_temp').val('');
-									// $('#dotd_ongkir_temp').val(result.ongkir_temp);
+									$('#dotd_ongkir_temp').val('');
+									$('#dotd_ongkir_temp').val(result.ongkir_temp);
 
 								}
 								else

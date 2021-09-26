@@ -23,7 +23,7 @@ $(document).ready(function() {
 				},
 				{	
 					title: 'Type Order', 
-					data: 'so_tipe',
+					data: 'so_tipe_show',
 				},
 				{	
 					title: 'No Transaksi', 
@@ -49,14 +49,14 @@ $(document).ready(function() {
 					data: 'dod_shipping_qty',
 				},{	
 					title: 'Total terima', 
-					data: 'dos_filled',
+					data: 'dos_filled_show',
 				},{	
 					title: 'Biaya',
 					id : 'biaya', 
 					data: 'new_ongkir'
 				},{	
 					title: 'Tanggal Pengiriman', 
-					data: 'dos_created_date',
+					data: 'dod_created_date',
 				},{	
 					title: 'Status', 
 					data: 'dod_is_status',
@@ -102,7 +102,7 @@ $(document).ready(function() {
 				},
 				{	
 					title: 'Type Order', 
-					data: 'so_tipe',
+					data: 'so_tipe_show',
 				},
 				{	
 					title: 'No Transaksi', 
@@ -128,7 +128,7 @@ $(document).ready(function() {
 					data: 'dod_shipping_qty',
 				},{	
 					title: 'Total terima', 
-					data: 'dos_filled',
+					data: 'dos_filled_show',
 				},{	
 					title: 'Tanggal Pengiriman', 
 					data: 'dos_created_date',
@@ -163,12 +163,13 @@ $(document).ready(function() {
 			];
 		}
 
-	$('#range1').inputmask('dd-mm-yyyy', { 'placeholder': 'DD-MM-YYYY' });
+		$('#range1').inputmask('dd-mm-yyyy', { 'placeholder': 'DD-MM-YYYY' });
 		$('#range1').noobsdaterangepicker({
+			// timePicker: true,
 			showDropdowns: true,
 			singleDatePicker: true,
 			locale: {
-				format: 'DD-MM-YYYY'
+				format: 'DD-MM-YYYY hh:mm:ss'
 			}
 		});
 		$('#range2').inputmask('dd-mm-yyyy', { 'placeholder': 'DD-MM-YYYY' });
@@ -227,7 +228,7 @@ $(document).ready(function() {
 							const formData = new FormData(form[0]);
 							var order = $('#total_order_hidden').val();
 								filled =  $('#total_terpenuhi').val();
-								console.log(order)
+								
 							if(filled > order) 
 							{
 								Swal.fire({
@@ -285,31 +286,63 @@ $(document).ready(function() {
 				}],
 				listeners : {
 					onshow: function(popup) {
-						$('#total_terpenuhi').keyup(function(event) {
-							var  ttl = $('#total_terpenuhi').val();
-								 shp = $('#shipping').val();
-						  		new_ttl = ttl.replace(',','');
-						  	
-						  	var formatter = new Intl.NumberFormat();
-						  	console.log(new_ttl)
-							ongkir = formatter.format(new_ttl * shp);
-						  $('#total_ongkir_upd').val(ongkir);
-						  $('#total_ongkir_upd_hidden').val(new_ttl * shp);
-						});
-
-						$('#total_terpenuhi').keyup(function(event) {
-						  	// skip for arrow keys
-						  	if(event.which >= 37 && event.which <= 40) return;
-
-						 	// format number
-						  	$(this).val(function(index, value) {
-							    return value
-							    .replace(/\D/g, "")
-							    .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-							    ;
+						var tipe = $('#tipe').val();
+						if(tipe == 'so')
+						{
+							$('#total_terpenuhi').keyup(function(event) {
+								var  ttl = $('#total_terpenuhi').val();
+									 shp = $('#shipping').val();
+							  		new_ttl = ttl.replace(',','');
+							  	
+							  	var formatter = new Intl.NumberFormat();
+							  
+								ongkir = formatter.format(new_ttl * shp);
+							  $('#total_ongkir_upd').val(ongkir);
+							  $('#total_ongkir_upd_hidden').val(new_ttl * shp);
 							});
-			
-						});
+
+							$('#total_terpenuhi').keyup(function(event) {
+							  	// skip for arrow keys
+							  	if(event.which >= 37 && event.which <= 40) return;
+
+							 	// format number
+							  	$(this).val(function(index, value) {
+								    return value
+								    .replace(/\D/g, "")
+								    .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+								    ;
+								});
+				
+							});							
+						}
+						else
+						{
+							$('#total_terpenuhi').keyup(function(event) {
+								var  ttl = $('#total_terpenuhi').val();
+									 shp = $('#ongkir_trf').val();
+							  		new_ttl = ttl.replace(',','');
+							  	
+							  	var formatter = new Intl.NumberFormat();
+							  	
+								ongkir = formatter.format(new_ttl * shp);
+							  $('#total_ongkir_upd').val(ongkir);
+							  $('#total_ongkir_upd_hidden').val(new_ttl * shp);
+							});
+
+							$('#total_terpenuhi').keyup(function(event) {
+							  	// skip for arrow keys
+							  	if(event.which >= 37 && event.which <= 40) return;
+
+							 	// format number
+							  	$(this).val(function(index, value) {
+								    return value
+								    .replace(/\D/g, "")
+								    .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+								    ;
+								});
+				
+							});
+						}
 					}
 				}
 			});

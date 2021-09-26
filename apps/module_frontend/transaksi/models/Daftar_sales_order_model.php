@@ -71,6 +71,28 @@ class Daftar_sales_order_model extends NOOBS_Model
 		return $this->db->get();
  	}
 
+ 	public function get_progress_so_transfer($params = array())
+	{
+		$this->db->select('count(dotd.dotd_id) as progress');
+		$this->db->from('delivery_order_transfer_detail as dotd');
+		$this->db->join('sales_order_detail as sod','sod.sod_id = dotd.dotd_sod_id','LEFT');
+		$this->db->join('sales_order as so','so.so_no_trx = sod.sod_no_trx','LEFT');
+
+		if (isset($params['so_id']) && ! empty($params['so_id']))
+		{
+			$this->db->where('so.so_id', strtoupper($params['so_id']));
+		}
+
+		if (isset($params['dotd_is_status']) && ! empty($params['dotd_is_status']))
+		{
+			$this->db->where('dotd.dotd_is_status', $params['dotd_is_status']);
+		}
+		
+		$this->db->where('dotd.dotd_is_active', 'Y');
+
+		return $this->db->get();
+ 	}
+
  	public function get_progress_do($params = array())
 	{
 		$this->db->select('sum(dod.dod_shipping_qty) as total_progress');
@@ -112,6 +134,51 @@ class Daftar_sales_order_model extends NOOBS_Model
 		}
 		
 		$this->db->where('dod.dod_is_active', 'Y');
+
+		return $this->db->get();
+ 	}
+
+ 	public function get_progress_do_transfer($params = array())
+	{
+		$this->db->select('sum(dotd.dotd_shipping_qty) as total_progress');
+		$this->db->from('delivery_order_transfer_detail as dotd');
+		$this->db->join('sales_order_detail as sod','sod.sod_id = dotd.dotd_sod_id','LEFT');
+		$this->db->join('sales_order as so','so.so_no_trx = sod.sod_no_trx','LEFT');
+
+		if (isset($params['so_id']) && ! empty($params['so_id']))
+		{
+			$this->db->where('so.so_id', strtoupper($params['so_id']));
+		}
+
+		if (isset($params['dotd_is_status']) && ! empty($params['dotd_is_status']))
+		{
+			$this->db->where('dotd.dotd_is_status', $params['dotd_is_status']);
+		}
+		
+		$this->db->where('dotd.dotd_is_active', 'Y');
+
+		return $this->db->get();
+ 	}
+
+ 	public function get_progress_dos_transfer($params = array())
+	{
+		$this->db->select($params['sel']);
+		$this->db->from('delivery_order_transfer_status as dots');
+		$this->db->join('delivery_order_transfer_detail as dotd','dots.dots_dotd_id = dotd.dotd_id','LEFT');
+		$this->db->join('sales_order_detail as sod','sod.sod_id = dotd.dotd_sod_id','LEFT');
+		$this->db->join('sales_order as so','so.so_no_trx = sod.sod_no_trx','LEFT');
+
+		if (isset($params['so_id']) && ! empty($params['so_id']))
+		{
+			$this->db->where('so.so_id', strtoupper($params['so_id']));
+		}
+
+		if (isset($params['dotd_is_status']) && ! empty($params['dotd_is_status']))
+		{
+			$this->db->where('dotd.dotd_is_status', $params['dotd_is_status']);
+		}
+		
+		$this->db->where('dotd.dotd_is_active', 'Y');
 
 		return $this->db->get();
  	}

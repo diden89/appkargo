@@ -68,6 +68,7 @@ class Customer_model extends NOOBS_Model
 			'c_email' => $params['c_email'],
 			'c_district_id' => $params['c_district_id'],
 			'c_shipping_area' => $params['c_shipping_area'],
+			'c_shipping_area_transfer' => $params['c_shipping_area_transfer'],
 			'c_distance_area' => $params['c_distance_area']
 		);
 

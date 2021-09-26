@@ -324,6 +324,7 @@ class Daftar_delivery_order_model extends NOOBS_Model
 		
 		$this->db->where('so.so_is_status !=', 'SELESAI');
 		$this->db->where('so.so_is_active', 'Y');
+		$this->db->where('so.so_tipe', 'so');
 		
 		return $this->db->get();
  	}

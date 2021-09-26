@@ -44,27 +44,33 @@ class Tagihan_pembayaran extends NOOBS_Controller
 	public function print_pdf()
 	{
 		$post = $this->input->post();
-		// print_r($post);exit;
-		$get_file_template = $this->db_tp->load_template_laporan($post);
-		if($get_file_template->num_rows() > 0)
+		
+		if(! empty($post))
 		{
-			$temp = $get_file_template->row();
-			$post['temp'] = $temp->tl_file_template;
-			$post['tl_name'] = str_replace(" ","_",$temp->tl_name);
-			$this->rekap_tagihan_pembayaran($post);
+			$get_file_template = $this->db_tp->load_template_laporan($post);
+			if($get_file_template->num_rows() > 0)
+			{
+				$temp = $get_file_template->row();
+				$post['temp'] = $temp->tl_file_template;
+				$post['tl_name'] = str_replace(" ","_",$temp->tl_name);
+				$this->rekap_tagihan_pembayaran($post);
 
+			}
 		}
+		else $this->show_404();
+
 
 	}
 	public function rekap_tagihan_pembayaran($params)
 	{
 		$data = array();
-		// print_r($params);exit;
-		$get_data = $this->db_tp->load_data_rekap_tagihan($params);
+	
+		$get_data = ($params['tipe_so'] == 'so') ? $this->db_tp->load_data_rekap_tagihan($params) : $this->db_tp->load_data_rekap_tagihan_transfer($params);
 
 		$data_company = $this->db_main->get_company();
 
 		$result = $get_data->result();
+		// print_r($params);exit;
 		$number = 1;
 		$total_ong = array();
 		foreach ($result as $k => $v) 
@@ -73,7 +79,7 @@ class Tagihan_pembayaran extends NOOBS_Controller
 			$v->d_name_pengemudi = $v->d_name.' / '.$v->ve_license_plate;
 			$v->d_address_area = $v->c_address.'<br>Kec. '.$v->rsd_name;
 			$v->dod_shipping_qty = number_format($v->dod_shipping_qty);
-			$v->dos_filled = number_format($v->dos_filled);
+			$v->dos_filled_view = number_format($v->dos_filled);
 			$v->dod_created_date = date('d-m-Y',strtotime($v->dod_created_date));
 			$v->dos_created_date = date('d-m-Y H:i:s',strtotime($v->dos_created_date));
 
@@ -117,17 +123,6 @@ class Tagihan_pembayaran extends NOOBS_Controller
 		
 		$data['terbilang'] = $this->penyebut($ong);
 		
-		// if($params['vendor'] == 'PKPHN')
-		// {
-		// 	$view = $this->load->view('tagihan/tagihan_pembayaran_pokphan_pdf', $data, TRUE);
-		// }
-		// elseif($params['vendor'] == 'CIOPRM')
-		// {
-		// 	$view = $this->load->view('tagihan/tagihan_pembayaran_cioprm_pdf', $data, TRUE);
-		// }
-		// elseif($params['vendor'] == 'CIOBGO')
-		// {
-		// }
 			$view = $this->load->view('tagihan/'.$params['temp'], $data, TRUE);
 
 				$this->load->library('pdf_creator');

@@ -139,7 +139,7 @@
 			<div class="form-group row">
 				<label for="caption" class="col-sm-4 col-form-label">Ongkir</label>
 				<div class="col-sm-8">
-					<input type="text"  class="form-control" id="dotd_ongkir_temp" value="" required="required">
+					<input type="text"  class="form-control" id="dotd_ongkir_temp" value="" disabled="disabled">
 				</div>
 			</div>
 			<div class="form-group row">

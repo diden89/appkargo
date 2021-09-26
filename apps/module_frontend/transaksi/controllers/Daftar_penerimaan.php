@@ -83,10 +83,10 @@ class Daftar_penerimaan extends NOOBS_Controller
 				$v->d_name_pengemudi = $v->d_name.' / '.$v->ve_license_plate;
 				$v->d_address_area = $v->c_address.'<br>Kec. '.$v->rsd_name;
 				$v->dod_shipping_qty = number_format($v->dod_shipping_qty);
-				$v->dos_filled = number_format($v->dos_filled);
+				$v->dos_filled_show = number_format($v->dos_filled);
 				$v->dod_created_date = date('d-m-Y',strtotime($v->dod_created_date));
 				$v->dos_created_date = date('d-m-Y H:i:s',strtotime($v->dos_created_date));
-				$v->so_tipe = ($v->so_tipe == 'so') ? 'NEW ORDER' : 'TRANSFER';
+				$v->so_tipe_show = ($v->so_tipe == 'so') ? 'NEW ORDER' : 'TRANSFER';
 
 				if(! empty($v->dos_filled)) 
 				{
@@ -101,7 +101,7 @@ class Daftar_penerimaan extends NOOBS_Controller
 
 				$number++;
 			}
-		
+		// print_r($load_data);exit;
 			echo json_encode($load_data);
 		}
 		else $this->show_404();
@@ -124,8 +124,14 @@ class Daftar_penerimaan extends NOOBS_Controller
 			{
 				$post['akses_driver'] = "";
 			}
-			if($post['data']['so_tipe'] == 'NEW ORDER') $post['data'] = $this->db_daftar_penerimaan->load_data_form_order($post['data'])->row();
-			if($post['data']['so_tipe'] == 'TRANSFER') $post['data'] = $this->db_daftar_penerimaan->load_data_form_transfer($post['data'])->row();
+			if($post['data']['so_tipe'] == 'so') 
+			{
+				$post['val'] = $this->db_daftar_penerimaan->load_data_form_order($post['data'])->row();
+			}
+			else 
+			{
+				$post['val'] = $this->db_daftar_penerimaan->load_data_form_transfer($post['data'])->row();
+			} 
 			// print_r($post);exit;
 
 			$this->_view('update_status_form_view', $post);
@@ -163,50 +169,80 @@ class Daftar_penerimaan extends NOOBS_Controller
 	public function store_update_status()//dipakai
 	{
 		$new_params['user_id'] = $this->session->userdata('user_id');
-
 		if (isset($_POST['action']) && $_POST['action'] == 'store_update_status')
 		{
 			$post = $this->input->post(NULL, TRUE);
-			$post['total_terpenuhi'] = str_replace(',','',$post['total_terpenuhi']);
 			$post['dod_is_status'] = 'SELESAI';
-			$input_to_penerimaan_status = $this->db_daftar_penerimaan->store_penerimaan_status($post);
-
+			// print_r($post);exit;
 			$cek_driver_akses = $this->db_daftar_penerimaan->cek_driver_akses($new_params);
-			if($cek_driver_akses->num_rows() > 0)
+			
+			$post['akses_driver'] = ($cek_driver_akses->num_rows() > 0) ? $new_params['user_id'] : "";
+			
+			if($post['tipe'] == 'so')
 			{
-				$post['akses_driver'] = $new_params['user_id'];
+				$input_to_penerimaan_status = $this->db_daftar_penerimaan->store_penerimaan_status_order($post);
+
+				// print_r($post);exit;
+				$update_status = $this->db_daftar_penerimaan->store_update_status_penerimaan_order($post); //update status
+
+				$get_total_do = $this->db_daftar_penerimaan->get_total_do($post,'total')->row();
+				$get_total_sod = $this->db_daftar_penerimaan->get_total_sod_total($post)->row();
+				
+				// print_r($get_total_do);exit;
+				if($get_total_do->total_order !== 0)
+				{
+					$get_ttl = $get_total_do->total_order;
+				}
+
+				if($get_total_sod->total_sod !== 0)
+				{
+					$get_ttl_sod = $get_total_sod->total_sod;
+				}
+
+				if($get_ttl < $get_ttl_sod) {
+					$post['is_status'] = 'ON PROGRESS';
+				} else if($get_ttl == $get_ttl_sod) {
+					$post['is_status'] = $post['dod_is_status'];
+				}
+
+				// print_r($post);exit;
+				$update_status_sales_order = $this->db_daftar_penerimaan->store_update_status_sales_order($post);
+
+				echo json_encode(array('success' => $update_status));
 			}
 			else
 			{
-				$post['akses_driver'] = "";
-			}
-			// print_r($post);exit;
-			$update_status = $this->db_daftar_penerimaan->store_update_status_penerimaan($post); //update status
+				$input_to_penerimaan_status = $this->db_daftar_penerimaan->store_penerimaan_status_transfer($post);
 
-			$get_total_do = $this->db_daftar_penerimaan->get_total_do($post,'total')->row();
-			$get_total_sod = $this->db_daftar_penerimaan->get_total_sod_total($post)->row();
+				$cek_driver_akses = $this->db_daftar_penerimaan->cek_driver_akses($new_params);
 			
-			// print_r($get_total_do);exit;
-			if($get_total_do->total_order !== 0)
-			{
-				$get_ttl = $get_total_do->total_order;
+				$update_status = $this->db_daftar_penerimaan->store_update_status_penerimaan_transfer($post); //update status
+
+				$get_total_do = $this->db_daftar_penerimaan->get_total_do_transfer($post,'total')->row();
+				$get_total_sod = $this->db_daftar_penerimaan->get_total_sod_total($post)->row();
+				
+				// print_r($get_total_do);exit;
+				if($get_total_do->total_order !== 0)
+				{
+					$get_ttl = $get_total_do->total_order;
+				}
+
+				if($get_total_sod->total_sod !== 0)
+				{
+					$get_ttl_sod = $get_total_sod->total_sod;
+				}
+
+				if($get_ttl < $get_ttl_sod) {
+					$post['is_status'] = 'ON PROGRESS';
+				} else if($get_ttl == $get_ttl_sod) {
+					$post['is_status'] = $post['dod_is_status'];
+				}
+
+				// print_r($post);exit;
+				$update_status_sales_order = $this->db_daftar_penerimaan->store_update_status_sales_order($post);
+
+				echo json_encode(array('success' => $update_status));
 			}
-
-			if($get_total_sod->total_sod !== 0)
-			{
-				$get_ttl_sod = $get_total_sod->total_sod;
-			}
-
-			if($get_ttl < $get_ttl_sod) {
-				$post['is_status'] = 'ON PROGRESS';
-			} else if($get_ttl == $get_ttl_sod) {
-				$post['is_status'] = $post['dod_is_status'];
-			}
-
-			// print_r($post);exit;
-			$update_status_sales_order = $this->db_daftar_penerimaan->store_update_status_sales_order($post);
-
-			echo json_encode(array('success' => $update_status));
 		}
 		else $this->show_404();
 	}

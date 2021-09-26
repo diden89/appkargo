@@ -115,7 +115,7 @@ class Daftar_delivery_order_transfer extends NOOBS_Controller
 	{
 		$post = $this->input->post(NULL, TRUE);
 
-
+		// print_r($post);exit;
 		if (isset($post['action']) && ! empty($post['action']) && $post['action'] == 'get_ongkir_district')
 		{
 			unset($post['action']);
@@ -126,7 +126,7 @@ class Daftar_delivery_order_transfer extends NOOBS_Controller
 			{
 				$res = $get_ongkir_district->row();
 
-				echo json_encode(array('success' => TRUE, 'ongkir_temp' => $res->c_shipping_area));
+				echo json_encode(array('success' => TRUE, 'ongkir_temp' => $res->c_shipping_area_transfer));
 			}
 			else echo json_encode(array('success' => FALSE, 'ongkir_temp' => '0'));
 		}

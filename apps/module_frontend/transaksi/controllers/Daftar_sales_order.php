@@ -47,15 +47,31 @@ class Daftar_sales_order extends NOOBS_Controller
 			{
 				$num++;
 
-				$get_progress_so = $this->db_daftar_sales_order->get_progress_so(array('so_id' => $v->so_id,'dod_is_status' => 'SELESAI'));
 
-				$get_total_so = $this->db_daftar_sales_order->get_progress_so(array('so_id' => $v->so_id));
+				if($v->so_tipe == 'so')
+				{
+					$get_progress_so = $this->db_daftar_sales_order->get_progress_so(array('so_id' => $v->so_id,'dod_is_status' => 'SELESAI'));
 
-				$get_progress_do = $this->db_daftar_sales_order->get_progress_do(array('so_id' => $v->so_id));
+					$get_total_so = $this->db_daftar_sales_order->get_progress_so(array('so_id' => $v->so_id));
 
-				$get_progress_dos = $this->db_daftar_sales_order->get_progress_dos(array('so_id' => $v->so_id, 'sel'=> 'sum(dos.dos_filled) as total_progress_dos'));
-				
-				$get_amount_dos = $this->db_daftar_sales_order->get_progress_dos(array('so_id' => $v->so_id, 'sel'=> 'sum(dos.dos_ongkir) as total_amount_dos'));
+					$get_progress_do = $this->db_daftar_sales_order->get_progress_do(array('so_id' => $v->so_id));
+
+					$get_progress_dos = $this->db_daftar_sales_order->get_progress_dos(array('so_id' => $v->so_id, 'sel'=> 'sum(dos.dos_filled) as total_progress_dos'));
+					
+					$get_amount_dos = $this->db_daftar_sales_order->get_progress_dos(array('so_id' => $v->so_id, 'sel'=> 'sum(dos.dos_ongkir) as total_amount_dos'));					
+				}
+				else
+				{
+					$get_progress_so = $this->db_daftar_sales_order->get_progress_so_transfer(array('so_id' => $v->so_id,'dotd_is_status' => 'SELESAI'));
+
+					$get_total_so = $this->db_daftar_sales_order->get_progress_so_transfer(array('so_id' => $v->so_id));
+
+					$get_progress_do = $this->db_daftar_sales_order->get_progress_do_transfer(array('so_id' => $v->so_id));
+
+					$get_progress_dos = $this->db_daftar_sales_order->get_progress_dos_transfer(array('so_id' => $v->so_id, 'sel'=> 'sum(dots.dots_filled) as total_progress_dos'));
+					
+					$get_amount_dos = $this->db_daftar_sales_order->get_progress_dos_transfer(array('so_id' => $v->so_id, 'sel'=> 'sum(dots.dots_ongkir) as total_amount_dos'));
+				}
 				
 				if($get_progress_do->num_rows() > 0) 
 				{

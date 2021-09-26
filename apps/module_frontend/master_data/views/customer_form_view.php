@@ -93,6 +93,12 @@
 				</div>
 			</div>
 			<div class="form-group row">
+				<label for="url" class="col-sm-4 col-form-label">Ongkir Transfer</label>
+				<div class="col-sm-8">
+					<input type="number" name="c_shipping_area_transfer" class="form-control" id="c_shipping_area_transfer" value="<?php echo $mode == 'edit' && $data !== FALSE ? $data['c_shipping_area_transfer'] : '' ?>" required="required" <?php echo $mode == 'edit' ? '' : ''; ?>>
+				</div>
+			</div>
+			<div class="form-group row">
 				<label for="url" class="col-sm-4 col-form-label">Jarak dari gudang / KM</label>
 				<div class="col-sm-8">
 					<input type="number" name="c_distance_area" class="form-control" id="c_distance_area" value="<?php echo $mode == 'edit' && $data !== FALSE ? $data['c_distance_area'] : '' ?>" required="required" <?php echo $mode == 'edit' ? '' : ''; ?>>

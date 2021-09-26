@@ -55,6 +55,10 @@ $(document).ready(function() {
 					data: 'c_shipping_area',
 				},
 				{	
+					title: 'Ongkir Transfer', 
+					data: 'c_shipping_area_transfer',
+				},
+				{	
 					title: 'Jarak Dari Gudang', 
 					data: 'c_distance_area_full',
 				},

@@ -305,6 +305,7 @@ class Daftar_delivery_order_transfer_model extends NOOBS_Model
 		}
 
 		$this->db->where('sod.sod_flag', 'N');
+		$this->db->where('sod.sod_realisasi < sod.sod_qty');
 		// $this->db->where('so.so_tipe', 'so');
 		$this->db->where('sod_is_active', 'Y');
 		if (isset($params['mode']) && ! $params['mode'] == 'add')
