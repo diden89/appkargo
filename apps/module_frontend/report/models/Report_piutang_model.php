@@ -10,6 +10,46 @@
 
 class Report_piutang_model extends NOOBS_Model
 {
+
+	public function load_data_daftar_sales_order($params = array())
+	{
+		// print_r($params);exit;
+		$this->db->select('so.*,rd.*,v.v_vendor_name, (select sum(sod_qty) as so_qty from sales_order_detail where sod_no_trx = so.so_no_trx) as so_qty,
+			(CASE 
+			WHEN so_is_pay = "BL" THEN "BELUM LUNAS"
+			WHEN so_is_pay = "LN" THEN "LUNAS"
+			ELSE "BELUM LENGKAP" END) as paying, DATE_FORMAT(so.so_created_date, "%d-%m-%Y") as date_create');
+		$this->db->from('sales_order as so');
+		// $this->db->join('sales_order_detail as sod','sod.sod_no_trx = so.so_id','LEFT');
+		$this->db->join('vendor as v','v.v_id = so.so_vendor_id','LEFT');
+		$this->db->join('ref_district as rd','rd.rd_id = so.so_district_id','LEFT');
+		
+		if (isset($params['txt_item']) && ! empty($params['txt_item']))
+		{
+			$this->db->like('UPPER(so.so_no_trx)', strtoupper($params['txt_item']),'both');
+			$this->db->or_like('UPPER(v.v_vendor_name)', strtoupper($params['txt_item']),'both');
+		}
+
+		if (isset($params['txt_id']) && ! empty($params['txt_id']))
+		{
+			$this->db->where('so.so_id', strtoupper($params['txt_id']));
+		}
+
+		if (isset($params['date_range1']) && ! empty($params['date_range1']))
+		{
+			$this->db->where('so.so_created_date >=', date('Y-m-d',strtotime($params['date_range1'])));
+			$this->db->where('so.so_created_date <=', date('Y-m-d',strtotime($params['date_range2'])));
+		}
+
+		$this->db->where('so.so_is_active', 'Y');
+		// $this->db->or_where('so.so_is_pay', 'BL');
+		$this->db->like('v.v_unique_access_key', md5($this->session->userdata('user_id')));
+		$this->db->order_by('so.so_created_date', 'ASC');
+		$this->db->order_by('so.so_id', 'ASC');
+
+		return $this->db->get();
+ 	}
+
 	public function load_data_rekap_tagihan($params = array())
 	{
 		// print_r($params);exit;
@@ -54,16 +94,16 @@ class Report_piutang_model extends NOOBS_Model
 
 		if (isset($params['date_range1']) && ! empty($params['date_range1']))
 		{
-			$this->db->where('dod.dod_created_date >=', $params['date_range1']);
-			$this->db->where('dod.dod_created_date <=', $params['date_range2']);
+			$this->db->where('dod.dod_created_date >=', date('Y-m-d',strtotime($params['date_range1'])));
+			$this->db->where('dod.dod_created_date <=', date('Y-m-d',strtotime($params['date_range2'])));
 		}
 
 		$this->db->where('dod.dod_is_active', 'Y');
 		$this->db->where('so.so_is_pay', 'BL');
 		$this->db->where('so.so_is_status', 'SELESAI');
 		// $this->db->where('dod.dod_is_status !=', 'SELESAI');
-		$this->db->order_by('so.so_created_date', 'ASC');
-		// $this->db->order_by('il.il_item_name', 'ASC');
+		$this->db->order_by('so.so_created_date', 'DESC');
+		// $this->db->order_by('il.il_item_name', 'DESC');
 
 		return $this->db->get();
  	}
@@ -136,7 +176,7 @@ class Report_piutang_model extends NOOBS_Model
 		}
 		$this->db->where('dod.dod_is_active = "Y"');
 		// $this->db->where('dod.dod_is_status !=', 'SELESAI');
-		$this->db->order_by('dod.dod_created_date', 'DESC');
+		$this->db->order_by('dod.dod_created_date', 'ASC');
 
 		return $this->db->get();
 	}
@@ -208,8 +248,8 @@ class Report_piutang_model extends NOOBS_Model
 		}
 		$this->db->where('dotd.dotd_is_active = "Y"');
 		// $this->db->where('dotd.dotd_is_status !=', 'SELESAI');
-		$this->db->order_by('dotd.dotd_created_date', 'DESC');
-		$this->db->order_by('dotd.dotd_id', 'DESC');
+		$this->db->order_by('dotd.dotd_created_date', 'ASC');
+		$this->db->order_by('dotd.dotd_id', 'ASC');
 
 		return $this->db->get();
  	}

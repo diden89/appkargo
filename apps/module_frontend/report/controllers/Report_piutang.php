@@ -62,7 +62,7 @@ class Report_piutang extends NOOBS_Controller
 		$get_data = $this->db_rp->load_data_rekap_tagihan($params);
 		$data_company = $this->db_main->get_company();
 
-		$load_data_daftar_sales_order = $this->db_daftar_sales_order->load_data_daftar_sales_order($params);
+		$load_data_daftar_sales_order = $this->db_rp->load_data_daftar_sales_order($params);
 
 		if ($load_data_daftar_sales_order->num_rows() > 0)
 		{
@@ -187,7 +187,7 @@ class Report_piutang extends NOOBS_Controller
 
 		$data_company = $this->db_main->get_company();
 
-		$load_data_daftar_sales_order = $this->db_daftar_sales_order->load_data_daftar_sales_order($params);
+		$load_data_daftar_sales_order = $this->db_rp->load_data_daftar_sales_order($params);
 
 
 		if ($load_data_daftar_sales_order->num_rows() > 0)

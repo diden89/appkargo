@@ -74,7 +74,7 @@
 				?>
 				<tr class="tr">
 					<th class="tdth" colspan="7"><?php echo $v['so_no_trx'];?></th>
-					<th class="tdth"><?php echo 'Rp. '.$v['tot_prog_dos'];?></th>
+					<th class="tdth"><?php echo $v['tot_prog_dos'];?></th>
 					<th class="tdth" colspan="3"><?php echo 'Rp. '.$v['so_total_amount'];?></th>
 				</tr>
 				<br>
