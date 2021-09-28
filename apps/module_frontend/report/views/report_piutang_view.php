@@ -27,7 +27,7 @@
 										<i class="far fa-calendar-alt"></i>
 									</span>
 								</div>
-								<input type="text" name="date_range_1" class="form-control" id="date_range_1" required="required" data-inputmask-alias="datetime" data-inputmask-inputformat="dd-mm-yyyy" data-mask value="">
+								<input type="text" name="date_range1" class="form-control" id="date_range_1" required="required" data-inputmask-alias="datetime" data-inputmask-inputformat="dd-mm-yyyy" data-mask value="">
 							</div>
 						</div>
 					</div>
@@ -44,7 +44,7 @@
 										<i class="far fa-calendar-alt"></i>
 									</span>
 								</div>
-								<input type="text" name="date_range_2" class="form-control" id="date_range_2" required="required" data-inputmask-alias="datetime" data-inputmask-inputformat="dd-mm-yyyy" data-mask value="">
+								<input type="text" name="date_range2" class="form-control" id="date_range_2" required="required" data-inputmask-alias="datetime" data-inputmask-inputformat="dd-mm-yyyy" data-mask value="">
 							</div>
 						</div>
 					</div>

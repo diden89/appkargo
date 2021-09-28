@@ -67,12 +67,13 @@
 	<table class="table_strip">		
 		<tr class="tr">
 			<th width="10" class="tdth">No</th>
+			<th class="tdth">Tipe Order</th>
 			<th class="tdth">No Transaksi</th>
+			<th class="tdth">Vendor</th>
+			<th class="tdth">Total Terima</th>
+			<th class="tdth">Total Ongkir</th>
+			<th class="tdth">Tujuan</th>
 			<th class="tdth">Tanggal</th>
-			<th class="tdth">Masuk Ke Akun</th>
-			<th class="tdth">Keterangan</th>
-			<th class="tdth">Total</th>
-			<th class="tdth">User Buat</th>
 		</tr>
 	
 		<?php 
@@ -80,16 +81,17 @@
 		if(! empty($item)) 
 		{
 			foreach ($item as $k => $v) {
-					$total[] = $v->ci_total;
+					$total[] = $v->so_total_amount;
 			?>
 				<tr class="tr">
 					<td class="tdth"><?php echo $v->num; ?></td>
-					<td class="tdth"><?php echo $v->dod_no_trx; ?></td>
-					<td class="tdth"><?php echo date('d-m-Y',strtotime($v->dod_created_date)); ?></td>
-					<td class="tdth"><?php echo $v->c_name; ?></td>
-					<td class="tdth"><?php echo $v->dos_keterangan; ?></td>
-					<td class="tdth"><?php echo $v->dos_ongkir; ?></td>
-					<td class="tdth"><?php echo $v->c_name; ?></td>
+					<td class="tdth"><?php echo $v->so_tipe_view; ?></td>
+					<td class="tdth"><?php echo $v->so_no_trx; ?></td>
+					<td class="tdth"><?php echo $v->v_vendor_name; ?></td>
+					<td class="tdth"><?php echo '<b>'.number_format($v->tot_prog_dos); ?> Kg</b></td>
+					<td class="tdth" style="text-align:right;"><?php echo '<b>Rp. '.number_format($v->so_total_amount); ?></b></td>
+					<td class="tdth"><?php echo $v->rd_name; ?></td>
+					<td class="tdth"><?php echo $v->so_created_date; ?></td>
 				</tr>
 			<?php
 			} 
@@ -97,7 +99,7 @@
 
 		<tr class="tr">
 			<td colspan="5" class="tdth">Total</td>
-			<td class="tdth"><?php echo number_format(array_sum($total)); ?></td>
+			<td class="tdth" style="text-align:right;"><?php echo '<b>Rp. '.number_format(array_sum($total)); ?></b></td>
 		</tr>
 	</table>
 </body>

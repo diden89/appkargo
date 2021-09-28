@@ -61,7 +61,7 @@
 								<thead>
 									<tr role="row">
 										<th width="10">No</th>
-										<th>Tipe SO</th>
+										<th>Tipe Order</th>
 										<th>No Transaksi</th>
 										<th>Nama Vendor</th>
 										<th>Total Order</th>
