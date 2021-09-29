@@ -22,7 +22,7 @@
 		}
 
 		.tdth {
-		  border: 1px dashed #dddddd;
+		  border: 1px solid #dddddd;
 		  text-align: left;
 		  padding: 8px;
 		  font-size: 10px;
@@ -88,7 +88,7 @@
 					<td class="tdth"><?php echo $v->so_tipe_view; ?></td>
 					<td class="tdth"><?php echo $v->so_no_trx; ?></td>
 					<td class="tdth"><?php echo $v->v_vendor_name; ?></td>
-					<td class="tdth"><?php echo '<b>'.number_format($v->tot_prog_dos); ?> Kg</b></td>
+					<td class="tdth" style="text-align:center;"><?php echo '<b>'.number_format($v->tot_prog_dos); ?> Kg</b></td>
 					<td class="tdth" style="text-align:right;"><?php echo '<b>Rp. '.number_format($v->so_total_amount); ?></b></td>
 					<td class="tdth"><?php echo $v->rd_name; ?></td>
 					<td class="tdth"><?php echo $v->so_created_date; ?></td>
