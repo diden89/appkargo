@@ -62,7 +62,7 @@
 					<select class="form-control select2"  name="sop_type_pay" id="sop_type_pay" required="required">
 						<option value="">--Cara Bayar--</option>
 						<option value="TUNAI">TUNAI</option>
-						<option value="TRANSFER">TRANSAFER</option>
+						<option value="TRANSFER">TRANSFER</option>
 					</select>
 				</div>
 			</div>
