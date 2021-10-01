@@ -6,7 +6,7 @@
  * @edit Diden89
  * @version 1.0
  * @access Public
- * @path /appkargo/apps/views/report/report_piutang_rekap_pdf.php
+ * @path /appkargo/apps/views/report/report_delivery_rekap_pdf.php
  */
 ?>
 <!DOCTYPE html>

@@ -13,7 +13,7 @@ class Report_delivery_order extends NOOBS_Controller
 	function __construct()
 	{
 		parent::__construct();
-		$this->load->model('report/report_delivery_order_model', 'db_rp');
+		$this->load->model('report/report_delivery_order_model', 'db_rdo');
 		$this->load->model('transaksi/daftar_sales_order_model', 'db_daftar_sales_order');
 
 	}
@@ -21,11 +21,11 @@ class Report_delivery_order extends NOOBS_Controller
 	public function index()
 	{
 		$this->store_params['page_active'] = isset($this->store_params['page_active']) ? $this->store_params['page_active'] : 'Home';
-		$this->store_params['header_title'] = 'Laporan Piutang';
-		$this->store_params['pages_title'] = 'Laporan Piutang List';
+		$this->store_params['header_title'] = 'Laporan Delivery Order';
+		$this->store_params['pages_title'] = 'Laporan Delivery Order List';
 		$this->store_params['breadcrumb'] = array(
 			array('', 'Home'),
-			array('report/report_delivery_order', 'Laporan Kas Masuk')
+			array('report/report_delivery_order', 'Laporan Delivery Order')
 		);
 		
 		$this->store_params['source_top'] = array(
@@ -59,10 +59,10 @@ class Report_delivery_order extends NOOBS_Controller
 	{
 		$data = array();
 
-		$get_data = $this->db_rp->load_data_rekap_tagihan($params);
+		$get_data = $this->db_rdo->load_data_rekap_tagihan($params);
 		$data_company = $this->db_main->get_company();
 
-		$load_data_daftar_sales_order = $this->db_rp->load_data_daftar_sales_order($params);
+		$load_data_daftar_sales_order = $this->db_rdo->load_data_daftar_sales_order($params);
 
 		if ($load_data_daftar_sales_order->num_rows() > 0)
 		{
@@ -183,11 +183,11 @@ class Report_delivery_order extends NOOBS_Controller
 	{
 		$data = array();
 
-		// $get_data = $this->db_rp->load_data_kas_masuk($params);
+		// $get_data = $this->db_rdo->load_data_kas_masuk($params);
 
 		$data_company = $this->db_main->get_company();
 
-		$load_data_daftar_sales_order = $this->db_rp->load_data_daftar_sales_order($params);
+		$load_data_daftar_sales_order = $this->db_rdo->load_data_daftar_sales_order($params);
 
 
 		if ($load_data_daftar_sales_order->num_rows() > 0)
@@ -213,7 +213,7 @@ class Report_delivery_order extends NOOBS_Controller
 					
 					$get_amount_dos = $this->db_daftar_sales_order->get_progress_dos(array('so_id' => $v->so_id, 'sel'=> 'sum(dos.dos_ongkir) as total_amount_dos'));	
 
-					$get_detail_do = $this->db_rp->load_data_rekap_tagihan_new($params);
+					$get_detail_do = $this->db_rdo->load_data_rekap_tagihan_new($params);
 					if($get_detail_do->num_rows() > 0)
 					{
 						$num = 0;
@@ -258,7 +258,7 @@ class Report_delivery_order extends NOOBS_Controller
 					
 					$get_amount_dos = $this->db_daftar_sales_order->get_progress_dos_transfer(array('so_id' => $v->so_id, 'sel'=> 'sum(dots.dots_ongkir) as total_amount_dos'));
 
-					$get_detail_do_trf = $this->db_rp->load_data_rekap_tagihan_trf($params);
+					$get_detail_do_trf = $this->db_rdo->load_data_rekap_tagihan_trf($params);
 					if($get_detail_do_trf->num_rows() > 0)
 					{
 						$num = 0;

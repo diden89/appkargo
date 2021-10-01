@@ -5,7 +5,7 @@
  * @author diden89
  * @version 1.0
  * @access Public
- * @link /rab_frontend/apps/module_frontend/report/views/report_piutang_view.php
+ * @link /rab_frontend/apps/module_frontend/report/views/report_delivery_view.php
  */
 ?>
 
@@ -53,11 +53,25 @@
 			<div class="row">
 				<div class="col-lg-12">
 					<div class="form-group row">
+						<label for="caption" class="col-sm-4 col-form-label">Filter</label>
+						<div class="input-group col-8">
+							<select name="type" class="form-control">
+								<option value="do" selected>DO</option>
+								<option value="driver">PENGEMUDI</option>
+								<option value="vehicle">KENDARAAN</option>
+							</select>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="form-group row">
 						<label for="caption" class="col-sm-4 col-form-label">Tipe Laporan</label>
 						<div class="input-group col-8">
 							<select name="type" class="form-control">
-								<option value="rekap">Rekap</option>
-								<option value="detail">Detail</option>
+								<option value="rekap">REKAP</option>
+								<option value="detail">DETAIL</option>
 							</select>
 						</div>
 					</div>
