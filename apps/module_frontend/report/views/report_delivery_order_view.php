@@ -15,7 +15,7 @@
 			<h3 class="card-title">Laporan</h3>
 		</div>
 		<div class="card-body">
-		<form action="report_piutang/print_pdf" method="post">			
+		<form action="report_delivery_order/print_pdf" method="post">			
 			<div class="row">
 				<div class="col-lg-12">
 					<div class="form-group row">
@@ -55,7 +55,7 @@
 					<div class="form-group row">
 						<label for="caption" class="col-sm-4 col-form-label">Filter</label>
 						<div class="input-group col-8">
-							<select name="type" class="form-control">
+							<select name="filter" class="form-control">
 								<option value="do" selected>DO</option>
 								<option value="driver">PENGEMUDI</option>
 								<option value="vehicle">KENDARAAN</option>
