@@ -60,6 +60,7 @@ class Daftar_delivery_order extends NOOBS_Controller
 		$this->view('daftar_delivery_order_view');
 	}
 
+	
 	public function load_data_daftar_delivery_order() // dipakai
 	{
 		if (isset($_POST['action']) && $_POST['action'] == 'load_data_daftar_delivery_order')
