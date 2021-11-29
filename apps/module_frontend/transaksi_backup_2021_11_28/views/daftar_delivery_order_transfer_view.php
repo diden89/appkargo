@@ -6,7 +6,7 @@
  * @edit Diden89
  * @version 1.0
  * @access Public
- * @path /appkargo/apps/module_frontend/transaksi/views/delivery_order_cost_view.php
+ * @path /appkargo/apps/module_frontend/transaksi/views/customer_view.php
  */
 ?>
 

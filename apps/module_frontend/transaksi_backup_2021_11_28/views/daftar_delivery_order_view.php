@@ -6,7 +6,7 @@
  * @edit Diden89
  * @version 1.0
  * @access Public
- * @path /appkargo/apps/module_frontend/transaksi/views/delivery_order_cost_view.php
+ * @path /appkargo/apps/module_frontend/transaksi/views/customer_view.php
  */
 ?>
 
@@ -73,8 +73,7 @@
 										<th width="10">No</th>
 										<th>No Transaksi SO</th>
 										<th>No Transaksi</th>
-										<th>Dari</th>
-										<th>Ke</th>
+										<th>Nama Pelanggan</th>
 										<th>Nama Barang</th>
 										<th>Pengemudi / Kendaraan</th>
 										<th >Alamat Pengiriman</th>
@@ -90,22 +89,21 @@
 										<tr>
 											<td><?php echo $v->num; ?></td>
 											<td><?php echo $v->so_no_trx; ?></td>
-											<td><?php echo $v->dotd_no_trx; ?></td>
-											<td><?php echo $v->c_name_from; ?></td>
-											<td><?php echo $v->c_name_to; ?></td>
+											<td><?php echo $v->dod_no_trx; ?></td>
+											<td><?php echo $v->c_name; ?></td>
 											<td><?php echo $v->il_item_name; ?></td>
 											<td><?php echo $v->d_name.' / '.$v->ve_license_plate; ?></td>
 											<td><?php echo $v->c_address.'<br>Kec. '.$v->rsd_name; ?></td>
-											<td><?php echo number_format($v->dotd_shipping_qty); ?></td>
-											<td><?php echo number_format($v->dotd_ongkir); ?></td>
-											<td><?php echo date('d-m-Y',strtotime($v->dotd_created_date)); ?></td>
-											<td><?php echo $v->dotd_is_status; ?></td>
+											<td><?php echo number_format($v->dod_shipping_qty); ?></td>
+											<td><?php echo number_format($v->dod_ongkir); ?></td>
+											<td><?php echo date('d-m-Y',strtotime($v->dod_created_date)); ?></td>
+											<td><?php echo $v->dod_is_status; ?></td>
 											<td>
 												<div class="btn-group btn-group-sm" role="group" aria-label="Action Button">
-													<?php if($v->dotd_is_status !== 'SELESAI') { ?>
-														<button type="button" class="btn btn-success" data-id="<?php echo $v->dotd_id; ?>" data-no_trx="<?php echo $v->dotd_no_trx; ?>" data-so_no_trx="<?php echo $v->so_no_trx; ?>" data-dotd_customer_id_from="<?php echo $v->dotd_customer_id_from; ?>" data-dotd_customer_id_to="<?php echo $v->dotd_customer_id_to; ?>" data-dotd_driver_id="<?php echo $v->dotd_driver_id; ?>" data-dotd_sod_id="<?php echo $v->dotd_sod_id; ?>" data-dotd_vehicle_id="<?php echo $v->dotd_vehicle_id; ?>" data-dotd_shipping_qty="<?php echo $v->dotd_shipping_qty; ?>" onclick="daftarDeliveryOrderTrf.showItem(this, 'edit');" ><i class="fas fa-edit"></i></button>
-														<button type="button" class="btn btn-danger" data-id="<?php echo $v->dotd_id; ?>" onclick="daftarDeliveryOrderTrf.deleteDataItem(this);" title="Delete Word"><i class="fas fa-trash-alt"></i></button>
-														<!-- <button type="button" class="btn btn-primary" data-id="<?php //echo $v->dotd_id; ?>" data-no_trx="<?php //echo $v->dotd_no_trx; ?>" data-is_status="<?php //echo $v->dotd_is_status; ?>" data-so_id="<?php //echo $v->so_id; ?>"  data-so_no_trx="<?php //echo $v->so_no_trx; ?>"onclick="daftarDeliveryOrderTrf.updateStatus(this, 'edit');" title="Update Status"><i class="fas fa-exchange-alt"></i></button> -->
+													<?php if($v->dod_is_status !== 'SELESAI') { ?>
+														<button type="button" class="btn btn-success" data-id="<?php echo $v->dod_id; ?>" data-no_trx="<?php echo $v->dod_no_trx; ?>" data-so_no_trx="<?php echo $v->so_no_trx; ?>" data-dod_customer_id="<?php echo $v->dod_customer_id; ?>"data-dod_driver_id="<?php echo $v->dod_driver_id; ?>" data-dod_sod_id="<?php echo $v->dod_sod_id; ?>" data-dod_vehicle_id="<?php echo $v->dod_vehicle_id; ?>" data-dod_shipping_qty="<?php echo $v->dod_shipping_qty; ?>" onclick="daftarDeliveryOrderList.showItem(this, 'edit');" ><i class="fas fa-edit"></i></button>
+														<button type="button" class="btn btn-danger" data-id="<?php echo $v->dod_id; ?>" onclick="daftarDeliveryOrderList.deleteDataItem(this);" title="Delete Word"><i class="fas fa-trash-alt"></i></button>
+														<!-- <button type="button" class="btn btn-primary" data-id="<?php //echo $v->dod_id; ?>" data-no_trx="<?php //echo $v->dod_no_trx; ?>" data-is_status="<?php //echo $v->dod_is_status; ?>" data-so_id="<?php //echo $v->so_id; ?>"  data-so_no_trx="<?php //echo $v->so_no_trx; ?>"onclick="daftarDeliveryOrderList.updateStatus(this, 'edit');" title="Update Status"><i class="fas fa-exchange-alt"></i></button> -->
 													<?php }?>
 												</div>
 											</td>
