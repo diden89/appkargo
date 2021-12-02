@@ -40,7 +40,7 @@ $(document).ready(function() {
 				},
 				{	
 					title: 'Pengemudi', 
-					data: 'd_name',
+					data: 'doc_so_no_trx',
 				},
 				{	
 					title: 'Total', 
@@ -56,6 +56,16 @@ $(document).ready(function() {
 						'width' : '150px'
 					},
 					content: [
+						{
+							text: '',
+							class: 'btn-warning',
+							id: 'btnView',
+							icon: 'fas fa-eye',
+							click: function(row, rowData) {
+								// console.log(rowData)
+								ORDERCOST.popup('view', 'View', rowData);
+							}
+						},
 						{
 							text: '',
 							class: 'btn-success',
@@ -122,15 +132,14 @@ $(document).ready(function() {
 		}),
 		popup: function(mode = 'add', title= 'Add', data = false)
 		{
-			console.log(data.c_distance_area)
 			$.popup({
-				title: title + ' Pelanggan',
-				id: mode + 'CustomerPopup',
-				size: 'medium',
+				title: 'Form Biaya Operasional DO',
+				id: mode + 'OrderCostPopup',
+				size: 'large',
 				proxy: {
-					url: siteUrl('transaksi/delivery_order_cost/load_customer_form'),
+					url: siteUrl('transaksi/delivery_order_cost/load_delivery_order_cost_form'),
 					params: {
-						action: 'load_customer_form',
+						action: 'load_delivery_order_cost_form',
 						mode: mode,
 						data: data
 					}
@@ -186,8 +195,8 @@ $(document).ready(function() {
 				}],
 				listeners: {
 					onshow: function(popup) {
-						$('#userBirthday').inputmask('dd-mm-yyyy', { 'placeholder': 'DD-MM-YYYY' });
-						$('#userBirthday').noobsdaterangepicker({
+						$('#created_date').inputmask('dd-mm-yyyy', { 'placeholder': 'DD-MM-YYYY' });
+						$('#created_date').noobsdaterangepicker({
 							parentEl: "#" + popup[0].id + " .modal-body",
 							showDropdowns: true,
 							singleDatePicker: true,
@@ -202,26 +211,26 @@ $(document).ready(function() {
 							ORDERCOST.generateDistrict(data.rd_id,data.rsd_id);
 						}
 
-						$('#txt_province').change(function() {
+						$('#vehicle_id').change(function() {
 						var me = $(this);
 						
 							if (me.val() !== '') {
 								
-								ORDERCOST.generateRegion(me.val());
+								ORDERCOST.generateVehicle(me.val());
 
 							} else {
-								$('#txt_region').html($('<option>', {
+								$('#vehicle_id').html($('<option>', {
 									value: '',
-									text: 'Pilih Provinsi'
+									text: 'Pilih Kendaraan'
 								}));
 
-								$('#txt_region').attr('disabled', true);
+								$('#vehicle_id').attr('disabled', true);
 							}
-							$('#txt_district').attr('disabled', true);
-							$('#txt_district').html($('<option>', {
-								value: '',
-								text: '--Pilih Kabupaten / Kota--'
-							}));
+							// $('#txt_district').attr('disabled', true);
+							// $('#txt_district').html($('<option>', {
+							// 	value: '',
+							// 	text: '--Pilih Kabupaten / Kota--'
+							// }));
 						});	
 
 						$('#txt_region').change(function() {
@@ -249,6 +258,52 @@ $(document).ready(function() {
 							$next.html($this[0].files[0].name);
 						});
 					}
+				}
+			});
+		},
+		generateVehicle: function(provinceId, regionId = false) {
+		var region = $('#txt_region');
+			// console.log(provinceId)
+			$.ajax({
+				url: siteUrl('transaksi/delivery_order_cost/get_vehicle_option'),
+				type: 'POST',
+				dataType: 'JSON',
+				beforeSend: function() {},
+				complete: function() {},
+				data: {
+					action: 'get_region_option',
+					prov_id: provinceId
+				},
+				success: function (result) {
+					if (result.success) {
+						var data = result.data;
+
+						region.attr('disabled', false);
+
+						region.html($('<option>', {
+							value: '',
+							text: '--Pilih Kabupaten / Kota--'
+						}));
+						
+						data.forEach(function (newData) {
+							region.append($('<option>', {
+								value: newData.rd_id,
+								text: newData.rd_name
+							}));
+						});
+
+						if (regionId !== false) region.val(regionId);
+
+					} else {
+
+						region.html($('<option>', {
+							value: '',
+							text: 'Kabupaten tidak ditemukan!'
+						}));
+					}
+				},
+				error: function (error) {
+					toastr.error(msgErr);
 				}
 			});
 		},

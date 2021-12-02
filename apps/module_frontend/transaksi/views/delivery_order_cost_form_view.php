@@ -10,100 +10,169 @@
  */
 ?>
 
-<form role="form" id="addCustomer" autocomplete="off">
-	<input type="hidden" name="action" value="store_data_customer">
+<form role="form" id="addDaftarSalesOrder" autocomplete="off">
+	<input type="hidden" name="action" value="store_data_daftar_sales_order">
+	<input type="hidden" name="mode" value="<?=$mode?>" id="mode">
 
-	<?php if (isset($data['c_id'])){ ?>
-		<input type="hidden" name="mode" value="edit">
-		<input type="hidden" name="txt_id" value="<?php echo $data['c_id']; ?>">
-	<?php }else{
-		?>
-		<input type="hidden" name="mode" value="add">
-		<?php
-	} ?>
-	
-	<div class="row">
+	<?php 
+	if (isset($txt_id)): ?>
+		<input type="hidden" name="txt_id" value="<?php echo $txt_id; ?>">
+	<?php endif; ?>
+	<div class="row">		
 		<div class="col-md-12">
 			<div class="form-group row">
-				<label for="caption" class="col-sm-4 col-form-label">Nama Pelanggan</label>
-				<div class="col-sm-8">
-					<input type="text" name="c_name" class="form-control" id="vendor_name" value="<?php echo $mode == 'edit' && $data !== FALSE ? $data['c_name'] : '' ?>" required="required" <?php echo $mode == 'edit' ? '' : ''; ?>>
+				<label for="caption" class="col-sm-4 col-form-label">Tanggal</label>
+				<div class="input-group col-8">
+					<div class="input-group">
+						<div class="input-group-prepend">
+							<span class="input-group-text">
+								<i class="far fa-calendar-alt"></i>
+							</span>
+						</div>
+						<input type="text" name="so_created_date" class="form-control" id="created_date" required="required" data-inputmask-alias="datetime" data-inputmask-inputformat="dd-mm-yyyy" data-mask value="">
+					</div>
 				</div>
 			</div>
+		</div>
+		<!-- <div class="col-md-6">
 			<div class="form-group row">
-				<label for="url" class="col-sm-4 col-form-label">Provinsi</label>
+				<label for="caption" class="col-sm-4 col-form-label">Transportasi</label>
 				<div class="col-sm-8">
-					<select class="form-control select2"  name="txt_province" id="txt_province">
+					<select class="form-control select2"  name="dod_vehicle_id" id="dod_vehicle_id" disabled="disabled">
 						<option value="">-Select-</option>
 						<?php
-							foreach($province as $k => $v)
+							// foreach($vehicle as $k => $v)
+							// {
+							// 	echo '<option value="'.$v->ve_id.'" '.(($dod_vehicle_id == $v->ve_id) ? 'selected':"").'>'.$v->ve_license_plate.'</option>';
+							// }
+						?>
+					</select>
+				</div>
+			</div>
+		</div> -->
+	</div>
+	<div class="row">
+		
+		<div class="col-md-12">
+			<div class="form-group row">
+				<label for="url" class="col-sm-4 col-form-label">No Transaksi SO</label>
+				<div class="col-sm-8">
+					<select class="form-control select2"  name="txt_sales_order" id="txt_sales_order">
+						<option value="">-Select-</option>
+						<?php
+							foreach($sales_order as $k => $v)
 							{
-								echo '<option value="'.$v->rp_id.'" '.(($data['rp_id'] == $v->rp_id) ? 'selected':"").'>'.$v->rp_name.'</option>';
+								echo '<option value="'.$v->so_id.'" '.(($so_no_trx == $v->so_no_trx) ? 'selected':"").'>'.$v->so_no_trx.' ** '.$v->v_vendor_name.'</option>';
 							}
 						?>
 					</select>
 				</div>
 			</div>
-			<div class="form-group row district">
-				<label for="url" class="col-sm-4 col-form-label">Kabupaten/Kota</label>
+		</div>
+		<!-- <div class="col-md-6">
+			<div class="form-group row">
+				<label for="caption" class="col-sm-4 col-form-label">Pengemudi</label>
 				<div class="col-sm-8">
-					<select class="form-control select2"  name="txt_region" id="txt_region" disabled>
-						<option value="">Pilih Provinsi</option>
-						<?php 
-						foreach($province as $k => $v) {
-							$sel = ($v->rp_id == $data['rp_id']) ? 'selected' : '';
-							?>
-							<option value="<?=$v->rp_id?>" <?=$sel?>><?=$v->rp_name?></option>
-						<?php }?>
+					<select class="form-control select2"  name="dod_driver_id" id="dod_driver_id" disabled="disabled">
+						<option value="">-Select-</option>
+						<?php
+							// foreach($driver as $k => $v)
+							// {
+							// 	echo '<option value="'.$v->d_id.'" '.(($dod_driver_id == $v->d_id) ? 'selected':"").'>'.$v->d_name.'</option>';
+							// }
+						?>
 					</select>
 				</div>
 			</div>
-
-			<div class="form-group row district">
-				<label for="url" class="col-sm-4 col-form-label">Kecamatan</label>
+		</div> -->
+	</div>
+	<hr>
+	<div class="row">
+		<div class="col-md-4">
+			<div class="form-group row">
+				<label for="caption" class="col-sm-4 col-form-label">Kendaraan</label>
 				<div class="col-sm-8">
-					<select class="form-control select2"  name="c_district_id" id="txt_district" disabled>
-						<option value="">Pilih Kabupaten / Kota</option>
+					<select class="form-control select2"  name="ve_id" id="vehicle_id" disabled>
+						<option value="">Pilih Kendaraan</option>
 					</select>
 				</div>
 			</div>
 			<div class="form-group row">
-				<label for="caption" class="col-sm-4 col-form-label">Alamat</label>
+				<label for="caption" class="col-sm-4 col-form-label">Detail SO</label>
 				<div class="col-sm-8">
-					<textarea name="c_address" class="form-control" placeholder="Enter content"><?php echo (isset($data['c_address'])) ? $data['c_address'] : ""; ?></textarea>
+					<select class="form-control select2"  name="detail_sales_order" id="detail_sales_order" disabled="disabled">
+					</select>
 				</div>
 			</div>
 			<div class="form-group row">
-				<label for="url" class="col-sm-4 col-form-label">Telpon</label>
+				<label for="caption" class="col-sm-4 col-form-label">Nama Pelanggan</label>
 				<div class="col-sm-8">
-					<input type="text" name="c_phone" class="form-control" id="vendor_phone" value="<?php echo $mode == 'edit' && $data !== FALSE ? $data['c_phone'] : '' ?>" required="required" <?php echo $mode == 'edit' ? '' : ''; ?>>
+					<select class="form-control select2"  name="c_id" id="c_id" disabled="disabled">
+					</select>
 				</div>
 			</div>
 			<div class="form-group row">
-				<label for="url" class="col-sm-4 col-form-label">Email</label>
-				<div class="col-sm-8">
-					<input type="text" name="c_email" class="form-control" id="vendor_email" value="<?php echo $mode == 'edit' && $data !== FALSE ? $data['c_email'] : '' ?>" required="required" <?php echo $mode == 'edit' ? '' : ''; ?>>
+				<label for="caption" class="col-sm-4 col-form-label">Berat / Kg</label>
+				<div class="col-sm-4">
+					<input type="text" name="sod_shipping_qty" class="form-control" id="sod_shipping_qty" value="" >
 				</div>
-			</div>
-			<hr>
-			<div class="form-group row">
-				<label for="url" class="col-sm-4 col-form-label">Ongkir</label>
-				<div class="col-sm-8">
-					<input type="number" name="c_shipping_area" class="form-control" id="c_shipping_area" value="<?php echo $mode == 'edit' && $data !== FALSE ? $data['c_shipping_area'] : '' ?>" required="required" <?php echo $mode == 'edit' ? '' : ''; ?>>
+				<div class="col-sm-1">
+					/
 				</div>
-			</div>
-			<div class="form-group row">
-				<label for="url" class="col-sm-4 col-form-label">Ongkir Transfer</label>
-				<div class="col-sm-8">
-					<input type="number" name="c_shipping_area_transfer" class="form-control" id="c_shipping_area_transfer" value="<?php echo $mode == 'edit' && $data !== FALSE ? $data['c_shipping_area_transfer'] : '' ?>" required="required" <?php echo $mode == 'edit' ? '' : ''; ?>>
+				<div class="col-sm-3">
+					<input type="text" name="sod_qty" class="form-control" id="sod_qty" value="" disabled="disabled">
 				</div>
 			</div>
 			<div class="form-group row">
-				<label for="url" class="col-sm-4 col-form-label">Jarak dari gudang / KM</label>
+				<label for="caption" class="col-sm-4 col-form-label">Ongkir</label>
 				<div class="col-sm-8">
-					<input type="number" name="c_distance_area" class="form-control" id="c_distance_area" value="<?php echo $mode == 'edit' && $data !== FALSE ? $data['c_distance_area'] : '' ?>" required="required" <?php echo $mode == 'edit' ? '' : ''; ?>>
+					<input type="text"  class="form-control" id="dod_ongkir_temp" value="" disabled="disabled">
 				</div>
 			</div>
-		</div>		
+			<div class="form-group row">
+				<label for="caption" class="col-sm-4 col-form-label">Total Ongkir</label>
+				<div class="col-sm-8">
+					<input type="text" name="dod_ongkir" class="form-control" id="dod_ongkir" value="" >
+					<input type="hidden"  class="form-control" id="dod_ongkir_temp_2" value="">
+				</div>
+			</div>
+			<!-- <div class="form-group row">
+				<label for="caption" class="col-sm-4 col-form-label">Keterangan</label>
+				<div class="col-sm-8">
+					<textarea name="c_address" class="form-control" placeholder="Enter content"><?php echo (isset($data->c_address)) ? $data->c_address : ""; ?></textarea>
+				</div>
+			</div> -->
+			
+			<div class="form-group row">
+				<div class="col-sm-6">
+					<button id="btnReset" class="btn btn-secondary btn-flat" type="button" title="Reset Data"><i class="fas fa-file"></i> New</button>
+					<button id="btnAddDetail" class="btn btn-success btn-flat" type="button" title="Add Data" disabled="disabled"><i class="fas fa-plus"></i> Submit</button>
+				</div>
+			</div>
+		</div>	
+		<div class="col-md-8">
+			<div class="excel-data-table-container">
+				<table id="temporaryDataTable" style="width:  200%;" class="table table-hover table-striped no-footer" role="grid" aria-describedby="wordDataTable_info">
+					<thead>
+						<tr role="row">
+							<th width="10">No</th>
+							<th>No Transaksi</th>
+							<th>Nama Pelanggan</th>
+							<th>Nama Barang</th>
+							<th>Pengemudi / Kendaraan</th>
+							<th >Alamat Pengiriman</th>
+							<th>Berat / Kg</th>
+							<th>Biaya</th>
+							<th>Tanggal Pengiriman</th>
+							<th>Status</th>
+							<th width="100">Action</th>
+						</tr>
+					</thead>
+					<tbody>
+						
+					</tbody>
+				</table>
+			</div>
+		</div>	
 	</div>
 </form>

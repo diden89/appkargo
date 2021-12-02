@@ -14,24 +14,24 @@ class Delivery_order_cost_model extends NOOBS_Model
 	public function load_data($params = array())
 	{
 		// print_r($params);exit;
-		$this->db->select('doc.*');
+		$this->db->select('*');
 		$this->db->from('delivery_order_cost as doc');
 		$this->db->join('delivery_order_cost_detail as docd','doc.doc_id = docd.docd_doc_id','LEFT');
-		$this->db->join('vehicle as v','v.v_id','LEFT');
-		$this->db->join('ref_province as rp','rp.rp_id = rd.rd_province_id','LEFT');
+		$this->db->join('vehicle as v','v.ve_id = doc.doc_vehicle_id','LEFT');
+		// $this->db->join('driver as d','d.d_id = ','LEFT');
 
 		if (isset($params['txt_item']) && ! empty($params['txt_item']))
 		{
-			$this->db->like('UPPER(c.c_name)', strtoupper($params['txt_item']));
+			$this->db->like('UPPER(doc.doc_so_no_trx)', strtoupper($params['txt_item']));
 		}
 
 		if (isset($params['txt_id']) && ! empty($params['txt_id']))
 		{
-			$this->db->where('c.c_id', strtoupper($params['txt_id']));
+			$this->db->where('doc.doc_id', $params['txt_id']);
 		}
 
-		$this->db->where('c.c_is_active', 'Y');
-		$this->db->order_by('c.c_name', 'ASC');
+		$this->db->where('doc.doc_is_active', 'Y');
+		$this->db->order_by('doc.doc_so_no_trx', 'ASC');
 
 		return $this->create_result($params);
  	}
@@ -39,20 +39,19 @@ class Delivery_order_cost_model extends NOOBS_Model
  	public function get_autocomplete_data($params = array())
 	{
 		// print_r($params);exit;
-		$this->db->select('c.*,rp.rp_id,rd.rd_id,rsd.rsd_name,c.c_name as text, c.c_name as full_name,c.c_id as id');
-		$this->db->from('customer as c');
-		$this->db->join('ref_sub_district as rsd','rsd.rsd_id = c.c_district_id','LEFT');
-		$this->db->join('ref_district as rd','rd.rd_id = rsd.rsd_district_id','LEFT');
-		$this->db->join('ref_province as rp','rp.rp_id = rd.rd_province_id','LEFT');
+		$this->db->select('*');
+		$this->db->from('delivery_order_cost as doc');
+		$this->db->join('delivery_order_cost_detail as docd','doc.doc_id = docd.docd_doc_id','LEFT');
+		$this->db->join('vehicle as v','v.ve_id = doc.doc_vehicle_id','LEFT');
 
 		if (isset($params['query']) && !empty($params['query'])) 
 		{
 			$query = $params['query'];
-			$this->db->where("(c.c_name LIKE '%{$query}%' OR c.c_address LIKE '%{$query}%')", NULL, FALSE);
+			$this->db->where("(doc.doc_so_no_trx LIKE '%{$query}%' OR v.ve_license_plate LIKE '%{$query}%')", NULL, FALSE);
 		}
 
-		$this->db->where('c.c_is_active', 'Y');
-		$this->db->order_by('c.c_name', 'ASC');
+		$this->db->where('doc.doc_is_active', 'Y');
+		$this->db->order_by('doc.doc_so_no_trx', 'ASC');
 
 		return $this->create_autocomplete_data($params);
  	}
@@ -100,6 +99,27 @@ class Delivery_order_cost_model extends NOOBS_Model
 		$this->db->order_by('rp_name', 'ASC');
 		
 		return $this->db->get('ref_province');
+ 	}
+
+ 	public function get_option_no_trx()
+	{
+		$query = $this->db->query(
+			'
+			select * from sales_order where so_no_trx not in (select doc_so_no_trx from delivery_order_cost where doc_is_active = "Y")
+			and so_is_active = "Y"
+			'
+		);
+		
+		
+		return $query;
+ 	}
+
+ 	public function get_vehicle_option($params)
+	{
+		$this->db->where('rd_province_id', $params['prov_id']);
+		$this->db->order_by('rd_name', 'ASC');
+		
+		return $this->db->get('ref_district');
  	}
 
  	public function get_region_option($params)
