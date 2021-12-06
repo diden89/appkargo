@@ -97,74 +97,49 @@
 					</select>
 				</div>
 			</div>
-			<div class="form-group row">
-				<label for="caption" class="col-sm-4 col-form-label">Detail SO</label>
-				<div class="col-sm-8">
-					<select class="form-control select2"  name="detail_sales_order" id="detail_sales_order" disabled="disabled">
-					</select>
-				</div>
-			</div>
-			<div class="form-group row">
-				<label for="caption" class="col-sm-4 col-form-label">Nama Pelanggan</label>
-				<div class="col-sm-8">
-					<select class="form-control select2"  name="c_id" id="c_id" disabled="disabled">
-					</select>
-				</div>
-			</div>
-			<div class="form-group row">
-				<label for="caption" class="col-sm-4 col-form-label">Berat / Kg</label>
-				<div class="col-sm-4">
-					<input type="text" name="sod_shipping_qty" class="form-control" id="sod_shipping_qty" value="" >
-				</div>
-				<div class="col-sm-1">
-					/
-				</div>
-				<div class="col-sm-3">
-					<input type="text" name="sod_qty" class="form-control" id="sod_qty" value="" disabled="disabled">
-				</div>
-			</div>
-			<div class="form-group row">
-				<label for="caption" class="col-sm-4 col-form-label">Ongkir</label>
-				<div class="col-sm-8">
-					<input type="text"  class="form-control" id="dod_ongkir_temp" value="" disabled="disabled">
-				</div>
-			</div>
-			<div class="form-group row">
-				<label for="caption" class="col-sm-4 col-form-label">Total Ongkir</label>
-				<div class="col-sm-8">
-					<input type="text" name="dod_ongkir" class="form-control" id="dod_ongkir" value="" >
-					<input type="hidden"  class="form-control" id="dod_ongkir_temp_2" value="">
-				</div>
-			</div>
 			<!-- <div class="form-group row">
-				<label for="caption" class="col-sm-4 col-form-label">Keterangan</label>
+				<label for="caption" class="col-sm-4 col-form-label">Akun header</label>
 				<div class="col-sm-8">
-					<textarea name="c_address" class="form-control" placeholder="Enter content"><?php echo (isset($data->c_address)) ? $data->c_address : ""; ?></textarea>
+					<select class="form-control select2"  name="akun_header" id="akun_header">
+						<option value="">--Akun Header--</option>
+					</select>
 				</div>
 			</div> -->
-			
+			<div class="form-group row">
+				<label for="caption" class="col-sm-4 col-form-label">Kode Akun</label>
+				<div class="col-sm-8">
+					<select class="form-control select2"  name="akun_detail" id="akun_detail" disabled="disabled">
+					</select>
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="url" class="col-sm-4 col-form-label">Jumlah</label>
+				<div class="col-sm-8">
+					<input type="text" name="ci_total" class="form-control" id="total" value="<?php echo $mode == 'edit' && $data !== FALSE ? number_format($data->ci_total) : '' ?>" >
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="caption" class="col-sm-4 col-form-label">Keterangan</label>
+				<div class="col-sm-8">
+				<textarea name="ci_keterangan" id="keterangan" class="textarea" placeholder="Enter content" style="width: 100%; height: 50px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"><?php echo $mode == 'edit' && $data !== FALSE ? $data->ci_keterangan : '' ?></textarea>
+				</div>
+			</div>
 			<div class="form-group row">
 				<div class="col-sm-6">
-					<button id="btnReset" class="btn btn-secondary btn-flat" type="button" title="Reset Data"><i class="fas fa-file"></i> New</button>
 					<button id="btnAddDetail" class="btn btn-success btn-flat" type="button" title="Add Data" disabled="disabled"><i class="fas fa-plus"></i> Submit</button>
 				</div>
 			</div>
 		</div>	
 		<div class="col-md-8">
 			<div class="excel-data-table-container">
-				<table id="temporaryDataTable" style="width:  200%;" class="table table-hover table-striped no-footer" role="grid" aria-describedby="wordDataTable_info">
+				<table id="temporaryDataTable"  class="table table-hover table-striped no-footer" role="grid" aria-describedby="wordDataTable_info">
 					<thead>
 						<tr role="row">
 							<th width="10">No</th>
 							<th>No Transaksi</th>
-							<th>Nama Pelanggan</th>
-							<th>Nama Barang</th>
-							<th>Pengemudi / Kendaraan</th>
-							<th >Alamat Pengiriman</th>
-							<th>Berat / Kg</th>
-							<th>Biaya</th>
-							<th>Tanggal Pengiriman</th>
-							<th>Status</th>
+							<th>Kode Akun</th>
+							<th>Kendaraan</th>
+							<th>Jumlah</th>
 							<th width="100">Action</th>
 						</tr>
 					</thead>

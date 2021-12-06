@@ -82,6 +82,8 @@ class Delivery_order_cost extends NOOBS_Controller
 			// print_r($post);exit;
 			$post['province'] = $this->db_doc->get_option_province()->result();
 			$post['sales_order'] = $this->db_doc->get_option_no_trx()->result();
+			$post['kas_bank'] = $this->db_doc->get_kas_bank()->result();
+			$post['akun_header'] = $this->db_doc->get_akun_header()->result();
 			// $post['vendor'] = $this->db_doc->get_option_customer()->result();
 			// if($post['mode'] == 'edit')
 			// {
@@ -120,15 +122,15 @@ class Delivery_order_cost extends NOOBS_Controller
 		$post = $this->input->post(NULL, TRUE);
 
 
-		if (isset($post['action']) && ! empty($post['action']) && $post['action'] == 'get_region_option')
+		if (isset($post['action']) && ! empty($post['action']) && $post['action'] == 'get_vehicle_option')
 		{
 			unset($post['action']);
 
-			$get_region_option = $this->db_doc->get_region_option($post);
+			$get_vehicle_option = $this->db_doc->get_vehicle_option($post);
 
-			if ($get_region_option->num_rows() > 0) 
+			if ($get_vehicle_option->num_rows() > 0) 
 			{
-				$result = $get_region_option->result();
+				$result = $get_vehicle_option->result();
 
 				echo json_encode(array('success' => TRUE, 'data' => $result));
 			}
@@ -136,6 +138,84 @@ class Delivery_order_cost extends NOOBS_Controller
 		}
 		else $this->show_404();
 	}
+
+	public function get_akun_header_option()
+	{
+		$post = $this->input->post(NULL, TRUE);
+
+		if (isset($post['action']) && ! empty($post['action']) && $post['action'] == 'get_akun_header_option')
+		{
+			unset($post['action']);
+
+			$get_akun_header_option = $this->db_doc->get_akun_header();
+
+			if ($get_akun_header_option->num_rows() > 0) 
+			{
+				$result = $get_akun_header_option->result();
+				foreach($result as $k => $v) 
+				{
+					$v->rah_name = get_content($v->rah_name);
+				}
+				echo json_encode(array('success' => TRUE, 'data' => $result));
+			}
+			else echo json_encode(array('success' => FALSE, 'msg' => 'Data Not Found!'));
+		}
+		else $this->show_404();
+	}
+
+	public function get_akun_detail_option()
+	{
+		$post = $this->input->post(NULL, TRUE);
+
+		if (isset($post['action']) && ! empty($post['action']) && $post['action'] == 'get_akun_detail_option')
+		{
+			unset($post['action']);
+
+			$get_akun_detail_option = $this->db_doc->get_akun_detail_option($post);
+
+			if ($get_akun_detail_option->num_rows() > 0) 
+			{
+				$result = $get_akun_detail_option->result();
+				foreach($result as $k => $v) 
+				{
+					$v->rad_name = strtoupper(get_content($v->rad_name));
+				}
+				echo json_encode(array('success' => TRUE, 'data' => $result));
+			}
+			else echo json_encode(array('success' => FALSE, 'msg' => 'Data Not Found!'));
+		}
+		else $this->show_404();
+	}
+
+	public function store_data_temporary()
+	{
+		if (isset($_POST['action']) && $_POST['action'] == 'insert_temporary_data')
+		{
+			$post = $this->input->post(NULL, TRUE);
+			print_r($post);exit;
+			
+			$store_temporary_data = $this->db_doc->store_temporary_data($post);
+
+			if ($store_temporary_data->num_rows() > 0) 
+			{
+				$result = $store_temporary_data->result();
+				$number = 1;
+
+				foreach ($result as $k => $v)
+				{
+					$v->no = $number;
+					$v->cid_total = number_format($v->cid_total);
+
+					$number++;
+				}
+				
+				echo json_encode(array('success' => TRUE, 'data' => $result));
+			}
+			else echo json_encode(array('success' => FALSE, 'msg' => 'Data not found!'));
+		}
+		else $this->show_404();
+	}
+
 	public function get_district_option()
 	{
 		$post = $this->input->post(NULL, TRUE);

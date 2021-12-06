@@ -195,6 +195,8 @@ $(document).ready(function() {
 				}],
 				listeners: {
 					onshow: function(popup) {
+						// ORDERCOST.generateAkunHeader();
+						ORDERCOST.generateAkunDetail('4');
 						$('#created_date').inputmask('dd-mm-yyyy', { 'placeholder': 'DD-MM-YYYY' });
 						$('#created_date').noobsdaterangepicker({
 							parentEl: "#" + popup[0].id + " .modal-body",
@@ -211,27 +213,116 @@ $(document).ready(function() {
 							ORDERCOST.generateDistrict(data.rd_id,data.rsd_id);
 						}
 
-						$('#vehicle_id').change(function() {
-						var me = $(this);
-						
-							if (me.val() !== '') {
+						$('#btnAddDetail').click(function(){
+
+							var so_no_trx = $('#txt_sales_order').val();
+								akun_detail = $('#akun_detail').val();
+								total = $('#total').val();
+								keterangan = $('#keterangan').val();
 								
-								ORDERCOST.generateVehicle(me.val());
+							$.ajax({
+								url: siteUrl('transaksi/delivery_order_cost/store_data_temporary'),
+								type: 'POST',
+								dataType: 'JSON',
+								data: {
+									action: 'insert_temporary_data',
+									so_no_trx: so_no_trx,
+									akun_detail: akun_detail,
+									total: total,
+									keterangan: keterangan,
+									mode : mode
+								},
+								success: function(result) {
+									if (result.success) {
+										toastr.success("Data succesfully added.");
+										ORDERCOST._generateTemporaryDataTable(result.data);
 
-							} else {
-								$('#vehicle_id').html($('<option>', {
-									value: '',
-									text: 'Pilih Kendaraan'
-								}));
+										$('#akun_header').prop('selectedIndex',0);
+										$('#akun_detail').prop('selectedIndex',0);
+										$('#cid_keterangan').val('');
+										$('#cid_total').val('');
+										$('#cid_id').val('');
+										$('#key_lock').val('');
+										
+										ORDERCOST.getTotalAmount(ci_no_trx);
 
-								$('#vehicle_id').attr('disabled', true);
-							}
-							// $('#txt_district').attr('disabled', true);
-							// $('#txt_district').html($('<option>', {
-							// 	value: '',
-							// 	text: '--Pilih Kabupaten / Kota--'
-							// }));
+									} else if (typeof(result.msg) !== 'undefined') {
+										toastr.error(result.msg);
+									} else {
+										toastr.error(msgErr);
+									}
+									
+								},
+								error: function(error) {
+									toastr.error(msgErr);
+								}
+							});								
+								
+						});
+
+						$('#txt_sales_order').change(function() {
+							var me = $(this);
+								
+								$('#btnAddDetail').attr('disabled', false);
+							
+								if (me.val() !== '') {
+									
+									ORDERCOST.generateVehicle(me.val());
+
+								} else {
+									$('#vehicle_id').html($('<option>', {
+										value: '',
+										text: 'Pilih Kendaraan'
+									}));
+
+									$('#vehicle_id').attr('disabled', true);
+								}
 						});	
+
+						$('#total').on('keyup',function(event) {
+							if(Number.isInteger($('#total').val()))
+							{
+								Swal.fire({
+									title: 'Maaf !!',
+									text: "Jumlah dan total dana harus sama nilainya",
+									type: 'warning',
+									showCancelButton: false,
+									confirmButtonColor: '#17a2b8',
+									cancelButtonColor: '#d33',
+									confirmButtonText: 'Close!'
+								})
+							}
+							else
+							{	
+								// skip for arrow keys
+								if(event.which >= 37 && event.which <= 40) return;
+
+								// format number
+								$(this).val(function(index, value) {
+								return value
+								.replace(/\D/g, "")
+								.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+								;
+								});
+							}
+						});
+
+						// $('#vehicle_id').change(function() {
+						// 	var me = $(this);
+						// 		if (me.val() !== '') {
+									
+						// 			ORDERCOST.generateVehicle(me.val());
+
+						// 		} else {
+						// 			$('#vehicle_id').html($('<option>', {
+						// 				value: '',
+						// 				text: 'Pilih Kendaraan'
+						// 			}));
+
+						// 			$('#vehicle_id').attr('disabled', true);
+						// 		}
+								
+						// });	
 
 						$('#txt_region').change(function() {
 							var me = $(this);
@@ -251,18 +342,28 @@ $(document).ready(function() {
 								}
 						});
 
-						$('#fileAvatar').change(function(a){
-							var $this = $(this);
-							var $next = $this.next();
+						// $('#akun_header').change(function() {
+						// 	var me = $(this);
+							
+						// 	if (me.val() !== '') {
+								
+						// 		ORDERCOST.generateAkunDetail(me.val());
 
-							$next.html($this[0].files[0].name);
-						});
+						// 	} else {
+						// 		$('#akun_detail').html($('<option>', {
+						// 			value: '',
+						// 			text: '--Akun Detail--'
+						// 		}));
+
+						// 		$('#akun_detail').attr('disabled', true);
+						// 	}
+						// });	
 					}
 				}
 			});
 		},
-		generateVehicle: function(provinceId, regionId = false) {
-		var region = $('#txt_region');
+		generateVehicle: function(no_trx, ve_id = false) {
+		var vehicle = $('#vehicle_id');
 			// console.log(provinceId)
 			$.ajax({
 				url: siteUrl('transaksi/delivery_order_cost/get_vehicle_option'),
@@ -271,34 +372,34 @@ $(document).ready(function() {
 				beforeSend: function() {},
 				complete: function() {},
 				data: {
-					action: 'get_region_option',
-					prov_id: provinceId
+					action: 'get_vehicle_option',
+					no_trx: no_trx
 				},
 				success: function (result) {
 					if (result.success) {
 						var data = result.data;
 
-						region.attr('disabled', false);
+						vehicle.attr('disabled', false);
 
-						region.html($('<option>', {
+						vehicle.html($('<option>', {
 							value: '',
-							text: '--Pilih Kabupaten / Kota--'
+							text: '--Pilih Kendaraan--'
 						}));
 						
 						data.forEach(function (newData) {
-							region.append($('<option>', {
-								value: newData.rd_id,
-								text: newData.rd_name
+							vehicle.append($('<option>', {
+								value: newData.vehicle_id,
+								text: newData.vehicle_plate
 							}));
 						});
 
-						if (regionId !== false) region.val(regionId);
+						if (ve_id !== false) vehicle.val(ve_id);
 
 					} else {
 
-						region.html($('<option>', {
+						vehicle.html($('<option>', {
 							value: '',
-							text: 'Kabupaten tidak ditemukan!'
+							text: 'Kendaraan tidak ditemukan!'
 						}));
 					}
 				},
@@ -353,6 +454,97 @@ $(document).ready(function() {
 				}
 			});
 		},
+		generateAkunHeader: function(rah_id = false) {
+			var akun_header = $('#akun_header');
+
+			$.ajax({
+				url: siteUrl('transaksi/delivery_order_cost/get_akun_header_option'),
+				type: 'POST',
+				dataType: 'JSON',
+				beforeSend: function() {},
+				complete: function() {},
+				data: {
+					action: 'get_akun_header_option'
+				},
+				success: function (result) {
+					if (result.success) {
+						var data = result.data;
+
+						akun_header.attr('disabled', false);
+
+						akun_header.html($('<option>', {
+							value: '',
+							text: '--Akun Detail--'
+						}));
+						
+						data.forEach(function (newData) {
+							akun_header.append($('<option>', {
+								value: newData.rah_id,
+								text: newData.rah_name
+							}));
+						});
+
+						if (rah_id !== false) akun_header.val(rah_id);
+
+					} else {
+
+						akun_header.html($('<option>', {
+							value: '',
+							text: 'Akun Detail Tidak Ditemukan!'
+						}));
+					}
+				},
+				error: function (error) {
+					toastr.error(msgErr);
+				}
+			});
+		},
+		generateAkunDetail: function(rah_id, rad_id = false) {
+		var akun_detail = $('#akun_detail');
+
+		$.ajax({
+			url: siteUrl('transaksi/delivery_order_cost/get_akun_detail_option'),
+			type: 'POST',
+			dataType: 'JSON',
+			beforeSend: function() {},
+			complete: function() {},
+			data: {
+				action: 'get_akun_detail_option',
+				rah_id: rah_id
+			},
+			success: function (result) {
+				if (result.success) {
+					var data = result.data;
+
+					akun_detail.attr('disabled', false);
+
+					akun_detail.html($('<option>', {
+						value: '',
+						text: '--Akun Detail--'
+					}));
+					
+					data.forEach(function (newData) {
+						akun_detail.append($('<option>', {
+							value: newData.rad_id,
+							text: newData.rad_name
+						}));
+					});
+
+					if (rad_id !== false) akun_detail.val(rad_id);
+
+				} else {
+
+					akun_detail.html($('<option>', {
+						value: '',
+						text: 'Akun Detail Tidak Ditemukan!'
+					}));
+				}
+			},
+			error: function (error) {
+				toastr.error(msgErr);
+			}
+		});
+	},
 		generateDistrict: function(regionId, districtId = false) {
 			var district = $('#txt_district');
 				

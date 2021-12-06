@@ -194,7 +194,7 @@ const daftarCashInList = {
 		}
 
 		$.popup({
-			title: title + ' Kas Keluar',
+			title: title + ' Kas Masuk',
 			id: 'showItem',
 			size: 'large',
 			proxy: {

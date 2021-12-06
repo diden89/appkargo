@@ -16,7 +16,7 @@ class Delivery_order_cost_model extends NOOBS_Model
 		// print_r($params);exit;
 		$this->db->select('*');
 		$this->db->from('delivery_order_cost as doc');
-		$this->db->join('delivery_order_cost_detail as docd','doc.doc_id = docd.docd_doc_id','LEFT');
+		$this->db->join('delivery_order_cost_detail as docd','doc.doc_so_no_trx = docd.docd_doc_so_no_trx','LEFT');
 		$this->db->join('vehicle as v','v.ve_id = doc.doc_vehicle_id','LEFT');
 		// $this->db->join('driver as d','d.d_id = ','LEFT');
 
@@ -55,6 +55,88 @@ class Delivery_order_cost_model extends NOOBS_Model
 
 		return $this->create_autocomplete_data($params);
  	}
+
+ 	public function get_kas_bank()
+	{
+		$this->db->where('rad_is_bank', 'Y');
+		$this->db->where('rad_is_active', 'Y');
+		$this->db->where('rad_type', 'D');
+		$this->db->order_by('rad_seq', 'ASC');
+		
+		return $this->db->get('ref_akun_detail');
+ 	}
+
+ 	public function get_akun_header()
+	{
+		$this->db->where('rah_is_active', 'Y');
+		$this->db->order_by('rah_seq', 'ASC');
+		
+		return $this->db->get('ref_akun_header');
+ 	}
+
+ 	public function get_akun_detail_option($params)
+	{
+		$this->db->select('*');
+		$this->db->from('ref_akun_detail as rad');
+		$this->db->join('ref_akun_header as rah','rah.rah_id = rad.rad_akun_header_id','LEFT');
+
+		if (isset($params['rah_id']) && ! empty($params['rah_id']))
+		{
+			$this->db->where('rad.rad_akun_header_id', strtoupper($params['rah_id']));
+		}
+
+		$this->db->where('rad.rad_type', 'D');
+		$this->db->where('rad.rad_is_active', 'Y');
+		
+		return $this->db->get();
+ 	}
+
+ 	public function get_vehicle_option($params)
+	{
+		$this->db->select('DISTINCT(dod_vehicle_id) as vehicle_id,ve.ve_license_plate as vehicle_plate');
+		$this->db->from('delivery_order_detail as dod');
+		$this->db->join('sales_order_detail as sod','dod.dod_sod_id = sod.sod_id','LEFT');
+		$this->db->join('sales_order as so','so.so_no_trx = sod.sod_no_trx','LEFT');
+		$this->db->join('vehicle as ve','ve.ve_id = dod_vehicle_id','LEFT');
+
+		if (isset($params['no_trx']) && ! empty($params['no_trx']))
+		{
+			$this->db->where('so.so_id', strtoupper($params['no_trx']));
+		}
+
+		// $this->db->where('rad.rad_type', 'D');
+		// $this->db->where('rad.rad_is_active', 'Y');
+		
+		return $this->db->get();
+ 	}
+
+ 	public function store_temporary_data($params = array())
+	{
+		$this->table = 'cash_in_detail';
+		// print_r($params);exit;
+		$new_params = array(
+			'cid_ci_no_trx' => $params['cid_no_trx'],
+			'cid_rad_id' => $params['akun_detail'],
+			'cid_keterangan' => $params['cid_keterangan'],
+			'cid_total' => str_replace(',','',$params['cid_total']),
+			'cid_key_lock' => $params['cid_key_lock'],
+		);
+		if ($params['cid_id'] == false) 
+		{
+			$this->add($new_params, TRUE);
+		}
+		elseif (isset($params['cid_id']) && ! empty($params['cid_id'])) 
+		{
+			$this->edit($new_params, "cid_id = {$params['cid_id']}");
+
+		}
+		else
+		{
+			$this->add($new_params, TRUE);
+		}
+
+		return $this->load_data_cash_in_detail(array('cid_ci_no_trx' => $params['cid_no_trx']));
+	}
 
 	public function store_data_customer($params = array())
 	{
@@ -112,14 +194,6 @@ class Delivery_order_cost_model extends NOOBS_Model
 		
 		
 		return $query;
- 	}
-
- 	public function get_vehicle_option($params)
-	{
-		$this->db->where('rd_province_id', $params['prov_id']);
-		$this->db->order_by('rd_name', 'ASC');
-		
-		return $this->db->get('ref_district');
  	}
 
  	public function get_region_option($params)

@@ -13,7 +13,7 @@
 // print_r($data);exit;
 // echo $data->ci_id 	;exit;
 ?>
-<form role="form" id="addKasKeluar" autocomplete="off">
+<form role="form" id="addKasMasuk" autocomplete="off">
 	<input type="hidden" name="action" value="store_data_kas_masuk">
 	<input type="hidden" name="mode" id="mode" value="<?=$mode?>">
 	<input type="hidden" name="last_notrx" value="<?php echo $mode == 'add' ?  $last_notrx : $data->ci_no_trx; ?>">
