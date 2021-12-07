@@ -226,7 +226,7 @@ class Delivery_order_cost extends NOOBS_Controller
 		{
 			$post = $this->input->post(NULL, TRUE);
 			// print_r($post);exit;
-			$cek = $this->db_doc->cek_order_cost($post['so_no_trx']);
+			$cek = $this->db_doc->cek_order_cost($post);
 			
 			if($cek->num_rows() > 0)
 			{

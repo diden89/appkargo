@@ -49,9 +49,11 @@ class Delivery_order_cost_model extends NOOBS_Model
 		if (isset($params['so_no_trx']) && ! empty($params['so_no_trx']))
 		{
 			$this->db->where('docd.docd_doc_so_no_trx', $params['so_no_trx']);
+			// $this->db->where('docd.docd_vehicle_id', $params['vehicle_id']);
 		}
 
 		$this->db->where('docd.docd_is_active', 'Y');
+		$this->db->group_by('docd.docd_vehicle_id');
 		$this->db->order_by('docd.docd_doc_so_no_trx', 'ASC');
 
 		return $this->db->get();
@@ -141,6 +143,7 @@ class Delivery_order_cost_model extends NOOBS_Model
 		if (isset($params['so_no_trx']) && ! empty($params['so_no_trx']))
 		{
 			$this->db->where('doc.doc_so_no_trx', strtoupper($params['so_no_trx']));
+			$this->db->where('doc.doc_vehicle_id', strtoupper($params['vehicle_id']));
 		}
 
 		return $this->db->get();
