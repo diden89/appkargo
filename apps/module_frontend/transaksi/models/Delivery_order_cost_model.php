@@ -14,12 +14,12 @@ class Delivery_order_cost_model extends NOOBS_Model
 	public function load_data($params = array())
 	{
 		// print_r($params);exit;
-		$this->db->select('*');
+		$this->db->select('*,(select sum(docd_amount) from delivery_order_cost_detail as docd where docd.docd_doc_so_no_trx = doc.doc_so_no_trx) as total');
 		$this->db->from('delivery_order_cost as doc');
-		$this->db->join('delivery_order_cost_detail as docd','doc.doc_so_no_trx = docd.docd_doc_so_no_trx','LEFT');
-		$this->db->join('vehicle as v','v.ve_id = doc.doc_vehicle_id','LEFT');
-		// $this->db->join('driver as d','d.d_id = ','LEFT');
-
+		$this->db->join('sales_order as so','doc.doc_so_no_trx = so.so_no_trx','LEFT');
+		$this->db->join('vendor as v','so.so_vendor_id = v.v_id','LEFT');
+		$this->db->join('ref_district as rd','so_district_id = rd.rd_id','LEFT');
+	
 		if (isset($params['txt_item']) && ! empty($params['txt_item']))
 		{
 			$this->db->like('UPPER(doc.doc_so_no_trx)', strtoupper($params['txt_item']));
@@ -36,12 +36,35 @@ class Delivery_order_cost_model extends NOOBS_Model
 		return $this->create_result($params);
  	}
 
- 	public function get_autocomplete_data($params = array())
+ 	public function load_data_temporary($params = array())
 	{
 		// print_r($params);exit;
 		$this->db->select('*');
+		$this->db->from('delivery_order_cost_detail as docd');
+		$this->db->join('delivery_order_cost as doc','doc.doc_so_no_trx = docd.docd_doc_so_no_trx','LEFT');
+		$this->db->join('ref_akun_detail as rad','docd.docd_rad_id = rad.rad_id','LEFT');
+		$this->db->join('vehicle as v','v.ve_id = doc.doc_vehicle_id','LEFT');
+		// $this->db->join('driver as d','d.d_id = ','LEFT');
+
+		if (isset($params['so_no_trx']) && ! empty($params['so_no_trx']))
+		{
+			$this->db->where('docd.docd_doc_so_no_trx', $params['so_no_trx']);
+		}
+
+		$this->db->where('docd.docd_is_active', 'Y');
+		$this->db->order_by('docd.docd_doc_so_no_trx', 'ASC');
+
+		return $this->db->get();
+ 	}
+
+ 	public function get_autocomplete_data($params = array())
+	{
+		// print_r($params);exit;
+		$this->db->select('*,
+			doc.doc_id as id,
+			doc.doc_so_no_trx as text,
+			');
 		$this->db->from('delivery_order_cost as doc');
-		$this->db->join('delivery_order_cost_detail as docd','doc.doc_id = docd.docd_doc_id','LEFT');
 		$this->db->join('vehicle as v','v.ve_id = doc.doc_vehicle_id','LEFT');
 
 		if (isset($params['query']) && !empty($params['query'])) 
@@ -101,7 +124,7 @@ class Delivery_order_cost_model extends NOOBS_Model
 
 		if (isset($params['no_trx']) && ! empty($params['no_trx']))
 		{
-			$this->db->where('so.so_id', strtoupper($params['no_trx']));
+			$this->db->where('so.so_no_trx', strtoupper($params['no_trx']));
 		}
 
 		// $this->db->where('rad.rad_type', 'D');
@@ -110,24 +133,36 @@ class Delivery_order_cost_model extends NOOBS_Model
 		return $this->db->get();
  	}
 
- 	public function store_temporary_data($params = array())
+ 	public function cek_order_cost($params)
 	{
-		$this->table = 'cash_in_detail';
+		$this->db->select('*');
+		$this->db->from('delivery_order_cost as doc');
+
+		if (isset($params['so_no_trx']) && ! empty($params['so_no_trx']))
+		{
+			$this->db->where('doc.doc_so_no_trx', strtoupper($params['so_no_trx']));
+		}
+
+		return $this->db->get();
+ 	}
+
+ 	public function store_data($params = array())
+	{
+		$this->table = 'delivery_order_cost';
 		// print_r($params);exit;
 		$new_params = array(
-			'cid_ci_no_trx' => $params['cid_no_trx'],
-			'cid_rad_id' => $params['akun_detail'],
-			'cid_keterangan' => $params['cid_keterangan'],
-			'cid_total' => str_replace(',','',$params['cid_total']),
-			'cid_key_lock' => $params['cid_key_lock'],
+			'doc_vehicle_id' => $params['vehicle_id'],
+			'doc_so_no_trx' => $params['so_no_trx'],
+			'doc_created_date' => date('Y-m-d',strtotime($params['created_date'])),
+			
 		);
-		if ($params['cid_id'] == false) 
+		if (isset($params['doc_id'])) 
 		{
 			$this->add($new_params, TRUE);
 		}
-		elseif (isset($params['cid_id']) && ! empty($params['cid_id'])) 
+		elseif (isset($params['doc_id']) && ! empty($params['doc_id'])) 
 		{
-			$this->edit($new_params, "cid_id = {$params['cid_id']}");
+			$this->edit($new_params, "doc_id = {$params['doc_id']}");
 
 		}
 		else
@@ -135,7 +170,34 @@ class Delivery_order_cost_model extends NOOBS_Model
 			$this->add($new_params, TRUE);
 		}
 
-		return $this->load_data_cash_in_detail(array('cid_ci_no_trx' => $params['cid_no_trx']));
+		// return $this->load_data_temporary(array('docd_doc_so_no_trx' => $params['docd_doc_so_no_trx']));
+	}
+
+	public function store_temporary_data($params = array())
+	{
+		$this->table = 'delivery_order_cost_detail';
+		// print_r($params);exit;
+		$new_params = array(
+			'docd_doc_so_no_trx' => $params['so_no_trx'],
+			'docd_rad_id' => $params['akun_detail'],
+			'docd_amount' => str_replace(',','',$params['total']),
+			'docd_keterangan' => $params['keterangan']
+		);
+		if (isset($params['docd_id'])) 
+		{
+			$this->add($new_params, TRUE);
+		}
+		elseif (isset($params['docd_id']) && ! empty($params['docd_id'])) 
+		{
+			$this->edit($new_params, "docd_id = {$params['docd_id']}");
+
+		}
+		else
+		{
+			$this->add($new_params, TRUE);
+		}
+
+		return $this->load_data_temporary(array('so_no_trx' => $params['so_no_trx']));
 	}
 
 	public function store_data_customer($params = array())
@@ -159,6 +221,20 @@ class Delivery_order_cost_model extends NOOBS_Model
 		// return $this->load_data();
 	}
 
+	public function total_amount_detail($params = array())
+	{
+		$this->db->select('sum(docd_amount) as total_amount');
+		$this->db->from('delivery_order_cost_detail');
+
+		if (isset($params['no_trx']) && ! empty($params['no_trx']))
+		{
+			$this->db->where('docd_doc_so_no_trx', strtoupper($params['no_trx']));
+		}
+		$this->db->where('docd_is_active', 'Y');
+		
+		return $this->db->get();
+ 	}
+
 	public function delete_data_customer($params = array())
 	{
 		$this->table = 'customer';
@@ -167,14 +243,6 @@ class Delivery_order_cost_model extends NOOBS_Model
 		
 		return $this->load_data();
 	}
-
-	public function load_data_($params = array())
-	{
-		$this->db->where('il_item', strtoupper($params['txt_item']));
-		$this->db->where('il_is_active', 'Y');
-
-		return $this->db->get('customer');
- 	}
 
  	public function get_option_province()
 	{
@@ -185,10 +253,15 @@ class Delivery_order_cost_model extends NOOBS_Model
 
  	public function get_option_no_trx()
 	{
+		// $query = $this->db->query(
+		// 	'
+		// 	select * from sales_order where so_no_trx not in (select doc_so_no_trx from delivery_order_cost where doc_is_active = "Y")
+		// 	and so_is_active = "Y"
+		// 	'
+		// );
 		$query = $this->db->query(
 			'
-			select * from sales_order where so_no_trx not in (select doc_so_no_trx from delivery_order_cost where doc_is_active = "Y")
-			and so_is_active = "Y"
+			select * from sales_order where so_is_active = "Y" and so_is_status != "SELESAI"
 			'
 		);
 		
@@ -227,22 +300,22 @@ class Delivery_order_cost_model extends NOOBS_Model
 		
 	}
 
-	public function store_data($params = array())
-	{
-		$this->table = 'customer';
+	// public function store_data($params = array())
+	// {
+	// 	$this->table = 'customer';
 
-		$this->db->where('il_item_name', $params['txt_item']);
+	// 	$this->db->where('il_item_name', $params['txt_item']);
 
-		$qry = $this->db->get($this->table);
+	// 	$qry = $this->db->get($this->table);
 
-		if ($qry->num_rows() > 0)
-		{
-			$row = $qry->row();
+	// 	if ($qry->num_rows() > 0)
+	// 	{
+	// 		$row = $qry->row();
 
-			$this->edit(['il_similar_letter' => $row->il_similar_letter.';'.$params['txt_similar_letter']], "il_id = {$row->il_id}");
+	// 		$this->edit(['il_similar_letter' => $row->il_similar_letter.';'.$params['txt_similar_letter']], "il_id = {$row->il_id}");
 
-			return $this->load_data(['txt_item' => $row->il_item]);
-		}
-		return FALSE;
-	}
+	// 		return $this->load_data(['txt_item' => $row->il_item]);
+	// 	}
+	// 	return FALSE;
+	// }
 }

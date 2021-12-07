@@ -62,7 +62,7 @@
 						<?php
 							foreach($sales_order as $k => $v)
 							{
-								echo '<option value="'.$v->so_id.'" '.(($so_no_trx == $v->so_no_trx) ? 'selected':"").'>'.$v->so_no_trx.' ** '.$v->v_vendor_name.'</option>';
+								echo '<option value="'.$v->so_no_trx.'" '.(($so_no_trx == $v->so_no_trx) ? 'selected':"").'>'.$v->so_no_trx.' ** '.$v->v_vendor_name.'</option>';
 							}
 						?>
 					</select>
@@ -146,6 +146,10 @@
 					<tbody>
 						
 					</tbody>
+					<tfoot>
+						<th colspan="4">Total</th>
+						<th colspan="1" id="total_amount"></th>
+					</tfoot>
 				</table>
 			</div>
 		</div>	

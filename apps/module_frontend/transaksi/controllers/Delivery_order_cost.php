@@ -45,14 +45,47 @@ class Delivery_order_cost extends NOOBS_Controller
 			foreach ($data->data as $k => $v)
 			{
 				$v->num = $num;
-				$v->c_shipping_area = number_format($v->c_shipping_area);
-				$v->c_distance_area_full = $v->c_distance_area.' KM';
+				$v->total_amount = 'Rp. '.number_format($v->total);
+				// $v->c_shipping_area = number_format($v->c_shipping_area);
+				// $v->c_distance_area_full = $v->c_distance_area.' KM';
 
 				$num++;
 			}
 
 			// print_r($data);exit;
 			echo json_encode($data);
+		}
+		else $this->show_404();
+	}
+
+	public function load_data_temporary()
+	{
+		if (isset($_POST['action']) && $_POST['action'] == 'load_data_temporary')
+		{
+			$post = $this->input->post(NULL, TRUE);
+			if(! empty($post['so_no_trx']))
+			{
+				$load_data_temporary = $this->db_doc->load_data_temporary($post);
+				// print_r($load_data_temporary);exit;
+				if ($load_data_temporary->num_rows() > 0) 
+				{
+					$result = $load_data_temporary->result();
+					$number = 1;
+
+					foreach ($result as $k => $v)
+					{
+						$v->no = $number;
+						$v->docd_amount = number_format($v->docd_amount);
+
+						$number++;
+					}
+					
+				// print_r($post);exit;
+					echo json_encode(array('success' => TRUE, 'data' => $result));
+				}
+				else echo json_encode(array('success' => FALSE, 'msg' => 'Data not found!'));			
+			}
+			else echo json_encode(array('success' => FALSE, 'msg' => 'Data not found!'));
 		}
 		else $this->show_404();
 	}
@@ -187,14 +220,37 @@ class Delivery_order_cost extends NOOBS_Controller
 		else $this->show_404();
 	}
 
+	public function store_data()
+	{
+		if (isset($_POST['action']) && $_POST['action'] == 'insert_data')
+		{
+			$post = $this->input->post(NULL, TRUE);
+			// print_r($post);exit;
+			$cek = $this->db_doc->cek_order_cost($post['so_no_trx']);
+			
+			if($cek->num_rows() > 0)
+			{
+				echo json_encode(array('success' => TRUE));
+			}
+			else
+			{
+				$store_data = $this->db_doc->store_data($post);
+				echo json_encode(array('success' => TRUE));
+			}
+			
+		}
+		else $this->show_404();
+	}
+
 	public function store_data_temporary()
 	{
 		if (isset($_POST['action']) && $_POST['action'] == 'insert_temporary_data')
 		{
 			$post = $this->input->post(NULL, TRUE);
-			print_r($post);exit;
+			// print_r($post);exit;
 			
 			$store_temporary_data = $this->db_doc->store_temporary_data($post);
+			// print_r($store_temporary_data);exit;
 
 			if ($store_temporary_data->num_rows() > 0) 
 			{
@@ -204,7 +260,7 @@ class Delivery_order_cost extends NOOBS_Controller
 				foreach ($result as $k => $v)
 				{
 					$v->no = $number;
-					$v->cid_total = number_format($v->cid_total);
+					$v->docd_amount = number_format($v->docd_amount);
 
 					$number++;
 				}
@@ -212,6 +268,27 @@ class Delivery_order_cost extends NOOBS_Controller
 				echo json_encode(array('success' => TRUE, 'data' => $result));
 			}
 			else echo json_encode(array('success' => FALSE, 'msg' => 'Data not found!'));
+		}
+		else $this->show_404();
+	}
+
+	public function total_amount_detail()
+	{
+		$post = $this->input->post(NULL, TRUE);
+		// print_r($post);exit;
+		if (isset($post['action']) && ! empty($post['action']) && $post['action'] == 'total_amount_detail')
+		{
+			unset($post['action']);
+
+			$total_amount_detail = $this->db_doc->total_amount_detail($post);
+
+			if ($total_amount_detail->num_rows() > 0) 
+			{
+				$result = $total_amount_detail->row();
+
+				echo json_encode(array('success' => TRUE, 'total_amount' => number_format($result->total_amount)));
+			}
+			else echo json_encode(array('success' => FALSE, 'msg' => 'Data Not Found!'));
 		}
 		else $this->show_404();
 	}

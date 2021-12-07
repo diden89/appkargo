@@ -35,16 +35,16 @@ $(document).ready(function() {
 					data: 'doc_so_no_trx',
 				},
 				{	
-					title: 'Kendaraan', 
-					data: 've_license_plate',
+					title: 'Vendor', 
+					data: 'v_vendor_name',
 				},
 				{	
-					title: 'Pengemudi', 
-					data: 'doc_so_no_trx',
+					title: 'Area', 
+					data: 'rd_name',
 				},
 				{	
 					title: 'Total', 
-					data: 'doc_amount',
+					data: 'total_amount',
 				},
 				{
 					title: 'Action',
@@ -130,6 +130,65 @@ $(document).ready(function() {
 				}
 			}
 		}),
+		loadDataItemTemporary: function(el) {
+			const me = this;
+			const $this = $(el);
+			var so_no_trx = $('#txt_sales_order').val();
+			$.ajax({
+				url: siteUrl('transaksi/delivery_order_cost/load_data_temporary'),
+				type: 'POST',
+				dataType: 'JSON',
+				data: {
+					action: 'load_data_temporary',
+					so_no_trx:so_no_trx,
+				},
+				success: function(result) {
+					$('#temporaryDataTable tbody').html('');
+
+					if (result.success !== false)
+					{
+						me._generateTemporaryDataTable(result.data);
+						ORDERCOST.getTotalAmount(so_no_trx);
+					} 
+					else if (typeof(result.msg) !== 'undefined')
+					{
+						toastr.error(result.msg);
+					}
+					else
+					{
+						toastr.error(msgErr);
+					} 
+				},
+				error: function(error) {
+					toastr.error(msgErr);
+				}
+			});
+		},
+		_generateTemporaryDataTable: (data) => {
+			const $this = $('#temporaryDataTable tbody');
+
+			$this.html('');
+
+			let body = '';
+
+			$.each(data, (idx, item) => {
+				body += '<tr>';
+				body += '<td>' + item.no + '</td>';
+				body += '<td>' + item.docd_doc_so_no_trx + '</td>';
+				body += '<td>' + item.rad_name + '</td>';
+				body += '<td>' + item.ve_license_plate + '</td>';
+				body += '<td>' + item.docd_amount + '</td>';
+				body += '<td>';
+					body += '<div class="btn-group btn-group-sm" role="group" aria-label="Action Button">';
+						body += '<button type="button" class="btn btn-success" data-docd_id="' + item.docd_id + '" data-rad_id="' + item.docd_rad_id + '" data-docd_amount="' + item.docd_amount + '" onclick="ORDERCOST.editDetailSO(this, \'edit\');"><i class="fas fa-edit"></i></button>';
+						body += '<button type="button" class="btn btn-danger" data-docd_id="' + item.docd_id + '"data-rad_id="' + item.docd_rad_id + '" data-docd_amount="' + item.docd_amount + '" onclick="ORDERCOST.deleteDataTemp(this);"><i class="fas fa-trash-alt"></i></button>';
+					body += '</div>';
+				body += '</td>';
+				body += '</tr>';
+			});
+
+			$this.html(body);
+		},
 		popup: function(mode = 'add', title= 'Add', data = false)
 		{
 			$.popup({
@@ -144,47 +203,49 @@ $(document).ready(function() {
 						data: data
 					}
 				},
-				buttons: [{
-					btnId: 'saveData',
-					btnText:'Save',
-					btnClass: 'info',
-					btnIcon: 'far fa-check-circle',
-					onclick: function(popup) {
-						var form  = popup.find('form');
-						if ($.validation(form)) {
-							var formData = new FormData(form[0]);
-							$.ajax({
-								url: siteUrl('transaksi/delivery_order_cost/store_data_customer'),
-								type: 'POST',
-								dataType: 'JSON',
-								data: formData,
-								processData: false,
-								contentType: false,
-		         				cache: false,
-		         				enctype: 'multipart/form-data',
-								success: function(result) {
-									if (result.success) {
-										toastr.success(msgSaveOk);
-									} else if (typeof(result.msg) !== 'undefined') {
-										toastr.error(result.msg);
-									} else {
-										toastr.error(msgErr);
-									}
+				buttons: [
+				// {
+				// 	btnId: 'saveData',
+				// 	btnText:'Save',
+				// 	btnClass: 'info',
+				// 	btnIcon: 'far fa-check-circle',
+				// 	onclick: function(popup) {
+				// 		var form  = popup.find('form');
+				// 		if ($.validation(form)) {
+				// 			var formData = new FormData(form[0]);
+				// 			$.ajax({
+				// 				url: siteUrl('transaksi/delivery_order_cost/store_data_customer'),
+				// 				type: 'POST',
+				// 				dataType: 'JSON',
+				// 				data: formData,
+				// 				processData: false,
+				// 				contentType: false,
+		  //        				cache: false,
+		  //        				enctype: 'multipart/form-data',
+				// 				success: function(result) {
+				// 					if (result.success) {
+				// 						toastr.success(msgSaveOk);
+				// 					} else if (typeof(result.msg) !== 'undefined') {
+				// 						toastr.error(result.msg);
+				// 					} else {
+				// 						toastr.error(msgErr);
+				// 					}
 
-									ORDERCOST.gridDeliveryOrderCost.reloadData({
-										txt_id: $('#txtName').val()
-									});
+				// 					ORDERCOST.gridDeliveryOrderCost.reloadData({
+				// 						txt_id: $('#txtName').val()
+				// 					});
 
-									popup.close();
+				// 					popup.close();
 
-								},
-								error: function(error) {
-									toastr.error(msgErr);
-								}
-							});
-						}
-					}
-				}, {
+				// 				},
+				// 				error: function(error) {
+				// 					toastr.error(msgErr);
+				// 				}
+				// 			});
+				// 		}
+				// 	}
+				// }, 
+				{
 					btnId: 'closePopup',
 					btnText:'Close',
 					btnClass: 'secondary',
@@ -220,31 +281,60 @@ $(document).ready(function() {
 								total = $('#total').val();
 								keterangan = $('#keterangan').val();
 								
+								created_date = $('#created_date').val();
+								vehicle_id = $('#vehicle_id').val();								
+							
+
 							$.ajax({
-								url: siteUrl('transaksi/delivery_order_cost/store_data_temporary'),
+								url: siteUrl('transaksi/delivery_order_cost/store_data'),
 								type: 'POST',
 								dataType: 'JSON',
 								data: {
-									action: 'insert_temporary_data',
+									action: 'insert_data',
 									so_no_trx: so_no_trx,
-									akun_detail: akun_detail,
-									total: total,
-									keterangan: keterangan,
+									created_date: created_date,
+									vehicle_id: vehicle_id,
 									mode : mode
 								},
 								success: function(result) {
 									if (result.success) {
-										toastr.success("Data succesfully added.");
-										ORDERCOST._generateTemporaryDataTable(result.data);
-
-										$('#akun_header').prop('selectedIndex',0);
-										$('#akun_detail').prop('selectedIndex',0);
-										$('#cid_keterangan').val('');
-										$('#cid_total').val('');
-										$('#cid_id').val('');
-										$('#key_lock').val('');
 										
-										ORDERCOST.getTotalAmount(ci_no_trx);
+										$.ajax({
+											url: siteUrl('transaksi/delivery_order_cost/store_data_temporary'),
+											type: 'POST',
+											dataType: 'JSON',
+											data: {
+												action: 'insert_temporary_data',
+												so_no_trx: so_no_trx,
+												akun_detail: akun_detail,
+												total: total,
+												keterangan: keterangan,
+												mode : mode
+											},
+											success: function(res) {
+												if (res.success) {
+													toastr.success("Data succesfully added.");
+
+													ORDERCOST._generateTemporaryDataTable(res.data);
+
+													$('#akun_detail').prop('selectedIndex',0);
+													$('#vehicle_id').prop('selectedIndex',0);
+													$('#keterangan').val('');
+													$('#total').val('');
+
+													ORDERCOST.getTotalAmount(so_no_trx);
+
+												} else if (typeof(res.msg) !== 'undefined') {
+													toastr.error(res.msg);
+												} else {
+													toastr.error(msgErr);
+												}
+												
+											},
+											error: function(error) {
+												toastr.error(msgErr);
+											}
+										});	
 
 									} else if (typeof(result.msg) !== 'undefined') {
 										toastr.error(result.msg);
@@ -263,6 +353,8 @@ $(document).ready(function() {
 						$('#txt_sales_order').change(function() {
 							var me = $(this);
 								
+								ORDERCOST.loadDataItemTemporary();
+
 								$('#btnAddDetail').attr('disabled', false);
 							
 								if (me.val() !== '') {
@@ -545,7 +637,27 @@ $(document).ready(function() {
 			}
 		});
 	},
-		generateDistrict: function(regionId, districtId = false) {
+	getTotalAmount: function(no_trx = false) {
+		$.ajax({
+			url: siteUrl('transaksi/delivery_order_cost/total_amount_detail'),
+			type: 'POST',
+			dataType: 'JSON',
+			data: {
+				action: 'total_amount_detail',
+				no_trx: no_trx
+			},
+			success: function(result) {
+				if (result.success) {
+					$('#total_amount').html(result.total_amount);
+				}
+				
+			},
+			error: function(error) {
+				toastr.error(msgErr);
+			}
+		});
+	},
+	generateDistrict: function(regionId, districtId = false) {
 			var district = $('#txt_district');
 				
 				$.ajax({
