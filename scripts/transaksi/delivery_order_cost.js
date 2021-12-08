@@ -7,8 +7,8 @@
  * @link /rab_frontend/scripts/transaksi/delivery_order_cost.js
  */
 
-$(document).ready(function() {
-	var ORDERCOST = {
+
+	const ORDERCOST = {
 		gridDeliveryOrderCost : $('#gridDeliveryOrderCost').grid({
 			serverSide: true,
 			striped: true,
@@ -180,7 +180,7 @@ $(document).ready(function() {
 				body += '<td>' + item.docd_amount + '</td>';
 				body += '<td>';
 					body += '<div class="btn-group btn-group-sm" role="group" aria-label="Action Button">';
-						body += '<button type="button" class="btn btn-success" data-docd_id="' + item.docd_id + '" data-rad_id="' + item.docd_rad_id + '" data-docd_amount="' + item.docd_amount + '" onclick="ORDERCOST.editDetailSO(this, \'edit\');"><i class="fas fa-edit"></i></button>';
+						body += '<button type="button" class="btn btn-success" data-docd_id="' + item.docd_id + '" data-rad_id="' + item.docd_rad_id + '" data-docd_amount="' + item.docd_amount + '" data-docd_vehicle_id="' + item.docd_vehicle_id + '" data-docd_keterangan="' + item.docd_keterangan + '" onclick="ORDERCOST.EditDetailCost(this, \'edit\');"><i class="fas fa-edit"></i></button>';
 						body += '<button type="button" class="btn btn-danger" data-docd_id="' + item.docd_id + '"data-rad_id="' + item.docd_rad_id + '" data-docd_amount="' + item.docd_amount + '" onclick="ORDERCOST.deleteDataTemp(this);"><i class="fas fa-trash-alt"></i></button>';
 					body += '</div>';
 				body += '</td>';
@@ -188,6 +188,23 @@ $(document).ready(function() {
 			});
 
 			$this.html(body);
+		},
+		EditDetailCost : function(el, mode) {
+			 var 	docd_id = $(el).data('docd_id');
+			 		docd_vehicle_id = $(el).data('docd_vehicle_id');
+			 		docd_keterangan = $(el).data('docd_keterangan');
+			 		docd_rad_id = $(el).data('rad_id');
+			 		docd_amount = $(el).data('docd_amount');
+			 		doc_so_no_trx = $('#txt_sales_order').val();
+
+			ORDERCOST.generateVehicle(doc_so_no_trx, docd_vehicle_id);
+			ORDERCOST.generateAkunDetail('4', docd_rad_id);
+
+			$('#btnAddDetail').attr('disabled', false);
+
+			$('#total').val(docd_amount);
+			$('#keterangan').val(docd_keterangan);
+			$('#docd_id').val(docd_id);
 		},
 		popup: function(mode = 'add', title= 'Add', data = false)
 		{
@@ -204,47 +221,6 @@ $(document).ready(function() {
 					}
 				},
 				buttons: [
-				// {
-				// 	btnId: 'saveData',
-				// 	btnText:'Save',
-				// 	btnClass: 'info',
-				// 	btnIcon: 'far fa-check-circle',
-				// 	onclick: function(popup) {
-				// 		var form  = popup.find('form');
-				// 		if ($.validation(form)) {
-				// 			var formData = new FormData(form[0]);
-				// 			$.ajax({
-				// 				url: siteUrl('transaksi/delivery_order_cost/store_data_customer'),
-				// 				type: 'POST',
-				// 				dataType: 'JSON',
-				// 				data: formData,
-				// 				processData: false,
-				// 				contentType: false,
-		  //        				cache: false,
-		  //        				enctype: 'multipart/form-data',
-				// 				success: function(result) {
-				// 					if (result.success) {
-				// 						toastr.success(msgSaveOk);
-				// 					} else if (typeof(result.msg) !== 'undefined') {
-				// 						toastr.error(result.msg);
-				// 					} else {
-				// 						toastr.error(msgErr);
-				// 					}
-
-				// 					ORDERCOST.gridDeliveryOrderCost.reloadData({
-				// 						txt_id: $('#txtName').val()
-				// 					});
-
-				// 					popup.close();
-
-				// 				},
-				// 				error: function(error) {
-				// 					toastr.error(msgErr);
-				// 				}
-				// 			});
-				// 		}
-				// 	}
-				// }, 
 				{
 					btnId: 'closePopup',
 					btnText:'Close',
@@ -252,6 +228,10 @@ $(document).ready(function() {
 					btnIcon: 'fas fa-times',
 					onclick: function(popup) {
 						popup.close();
+
+						ORDERCOST.gridDeliveryOrderCost.reloadData({
+							txt_id: $('#txtName').val()
+						});
 					}
 				}],
 				listeners: {
@@ -270,8 +250,13 @@ $(document).ready(function() {
 
 						if (mode == 'edit') {
 							// ORDERCOST.generateUserSubGroup($('#userGroup').val(), data.ud_sub_group);
-							ORDERCOST.generateRegion($('#txt_province').val(),data.rd_id);
-							ORDERCOST.generateDistrict(data.rd_id,data.rsd_id);
+							// ORDERCOST.generateRegion($('#txt_province').val(),data.rd_id);
+							// ORDERCOST.generateDistrict(data.rd_id,data.rsd_id);
+							// ORDERCOST.generateVehicle($('#txt_sales_order').val());
+
+							ORDERCOST.loadDataItemTemporary();
+							$('#txt_sales_order').attr('disabled', true);
+
 						}
 
 						$('#btnAddDetail').click(function(){
@@ -283,7 +268,17 @@ $(document).ready(function() {
 								
 								created_date = $('#created_date').val();
 								vehicle_id = $('#vehicle_id').val();								
-							
+								
+								if(mode == 'edit')
+								{
+									docd_id = $('#docd_id').val();								
+									doc_id = $('#doc_id').val();								
+								}
+								else
+								{
+									docd_id = 'undefined';
+									doc_id = 'undefined';
+								}
 
 							$.ajax({
 								url: siteUrl('transaksi/delivery_order_cost/store_data'),
@@ -293,7 +288,7 @@ $(document).ready(function() {
 									action: 'insert_data',
 									so_no_trx: so_no_trx,
 									created_date: created_date,
-									vehicle_id: vehicle_id,
+									doc_id: doc_id,
 									mode : mode
 								},
 								success: function(result) {
@@ -305,10 +300,12 @@ $(document).ready(function() {
 											dataType: 'JSON',
 											data: {
 												action: 'insert_temporary_data',
+												vehicle_id: vehicle_id,
 												so_no_trx: so_no_trx,
 												akun_detail: akun_detail,
 												total: total,
 												keterangan: keterangan,
+												docd_id: docd_id,
 												mode : mode
 											},
 											success: function(res) {
@@ -399,22 +396,6 @@ $(document).ready(function() {
 							}
 						});
 
-						// $('#vehicle_id').change(function() {
-						// 	var me = $(this);
-						// 		if (me.val() !== '') {
-									
-						// 			ORDERCOST.generateVehicle(me.val());
-
-						// 		} else {
-						// 			$('#vehicle_id').html($('<option>', {
-						// 				value: '',
-						// 				text: 'Pilih Kendaraan'
-						// 			}));
-
-						// 			$('#vehicle_id').attr('disabled', true);
-						// 		}
-								
-						// });	
 
 						$('#txt_region').change(function() {
 							var me = $(this);
@@ -433,23 +414,6 @@ $(document).ready(function() {
 									$('#txt_district').attr('disabled', true);
 								}
 						});
-
-						// $('#akun_header').change(function() {
-						// 	var me = $(this);
-							
-						// 	if (me.val() !== '') {
-								
-						// 		ORDERCOST.generateAkunDetail(me.val());
-
-						// 	} else {
-						// 		$('#akun_detail').html($('<option>', {
-						// 			value: '',
-						// 			text: '--Akun Detail--'
-						// 		}));
-
-						// 		$('#akun_detail').attr('disabled', true);
-						// 	}
-						// });	
 					}
 				}
 			});
@@ -500,53 +464,7 @@ $(document).ready(function() {
 				}
 			});
 		},
-		generateRegion: function(provinceId, regionId = false) {
-		var region = $('#txt_region');
-			// console.log(provinceId)
-			$.ajax({
-				url: siteUrl('transaksi/delivery_order_cost/get_region_option'),
-				type: 'POST',
-				dataType: 'JSON',
-				beforeSend: function() {},
-				complete: function() {},
-				data: {
-					action: 'get_region_option',
-					prov_id: provinceId
-				},
-				success: function (result) {
-					if (result.success) {
-						var data = result.data;
-
-						region.attr('disabled', false);
-
-						region.html($('<option>', {
-							value: '',
-							text: '--Pilih Kabupaten / Kota--'
-						}));
-						
-						data.forEach(function (newData) {
-							region.append($('<option>', {
-								value: newData.rd_id,
-								text: newData.rd_name
-							}));
-						});
-
-						if (regionId !== false) region.val(regionId);
-
-					} else {
-
-						region.html($('<option>', {
-							value: '',
-							text: 'Kabupaten tidak ditemukan!'
-						}));
-					}
-				},
-				error: function (error) {
-					toastr.error(msgErr);
-				}
-			});
-		},
-		generateAkunHeader: function(rah_id = false) {
+		generateAkunHeader: function(rah_id = false, rad_id = false) {
 			var akun_header = $('#akun_header');
 
 			$.ajax({
@@ -593,7 +511,7 @@ $(document).ready(function() {
 		},
 		generateAkunDetail: function(rah_id, rad_id = false) {
 		var akun_detail = $('#akun_detail');
-
+console.log(rad_id)
 		$.ajax({
 			url: siteUrl('transaksi/delivery_order_cost/get_akun_detail_option'),
 			type: 'POST',
@@ -732,4 +650,5 @@ $(document).ready(function() {
 			}
 		}
 	});
+$(document).ready(function() {
 });

@@ -15,8 +15,9 @@
 	<input type="hidden" name="mode" value="<?=$mode?>" id="mode">
 
 	<?php 
-	if (isset($txt_id)): ?>
-		<input type="hidden" name="txt_id" value="<?php echo $txt_id; ?>">
+	if ($mode == 'edit'): ?>
+		<input type="hidden" name="docd_id" id="docd_id">
+		<input type="hidden" name="doc_id" id="doc_id" value="<?php echo $data['doc_id'];?>">
 	<?php endif; ?>
 	<div class="row">		
 		<div class="col-md-12">
@@ -62,7 +63,7 @@
 						<?php
 							foreach($sales_order as $k => $v)
 							{
-								echo '<option value="'.$v->so_no_trx.'" '.(($so_no_trx == $v->so_no_trx) ? 'selected':"").'>'.$v->so_no_trx.' ** '.$v->v_vendor_name.'</option>';
+								echo '<option value="'.$v->so_no_trx.'" '.(($data['doc_so_no_trx'] == $v->so_no_trx) ? 'selected':"").'>'.$v->so_no_trx.' ** '.$v->v_vendor_name.'</option>';
 							}
 						?>
 					</select>
@@ -108,20 +109,20 @@
 			<div class="form-group row">
 				<label for="caption" class="col-sm-4 col-form-label">Kode Akun</label>
 				<div class="col-sm-8">
-					<select class="form-control select2"  name="akun_detail" id="akun_detail" disabled="disabled">
+					<select class="form-control select2"  name="akun_detail" id="akun_detail" >
 					</select>
 				</div>
 			</div>
 			<div class="form-group row">
 				<label for="url" class="col-sm-4 col-form-label">Jumlah</label>
 				<div class="col-sm-8">
-					<input type="text" name="ci_total" class="form-control" id="total" value="<?php echo $mode == 'edit' && $data !== FALSE ? number_format($data->ci_total) : '' ?>" >
+					<input type="text" name="ci_total" class="form-control" id="total" >
 				</div>
 			</div>
 			<div class="form-group row">
 				<label for="caption" class="col-sm-4 col-form-label">Keterangan</label>
 				<div class="col-sm-8">
-				<textarea name="ci_keterangan" id="keterangan" class="textarea" placeholder="Enter content" style="width: 100%; height: 50px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"><?php echo $mode == 'edit' && $data !== FALSE ? $data->ci_keterangan : '' ?></textarea>
+				<textarea name="ci_keterangan" id="keterangan" class="textarea" placeholder="Enter content" style="width: 100%; height: 50px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;" ></textarea>
 				</div>
 			</div>
 			<div class="form-group row">

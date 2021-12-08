@@ -186,7 +186,7 @@ const daftarSalesOrderList = {
 		window.open(url);
 	},
 	showItem: function(el, mode) {
-		console.log(mode)
+		
 		const me = this;
 		let params = {action: 'load_daftar_sales_order_form'};
 	

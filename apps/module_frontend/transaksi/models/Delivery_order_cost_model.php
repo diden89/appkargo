@@ -43,7 +43,7 @@ class Delivery_order_cost_model extends NOOBS_Model
 		$this->db->from('delivery_order_cost_detail as docd');
 		$this->db->join('delivery_order_cost as doc','doc.doc_so_no_trx = docd.docd_doc_so_no_trx','LEFT');
 		$this->db->join('ref_akun_detail as rad','docd.docd_rad_id = rad.rad_id','LEFT');
-		$this->db->join('vehicle as v','v.ve_id = doc.doc_vehicle_id','LEFT');
+		$this->db->join('vehicle as v','v.ve_id = docd.docd_vehicle_id','LEFT');
 		// $this->db->join('driver as d','d.d_id = ','LEFT');
 
 		if (isset($params['so_no_trx']) && ! empty($params['so_no_trx']))
@@ -53,7 +53,7 @@ class Delivery_order_cost_model extends NOOBS_Model
 		}
 
 		$this->db->where('docd.docd_is_active', 'Y');
-		$this->db->group_by('docd.docd_vehicle_id');
+		// $this->db->group_by('docd.docd_vehicle_id');
 		$this->db->order_by('docd.docd_doc_so_no_trx', 'ASC');
 
 		return $this->db->get();
@@ -67,7 +67,7 @@ class Delivery_order_cost_model extends NOOBS_Model
 			doc.doc_so_no_trx as text,
 			');
 		$this->db->from('delivery_order_cost as doc');
-		$this->db->join('vehicle as v','v.ve_id = doc.doc_vehicle_id','LEFT');
+		$this->db->join('vehicle as v','v.ve_id = docd.docd_vehicle_id','LEFT');
 
 		if (isset($params['query']) && !empty($params['query'])) 
 		{
@@ -143,7 +143,6 @@ class Delivery_order_cost_model extends NOOBS_Model
 		if (isset($params['so_no_trx']) && ! empty($params['so_no_trx']))
 		{
 			$this->db->where('doc.doc_so_no_trx', strtoupper($params['so_no_trx']));
-			$this->db->where('doc.doc_vehicle_id', strtoupper($params['vehicle_id']));
 		}
 
 		return $this->db->get();
@@ -154,7 +153,6 @@ class Delivery_order_cost_model extends NOOBS_Model
 		$this->table = 'delivery_order_cost';
 		// print_r($params);exit;
 		$new_params = array(
-			'doc_vehicle_id' => $params['vehicle_id'],
 			'doc_so_no_trx' => $params['so_no_trx'],
 			'doc_created_date' => date('Y-m-d',strtotime($params['created_date'])),
 			
@@ -181,12 +179,13 @@ class Delivery_order_cost_model extends NOOBS_Model
 		$this->table = 'delivery_order_cost_detail';
 		// print_r($params);exit;
 		$new_params = array(
+			'docd_vehicle_id' => $params['vehicle_id'],
 			'docd_doc_so_no_trx' => $params['so_no_trx'],
 			'docd_rad_id' => $params['akun_detail'],
 			'docd_amount' => str_replace(',','',$params['total']),
 			'docd_keterangan' => $params['keterangan']
 		);
-		if (isset($params['docd_id'])) 
+		if (!isset($params['docd_id'])) 
 		{
 			$this->add($new_params, TRUE);
 		}
