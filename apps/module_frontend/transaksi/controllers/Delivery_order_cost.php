@@ -252,10 +252,10 @@ class Delivery_order_cost extends NOOBS_Controller
 		{
 			$post = $this->input->post(NULL, TRUE);
 			
-			// $store_data_ref_trx = $this->store_data_ref_trx($post);
-// exit;
+			$store_data_ref_trx = $this->store_data_ref_trx($post);
+			// print_r($post);exit;
+exit;
 			$store_temporary_data = $this->db_doc->store_temporary_data($post);
-			// print_r($store_temporary_data);exit;
 
 			if ($store_temporary_data->num_rows() > 0) 
 			{
@@ -279,7 +279,7 @@ class Delivery_order_cost extends NOOBS_Controller
 
 	public function store_data_ref_trx($params = array())
 	{
-		if (isset($params['action']) && $params['action'] == 'store_data_kas_masuk')
+		if (isset($params['action']) && $params['action'] == 'insert_temporary_data')
 		{
 			// $params = $this->input->post(NULL, TRUE);
 			print_r($params);exit;
