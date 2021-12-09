@@ -14,7 +14,7 @@
  Date: 09/12/2021 07:26:26
 */
 
-SET NAMES utf8mb4;
+SET NAMES utf8;
 SET FOREIGN_KEY_CHECKS = 0;
 
 -- ----------------------------
@@ -171,14 +171,14 @@ INSERT INTO `customer` VALUES (10, 1800, 'Apri', 'Ampek angkek canduang', '0', '
 DROP TABLE IF EXISTS `delivery_order_cost`;
 CREATE TABLE `delivery_order_cost`  (
   `doc_id` int NOT NULL AUTO_INCREMENT,
-  `doc_no_trx` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `doc_so_no_trx` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `doc_no_trx` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `doc_so_no_trx` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `doc_is_active` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT 'Y',
   `doc_created_date` datetime(0) NULL DEFAULT NULL,
   `last_user` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `last_datetime` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`doc_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 21 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 21 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of delivery_order_cost
@@ -192,15 +192,15 @@ DROP TABLE IF EXISTS `delivery_order_cost_detail`;
 CREATE TABLE `delivery_order_cost_detail`  (
   `docd_id` int NOT NULL AUTO_INCREMENT,
   `docd_vehicle_id` int NULL DEFAULT NULL,
-  `docd_doc_no_trx` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `docd_doc_no_trx` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `docd_rad_id` int NULL DEFAULT NULL,
   `docd_amount` int NULL DEFAULT NULL,
-  `docd_keterangan` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL,
+  `docd_keterangan` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
   `docd_is_active` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT 'Y',
   `last_user` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `last_datetime` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`docd_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 47 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 47 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of delivery_order_cost_detail
@@ -895,8 +895,8 @@ INSERT INTO `log_customer` VALUES (10, 1800, 'Apri', 'Ampek angkek canduang', '0
 DROP TABLE IF EXISTS `log_delivery_order_cost`;
 CREATE TABLE `log_delivery_order_cost`  (
   `doc_id` int NOT NULL,
-  `doc_no_trx` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `doc_so_no_trx` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `doc_no_trx` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `doc_so_no_trx` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `doc_is_active` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT 'Y',
   `doc_created_date` datetime(0) NULL DEFAULT NULL,
   `last_user` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
@@ -906,7 +906,7 @@ CREATE TABLE `log_delivery_order_cost`  (
   `log_datetime` datetime(0) NOT NULL,
   `log_id` int UNSIGNED NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`log_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 21 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 21 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of log_delivery_order_cost
@@ -932,10 +932,10 @@ DROP TABLE IF EXISTS `log_delivery_order_cost_detail`;
 CREATE TABLE `log_delivery_order_cost_detail`  (
   `docd_id` int NOT NULL,
   `docd_vehicle_id` int NULL DEFAULT NULL,
-  `docd_doc_no_trx` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `docd_doc_no_trx` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `docd_rad_id` int NULL DEFAULT NULL,
   `docd_amount` int NULL DEFAULT NULL,
-  `docd_keterangan` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL,
+  `docd_keterangan` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
   `docd_is_active` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT 'Y',
   `last_user` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `last_datetime` datetime(0) NULL DEFAULT NULL,
@@ -944,7 +944,7 @@ CREATE TABLE `log_delivery_order_cost_detail`  (
   `log_datetime` datetime(0) NOT NULL,
   `log_id` int UNSIGNED NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`log_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 53 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 53 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of log_delivery_order_cost_detail
