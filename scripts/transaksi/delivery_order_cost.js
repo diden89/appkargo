@@ -187,7 +187,7 @@
 				body += '<td>' + item.docd_amount + '</td>';
 				body += '<td>';
 					body += '<div class="btn-group btn-group-sm" role="group" aria-label="Action Button">';
-						body += '<button type="button" class="btn btn-success" data-docd_id="' + item.docd_id + '" data-rad_id="' + item.docd_rad_id + '" data-docd_amount="' + item.docd_amount + '" data-docd_vehicle_id="' + item.docd_vehicle_id + '" data-docd_keterangan="' + item.docd_keterangan + '" onclick="ORDERCOST.EditDetailCost(this, \'edit\');"><i class="fas fa-edit"></i></button>';
+						body += '<button type="button" class="btn btn-success" data-docd_id="' + item.docd_id + '" data-rad_id="' + item.docd_rad_id + '" data-docd_amount="' + item.docd_amount + '" data-docd_vehicle_id="' + item.docd_vehicle_id + '" data-docd_keterangan="' + item.docd_keterangan + '" data-docd_lock_ref="' + item.docd_lock_ref + '" onclick="ORDERCOST.EditDetailCost(this, \'edit\');"><i class="fas fa-edit"></i></button>';
 						body += '<button type="button" class="btn btn-danger" data-docd_id="' + item.docd_id + '"data-rad_id="' + item.docd_rad_id + '" data-docd_amount="' + item.docd_amount + '" onclick="ORDERCOST.deleteDataTemp(this);"><i class="fas fa-trash-alt"></i></button>';
 					body += '</div>';
 				body += '</td>';
@@ -202,6 +202,7 @@
 			 		docd_keterangan = $(el).data('docd_keterangan');
 			 		docd_rad_id = $(el).data('rad_id');
 			 		docd_amount = $(el).data('docd_amount');
+			 		docd_lock_ref = $(el).data('docd_lock_ref');
 			 		doc_so_no_trx = $('#txt_sales_order').val();
 			 		
 			ORDERCOST.generateVehicle(doc_so_no_trx, docd_vehicle_id);
@@ -212,6 +213,7 @@
 			$('#total').val(docd_amount);
 			$('#keterangan').val(docd_keterangan);
 			$('#docd_id').val(docd_id);
+			$('#docd_lock').val(docd_lock_ref);
 			$('#mode').val('edit');
 		},
 		popup: function(mode = 'add', title= 'Add', data = false)
@@ -270,6 +272,7 @@
 
 						$('#btnNewDetail').click(function(){
 							$('#docd_id').val('');
+							$('#docd_lock').val('');
 							$('#doc_id').val('');
 							$('#mode').val('add');
 
@@ -283,7 +286,6 @@
 						});
 
 						$('#btnAddDetail').click(function(){
-							console.log($('#doc_id').val())
 							var so_no_trx = $('#txt_sales_order').val();
 								doc_no_trx = $('#doc_no_trx').val();
 								akun_detail = $('#akun_detail').val();
@@ -292,6 +294,7 @@
 								
 								created_date = $('#created_date').val();
 								vehicle_id = $('#vehicle_id').val();								
+								docd_lock = $('#docd_lock').val();								
 								docd_id = ( $('#docd_id').val() == undefined ) ? 'undefined' : $('#docd_id').val();								
 								doc_id =  ( $('#doc_id').val() == undefined ) ? 'undefined' : $('#doc_id').val();									
 								
@@ -327,11 +330,13 @@
 												action: 'insert_temporary_data',
 												vehicle_id: vehicle_id,
 												so_no_trx: so_no_trx,
+												created_date: created_date,
 												doc_no_trx: doc_no_trx,
 												akun_detail: akun_detail,
 												total: total,
 												keterangan: keterangan,
 												docd_id: docd_id,
+												docd_lock: docd_lock,
 												mode : mode
 											},
 											success: function(res) {

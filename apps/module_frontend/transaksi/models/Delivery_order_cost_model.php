@@ -156,6 +156,18 @@ class Delivery_order_cost_model extends NOOBS_Model
 
 		return $this->db->get();
  	}
+	public function cek_order_cost_detail($params)
+	{
+		$this->db->select('count(docd_id) + 1 as count_id');
+		$this->db->from('delivery_order_cost_detail as docd');
+
+		if (isset($params['doc_no_trx']) && ! empty($params['doc_no_trx']))
+		{
+			$this->db->where('docd.docd_doc_no_trx', strtoupper($params['doc_no_trx']));
+		}
+
+		return $this->db->get();
+ 	}
 
  	public function store_data($params = array())
 	{
@@ -191,6 +203,7 @@ class Delivery_order_cost_model extends NOOBS_Model
 		$new_params = array(
 			'docd_vehicle_id' => $params['vehicle_id'],
 			'docd_doc_no_trx' => $params['doc_no_trx'],
+			'docd_lock_ref' => $params['docd_lock_ref'],
 			'docd_rad_id' => $params['akun_detail'],
 			'docd_amount' => str_replace(',','',$params['total']),
 			'docd_keterangan' => $params['keterangan']
@@ -210,6 +223,30 @@ class Delivery_order_cost_model extends NOOBS_Model
 		}
 
 		return $this->load_data_temporary(array('doc_no_trx' => $params['doc_no_trx']));
+	}
+
+	public function store_data_ref_trx($params = array())
+	{
+		$this->table = 'ref_transaksi';
+		// print_r($params);exit;
+		$new_params = array(
+			'trx_no_trx' => $params['doc_no_trx'],
+			'trx_key_lock' => $params['docd_lock_ref'],
+			'trx_rad_id_from' => $params['trx_rad_id_from'],
+			'trx_rad_id_to' => $params['akun_detail'],
+			'trx_total' => str_replace(',','',$params['total']),
+			'trx_created_date' =>  date('Y-m-d',strtotime($params['created_date']))
+		);
+
+		if (! empty($params['docd_id'])) 
+		{
+			$this->edit($new_params, "trx_key_lock = '{$params['docd_lock']}'");
+		}
+		else
+		{
+			$this->add($new_params, TRUE);
+		}
+
 	}
 
 	public function store_data_customer($params = array())
@@ -263,22 +300,21 @@ class Delivery_order_cost_model extends NOOBS_Model
 		return $this->db->get('ref_province');
  	}
 
- 	public function get_option_no_trx()
+ 	public function get_option_no_trx($mode)
 	{
-		// $query = $this->db->query(
-		// 	'
-		// 	select * from sales_order where so_no_trx not in (select doc_no_trx from delivery_order_cost where doc_is_active = "Y")
-		// 	and so_is_active = "Y"
-		// 	'
-		// );
-		$query = $this->db->query(
-			'
-			select * from sales_order where so_is_active = "Y" and so_is_status != "SELESAI"
-			'
-		);
 		
+		$this->db->from('sales_order');
+
+		if($mode == 'add')
+		{
+			$this->db->where('so_no_trx not in (select doc_so_no_trx from delivery_order_cost where doc_is_active = "Y")');
+		}
+
+		$this->db->where('so_is_active' , 'Y');
+		$this->db->where('so_is_status !=' , 'SELESAI');
 		
-		return $query;
+		return $this->db->get();
+		// return $query;
  	}
 
  	public function get_region_option($params)

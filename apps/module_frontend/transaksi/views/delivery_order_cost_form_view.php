@@ -14,6 +14,7 @@
 	<input type="hidden" name="action" value="store_data_delivery_order_cost">
 	<input type="hidden" name="mode" value="<?=$mode?>" id="mode">
 	<input type="hidden" name="docd_id" id="docd_id">
+	<input type="hidden" name="docd_lock" id="docd_lock">
 
 	<?php 
 	if ($mode == 'edit'): ?>

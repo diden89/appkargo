@@ -110,7 +110,7 @@ class Delivery_order_cost extends NOOBS_Controller
 				'table' => 'province'
 			);
 
-			$post['sales_order'] = $this->db_doc->get_option_no_trx()->result();
+			$post['sales_order'] = $this->db_doc->get_option_no_trx($post['mode'])->result();
 			$post['kas_bank'] = $this->db_doc->get_kas_bank()->result();
 			$post['akun_header'] = $this->db_doc->get_akun_header()->result();
 			
@@ -252,10 +252,23 @@ class Delivery_order_cost extends NOOBS_Controller
 		{
 			$post = $this->input->post(NULL, TRUE);
 			
-			$store_data_ref_trx = $this->store_data_ref_trx($post);
-			// print_r($post);exit;
-exit;
+			if(! empty($post['docd_lock'] ))
+			{
+				$post['docd_lock_ref'] = $post['docd_lock'];
+			}
+			else
+			{
+				$cek_docd = $this->db_doc->cek_order_cost_detail($post)->row()->count_id;			
+
+					$doc_no_trx = str_replace('/','',$post['doc_no_trx']);
+					$post['docd_lock_ref'] = $doc_no_trx.'_'.$cek_docd;
+			}
+			// print_r($post);
 			$store_temporary_data = $this->db_doc->store_temporary_data($post);
+			
+			$post['trx_rad_id_from'] = '3';
+
+			$store_data_ref_trx = $this->db_doc->store_data_ref_trx($post);
 
 			if ($store_temporary_data->num_rows() > 0) 
 			{
@@ -276,66 +289,6 @@ exit;
 		}
 		else $this->show_404();
 	}	
-
-	public function store_data_ref_trx($params = array())
-	{
-		if (isset($params['action']) && $params['action'] == 'insert_temporary_data')
-		{
-			// $params = $this->input->post(NULL, TRUE);
-			print_r($params);exit;
-			$params['cid_ci_no_trx'] = $params['ci_no_trx_temp'];
-			
-
-			$cek_temp_data = $this->db_cash_in->load_data_cash_in_detail($params);
-
-			if($cek_temp_data->num_rows() > 0) 
-			{
-				$temp_result = $cek_temp_data->result();
-				foreach($temp_result as $k => $v)
-				{
-					$cek_trx_data = $this->db_cash_in->cek_ref_transaksi($v->cid_key_lock);
-					if($cek_trx_data->num_rows() > 0)
-					{
-						$new_params = array(
-							// 'trx_no_trx' => $params['ci_no_trx_temp'],
-							'trx_rad_id_from' => $v->cid_rad_id,
-							'trx_rad_id_to' => $params['ci_rad_id'],
-							'trx_total' => $v->cid_total,
-							'trx_created_date' => $params['ci_created_date'],	
-						);
-
-						$cond = array(
-							'trx_key_lock' => $v->cid_key_lock,
-							'mode' => $params['mode'],
-						);				
-
-					}
-					else
-					{
-						$new_params = array(
-							'trx_no_trx' => $params['ci_no_trx_temp'],
-							'trx_rad_id_from' => $v->cid_rad_id,
-							'trx_rad_id_to' => $params['ci_rad_id'],
-							'trx_total' => $v->cid_total,
-							'trx_created_date' => $params['ci_created_date'],	
-							'trx_key_lock' => $v->cid_key_lock,	
-						);
-
-						$cond = array(
-							'trx_key_lock' => $v->cid_key_lock,
-							'mode' =>'add',
-						);
-					}
-			
-			// print_r($new_params);
-			// print_r($cond);exit;
-					$store_data_kas_masuk = $this->db_cash_in->store_data_ref_trx($new_params,$cond);
-				}
-			}
-
-		}
-		else $this->show_404();
-	}
 
 	public function total_amount_detail()
 	{
