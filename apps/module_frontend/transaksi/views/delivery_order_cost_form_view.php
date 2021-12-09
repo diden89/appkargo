@@ -11,12 +11,12 @@
 ?>
 
 <form role="form" id="addDaftarSalesOrder" autocomplete="off">
-	<input type="hidden" name="action" value="store_data_daftar_sales_order">
+	<input type="hidden" name="action" value="store_data_delivery_order_cost">
 	<input type="hidden" name="mode" value="<?=$mode?>" id="mode">
+	<input type="hidden" name="docd_id" id="docd_id">
 
 	<?php 
 	if ($mode == 'edit'): ?>
-		<input type="hidden" name="docd_id" id="docd_id">
 		<input type="hidden" name="doc_id" id="doc_id" value="<?php echo $data['doc_id'];?>">
 	<?php endif; ?>
 	<div class="row">		
@@ -35,28 +35,23 @@
 				</div>
 			</div>
 		</div>
-		<!-- <div class="col-md-6">
-			<div class="form-group row">
-				<label for="caption" class="col-sm-4 col-form-label">Transportasi</label>
-				<div class="col-sm-8">
-					<select class="form-control select2"  name="dod_vehicle_id" id="dod_vehicle_id" disabled="disabled">
-						<option value="">-Select-</option>
-						<?php
-							// foreach($vehicle as $k => $v)
-							// {
-							// 	echo '<option value="'.$v->ve_id.'" '.(($dod_vehicle_id == $v->ve_id) ? 'selected':"").'>'.$v->ve_license_plate.'</option>';
-							// }
-						?>
-					</select>
-				</div>
-			</div>
-		</div> -->
 	</div>
 	<div class="row">
 		
 		<div class="col-md-12">
 			<div class="form-group row">
-				<label for="url" class="col-sm-4 col-form-label">No Transaksi SO</label>
+				<label for="url" class="col-sm-4 col-form-label">Nomor Transaksi</label>
+				<div class="col-sm-8">
+					<input type="text" name="doc_no_trx" class="form-control" id="doc_no_trx" value="<?php echo $mode == 'edit' && $data !== FALSE ? $data['doc_no_trx']: $last_notrx; ?>" disabled>
+				</div>
+			</div>
+		</div>
+	</div>
+	<hr>
+	<div class="row">
+		<div class="col-md-4">
+			<div class="form-group row">
+				<label for="caption" class="col-sm-4 col-form-label">No Transaksi SO</label>
 				<div class="col-sm-8">
 					<select class="form-control select2"  name="txt_sales_order" id="txt_sales_order">
 						<option value="">-Select-</option>
@@ -69,27 +64,6 @@
 					</select>
 				</div>
 			</div>
-		</div>
-		<!-- <div class="col-md-6">
-			<div class="form-group row">
-				<label for="caption" class="col-sm-4 col-form-label">Pengemudi</label>
-				<div class="col-sm-8">
-					<select class="form-control select2"  name="dod_driver_id" id="dod_driver_id" disabled="disabled">
-						<option value="">-Select-</option>
-						<?php
-							// foreach($driver as $k => $v)
-							// {
-							// 	echo '<option value="'.$v->d_id.'" '.(($dod_driver_id == $v->d_id) ? 'selected':"").'>'.$v->d_name.'</option>';
-							// }
-						?>
-					</select>
-				</div>
-			</div>
-		</div> -->
-	</div>
-	<hr>
-	<div class="row">
-		<div class="col-md-4">
 			<div class="form-group row">
 				<label for="caption" class="col-sm-4 col-form-label">Kendaraan</label>
 				<div class="col-sm-8">
@@ -128,6 +102,9 @@
 			<div class="form-group row">
 				<div class="col-sm-6">
 					<button id="btnAddDetail" class="btn btn-success btn-flat" type="button" title="Add Data" disabled="disabled"><i class="fas fa-plus"></i> Submit</button>
+					<?php if($mode == 'edit') {?>
+						<button id="btnNewDetail" class="btn btn-warning btn-flat" type="button" title="Add Data" ><i class="fas fa-file"></i>New</button>
+					<?php }?>
 				</div>
 			</div>
 		</div>	

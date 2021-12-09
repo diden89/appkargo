@@ -46,13 +46,10 @@ class Delivery_order_cost extends NOOBS_Controller
 			{
 				$v->num = $num;
 				$v->total_amount = 'Rp. '.number_format($v->total);
-				// $v->c_shipping_area = number_format($v->c_shipping_area);
-				// $v->c_distance_area_full = $v->c_distance_area.' KM';
 
 				$num++;
 			}
 
-			// print_r($data);exit;
 			echo json_encode($data);
 		}
 		else $this->show_404();
@@ -108,6 +105,7 @@ class Delivery_order_cost extends NOOBS_Controller
 		if (isset($_POST['action']) && $_POST['action'] == 'load_delivery_order_cost_form')
 		{
 			$post = $this->input->post(NULL, TRUE);
+
 			$params = array(
 				'table' => 'province'
 			);
@@ -115,7 +113,20 @@ class Delivery_order_cost extends NOOBS_Controller
 			$post['sales_order'] = $this->db_doc->get_option_no_trx()->result();
 			$post['kas_bank'] = $this->db_doc->get_kas_bank()->result();
 			$post['akun_header'] = $this->db_doc->get_akun_header()->result();
-		
+			
+			$get_last_notrx = $this->db_doc->get_last_notrx();
+			
+			if($get_last_notrx->num_rows() > 0)
+			{
+				$notrx = $get_last_notrx->row();
+				$last_notrx = $notrx->notrx + 1;
+			}
+			else
+			{
+				$last_notrx = 1;
+			}
+
+			$post['last_notrx'] = sprintf('%04d',$last_notrx).'/PAYDO/'.date('Ymd');
 			$this->_view('delivery_order_cost_form_view', $post);
 		}
 		else $this->show_404();
@@ -240,8 +251,9 @@ class Delivery_order_cost extends NOOBS_Controller
 		if (isset($_POST['action']) && $_POST['action'] == 'insert_temporary_data')
 		{
 			$post = $this->input->post(NULL, TRUE);
-			// print_r($post);exit;
 			
+			// $store_data_ref_trx = $this->store_data_ref_trx($post);
+// exit;
 			$store_temporary_data = $this->db_doc->store_temporary_data($post);
 			// print_r($store_temporary_data);exit;
 
@@ -263,6 +275,66 @@ class Delivery_order_cost extends NOOBS_Controller
 			else echo json_encode(array('success' => FALSE, 'msg' => 'Data not found!'));
 		}
 		else $this->show_404();
+	}	
+
+	public function store_data_ref_trx($params = array())
+	{
+		if (isset($params['action']) && $params['action'] == 'store_data_kas_masuk')
+		{
+			// $params = $this->input->post(NULL, TRUE);
+			print_r($params);exit;
+			$params['cid_ci_no_trx'] = $params['ci_no_trx_temp'];
+			
+
+			$cek_temp_data = $this->db_cash_in->load_data_cash_in_detail($params);
+
+			if($cek_temp_data->num_rows() > 0) 
+			{
+				$temp_result = $cek_temp_data->result();
+				foreach($temp_result as $k => $v)
+				{
+					$cek_trx_data = $this->db_cash_in->cek_ref_transaksi($v->cid_key_lock);
+					if($cek_trx_data->num_rows() > 0)
+					{
+						$new_params = array(
+							// 'trx_no_trx' => $params['ci_no_trx_temp'],
+							'trx_rad_id_from' => $v->cid_rad_id,
+							'trx_rad_id_to' => $params['ci_rad_id'],
+							'trx_total' => $v->cid_total,
+							'trx_created_date' => $params['ci_created_date'],	
+						);
+
+						$cond = array(
+							'trx_key_lock' => $v->cid_key_lock,
+							'mode' => $params['mode'],
+						);				
+
+					}
+					else
+					{
+						$new_params = array(
+							'trx_no_trx' => $params['ci_no_trx_temp'],
+							'trx_rad_id_from' => $v->cid_rad_id,
+							'trx_rad_id_to' => $params['ci_rad_id'],
+							'trx_total' => $v->cid_total,
+							'trx_created_date' => $params['ci_created_date'],	
+							'trx_key_lock' => $v->cid_key_lock,	
+						);
+
+						$cond = array(
+							'trx_key_lock' => $v->cid_key_lock,
+							'mode' =>'add',
+						);
+					}
+			
+			// print_r($new_params);
+			// print_r($cond);exit;
+					$store_data_kas_masuk = $this->db_cash_in->store_data_ref_trx($new_params,$cond);
+				}
+			}
+
+		}
+		else $this->show_404();
 	}
 
 	public function total_amount_detail()
@@ -282,6 +354,36 @@ class Delivery_order_cost extends NOOBS_Controller
 				echo json_encode(array('success' => TRUE, 'total_amount' => number_format($result->total_amount)));
 			}
 			else echo json_encode(array('success' => FALSE, 'msg' => 'Data Not Found!'));
+		}
+		else $this->show_404();
+	}
+
+	public function delete_data_temp()
+	{
+		// print_r($_POST);exit;
+		if (isset($_POST['action']) && $_POST['action'] == 'delete_data_temp')
+		{
+			$post = $this->input->post(NULL, TRUE);
+			$delete_data_ref_transaksi = $this->db_doc->delete_data_ref_transaksi($post);
+			$delete_data_cash_in_detail = $this->db_doc->delete_data_cash_in_detail($post);
+			$load_cash_in_detail = $this->db_doc->load_data_cash_in_detail($post);
+			
+			if ($load_cash_in_detail->num_rows() > 0) 
+			{
+				$result = $load_cash_in_detail->result();
+				$number = 1;
+
+				foreach ($result as $k => $v)
+				{
+					$v->no = $number;
+					$v->cid_total = number_format($v->cid_total);
+
+					$number++;
+				}
+				
+				echo json_encode(array('success' => TRUE, 'data' => $result));
+			}
+			else echo json_encode(array('success' => FALSE, 'msg' => 'Data not found!','data' => array()));
 		}
 		else $this->show_404();
 	}

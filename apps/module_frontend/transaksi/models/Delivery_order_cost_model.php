@@ -14,7 +14,7 @@ class Delivery_order_cost_model extends NOOBS_Model
 	public function load_data($params = array())
 	{
 		// print_r($params);exit;
-		$this->db->select('*,(select sum(docd_amount) from delivery_order_cost_detail as docd where docd.docd_doc_so_no_trx = doc.doc_so_no_trx) as total');
+		$this->db->select('*,(select sum(docd_amount) from delivery_order_cost_detail as docd where docd.docd_doc_no_trx = doc.doc_no_trx) as total');
 		$this->db->from('delivery_order_cost as doc');
 		$this->db->join('sales_order as so','doc.doc_so_no_trx = so.so_no_trx','LEFT');
 		$this->db->join('vendor as v','so.so_vendor_id = v.v_id','LEFT');
@@ -22,7 +22,7 @@ class Delivery_order_cost_model extends NOOBS_Model
 	
 		if (isset($params['txt_item']) && ! empty($params['txt_item']))
 		{
-			$this->db->like('UPPER(doc.doc_so_no_trx)', strtoupper($params['txt_item']));
+			$this->db->like('UPPER(doc.doc_no_trx)', strtoupper($params['txt_item']));
 		}
 
 		if (isset($params['txt_id']) && ! empty($params['txt_id']))
@@ -31,7 +31,7 @@ class Delivery_order_cost_model extends NOOBS_Model
 		}
 
 		$this->db->where('doc.doc_is_active', 'Y');
-		$this->db->order_by('doc.doc_so_no_trx', 'ASC');
+		$this->db->order_by('doc.doc_no_trx', 'ASC');
 
 		return $this->create_result($params);
  	}
@@ -41,22 +41,31 @@ class Delivery_order_cost_model extends NOOBS_Model
 		// print_r($params);exit;
 		$this->db->select('*');
 		$this->db->from('delivery_order_cost_detail as docd');
-		$this->db->join('delivery_order_cost as doc','doc.doc_so_no_trx = docd.docd_doc_so_no_trx','LEFT');
+		$this->db->join('delivery_order_cost as doc','doc.doc_no_trx = docd.docd_doc_no_trx','LEFT');
 		$this->db->join('ref_akun_detail as rad','docd.docd_rad_id = rad.rad_id','LEFT');
 		$this->db->join('vehicle as v','v.ve_id = docd.docd_vehicle_id','LEFT');
 		// $this->db->join('driver as d','d.d_id = ','LEFT');
 
 		if (isset($params['so_no_trx']) && ! empty($params['so_no_trx']))
 		{
-			$this->db->where('docd.docd_doc_so_no_trx', $params['so_no_trx']);
+			$this->db->where('docd.docd_doc_no_trx', $params['doc_no_trx']);
 			// $this->db->where('docd.docd_vehicle_id', $params['vehicle_id']);
 		}
 
 		$this->db->where('docd.docd_is_active', 'Y');
 		// $this->db->group_by('docd.docd_vehicle_id');
-		$this->db->order_by('docd.docd_doc_so_no_trx', 'ASC');
+		$this->db->order_by('docd.docd_doc_no_trx', 'ASC');
 
 		return $this->db->get();
+ 	}
+
+ 	public function get_last_notrx()
+	{
+		$this->db->select('LEFT(doc_no_trx,4) as notrx');
+		$this->db->order_by('doc_id', 'DESC');
+		$this->db->limit('1');
+		
+		return $this->db->get('delivery_order_cost');
  	}
 
  	public function get_autocomplete_data($params = array())
@@ -64,7 +73,7 @@ class Delivery_order_cost_model extends NOOBS_Model
 		// print_r($params);exit;
 		$this->db->select('*,
 			doc.doc_id as id,
-			doc.doc_so_no_trx as text,
+			doc.doc_no_trx as text,
 			');
 		$this->db->from('delivery_order_cost as doc');
 		$this->db->join('vehicle as v','v.ve_id = docd.docd_vehicle_id','LEFT');
@@ -72,11 +81,11 @@ class Delivery_order_cost_model extends NOOBS_Model
 		if (isset($params['query']) && !empty($params['query'])) 
 		{
 			$query = $params['query'];
-			$this->db->where("(doc.doc_so_no_trx LIKE '%{$query}%' OR v.ve_license_plate LIKE '%{$query}%')", NULL, FALSE);
+			$this->db->where("(doc.doc_no_trx LIKE '%{$query}%' OR v.ve_license_plate LIKE '%{$query}%')", NULL, FALSE);
 		}
 
 		$this->db->where('doc.doc_is_active', 'Y');
-		$this->db->order_by('doc.doc_so_no_trx', 'ASC');
+		$this->db->order_by('doc.doc_no_trx', 'ASC');
 
 		return $this->create_autocomplete_data($params);
  	}
@@ -140,9 +149,9 @@ class Delivery_order_cost_model extends NOOBS_Model
 		$this->db->select('*');
 		$this->db->from('delivery_order_cost as doc');
 
-		if (isset($params['so_no_trx']) && ! empty($params['so_no_trx']))
+		if (isset($params['doc_no_trx']) && ! empty($params['doc_no_trx']))
 		{
-			$this->db->where('doc.doc_so_no_trx', strtoupper($params['so_no_trx']));
+			$this->db->where('doc.doc_no_trx', strtoupper($params['doc_no_trx']));
 		}
 
 		return $this->db->get();
@@ -154,10 +163,11 @@ class Delivery_order_cost_model extends NOOBS_Model
 		// print_r($params);exit;
 		$new_params = array(
 			'doc_so_no_trx' => $params['so_no_trx'],
+			'doc_no_trx' => $params['doc_no_trx'],
 			'doc_created_date' => date('Y-m-d',strtotime($params['created_date'])),
 			
 		);
-		if (isset($params['doc_id'])) 
+		if ($params['doc_id'] == 'undefined') 
 		{
 			$this->add($new_params, TRUE);
 		}
@@ -171,7 +181,7 @@ class Delivery_order_cost_model extends NOOBS_Model
 			$this->add($new_params, TRUE);
 		}
 
-		// return $this->load_data_temporary(array('docd_doc_so_no_trx' => $params['docd_doc_so_no_trx']));
+		// return $this->load_data_temporary(array('docd_doc_no_trx' => $params['docd_doc_no_trx']));
 	}
 
 	public function store_temporary_data($params = array())
@@ -180,12 +190,12 @@ class Delivery_order_cost_model extends NOOBS_Model
 		// print_r($params);exit;
 		$new_params = array(
 			'docd_vehicle_id' => $params['vehicle_id'],
-			'docd_doc_so_no_trx' => $params['so_no_trx'],
+			'docd_doc_no_trx' => $params['doc_no_trx'],
 			'docd_rad_id' => $params['akun_detail'],
 			'docd_amount' => str_replace(',','',$params['total']),
 			'docd_keterangan' => $params['keterangan']
 		);
-		if (!isset($params['docd_id'])) 
+		if (empty($params['docd_id'])) 
 		{
 			$this->add($new_params, TRUE);
 		}
@@ -199,7 +209,7 @@ class Delivery_order_cost_model extends NOOBS_Model
 			$this->add($new_params, TRUE);
 		}
 
-		return $this->load_data_temporary(array('so_no_trx' => $params['so_no_trx']));
+		return $this->load_data_temporary(array('doc_no_trx' => $params['doc_no_trx']));
 	}
 
 	public function store_data_customer($params = array())
@@ -230,7 +240,7 @@ class Delivery_order_cost_model extends NOOBS_Model
 
 		if (isset($params['no_trx']) && ! empty($params['no_trx']))
 		{
-			$this->db->where('docd_doc_so_no_trx', strtoupper($params['no_trx']));
+			$this->db->where('docd_doc_no_trx', strtoupper($params['no_trx']));
 		}
 		$this->db->where('docd_is_active', 'Y');
 		
@@ -257,7 +267,7 @@ class Delivery_order_cost_model extends NOOBS_Model
 	{
 		// $query = $this->db->query(
 		// 	'
-		// 	select * from sales_order where so_no_trx not in (select doc_so_no_trx from delivery_order_cost where doc_is_active = "Y")
+		// 	select * from sales_order where so_no_trx not in (select doc_no_trx from delivery_order_cost where doc_is_active = "Y")
 		// 	and so_is_active = "Y"
 		// 	'
 		// );
