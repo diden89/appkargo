@@ -46,6 +46,7 @@ class Delivery_order_cost extends NOOBS_Controller
 			{
 				$v->num = $num;
 				$v->total_amount = 'Rp. '.number_format($v->total);
+				$v->doc_created_date = date('d-m-Y H:i:s', strtotime($v->doc_created_date));
 
 				$num++;
 			}
@@ -229,7 +230,7 @@ class Delivery_order_cost extends NOOBS_Controller
 		if (isset($_POST['action']) && $_POST['action'] == 'insert_data')
 		{
 			$post = $this->input->post(NULL, TRUE);
-			// print_r($post);exit;
+		
 			$cek = $this->db_doc->cek_order_cost($post);
 			
 			if($cek->num_rows() > 0)
@@ -313,23 +314,22 @@ class Delivery_order_cost extends NOOBS_Controller
 
 	public function delete_data_temp()
 	{
-		// print_r($_POST);exit;
 		if (isset($_POST['action']) && $_POST['action'] == 'delete_data_temp')
 		{
 			$post = $this->input->post(NULL, TRUE);
+
 			$delete_data_ref_transaksi = $this->db_doc->delete_data_ref_transaksi($post);
-			$delete_data_cash_in_detail = $this->db_doc->delete_data_cash_in_detail($post);
-			$load_cash_in_detail = $this->db_doc->load_data_cash_in_detail($post);
-			
-			if ($load_cash_in_detail->num_rows() > 0) 
+			$delete_data_temp = $this->db_doc->delete_data_temp($post);
+			// print_r($delete_data_temp->result()) ;exit;
+			if ($delete_data_temp->num_rows() > 0) 
 			{
-				$result = $load_cash_in_detail->result();
+				$result = $delete_data_temp->result();
 				$number = 1;
 
 				foreach ($result as $k => $v)
 				{
 					$v->no = $number;
-					$v->cid_total = number_format($v->cid_total);
+					$v->docd_amount = number_format($v->docd_amount);
 
 					$number++;
 				}

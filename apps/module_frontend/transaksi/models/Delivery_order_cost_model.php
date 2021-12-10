@@ -176,7 +176,7 @@ class Delivery_order_cost_model extends NOOBS_Model
 		$new_params = array(
 			'doc_so_no_trx' => $params['so_no_trx'],
 			'doc_no_trx' => $params['doc_no_trx'],
-			'doc_created_date' => date('Y-m-d',strtotime($params['created_date'])),
+			'doc_created_date' => date('Y-m-d h:i:s',strtotime($params['created_date'])),
 			
 		);
 		if ($params['doc_id'] == 'undefined') 
@@ -235,7 +235,7 @@ class Delivery_order_cost_model extends NOOBS_Model
 			'trx_rad_id_from' => $params['trx_rad_id_from'],
 			'trx_rad_id_to' => $params['akun_detail'],
 			'trx_total' => str_replace(',','',$params['total']),
-			'trx_created_date' =>  date('Y-m-d',strtotime($params['created_date']))
+			'trx_created_date' =>  date('Y-m-d h:i:s',strtotime($params['created_date']))
 		);
 
 		if (! empty($params['docd_id'])) 
@@ -247,6 +247,32 @@ class Delivery_order_cost_model extends NOOBS_Model
 			$this->add($new_params, TRUE);
 		}
 
+	}
+
+	public function delete_data_ref_transaksi($params = array())
+	{
+		$this->table = 'ref_transaksi';
+
+		if (isset($params['key_lock']) && ! empty($params['key_lock']))
+		{
+			return $this->delete('trx_key_lock',$params['key_lock']);
+		}
+		else
+		{
+			return $this->delete('trx_no_trx',$params['cod_co_no_trx']);
+		}
+	}
+
+	public function delete_data_temp($params = array())
+	{
+		$this->table = 'delivery_order_cost_detail';
+
+		if (isset($params['docd_id']) && ! empty($params['docd_id']))
+		{
+			$this->delete('docd_id',$params['docd_id']);
+		}
+
+		return $this->load_data_temporary(array('doc_no_trx' => $params['doc_no_trx']));
 	}
 
 	public function store_data_customer($params = array())

@@ -37,6 +37,7 @@ $avatar = empty($this->session->userdata('user_img')) ? 'unknown.png' : $this->s
 		<link rel="stylesheet" href="<?php echo base_url('vendors/jquery_treegrid/css/treegrid.css'); ?>">
 		<link rel="stylesheet" href="<?php echo base_url('vendors/jquery_grid/css/grid.css'); ?>">
 		<link rel="stylesheet" href="<?php echo base_url('vendors/jquery_noobsautocomplete/css/noobsautocomplete.css'); ?>">
+		<link rel="stylesheet" href="<?php echo base_url('vendors/jquery-datetimepicker/css/bootstrap-datetimepicker.min.css'); ?>">
 		<link rel="stylesheet" href="<?php echo base_url('styles/styles.css'); ?>">
 
 		<?php
@@ -166,6 +167,7 @@ $avatar = empty($this->session->userdata('user_img')) ? 'unknown.png' : $this->s
 		<script src="<?php echo base_url('vendors/jquery_noobsautocomplete/js/noobsautocomplete.js'); ?>"></script>
 		<script src="<?php echo base_url('vendors/jquery_validation/js/validation.js'); ?>"></script>
 		<script src="<?php echo base_url('vendors/jquery_noobsdaterangepicker/js/noobsdaterangepicker.js'); ?>"></script>
+		<script src="<?php echo base_url('vendors/jquery-datetimepicker/js/bootstrap-datetimepicker.min.js'); ?>"></script>
 		<script src="<?php echo base_url('scripts/custom_validity.js'); ?>"></script>
 		<script src="<?php echo base_url('scripts/scripts.js'); ?>"></script>
 		<!-- <script src="https://cdn.datatables.net/datetime/1.1.1/js/dataTables.dateTime.min.js"></script> -->
