@@ -31,12 +31,12 @@
 					width: 10
 				},
 				{	
-					title: 'No Transaksi', 
-					data: 'doc_no_trx',
-				},
-				{	
 					title: 'Tanggal', 
 					data: 'doc_created_date',
+				},
+				{	
+					title: 'No Transaksi', 
+					data: 'doc_no_trx',
 				},
 				{	
 					title: 'No Transaksi Order', 
@@ -91,13 +91,13 @@
 							icon: 'far fa-trash-alt',
 							click: function(row, rowData) {
 								Swal.fire({
-									title: 'Are you sure?',
-									text: "Data that has been deleted cannot be restored!",
+									title: 'Yakin Akan Menghapus Data Ini?',
+									text: "Data yang sudah dihapus tidak dapat dikembalikan lagi!",
 									type: 'warning',
 									showCancelButton: true,
 									confirmButtonColor: '#17a2b8',
 									cancelButtonColor: '#d33',
-									confirmButtonText: 'Yes, delete this data!'
+									confirmButtonText: 'Ya, Hapus Data Ini!'
 								}).then((result) => {
 									if (result.value) {
 										$.ajax({
@@ -106,7 +106,7 @@
 											dataType: 'JSON',
 											data: {
 												action: 'delete_data',
-												txt_id: rowData.c_id
+												doc_no_trx: rowData.doc_no_trx
 											},
 											success: function(result) {
 												if (result.success) {
@@ -437,24 +437,6 @@
 							}
 						});
 
-
-						$('#txt_region').change(function() {
-							var me = $(this);
-						
-
-								if (me.val() !== '') {
-									
-									ORDERCOST.generateDistrict(me.val());
-
-								} else {
-									$('#txt_district').html($('<option>', {
-										value: '',
-										text: 'Pilih Kabupaten/Kota'
-									}));
-
-									$('#txt_district').attr('disabled', true);
-								}
-						});
 					}
 				}
 			});
@@ -466,9 +448,9 @@
 				id: mode + 'OrderCostPopup',
 				size: 'large',
 				proxy: {
-					url: siteUrl('transaksi/delivery_order_cost/load_delivery_order_cost_form'),
+					url: siteUrl('transaksi/delivery_order_cost/load_delivery_order_cost_detail'),
 					params: {
-						action: 'load_delivery_order_cost_form',
+						action: 'load_delivery_order_cost_detail',
 						mode: mode,
 						data: data
 					}
@@ -489,209 +471,8 @@
 				}],
 				listeners: {
 					onshow: function(popup) {
-						// ORDERCOST.generateAkunHeader();
-						ORDERCOST.generateAkunDetail('4');
-						$('#created_date').inputmask('dd-mm-yyyy', { 'placeholder': 'DD-MM-YYYY' });
-						$('#created_date').noobsdaterangepicker({
-							parentEl: "#" + popup[0].id + " .modal-body",
-							showDropdowns: true,
-							singleDatePicker: true,
-							locale: {
-								format: 'DD-MM-YYYY'
-							}
-						});
-
-						if (mode == 'edit') {
-							// ORDERCOST.generateUserSubGroup($('#userGroup').val(), data.ud_sub_group);
-							// ORDERCOST.generateRegion($('#txt_province').val(),data.rd_id);
-							// ORDERCOST.generateDistrict(data.rd_id,data.rsd_id);
-							// ORDERCOST.generateVehicle($('#txt_sales_order').val());
-
-							ORDERCOST.loadDataItemTemporary();
-
-							$('#txt_sales_order').attr('disabled', true);
-
-						}	
-
-						$('#btnNewDetail').click(function(){
-							$('#docd_id').val('');
-							$('#docd_lock').val('');
-							$('#doc_id').val('');
-							$('#mode').val('add');
-
-							$('#akun_detail').prop('selectedIndex',0);
-							$('#vehicle_id').prop('selectedIndex',0);
-							$('#keterangan').val('');
-							$('#total').val('');
-
-							$('#btnAddDetail').attr('disabled', false);
-							ORDERCOST.generateVehicle($('#txt_sales_order').val());
-						});
-
-						$('#btnAddDetail').click(function(){
-							var so_no_trx = $('#txt_sales_order').val();
-								doc_no_trx = $('#doc_no_trx').val();
-								akun_detail = $('#akun_detail').val();
-								total = $('#total').val();
-								keterangan = $('#keterangan').val();
-								
-								created_date = $('#created_date').val();
-								vehicle_id = $('#vehicle_id').val();								
-								docd_lock = $('#docd_lock').val();								
-								docd_id = ( $('#docd_id').val() == undefined ) ? 'undefined' : $('#docd_id').val();								
-								doc_id =  ( $('#doc_id').val() == undefined ) ? 'undefined' : $('#doc_id').val();									
-								
-								// if(mode == 'edit')
-								// {
-								// }
-								// else
-								// {
-								// 	docd_id = 'undefined';
-								// 	doc_id = 'undefined';
-								// }
-
-							$.ajax({
-								url: siteUrl('transaksi/delivery_order_cost/store_data'),
-								type: 'POST',
-								dataType: 'JSON',
-								data: {
-									action: 'insert_data',
-									so_no_trx: so_no_trx,
-									doc_no_trx: doc_no_trx,
-									created_date: created_date,
-									doc_id: doc_id,
-									mode : mode
-								},
-								success: function(result) {
-									if (result.success) {
-										
-										$.ajax({
-											url: siteUrl('transaksi/delivery_order_cost/store_data_temporary'),
-											type: 'POST',
-											dataType: 'JSON',
-											data: {
-												action: 'insert_temporary_data',
-												vehicle_id: vehicle_id,
-												so_no_trx: so_no_trx,
-												created_date: created_date,
-												doc_no_trx: doc_no_trx,
-												akun_detail: akun_detail,
-												total: total,
-												keterangan: keterangan,
-												docd_id: docd_id,
-												docd_lock: docd_lock,
-												mode : mode
-											},
-											success: function(res) {
-												if (res.success) {
-													toastr.success("Data succesfully added.");
-
-													ORDERCOST._generateTemporaryDataTable(res.data);
-
-													$('#akun_detail').prop('selectedIndex',0);
-													$('#vehicle_id').prop('selectedIndex',0);
-													$('#keterangan').val('');
-													$('#total').val('');
-
-													ORDERCOST.getTotalAmount(doc_no_trx);
-													if(mode == 'edit')
-													{
-														$('#btnAddDetail').attr('disabled', true);
-													}
-
-												} else if (typeof(res.msg) !== 'undefined') {
-													toastr.error(res.msg);
-												} else {
-													toastr.error(msgErr);
-												}
-												
-											},
-											error: function(error) {
-												toastr.error(msgErr);
-											}
-										});	
-
-									} else if (typeof(result.msg) !== 'undefined') {
-										toastr.error(result.msg);
-									} else {
-										toastr.error(msgErr);
-									}
-									
-								},
-								error: function(error) {
-									toastr.error(msgErr);
-								}
-							});								
-								
-						});
-
-						$('#txt_sales_order').change(function() {
-							var me = $(this);
-								
-								ORDERCOST.loadDataItemTemporary();
-
-								$('#btnAddDetail').attr('disabled', false);
-							
-								if (me.val() !== '') {
-									
-									ORDERCOST.generateVehicle(me.val());
-
-								} else {
-									$('#vehicle_id').html($('<option>', {
-										value: '',
-										text: 'Pilih Kendaraan'
-									}));
-
-									$('#vehicle_id').attr('disabled', true);
-								}
-						});	
-
-						$('#total').on('keyup',function(event) {
-							if(Number.isInteger($('#total').val()))
-							{
-								Swal.fire({
-									title: 'Maaf !!',
-									text: "Jumlah dan total dana harus sama nilainya",
-									type: 'warning',
-									showCancelButton: false,
-									confirmButtonColor: '#17a2b8',
-									cancelButtonColor: '#d33',
-									confirmButtonText: 'Close!'
-								})
-							}
-							else
-							{	
-								// skip for arrow keys
-								if(event.which >= 37 && event.which <= 40) return;
-
-								// format number
-								$(this).val(function(index, value) {
-								return value
-								.replace(/\D/g, "")
-								.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-								;
-								});
-							}
-						});
-
-
-						$('#txt_region').change(function() {
-							var me = $(this);
-						
-
-								if (me.val() !== '') {
-									
-									ORDERCOST.generateDistrict(me.val());
-
-								} else {
-									$('#txt_district').html($('<option>', {
-										value: '',
-										text: 'Pilih Kabupaten/Kota'
-									}));
-
-									$('#txt_district').attr('disabled', true);
-								}
-						});
+						// console.log(data.doc_no_trx)
+						ORDERCOST.getTotalAmount(data.doc_no_trx);
 					}
 				}
 			});
@@ -853,116 +634,69 @@
 				}
 			});
 		},
-		generateDistrict: function(regionId, districtId = false) {
-				var district = $('#txt_district');
-					
+		deleteDataTemp: function(el) {
+			const me = this;
+			const $this = $(el);
+
+			Swal.fire({
+				title: 'Yakin Akan Menghapus Data Ini?',
+				text: "Data yang sudah dihapus tidak dapat dikembalikan lagi!",
+				type: 'warning',
+				showCancelButton: true,
+				confirmButtonColor: '#17a2b8',
+				cancelButtonColor: '#d33',
+				confirmButtonText: 'Ya, Hapus Data Ini!'
+			}).then((result) => {
+				if (result.value) {
 					$.ajax({
-						url: siteUrl('transaksi/delivery_order_cost/get_district_option'),
+						url: siteUrl('transaksi/delivery_order_cost/delete_data_temp'),
 						type: 'POST',
 						dataType: 'JSON',
-						beforeSend: function() {},
-						complete: function() {},
 						data: {
-							action: 'get_district_option',
-							district_id: regionId
+							action: 'delete_data_temp',
+							key_lock: $this.data('docd_lock_ref'),
+							docd_id: $this.data('docd_id'),
+							doc_no_trx: $this.data('no_trx')
 						},
-						success: function (result) {
+						success: function(result) {
+							$('#temporaryDataTable tbody').html('');
+
 							if (result.success) {
-								var data = result.data;
+								 ORDERCOST._generateTemporaryDataTable(result.data);
+								 ORDERCOST.getTotalAmount($this.data('no_trx'));
 
-								district.attr('disabled', false);
-
-								district.html($('<option>', {
-									value: '',
-									text: '--Pilih Kecamatan--'
-								}));
-								
-								data.forEach(function (newData) {
-									district.append($('<option>', {
-										value: newData.rsd_id,
-										text: newData.rsd_name
-									}));
-								});
-
-								if (districtId !== false) district.val(districtId);
-
-							} else {
-
-								district.html($('<option>', {
-									value: '',
-									text: 'Kecamatan tidak ditemukan!'
-								}));
+								// $('#akun_header').prop('selectedIndex',0);
+								// $('#akun_detail').prop('selectedIndex',0);
+								// $('#cid_keterangan').val('');
+								// $('#cid_total').val('');
+								// $('#cid_id').val('');
+								// $('#key_lock').val('');
 							}
+							else if (result.success == false)
+							{
+								ORDERCOST._generateTemporaryDataTable(result.data);
+								ORDERCOST.getTotalAmount($this.data('no_trx'));
+							}
+							else if (typeof(result.msg) !== 'undefined') {
+								$('#temporaryDataTable tbody').html('');
+								toastr.error(result.msg);
+							}
+							else {
+								$('#temporaryDataTable tbody').html('');
+								toastr.error(msgErr);
+							}
+
 						},
-						error: function (error) {
+						error: function(error) {
 							toastr.error(msgErr);
 						}
 					});
-			}
-			,
-			deleteDataTemp: function(el) {
-				const me = this;
-				const $this = $(el);
+				}
+			});
 
-				Swal.fire({
-					title: 'Are you sure?',
-					text: "Data that has been deleted cannot be restored!",
-					type: 'warning',
-					showCancelButton: true,
-					confirmButtonColor: '#17a2b8',
-					cancelButtonColor: '#d33',
-					confirmButtonText: 'Yes, delete this data!'
-				}).then((result) => {
-					if (result.value) {
-						$.ajax({
-							url: siteUrl('transaksi/delivery_order_cost/delete_data_temp'),
-							type: 'POST',
-							dataType: 'JSON',
-							data: {
-								action: 'delete_data_temp',
-								key_lock: $this.data('docd_lock_ref'),
-								docd_id: $this.data('docd_id'),
-								doc_no_trx: $this.data('no_trx')
-							},
-							success: function(result) {
-								$('#temporaryDataTable tbody').html('');
-
-								if (result.success) {
-									 ORDERCOST._generateTemporaryDataTable(result.data);
-									 ORDERCOST.getTotalAmount($this.data('no_trx'));
-
-									// $('#akun_header').prop('selectedIndex',0);
-									// $('#akun_detail').prop('selectedIndex',0);
-									// $('#cid_keterangan').val('');
-									// $('#cid_total').val('');
-									// $('#cid_id').val('');
-									// $('#key_lock').val('');
-								}
-								else if (result.success == false)
-								{
-									ORDERCOST._generateTemporaryDataTable(result.data);
-									ORDERCOST.getTotalAmount($this.data('no_trx'));
-								}
-								else if (typeof(result.msg) !== 'undefined') {
-									$('#temporaryDataTable tbody').html('');
-									toastr.error(result.msg);
-								}
-								else {
-									$('#temporaryDataTable tbody').html('');
-									toastr.error(msgErr);
-								}
-
-							},
-							error: function(error) {
-								toastr.error(msgErr);
-							}
-						});
-					}
-				});
-
-				
-			}
-		};
+			
+		}
+	};
 
 	$('#btnAdd').click(function(e) {
 		e.preventDefault();

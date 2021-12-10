@@ -107,10 +107,6 @@ class Delivery_order_cost extends NOOBS_Controller
 		{
 			$post = $this->input->post(NULL, TRUE);
 
-			$params = array(
-				'table' => 'province'
-			);
-
 			$post['sales_order'] = $this->db_doc->get_option_no_trx($post['mode'])->result();
 			$post['kas_bank'] = $this->db_doc->get_kas_bank()->result();
 			$post['akun_header'] = $this->db_doc->get_akun_header()->result();
@@ -133,24 +129,29 @@ class Delivery_order_cost extends NOOBS_Controller
 		else $this->show_404();
 	}
 
-	public function get_region_option()
+	public function load_delivery_order_cost_detail()
 	{
-		$post = $this->input->post(NULL, TRUE);
-
-
-		if (isset($post['action']) && ! empty($post['action']) && $post['action'] == 'get_region_option')
+		if (isset($_POST['action']) && $_POST['action'] == 'load_delivery_order_cost_detail')
 		{
-			unset($post['action']);
+			$post = $this->input->post(NULL, TRUE);
 
-			$get_region_option = $this->db_doc->get_region_option($post);
+			$cost_detail = $this->db_doc->load_data_temporary($post);
 
-			if ($get_region_option->num_rows() > 0) 
+			if ($cost_detail->num_rows() > 0) 
 			{
-				$result = $get_region_option->result();
+				$result = $cost_detail->result();
+				$number = 1;
 
-				echo json_encode(array('success' => TRUE, 'data' => $result));
+				foreach ($result as $k => $v)
+				{
+					$v->no = $number;
+					$v->docd_amount = number_format($v->docd_amount);
+					$v->doc_created_date = date('d-m-Y H:i:s', strtotime($v->doc_created_date));
+					$number++;
+				}
 			}
-			else echo json_encode(array('success' => FALSE, 'msg' => 'Data Not Found!'));
+			$post['result'] = $result;
+			$this->_view('delivery_order_cost_detail_view', $post);
 		}
 		else $this->show_404();
 	}
@@ -305,7 +306,7 @@ class Delivery_order_cost extends NOOBS_Controller
 			{
 				$result = $total_amount_detail->row();
 
-				echo json_encode(array('success' => TRUE, 'total_amount' => number_format($result->total_amount)));
+				echo json_encode(array('success' => TRUE, 'total_amount' => 'Rp '.number_format($result->total_amount)));
 			}
 			else echo json_encode(array('success' => FALSE, 'msg' => 'Data Not Found!'));
 		}
@@ -341,56 +342,22 @@ class Delivery_order_cost extends NOOBS_Controller
 		else $this->show_404();
 	}
 
-	public function get_district_option()
-	{
-		$post = $this->input->post(NULL, TRUE);
-
-
-		if (isset($post['action']) && ! empty($post['action']) && $post['action'] == 'get_district_option')
-		{
-			unset($post['action']);
-
-			$get_district_option = $this->db_doc->get_district_option($post);
-
-			if ($get_district_option->num_rows() > 0) 
-			{
-				$result = $get_district_option->result();
-
-				echo json_encode(array('success' => TRUE, 'data' => $result));
-			}
-			else echo json_encode(array('success' => FALSE, 'msg' => 'Data Not Found!'));
-		}
-		else $this->show_404();
-	}
-
-	
-
-	public function store_data_customer()
-	{
-		$post = $this->input->post(NULL, TRUE);
-		if (isset($_POST['action']) && $_POST['action'] == 'store_data_customer')
-		{
-			unset($post['action']);
-			
-			$store_data_customer = $this->db_doc->store_data_customer($post);
-			
-			echo json_encode(array('success' => $store_data_customer));
-			
-		}
-		else $this->show_404();
-	}
-
 	public function delete_data()
 	{
-		$post = $this->input->post(NULL, TRUE);
 		
 		if (isset($_POST['action']) && $_POST['action'] == 'delete_data')
 		{
-			unset($post['action']);
-			$delete_data = $this->db_doc->delete_data($post);
+			$post = $this->input->post(NULL, TRUE);
+			
+			$delete_data_order_cost = $this->db_doc->delete_data_order_cost($post);
+			$delete_data_order_cost_detail = $this->db_doc->delete_data_order_cost_detail($post);
+			$delete_data_ref_transaksi = $this->db_doc->delete_data_ref_transaksi($post);
+			
+			return $load_data = $this->load_data(array('action' => 'load_data'));
 
-			echo json_encode(array('success' => $delete_data));
+			// echo json_encode(array('success' => $delete_data));
 		}
 		else $this->show_404();
 	}
+
 }

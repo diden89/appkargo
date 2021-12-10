@@ -259,7 +259,7 @@ class Delivery_order_cost_model extends NOOBS_Model
 		}
 		else
 		{
-			return $this->delete('trx_no_trx',$params['cod_co_no_trx']);
+			return $this->delete('trx_no_trx',$params['doc_no_trx']);
 		}
 	}
 
@@ -275,27 +275,6 @@ class Delivery_order_cost_model extends NOOBS_Model
 		return $this->load_data_temporary(array('doc_no_trx' => $params['doc_no_trx']));
 	}
 
-	public function store_data_customer($params = array())
-	{
-		$this->table = 'customer';
-
-		$new_params = array(
-			'c_name' => $params['c_name'],
-			'c_address' => $params['c_address'],
-			'c_phone' => $params['c_phone'],
-			'c_email' => $params['c_email'],
-			'c_district_id' => $params['c_district_id'],
-			'c_shipping_area' => $params['c_shipping_area'],
-			'c_shipping_area_transfer' => $params['c_shipping_area_transfer'],
-			'c_distance_area' => $params['c_distance_area']
-		);
-
-		if ($params['mode'] == 'add') return $this->add($new_params, TRUE);
-		else return $this->edit($new_params, "c_id = {$params['txt_id']}");
-
-		// return $this->load_data();
-	}
-
 	public function total_amount_detail($params = array())
 	{
 		$this->db->select('sum(docd_amount) as total_amount');
@@ -308,22 +287,6 @@ class Delivery_order_cost_model extends NOOBS_Model
 		$this->db->where('docd_is_active', 'Y');
 		
 		return $this->db->get();
- 	}
-
-	public function delete_data_customer($params = array())
-	{
-		$this->table = 'customer';
-
-		$this->edit(['c_is_active' => 'N'], "c_id = {$params['txt_id']}");
-		
-		return $this->load_data();
-	}
-
- 	public function get_option_province()
-	{
-		$this->db->order_by('rp_name', 'ASC');
-		
-		return $this->db->get('ref_province');
  	}
 
  	public function get_option_no_trx($mode)
@@ -343,36 +306,23 @@ class Delivery_order_cost_model extends NOOBS_Model
 		// return $query;
  	}
 
- 	public function get_region_option($params)
+	public function delete_data_order_cost($params = array())
 	{
-		$this->db->where('rd_province_id', $params['prov_id']);
-		$this->db->order_by('rd_name', 'ASC');
-		
-		return $this->db->get('ref_district');
- 	}
+		$this->table = 'delivery_order_cost';
 
- 	public function get_district_option($params)
-	{
-		$this->db->where('rsd_district_id', $params['district_id']);
-		$this->db->order_by('rsd_name', 'ASC');
-		
-		return $this->db->get('ref_sub_district');
- 	}
-	public function get_option_customer()
-	{
-		$this->db->where('c_is_active', 'Y');
-		$this->db->order_by('c_name', 'ASC');
-
-		return $this->db->get('customer');
- 	}
-
-	public function delete_data($params = array())
-	{
-		$this->table = 'customer';
-
-		return $this->edit(['c_is_active' => 'N'], "c_id = {$params['txt_id']}");
+		return $this->delete('doc_no_trx',$params['doc_no_trx']);
 		
 	}
+
+	public function delete_data_order_cost_detail($params = array())
+	{
+		$this->table = 'delivery_order_cost_detail';
+
+		return $this->delete('docd_doc_no_trx',$params['doc_no_trx']);
+	}
+
+
+	
 
 	// public function store_data($params = array())
 	// {
