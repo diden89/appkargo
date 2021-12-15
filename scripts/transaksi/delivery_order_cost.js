@@ -725,5 +725,53 @@
 			}
 		}
 	});
+
+	$('#rangeDate').click(function(e){
+		ORDERCOST.gridDeliveryOrderCost.reloadData({
+			from_date: $('#from_date').val(),
+			to_date: $('#to_date').val(),
+		});
+		// remote: true,
+		// placeholder: 'Find data.',
+		// proxy: {
+		// 	url: siteUrl('transaksi/delivery_order_cost/get_autocomplete_data'),
+		// 	method: 'post',
+		// 	data: {
+		// 		action: 'get_autocomplete_data'
+		// 	},
+		// },
+		// listeners: {
+		// 	onselect: function(data) {
+		// 		ORDERCOST.gridDeliveryOrderCost.reloadData({
+		// 			txt_id: $('#txtName').val()
+		// 		});
+		// 	},
+		// 	onclear: function(obj) {
+		// 		ORDERCOST.gridDeliveryOrderCost.reloadData({});
+		// 	}
+		// }
+	});
 $(document).ready(function() {
+
+	$('#from_date').datetimepicker({
+        //language:  'fr',
+        weekStart: 1,
+        todayBtn:  1,
+		autoclose: 1,
+		todayHighlight: 1,
+		startView: 2,
+		forceParse: 0,
+        showMeridian: 1
+    });
+
+    $('#to_date').datetimepicker({
+        //language:  'fr',
+        weekStart: 1,
+        todayBtn:  1,
+		autoclose: 1,
+		todayHighlight: 1,
+		startView: 2,
+		forceParse: 0,
+        showMeridian: 1
+    });
 });

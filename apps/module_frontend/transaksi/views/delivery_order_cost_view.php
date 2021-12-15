@@ -29,6 +29,34 @@
 							</div>
 						</div>
 						<hr />
+						<div class="row">
+							<div class="input-group col-5">
+								<!-- <label for="caption" class="col-sm-4 col-form-label">Dari Tanggal : </label> -->
+								<div class="input-group">
+									<div class="input-group-prepend">
+										<span class="input-group-text">
+											<i class="far fa-calendar-alt"></i>
+										</span>
+									</div>
+									<input type="text" name="from_date" class="form-control" id="from_date" required="required" data-date="1979-09-16T05:25:07Z" data-date-format="dd-mm-yyyy hh:ii:ss" data-link-field="dtp_input1">
+								</div>
+							</div>
+							<div class="input-group col-5">
+							<!-- <label for="caption" class="col-sm-4 col-form-label">s/d :</label> -->
+								<div class="input-group">
+									<div class="input-group-prepend">
+										<span class="input-group-text">
+											<i class="far fa-calendar-alt"></i>
+										</span>
+									</div>
+									<input type="text" name="to_date" class="form-control" id="to_date" required="required" data-date="1979-09-16T05:25:07Z" data-date-format="dd-mm-yyyy hh:ii:ss" data-link-field="dtp_input1">
+								</div>
+							</div>
+							<div class="col-2">
+								<button id="rangeDate" class="btn btn-lg btn-block btn-primary btn-flat" type="button" title="Filter"><i class="fas fa-search"></i> Filter</button>
+							</div>
+						</div>
+						<hr />
 						<div id="gridDeliveryOrderCost"></div>
 					</div>
 				</div>

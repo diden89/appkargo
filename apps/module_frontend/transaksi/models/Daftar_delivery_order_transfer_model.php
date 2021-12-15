@@ -6,10 +6,10 @@
  * @edit Diden89
  * @version 1.0
  * @access Public
- * @path /appkargo/apps/module_frontend/transaksi/models/Delivery_order_cost_model.php
+ * @path /appkargo/apps/module_frontend/transaksi/models/Daftar_delivery_order_transfer_model.php
  */
 
-class Delivery_order_cost_model extends NOOBS_Model
+class Daftar_delivery_order_transfer_model extends NOOBS_Model
 {
 	public function load_data_daftar_transfer($params = array())
 	{

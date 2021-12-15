@@ -30,6 +30,13 @@ class Delivery_order_cost_model extends NOOBS_Model
 			$this->db->where('doc.doc_id', $params['txt_id']);
 		}
 
+		if (isset($params['from_date']) && ! empty($params['from_date']))
+		{
+			$this->db->where('doc.doc_created_date >=', date('Y-m-d h:i:s', strtotime($params['from_date'])));
+			$this->db->where('doc.doc_created_date <=', date('Y-m-d h:i:s', strtotime($params['to_date'])));
+		}
+
+
 		$this->db->where('doc.doc_is_active', 'Y');
 		$this->db->order_by('doc.doc_no_trx', 'ASC');
 

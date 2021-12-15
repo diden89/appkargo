@@ -38,8 +38,17 @@ class Delivery_order_cost extends NOOBS_Controller
 		if (isset($_POST['action']) && $_POST['action'] == 'load_data')
 		{
 			$post = $this->input->post(NULL, TRUE);
+			
+			if(!isset($post['from_date']) && empty($post['from_date']))
+			{
+				$first = date('Y-m-01');
+
+				$post['from_date'] 	= $first;
+				$post['to_date'] 	= date('Y-m-t',strtotime($first));
+			}
+
 			$data = $this->db_doc->load_data($post);
-		
+
 			$num = 1;
 
 			foreach ($data->data as $k => $v)
@@ -353,9 +362,7 @@ class Delivery_order_cost extends NOOBS_Controller
 			$delete_data_order_cost_detail = $this->db_doc->delete_data_order_cost_detail($post);
 			$delete_data_ref_transaksi = $this->db_doc->delete_data_ref_transaksi($post);
 			
-			return $load_data = $this->load_data(array('action' => 'load_data'));
-
-			// echo json_encode(array('success' => $delete_data));
+			echo json_encode(array('success' => TRUE));
 		}
 		else $this->show_404();
 	}
