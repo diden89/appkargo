@@ -33,9 +33,11 @@ const reportPiutang = {
 			}
 		});
 	}
+
 	
 };
 
 $(document).ready(function() {
 	reportPiutang.init();
+
 });

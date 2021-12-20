@@ -50,26 +50,20 @@ class Report_income_partner_model extends NOOBS_Model
 		return $this->db->get();
  	}
 
-	public function load_data_rekap_tagihan($params = array())
+	public function load_data_rekap_income_rekanan($params = array())
 	{
 		// print_r($params);exit;
 		// $this->db->select('*,(select (dod.dod_shipping_qty * sh_cost) as cost from shipping where sh_rsd_id = c.c_district_id) as ongkir');
 		$this->db->select('*');
 		$this->db->from('delivery_order_detail as dod');
-		$this->db->join('customer as c','c.c_id = dod.dod_customer_id','LEFT');
 		$this->db->join('sales_order_detail as sod','sod.sod_id = dod.dod_sod_id','LEFT');
 		$this->db->join('sales_order as so','sod.sod_no_trx = so.so_no_trx','LEFT');
-		$this->db->join('ref_sub_district as rsd','rsd.rsd_id = c.c_district_id','LEFT');
+		$this->db->join('ref_sub_district as rsd','rsd.rsd_id = so.so_district_id','LEFT');
 		$this->db->join('vehicle as ve','ve.ve_id = dod.dod_vehicle_id','LEFT');
-		$this->db->join('driver as d','d.d_id = dod.dod_driver_id','LEFT');
-		$this->db->join('item_list as il','il.il_id = sod.sod_item_id','LEFT');
-		$this->db->join('delivery_order_status as dos','dos.dos_dod_id = dod.dod_id','LEFT');
 		
 		if (isset($params['txt_item']) && ! empty($params['txt_item']))
 		{
 			$this->db->like('UPPER(dod.dod_no_trx)', strtoupper($params['txt_item']));
-			$this->db->or_like('UPPER(c.c_name)', strtoupper($params['txt_item']));
-			$this->db->or_like('UPPER(il.il_item_name)', strtoupper($params['txt_item']));
 		}
 
 		if (isset($params['txt_id']) && ! empty($params['txt_id']))
@@ -91,6 +85,10 @@ class Report_income_partner_model extends NOOBS_Model
 		{
 			$this->db->where('so.so_vendor_id', strtoupper($params['vendor']));
 		}
+		if (isset($params['pr_vehicle_id']) && ! empty($params['pr_vehicle_id']))
+		{
+			$this->db->where('dod.dod_vehicle_id', strtoupper($params['pr_vehicle_id']));
+		}
 
 		if (isset($params['date_range1']) && ! empty($params['date_range1']))
 		{
@@ -99,7 +97,7 @@ class Report_income_partner_model extends NOOBS_Model
 		}
 
 		$this->db->where('dod.dod_is_active', 'Y');
-		$this->db->where('so.so_is_pay', 'BL');
+		$this->db->where('so.so_is_pay', 'LN');
 		$this->db->where('so.so_is_status', 'SELESAI');
 		// $this->db->where('dod.dod_is_status !=', 'SELESAI');
 		$this->db->order_by('so.so_created_date', 'DESC');
@@ -250,6 +248,22 @@ class Report_income_partner_model extends NOOBS_Model
 		// $this->db->where('dotd.dotd_is_status !=', 'SELESAI');
 		$this->db->order_by('dotd.dotd_created_date', 'ASC');
 		$this->db->order_by('dotd.dotd_id', 'ASC');
+
+		return $this->db->get();
+ 	}
+
+ 	public function get_partner($params = array())
+	{
+		$this->db->select('*');
+		$this->db->from('partner');
+
+		if (isset($params['partner']) && ! empty($params['partner']))
+		{
+			$this->db->where('pr_id', strtoupper($params['partner']));
+		}
+
+		$this->db->where('pr_is_active', 'Y');
+		$this->db->order_by('pr_code', 'ASC');
 
 		return $this->db->get();
  	}

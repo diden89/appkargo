@@ -64,7 +64,8 @@
 		</tr>
 	</table>
 	<hr>
-	<table class="table_strip">		
+	<table class="table_strip">	
+		<tr></tr>	
 		<tr class="tr">
 			<th width="10" class="tdth">No</th>
 			<th class="tdth">Tipe Order</th>

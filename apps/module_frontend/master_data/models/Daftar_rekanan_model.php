@@ -59,21 +59,21 @@ class Daftar_rekanan_model extends NOOBS_Model
 	{
 		$this->db->select("
 			*,
-			v_id as id,
-			v_vendor_name as text,
-			v_vendor_name as full_name
+			pr_id as id,
+			pr_name as text,
+			pr_name as full_name
 		", FALSE);
 
-		$this->db->from('vendor');
+		$this->db->from('partner');
 
 		if (isset($params['query']) && !empty($params['query'])) 
 		{
 			$query = $params['query'];
-			$this->db->where("(v_vendor_name LIKE '%{$query}%' OR v_vendor_email LIKE '%{$query}%')", NULL, FALSE);
+			$this->db->where("(pr_name LIKE '%{$query}%' OR pr_code LIKE '%{$query}%')", NULL, FALSE);
 		}
 
-		$this->db->where('v_is_active', 'Y');
-		$this->db->order_by('v_vendor_name', 'ASC');
+		$this->db->where('pr_is_active', 'Y');
+		$this->db->order_by('pr_name', 'ASC');
 
 		return $this->create_autocomplete_data($params);
 	}

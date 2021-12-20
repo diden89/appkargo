@@ -15,7 +15,7 @@
 			<h3 class="card-title">Laporan</h3>
 		</div>
 		<div class="card-body">
-		<form action="report_piutang/print_pdf" method="post">			
+		<form action="report_income_partner/print_pdf" method="post">			
 			<div class="row">
 				<div class="col-lg-12">
 					<div class="form-group row">
@@ -46,6 +46,21 @@
 								</div>
 								<input type="text" name="date_range2" class="form-control" id="date_range_2" required="required" data-inputmask-alias="datetime" data-inputmask-inputformat="dd-mm-yyyy" data-mask value="">
 							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="form-group row">
+						<label for="caption" class="col-sm-4 col-form-label">Rekanan</label>
+						<div class="col-sm-8">
+							<select  id="partner" name="partner" class="form-control">
+								<option>--Pilih Rekanan--</option>
+							<?php foreach($partner as $k => $v) { ?>
+								<option value="<?php echo $v->pr_id;?>"><?php echo $v->pr_name;?></option>
+							<?php }?>
+							</select>
 						</div>
 					</div>
 				</div>
