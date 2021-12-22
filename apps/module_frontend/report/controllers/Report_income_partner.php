@@ -69,7 +69,15 @@ class Report_income_partner extends NOOBS_Controller
 		$get_data = $this->db_rip->load_data_rekap_income_rekanan($params);
 		if($get_data->num_rows() > 0)
 		{
-			$data['detail'] = $get_data->result();
+			$num = 0;
+			$getdata = $get_data->result();
+			foreach($getdata as $k => $v)
+			{
+				$num++;
+				$v->num = $num;
+			}
+
+			$data['detail'] = $getdata;
 		}	
 
 		$data_company = $this->db_main->get_company();
@@ -87,7 +95,7 @@ class Report_income_partner extends NOOBS_Controller
 		}
 		$data['date_range_1'] = (isset($params['date_range_1'])) ? $params['date_range_1'] : '';
 		$data['date_range_2'] = (isset($params['date_range_2'])) ? $params['date_range_2'] : '';
-		
+		// print_r($data['detail']);exit;
 		$view = $this->load->view('report/report_income_partner_rekap_pdf', $data, TRUE);
 
 		$this->load->library('pdf_creator');

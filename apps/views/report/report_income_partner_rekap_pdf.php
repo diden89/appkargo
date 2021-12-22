@@ -68,31 +68,27 @@
 		<tr></tr>	
 		<tr class="tr">
 			<th width="10" class="tdth">No</th>
-			<th class="tdth">Tipe Order</th>
+			<th class="tdth">Tanggal Transaksi</th>
 			<th class="tdth">No Transaksi</th>
 			<th class="tdth">Vendor</th>
-			<th class="tdth">Total Terima</th>
-			<th class="tdth">Total Ongkir</th>
-			<th class="tdth">Tujuan</th>
-			<th class="tdth">Tanggal</th>
+			<th class="tdth">Kendaraan</th>
+			<th class="tdth">Total</th>
 		</tr>
 	
 		<?php 
 		$total = array();
-		if(! empty($item)) 
+		if(! empty($detail)) 
 		{
-			foreach ($item as $k => $v) {
-					$total[] = $v->so_total_amount;
+			foreach ($detail as $k => $v) {
+					$total[] = $v->dod_ongkir;
 			?>
 				<tr class="tr">
 					<td class="tdth"><?php echo $v->num; ?></td>
-					<td class="tdth"><?php echo $v->so_tipe_view; ?></td>
+					<td class="tdth"><?php echo date('d-m-Y', strtotime($v->so_created_date)); ?></td>
 					<td class="tdth"><?php echo $v->so_no_trx; ?></td>
 					<td class="tdth"><?php echo $v->v_vendor_name; ?></td>
-					<td class="tdth" style="text-align:center;"><?php echo '<b>'.number_format($v->tot_prog_dos); ?> Kg</b></td>
-					<td class="tdth" style="text-align:right;"><?php echo '<b>Rp. '.number_format($v->so_total_amount); ?></b></td>
-					<td class="tdth"><?php echo $v->rd_name; ?></td>
-					<td class="tdth"><?php echo $v->so_created_date; ?></td>
+					<td class="tdth"><?php echo $v->ve_license_plate; ?></td>
+					<td class="tdth" style="text-align:right;"><?php echo '<b>Rp. '.number_format($v->dod_ongkir); ?></b></td>
 				</tr>
 			<?php
 			} 

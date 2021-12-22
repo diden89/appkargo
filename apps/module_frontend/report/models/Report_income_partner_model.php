@@ -58,6 +58,7 @@ class Report_income_partner_model extends NOOBS_Model
 		$this->db->from('delivery_order_detail as dod');
 		$this->db->join('sales_order_detail as sod','sod.sod_id = dod.dod_sod_id','LEFT');
 		$this->db->join('sales_order as so','sod.sod_no_trx = so.so_no_trx','LEFT');
+		$this->db->join('vendor as v','v.v_id = so.so_vendor_id','LEFT');
 		$this->db->join('ref_sub_district as rsd','rsd.rsd_id = so.so_district_id','LEFT');
 		$this->db->join('vehicle as ve','ve.ve_id = dod.dod_vehicle_id','LEFT');
 		
