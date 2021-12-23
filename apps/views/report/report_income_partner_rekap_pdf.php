@@ -80,7 +80,7 @@
 		if(! empty($detail)) 
 		{
 			foreach ($detail as $k => $v) {
-					$total[] = $v->dod_ongkir;
+					$total[] = $v->so_total_amount;
 			?>
 				<tr class="tr">
 					<td class="tdth"><?php echo $v->num; ?></td>
@@ -88,7 +88,7 @@
 					<td class="tdth"><?php echo $v->so_no_trx; ?></td>
 					<td class="tdth"><?php echo $v->v_vendor_name; ?></td>
 					<td class="tdth"><?php echo $v->ve_license_plate; ?></td>
-					<td class="tdth" style="text-align:right;"><?php echo '<b>Rp. '.number_format($v->dod_ongkir); ?></b></td>
+					<td class="tdth" style="text-align:right;"><?php echo '<b>Rp. '.number_format($v->so_total_amount); ?></b></td>
 				</tr>
 			<?php
 			} 

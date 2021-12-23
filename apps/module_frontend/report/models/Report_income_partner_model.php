@@ -54,7 +54,7 @@ class Report_income_partner_model extends NOOBS_Model
 	{
 		// print_r($params);exit;
 		// $this->db->select('*,(select (dod.dod_shipping_qty * sh_cost) as cost from shipping where sh_rsd_id = c.c_district_id) as ongkir');
-		$this->db->select('*');
+		$this->db->select('so.so_no_trx,ve.ve_license_plate,so.so_created_date,so.so_total_amount,v.v_vendor_name');
 		$this->db->from('delivery_order_detail as dod');
 		$this->db->join('sales_order_detail as sod','sod.sod_id = dod.dod_sod_id','LEFT');
 		$this->db->join('sales_order as so','sod.sod_no_trx = so.so_no_trx','LEFT');
@@ -101,7 +101,8 @@ class Report_income_partner_model extends NOOBS_Model
 		$this->db->where('so.so_is_pay', 'LN');
 		$this->db->where('so.so_is_status', 'SELESAI');
 		// $this->db->where('dod.dod_is_status !=', 'SELESAI');
-		$this->db->order_by('so.so_created_date', 'DESC');
+		$this->db->group_by('so.so_no_trx,so.so_created_date,so.so_total_amount,v.v_vendor_name');
+		// $this->db->order_by('so.so_created_date', 'DESC');
 		// $this->db->order_by('il.il_item_name', 'DESC');
 
 		return $this->db->get();
