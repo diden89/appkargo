@@ -15,7 +15,24 @@
 			<h3 class="card-title">Laporan</h3>
 		</div>
 		<div class="card-body">
-		<form action="tagihan_pembayaran/print_pdf" method="post">			
+		<form action="tagihan_pembayaran/print_pdf" method="post">
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="form-group row">
+						<label for="caption" class="col-sm-4 col-form-label">Tanggal Penagihan</label>
+						<div class="input-group col-8">
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<span class="input-group-text">
+										<i class="far fa-calendar-alt"></i>
+									</span>
+								</div>
+								<input type="text" name="tanggal_penagihan" class="form-control" id="tanggal_penagihan" required="required" data-inputmask-alias="datetime" data-inputmask-inputformat="dd-mm-yyyy" data-mask value="">
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>			
 			<div class="row">
 				<div class="col-lg-12">
 					<div class="form-group row">
@@ -96,6 +113,57 @@
 						<label for="caption" class="col-sm-4 col-form-label">Catatan</label>
 						<div class="input-group col-8">
 							<textarea name="note" class="form-control"></textarea>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="form-group row">
+						<label for="caption" class="col-sm-4 col-form-label">Setting Manual</label>
+						<div class="input-group col-8">
+							<input type="checkbox" id="setting_manual">
+						</div>
+						*<i>Jika ingin setting manual, centang ini</i>
+					</div>
+				</div>
+			</div>
+			<div class="row" id="company_name" hidden>
+				<div class="col-lg-12">
+					<div class="form-group row">
+						<label for="caption" class="col-sm-4 col-form-label">Nama Perusahaan</label>
+						<div class="input-group col-8">
+							<input type="text" name="nama_perusahaan" class="form-control" id="nama_perusahaan">
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row" id="owner" hidden>
+				<div class="col-lg-12">
+					<div class="form-group row">
+						<label for="caption" class="col-sm-4 col-form-label">Pimpinan</label>
+						<div class="input-group col-8">
+							<input type="text" name="pimpinan" class="form-control" id="pimpinan">
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row" id="phone" hidden>
+				<div class="col-lg-12">
+					<div class="form-group row">
+						<label for="caption" class="col-sm-4 col-form-label">No Telp</label>
+						<div class="input-group col-8">
+							<input type="text" name="no_telp" class="form-control" id="no_telp">
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row" id="add_company" hidden>
+				<div class="col-lg-12">
+					<div class="form-group row">
+						<label for="caption" class="col-sm-4 col-form-label">Alamat Perusahaan</label>
+						<div class="input-group col-8">
+							<textarea name="alamat_perusahaan" id="alamat_perusahaan" class="form-control"></textarea>
 						</div>
 					</div>
 				</div>

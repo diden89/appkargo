@@ -44,7 +44,7 @@ class Tagihan_pembayaran extends NOOBS_Controller
 	public function print_pdf()
 	{
 		$post = $this->input->post();
-		
+		// print_r($post);exit;
 		if(! empty($post))
 		{
 			$get_file_template = $this->db_tp->load_template_laporan($post);
@@ -101,21 +101,23 @@ class Tagihan_pembayaran extends NOOBS_Controller
 
 		$data['item'] = $result;
 
-		// print_r($data);exit;
 		// print_r($params);exit;
 		$data['header_title'] = 'TAGIHAN EKSPEDISI';
 
 		if($data_company->num_rows() > 0)
 		{
 			$data_company = $data_company->row();
-			$data['company_title'] = $data_company->rc_name;
-			$data['address'] = $data_company->rc_address;
-			$data['phone'] = $data_company->rc_phone;
+			$data['company_title'] = ( ! empty($params['nama_perusahaan'])) ? $params['nama_perusahaan'] : $data_company->rc_name;
+			$data['address'] = ( ! empty($params['alamat_perusahaan'])) ? $params['alamat_perusahaan'] : $data_company->rc_address;
+			$data['phone'] = ( ! empty($params['no_telp'])) ? $params['no_telp'] : $data_company->rc_phone;
+			$data['owner'] = ( ! empty($params['pimpinan'])) ? $params['pimpinan'] : $data_company->rc_owner;
 			$data['logo'] = $data_company->rc_logo;
 
 		}
+		
 		$data['date_range_1'] = (isset($params['date_range_1'])) ? $params['date_range_1'] : '';
 		$data['date_range_2'] = (isset($params['date_range_2'])) ? $params['date_range_2'] : '';
+		$data['tanggal_penagihan'] = (isset($params['tanggal_penagihan'])) ? $this->tanggal_indo($params['tanggal_penagihan']) : '';
 		$data['no_tagihan'] = $params['no_tagihan'];
 		$data['note'] = $params['note'];
 
@@ -173,5 +175,25 @@ class Tagihan_pembayaran extends NOOBS_Controller
 		}     
 		return $temp;
 	}
+
+	function tanggal_indo($tanggal)
+	{
+		$bulan = array (1 =>   'Januari',
+					'Februari',
+					'Maret',
+					'April',
+					'Mei',
+					'Juni',
+					'Juli',
+					'Agustus',
+					'September',
+					'Oktober',
+					'November',
+					'Desember'
+				);
+		$split = explode('-', $tanggal);
+		return $split[0] . ' ' . $bulan[ (int)$split[1] ] . ' ' . $split[2];
+	}
+
 
 }

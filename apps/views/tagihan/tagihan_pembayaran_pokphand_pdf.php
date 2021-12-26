@@ -128,13 +128,13 @@
 			<td class="tdth" style="font-style:bold;text-align: right">Rp. <?php echo number_format(array_sum($total)); ?></td>
 		</tr>
 	</table>
-	<p style="margin-top: 10pt; margin-left: 283.5pt; margin-bottom: 0pt; text-align: center; line-height: normal;"><strong><span style="font-family: Cambria;font-size: 11px;">Padang, <?php echo date('d F Y');?></span></strong></p>
+	<p style="margin-top: 10pt; margin-left: 283.5pt; margin-bottom: 0pt; text-align: center; line-height: normal;"><strong><span style="font-family: Cambria;font-size: 11px;">Padang, <?php echo $tanggal_penagihan;?></span></strong></p>
 <p style="margin-top: 0pt; margin-left: 283.5pt; margin-bottom: 0pt; text-align: center; line-height: normal; font-size: 11px;"><strong>Diketahui,</strong></p>
 <p style="margin-top: 0pt; margin-left: 283.5pt; margin-bottom: 0pt; text-align: center; line-height: normal; font-size: 11px;"><strong>&nbsp;</strong></p>
 <p style="margin-top: 0pt; margin-left: 283.5pt; margin-bottom: 0pt; text-align: center; line-height: normal; font-size: 11px;"><strong>&nbsp;</strong></p>
 <p style="margin-top: 0pt; margin-left: 283.5pt; margin-bottom: 0pt; text-align: center; line-height: normal; font-size: 11px;"><strong>&nbsp;</strong></p>
-<p style="margin-top: 0pt; margin-left: 283.5pt; margin-bottom: 0pt; text-align: center; line-height: normal; font-size: 11px;"><strong><u>WIWIT SYAFIANITA</u></strong></p>
-<p style="margin-top: 0pt; margin-left: 283.5pt; margin-bottom: 0pt; text-align: center; line-height: normal; font-size: 11px;"><strong>Pimpinan Bintang Permata Ekspedisi</strong></p>
+<p style="margin-top: 0pt; margin-left: 283.5pt; margin-bottom: 0pt; text-align: center; line-height: normal; font-size: 11px;"><strong><u><?php echo strtoupper($owner);?></u></strong></p>
+<p style="margin-top: 0pt; margin-left: 283.5pt; margin-bottom: 0pt; text-align: center; line-height: normal; font-size: 11px;"><strong>Pimpinan <?php echo $company_title;?></strong></p>
 <p style="margin-top: 0pt; margin-bottom: 10pt;">&nbsp;</p>
 </body>
 </html>
