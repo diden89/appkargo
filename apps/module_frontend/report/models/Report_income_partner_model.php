@@ -35,10 +35,10 @@ class Report_income_partner_model extends NOOBS_Model
 			$this->db->where('so.so_id', strtoupper($params['txt_id']));
 		}
 
-		if (isset($params['date_range1']) && ! empty($params['date_range1']))
+		if (isset($params['date_range_1']) && ! empty($params['date_range_1']))
 		{
-			$this->db->where('so.so_created_date >=', date('Y-m-d',strtotime($params['date_range1'])));
-			$this->db->where('so.so_created_date <=', date('Y-m-d',strtotime($params['date_range2'])));
+			$this->db->where('so.so_created_date >=', date('Y-m-d',strtotime($params['date_range_1'])));
+			$this->db->where('so.so_created_date <=', date('Y-m-d',strtotime($params['date_range_2'])));
 		}
 
 		$this->db->where('so.so_is_active', 'Y');
@@ -54,7 +54,10 @@ class Report_income_partner_model extends NOOBS_Model
 	{
 		// print_r($params);exit;
 		// $this->db->select('*,(select (dod.dod_shipping_qty * sh_cost) as cost from shipping where sh_rsd_id = c.c_district_id) as ongkir');
-		$this->db->select('so.so_no_trx,ve.ve_license_plate,so.so_created_date,so.so_total_amount,v.v_vendor_name');
+		$this->db->select("
+			so.so_no_trx,ve.ve_license_plate,so.so_created_date,so.so_total_amount,v.v_vendor_name,
+			(select sum(docd.docd_amount) as biaya from delivery_order_cost as doc left join delivery_order_cost_detail as docd on docd.docd_doc_no_trx = doc.doc_no_trx where doc.doc_so_no_trx = so.so_no_trx and docd.docd_vehicle_id = '{$params['vehicle_id']}') as biaya"
+			);
 		$this->db->from('delivery_order_detail as dod');
 		$this->db->join('sales_order_detail as sod','sod.sod_id = dod.dod_sod_id','LEFT');
 		$this->db->join('sales_order as so','sod.sod_no_trx = so.so_no_trx','LEFT');
@@ -86,15 +89,15 @@ class Report_income_partner_model extends NOOBS_Model
 		{
 			$this->db->where('so.so_vendor_id', strtoupper($params['vendor']));
 		}
-		if (isset($params['pr_vehicle_id']) && ! empty($params['pr_vehicle_id']))
+		if (isset($params['vehicle_id']) && ! empty($params['vehicle_id']))
 		{
-			$this->db->where('dod.dod_vehicle_id', strtoupper($params['pr_vehicle_id']));
+			$this->db->where('dod.dod_vehicle_id', strtoupper($params['vehicle_id']));
 		}
 
-		if (isset($params['date_range1']) && ! empty($params['date_range1']))
+		if (isset($params['date_range_1']) && ! empty($params['date_range_1']))
 		{
-			$this->db->where('dod.dod_created_date >=', date('Y-m-d',strtotime($params['date_range1'])));
-			$this->db->where('dod.dod_created_date <=', date('Y-m-d',strtotime($params['date_range2'])));
+			$this->db->where('dod.dod_created_date >=', date('Y-m-d',strtotime($params['date_range_1'])));
+			$this->db->where('dod.dod_created_date <=', date('Y-m-d',strtotime($params['date_range_2'])));
 		}
 
 		$this->db->where('dod.dod_is_active', 'Y');
@@ -169,10 +172,10 @@ class Report_income_partner_model extends NOOBS_Model
 			$this->db->where('d.d_ud_id', strtoupper($params['akses_driver']));
 		}
 
-		if (isset($params['date_range1']) && ! empty($params['date_range1']))
+		if (isset($params['date_range_1']) && ! empty($params['date_range_1']))
 		{
-			$this->db->where('dod.dod_created_date >=', date('Y-m-d',strtotime($params['date_range1'])));
-			$this->db->where('dod.dod_created_date <=', date('Y-m-d',strtotime($params['date_range2'])));
+			$this->db->where('dod.dod_created_date >=', date('Y-m-d',strtotime($params['date_range_1'])));
+			$this->db->where('dod.dod_created_date <=', date('Y-m-d',strtotime($params['date_range_2'])));
 		}
 		$this->db->where('dod.dod_is_active = "Y"');
 		// $this->db->where('dod.dod_is_status !=', 'SELESAI');
@@ -241,10 +244,10 @@ class Report_income_partner_model extends NOOBS_Model
 			$this->db->where('d2.d_ud_id', strtoupper($params['akses_driver']));
 		}
 
-		if (isset($params['date_range1']) && ! empty($params['date_range1']))
+		if (isset($params['date_range_1']) && ! empty($params['date_range_1']))
 		{
-			$this->db->where('dotd.dotd_created_date >=', date('Y-m-d',strtotime($params['date_range1'])));
-			$this->db->where('dotd.dotd_created_date <=', date('Y-m-d',strtotime($params['date_range2'])));
+			$this->db->where('dotd.dotd_created_date >=', date('Y-m-d',strtotime($params['date_range_1'])));
+			$this->db->where('dotd.dotd_created_date <=', date('Y-m-d',strtotime($params['date_range_2'])));
 		}
 		$this->db->where('dotd.dotd_is_active = "Y"');
 		// $this->db->where('dotd.dotd_is_status !=', 'SELESAI');
@@ -256,14 +259,26 @@ class Report_income_partner_model extends NOOBS_Model
 
  	public function get_partner($params = array())
 	{
-		$this->db->select('*');
-		$this->db->from('partner');
+		$this->db->select('pr.*,prd.prd_vehicle_id,ve.ve_license_plate');
+		$this->db->from('partner as pr');
+		$this->db->join('partner_detail as prd','pr.pr_id = prd.prd_pr_id','LEFT');
+		$this->db->join('vehicle as ve','ve.ve_id = prd.prd_vehicle_id','LEFT');
 
 		if (isset($params['partner']) && ! empty($params['partner']))
 		{
-			$this->db->where('pr_id', strtoupper($params['partner']));
+			$this->db->where('pr.pr_id', strtoupper($params['partner']));
 		}
 
+		$this->db->where('pr.pr_is_active', 'Y');
+		$this->db->order_by('pr.pr_code', 'ASC');
+
+		return $this->db->get();
+ 	}
+
+ 	public function get_option_partner($params = array())
+	{
+		$this->db->from('partner');
+		
 		$this->db->where('pr_is_active', 'Y');
 		$this->db->order_by('pr_code', 'ASC');
 

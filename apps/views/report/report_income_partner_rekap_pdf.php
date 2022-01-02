@@ -64,41 +64,59 @@
 		</tr>
 	</table>
 	<hr>
-	<table class="table_strip">	
-		<tr></tr>	
-		<tr class="tr">
-			<th width="10" class="tdth">No</th>
-			<th class="tdth">Tanggal Transaksi</th>
-			<th class="tdth">No Transaksi</th>
-			<th class="tdth">Vendor</th>
-			<th class="tdth">Kendaraan</th>
-			<th class="tdth">Total</th>
-		</tr>
-	
-		<?php 
-		$total = array();
-		if(! empty($detail)) 
+	<?php 
+		foreach($income as $inc)
 		{
-			foreach ($detail as $k => $v) {
-					$total[] = $v->so_total_amount;
-			?>
-				<tr class="tr">
-					<td class="tdth"><?php echo $v->num; ?></td>
-					<td class="tdth"><?php echo date('d-m-Y', strtotime($v->so_created_date)); ?></td>
-					<td class="tdth"><?php echo $v->so_no_trx; ?></td>
-					<td class="tdth"><?php echo $v->v_vendor_name; ?></td>
-					<td class="tdth"><?php echo $v->ve_license_plate; ?></td>
-					<td class="tdth" style="text-align:right;"><?php echo '<b>Rp. '.number_format($v->so_total_amount); ?></b></td>
-				</tr>
-			<?php
-			} 
-		} ?>
+	?>
+		<br/>
+		<table class="table_strip">	
+			<tr class="tr"> 
+				<th class="tdth" colspan="8"><?=$inc['license']?></th>
+			</tr>	
+			<tr class="tr">
+				<th width="10" class="tdth">No</th>
+				<th class="tdth">Tanggal Transaksi</th>
+				<th class="tdth">No Transaksi</th>
+				<th class="tdth">Vendor</th>
+				<th class="tdth">Kendaraan</th>
+				<th class="tdth">Total Order</th>
+				<th class="tdth">Biaya</th>
+				<th class="tdth">Total</th>
+			</tr>
+		
+			<?php 
+			$total = array();
+			if(! empty($inc['detail'])) 
+			{
+				foreach ($inc['detail'] as $k => $v) {
+						// $total[] = $v->so_total_amount;
+						$pendapatan = $v->so_total_amount - $v->biaya; 
+						$total[] = $pendapatan;
+				?>
+					<tr class="tr">
+						<td class="tdth"><?php echo $v->num; ?></td>
+						<td class="tdth"><?php echo date('d-m-Y', strtotime($v->so_created_date)); ?></td>
+						<td class="tdth"><?php echo $v->so_no_trx; ?></td>
+						<td class="tdth"><?php echo $v->v_vendor_name; ?></td>
+						<td class="tdth"><?php echo $v->ve_license_plate; ?></td>
+						<td class="tdth" style="text-align:right;"><?php echo '<b>Rp. '.number_format($v->so_total_amount); ?></b></td>
+						<td class="tdth" style="text-align:right;"><?php echo '<b>Rp. '.number_format($v->biaya); ?></b></td>
+						<td class="tdth" style="text-align:right;"><?php echo '<b>Rp. '.number_format($pendapatan); ?></b></td>
+					</tr>
+				<?php
+				} 
+			} ?>
 
-		<tr class="tr">
-			<td colspan="5" class="tdth">Total</td>
-			<td class="tdth" style="text-align:right;"><?php echo '<b>Rp. '.number_format(array_sum($total)); ?></b></td>
-		</tr>
-	</table>
+			<tr class="tr">
+				<td colspan="7" class="tdth">Total</td>
+				<td class="tdth" style="text-align:right;"><?php echo '<b>Rp. '.number_format(array_sum($total)); ?></b></td>
+			</tr>
+		</table>
+
+
+	<?php
+		}
+	 ?>
 </body>
 </html>
 

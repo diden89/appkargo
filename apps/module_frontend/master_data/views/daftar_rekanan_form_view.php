@@ -49,14 +49,16 @@
 			<div class="form-group row">
 				<label for="url" class="col-sm-4 col-form-label">Kendaraan</label>
 				<div class="col-sm-8">
-					<select class="form-control select2"  name="pr_vehicle_id" id="pr_vehicle_id">
-						<option value="">-Select-</option>
-						<?php
-							foreach($vehicle as $k => $v)
-							{
-								echo '<option value="'.$v->ve_id.'" '.(($data->pr_vehicle_id) == $v->ve_id ? 'selected':"").'>'.$v->ve_license_plate.'</option>';
-							}
-						?>
+					<select id="select-meal-type" name="pr_vehicle_id[]" multiple="multiple" class="form-control">
+					    <?php foreach ($vehicle as $k => $v): ?>
+							<?php 
+								if ($mode == 'edit' && $data !== FALSE && in_array($v->ve_id, $data->prd_vehicle_id)) {
+							?>
+								<option value="<?=$v->ve_id ?>" selected><?=$v->ve_license_plate ?></option>
+							<?php } else { ?>
+								<option value="<?=$v->ve_id ?>"><?=$v->ve_license_plate ?></option>
+							<?php } ?>
+						<?php endforeach ?>
 					</select>
 				</div>
 			</div>	

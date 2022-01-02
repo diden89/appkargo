@@ -14,7 +14,8 @@ class Daftar_rekanan_model extends NOOBS_Model
 	public function load_data_rekanan($params = array())
 	{
 		$this->db->from('partner as pr');
-		$this->db->join('vehicle as ve','ve.ve_id = pr.pr_vehicle_id','LEFT');
+		$this->db->join('partner_detail as prd','prd.prd_pr_id = pr.pr_id','LEFT');
+		$this->db->join('vehicle as ve','ve.ve_id = prd.prd_vehicle_id','LEFT');
 	
 		if (isset($params['txt_item']) && ! empty($params['txt_item']))
 		{
@@ -26,12 +27,6 @@ class Daftar_rekanan_model extends NOOBS_Model
 		{
 			$this->db->where('pr.pr_id', strtoupper($params['txt_id']));
 		}
-
-		// if (isset($params['date_range1']) && ! empty($params['date_range1']))
-		// {
-		// 	$this->db->where('last_datetime >=', $params['date_range1']);
-		// 	$this->db->where('last_datetime <=', $params['date_range2']);
-		// }
 
 		$this->db->where('pr.pr_is_active', 'Y');
 		$this->db->order_by('pr.pr_name', 'ASC');
@@ -116,7 +111,7 @@ class Daftar_rekanan_model extends NOOBS_Model
 		
 		if($params['mode'] == 'add')
 		{
-			$this->db->where('ve_id not in (select pr_vehicle_id from partner where pr_is_active = "Y")');
+			$this->db->where('ve_id not in (select prd_vehicle_id from partner_detail where prd_is_active = "Y")');
 		}
 
 		if (isset($params['ve_id']) && ! empty($params['ve_id']))

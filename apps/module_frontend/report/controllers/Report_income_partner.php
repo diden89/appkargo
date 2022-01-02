@@ -37,7 +37,7 @@ class Report_income_partner extends NOOBS_Controller
 			'<script src="'.base_url('vendors/jquery_acollapsetable/jquery.aCollapTable.js').'"></script>'
 		);
 
-		$this->store_params['partner'] = $this->db_rip->get_partner()->result();
+		$this->store_params['partner'] = $this->db_rip->get_option_partner()->result();
 
 		$this->view('report_income_partner_view');
 	}
@@ -61,24 +61,35 @@ class Report_income_partner extends NOOBS_Controller
 	{
 		$data = array();
 		// print_r($params);exit;
-		$get_partner = $this->db_rip->get_partner($params)->row();		
+		$get_partner = $this->db_rip->get_partner($params)->result();		
 		
-		$data['nama_rekanan'] = $get_partner->pr_name;
-		$params['pr_vehicle_id'] = $get_partner->pr_vehicle_id;
-
-		$get_data = $this->db_rip->load_data_rekap_income_rekanan($params);
-		if($get_data->num_rows() > 0)
+		$i = 0;
+		foreach($get_partner as $v => $k)
 		{
-			$num = 0;
-			$getdata = $get_data->result();
-			foreach($getdata as $k => $v)
-			{
-				$num++;
-				$v->num = $num;
-			}
+			$data['income'][$i]['ve_id'] = $k->prd_vehicle_id;
+			$data['income'][$i]['license'] = $k->ve_license_plate;
 
-			$data['detail'] = $getdata;
-		}	
+			unset($params['vehicle_id']);
+
+			$params['vehicle_id'] = $k->prd_vehicle_id;
+
+			$get_data = $this->db_rip->load_data_rekap_income_rekanan($params);
+			
+			if($get_data->num_rows() > 0)
+			{
+				$num = 0;
+				$getdata = $get_data->result();
+				foreach($getdata as $k => $v)
+				{
+					$num++;
+					$v->num = $num;
+				}
+
+				$data['income'][$i]['detail'] = $getdata;
+			}	
+
+			$i++;
+		}
 
 		$data_company = $this->db_main->get_company();
 
