@@ -14,8 +14,8 @@ class Daftar_rekanan_model extends NOOBS_Model
 	public function load_data_rekanan($params = array())
 	{
 		$this->db->from('partner as pr');
-		$this->db->join('partner_detail as prd','prd.prd_pr_id = pr.pr_id','LEFT');
-		$this->db->join('vehicle as ve','ve.ve_id = prd.prd_vehicle_id','LEFT');
+		// $this->db->join('partner_detail as prd','prd.prd_pr_id = pr.pr_id','LEFT');
+		// $this->db->join('vehicle as ve','ve.ve_id = prd.prd_vehicle_id','LEFT');
 	
 		if (isset($params['txt_item']) && ! empty($params['txt_item']))
 		{
@@ -33,6 +33,29 @@ class Daftar_rekanan_model extends NOOBS_Model
 
 		return $this->create_result($params);
  	}
+
+ // 	public function load_data_rekanan($params = array())
+	// {
+	// 	$this->db->from('partner as pr');
+	// 	$this->db->join('partner_detail as prd','prd.prd_pr_id = pr.pr_id','LEFT');
+	// 	$this->db->join('vehicle as ve','ve.ve_id = prd.prd_vehicle_id','LEFT');
+	
+	// 	if (isset($params['txt_item']) && ! empty($params['txt_item']))
+	// 	{
+	// 		$this->db->like('UPPER(pr.pr_name)', strtoupper($params['txt_item']));
+	// 		$this->db->like_or('UPPER(pr.pr_code)', strtoupper($params['txt_item']));
+	// 	}
+
+	// 	if (isset($params['txt_id']) && ! empty($params['txt_id']))
+	// 	{
+	// 		$this->db->where('pr.pr_id', strtoupper($params['txt_id']));
+	// 	}
+
+	// 	$this->db->where('pr.pr_is_active', 'Y');
+	// 	$this->db->order_by('pr.pr_name', 'ASC');
+
+	// 	return $this->create_result($params);
+ // 	}
 
  	public function get_data_rekanan($params = array())
 	{

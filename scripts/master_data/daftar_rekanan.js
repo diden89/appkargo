@@ -64,10 +64,10 @@ $(document).ready(function() {
 					title: 'Email', 
 					data: 'pr_email',
 				},
-				{	
-					title: 'Kendaraan', 
-					data: 've_license_plate',
-				},
+				// {	
+				// 	title: 'Kendaraan', 
+				// 	data: 've_license_plate',
+				// },
 				{
 					title: 'Action',
 					size: 'medium',
@@ -79,6 +79,14 @@ $(document).ready(function() {
 					},
 					content: [
 						{
+							text: '',
+							class: 'btn-warning',
+							id: 'btnView',
+							icon: 'far fa-eye',
+							click: function(row, rowData) {
+								REKANAN.popup_view('edit', 'Edit', rowData);
+							}
+						},{
 							text: '',
 							class: 'btn-success',
 							id: 'btnEdit',
