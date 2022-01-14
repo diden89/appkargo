@@ -60,17 +60,61 @@ class Daftar_rekanan extends NOOBS_Controller
 		{
 			$post = $this->input->post(NULL, TRUE);
 			
-			$post['vehicle'] = $this->db_rekanan->get_vehicle($post)->result();
+			$post['vehicle'] = $this->db_rekanan->get_vehicle_detail($post)->result();
+			// $post['vehicle'] = $this->db_rekanan->get_vehicle($post)->result();
 			$post['user_detail'] = $this->db_rekanan->get_user_login($post)->result();
 			
 			if($post['mode'] == 'edit')
 			{
 				$post['txt_id'] = $post['data']['pr_id'];
+
+				$partner_detail = $this->db_rekanan->get_partner_detail($post)->result();
+				foreach($partner_detail as $k => $v)
+				{
+					$post['prd_det'][] = $v->prd_vehicle_id;
+				}
+
 				$post['data'] = $this->db_rekanan->get_data_rekanan($post)->row();
 
 			}
-			// print_r($post);exit;
+			
 			$this->_view('daftar_rekanan_form_view', $post);
+		}
+		else $this->show_404();
+	}
+
+	public function rekanan_detail_view()
+	{
+
+		if (isset($_POST['action']) && $_POST['action'] == 'rekanan_detail_view')
+		{
+			$post = $this->input->post(NULL, TRUE);
+			
+			$vehicle = $this->db_rekanan->get_vehicle_detail($post)->result();
+
+			$num = 1;
+			foreach($vehicle as $k => $v)
+			{
+				$v->num = $num;
+				$num++;
+			}
+
+			$post['vehicle'] = $vehicle;
+
+			$user_detail = $this->db_rekanan->get_user_login($post);
+			if($user_detail->num_rows > 0)
+			{
+				$post['user_detail'] = $user_detail->row();
+			}
+			else
+			{
+				$post['user_detail'] = "";
+			}
+			$post['txt_id'] = $post['data']['pr_id'];
+			$post['data'] = $this->db_rekanan->get_data_rekanan($post)->row();
+
+			// print_r($post);exit;
+			$this->_view('daftar_rekanan_detail_view', $post);
 		}
 		else $this->show_404();
 	}

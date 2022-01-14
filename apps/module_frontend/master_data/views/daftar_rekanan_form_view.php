@@ -52,7 +52,7 @@
 					<select id="select-meal-type" name="pr_vehicle_id[]" multiple="multiple" class="form-control">
 					    <?php foreach ($vehicle as $k => $v): ?>
 							<?php 
-								if ($mode == 'edit' && $data !== FALSE && in_array($v->ve_id, $data->prd_vehicle_id)) {
+								if ($mode == 'edit' && $data !== FALSE && in_array($v->ve_id, $prd_det)) {
 							?>
 								<option value="<?=$v->ve_id ?>" selected><?=$v->ve_license_plate ?></option>
 							<?php } else { ?>

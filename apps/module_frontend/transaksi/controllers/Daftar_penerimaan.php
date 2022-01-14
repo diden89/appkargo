@@ -59,7 +59,7 @@ class Daftar_penerimaan extends NOOBS_Controller
 			$post = $this->input->post(NULL, TRUE);
 
 			$cek_driver_akses = $this->db_daftar_penerimaan->cek_driver_akses($params);
-
+			// echo $cek_driver_akses->num_rows();exit;
 			if($cek_driver_akses->num_rows() > 0)
 			{
 				$post['akses_driver'] = $params['user_id'];
@@ -68,10 +68,10 @@ class Daftar_penerimaan extends NOOBS_Controller
 			{
 				$post['akses_driver'] = "";
 			}	
+			// print_r($post);exit;
 
 			$post['date_range1'] = (! empty($post['date_range1'])) ? date('Y-m-d',strtotime($post['date_range1'])) : date('Y-m-01');
 			$post['date_range2'] = (! empty($post['date_range2'])) ? date('Y-m-d',strtotime($post['date_range2'])) : date('Y-m-t');
-
 			$load_data = $this->db_daftar_penerimaan->load_data_daftar_penerimaan($post);
 			
 			// print_r($load_data);exit;

@@ -73,6 +73,22 @@ class Daftar_rekanan_model extends NOOBS_Model
 		return $this->db->get();
  	}
 
+	public function get_partner_detail($params = array())
+	{
+		$this->db->select('*');
+		$this->db->from('partner_detail');
+
+		if (isset($params['txt_id']) && ! empty($params['txt_id']))
+		{
+			$this->db->where('prd_pr_id', strtoupper($params['txt_id']));
+		}
+
+		$this->db->where('prd_is_active', 'Y');
+		$this->db->order_by('prd_id', 'ASC');
+
+		return $this->db->get();
+ 	}
+
  	public function get_autocomplete_data($params = array())
 	{
 		$this->db->select("
@@ -145,13 +161,35 @@ class Daftar_rekanan_model extends NOOBS_Model
 		return $this->db->get('vehicle');
 	}
 
+	public function get_vehicle_detail($params = array())
+	{
+		$this->db->from('partner_detail as prd');
+		$this->db->join('vehicle as ve','prd.prd_vehicle_id = ve.ve_id','LEFT');
+
+		$this->db->where('ve.ve_is_active', 'Y');
+
+		if (isset($params['pr_id']) && ! empty($params['pr_id']))
+		{
+			$this->db->where('prd.prd_pr_id', strtoupper($params['pr_id']));
+		}
+
+		return $this->db->get();
+	}
+
 	public function get_user_login($params = array())
 	{
 		$this->db->where('ud_is_active', 'Y');
+
 		if($params['mode'] == 'add')
 		{
 			$this->db->where('ud_id not in (select pr_ud_id from partner where pr_is_active = "Y" and pr_ud_id is not null)');
+		}	
+
+		if($params['mode'] == 'view' )
+		{
+			$this->db->where('ud_id',$params['data']['pr_ud_id']);
 		}
+
 		return $this->db->get('user_detail');
 	}
 

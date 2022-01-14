@@ -84,7 +84,7 @@ $(document).ready(function() {
 							id: 'btnView',
 							icon: 'far fa-eye',
 							click: function(row, rowData) {
-								REKANAN.popup_view('edit', 'Edit', rowData);
+								REKANAN.popup_view('view', 'Detail', rowData);
 							}
 						},{
 							text: '',
@@ -213,7 +213,32 @@ $(document).ready(function() {
 					}
 				}]
 			});
-		}
+		},
+		popup_view: function(mode = 'view', title= 'Detail', data = false)
+		{
+			$.popup({
+				title: title + ' Rekanan',
+				id: mode + 'UserPopup',
+				size: 'medium',
+				proxy: {
+					url: siteUrl('master_data/daftar_rekanan/rekanan_detail_view'),
+					params: {
+						action: 'rekanan_detail_view',
+						mode: mode,
+						data: data
+					}
+				},
+				buttons: [{
+					btnId: 'closePopup',
+					btnText:'Close',
+					btnClass: 'secondary',
+					btnIcon: 'fas fa-times',
+					onclick: function(popup) {
+						popup.close();
+					}
+				}]
+			});
+		},
 	};
 
 	$('#btnAdd').click(function(e) {
