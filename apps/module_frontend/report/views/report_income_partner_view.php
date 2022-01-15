@@ -72,7 +72,7 @@
 						<div class="input-group col-8">
 							<select name="type" class="form-control">
 								<option value="rekap">Rekap</option>
-								<option value="detail">Detail</option>
+								<!-- <option value="detail">Detail</option> -->
 							</select>
 						</div>
 					</div>

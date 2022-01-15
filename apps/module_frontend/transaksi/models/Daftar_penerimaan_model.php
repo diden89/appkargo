@@ -50,6 +50,7 @@ class Daftar_penerimaan_model extends NOOBS_Model
 			$this->db->like('UPPER(dod.dod_no_trx)', strtoupper($params['txt_item']));
 			$this->db->or_like('UPPER(c.c_name)', strtoupper($params['txt_item']));
 			$this->db->or_like('UPPER(il.il_item_name)', strtoupper($params['txt_item']));
+			$this->db->or_like('UPPER(ve.ve_license_plate)', strtoupper($params['txt_item']));
 		}
 
 		if (isset($params['txt_id']) && ! empty($params['txt_id']))
