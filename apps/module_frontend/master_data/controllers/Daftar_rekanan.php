@@ -73,7 +73,7 @@ class Daftar_rekanan extends NOOBS_Controller
 				{
 					$post['prd_det'][] = $v->prd_vehicle_id;
 				}
-
+				print_r($post['prd_det']);exit;
 				$post['data'] = $this->db_rekanan->get_data_rekanan($post)->row();
 
 			}
@@ -123,14 +123,13 @@ class Daftar_rekanan extends NOOBS_Controller
 	public function store_data()
 	{
 		$post = $this->input->post(NULL, TRUE);
-		print_r($post);exit;
+		// print_r($post);exit;
 		if (isset($_POST['action']) && $_POST['action'] == 'store_data')
 		{
 			unset($post['action']);
 		
-			$store_data = $this->db_rekanan->store_data($post);
-			
-			$get
+			$store_data = $this->db_rekanan->store_data($post,TRUE);
+			echo $store_data;exit;
 			echo json_encode(array('success' => $store_data));
 		}
 		else $this->show_404();

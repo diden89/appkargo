@@ -78,9 +78,9 @@ class Daftar_rekanan_model extends NOOBS_Model
 		$this->db->select('*');
 		$this->db->from('partner_detail');
 
-		if (isset($params['txt_id']) && ! empty($params['txt_id']))
+		if (isset($params['data']['pr_id']) && ! empty($params['data']['pr_id']))
 		{
-			$this->db->where('prd_pr_id', strtoupper($params['txt_id']));
+			$this->db->where('prd_pr_id', strtoupper($params['data']['pr_id']));
 		}
 
 		$this->db->where('prd_is_active', 'Y');
@@ -125,25 +125,59 @@ class Daftar_rekanan_model extends NOOBS_Model
 			'pr_ud_id' => $params['txt_user_id']
 		);
 
-		if ($params['mode'] == 'add') return $this->add($new_params, TRUE);
-		else return $this->edit($new_params, "pr_id = {$params['txt_id']}");
+		if ($params['mode'] == 'add') 
+		{
+			$insert_id =  $this->add($new_params, TRUE);
+
+			foreach($params['pr_vehicle_id'] as $val)
+			{
+				$data = array(
+					'prd_pr_id' => $insert_id,
+					'prd_vehicle_id' => $val
+				);
+
+				$this->store_data_detail($data);
+
+			}
+		}
+		else
+		{
+			$edit =  $this->edit($new_params, "pr_id = {$params['txt_id']}");
+
+			$del = $this->db->delete('partner_detail', array('prd_pr_id' => $params['txt_id']));
+
+			foreach($params['pr_vehicle_id'] as $val)
+			{
+				$data = array(
+					'prd_pr_id' => $insert_id,
+					'prd_vehicle_id' => $val
+				);
+
+				$this->store_data_detail($data);
+
+			}
+		} 
 	}
 
 	public function store_data_detail($params = array())
 	{
-		$this->table = 'partner';
+		$this->table = 'partner_detail';
 
 		$new_params = array(
-			'pr_code' => $params['kode_rekanan'],
-			'pr_name' => $params['rekanan_name'],
-			'pr_phone' => $params['pr_phone'],
-			'pr_email' => $params['pr_email'],
-			// 'pr_vehicle_id' => $params['pr_vehicle_id'],
-			'pr_ud_id' => $params['txt_user_id']
+			'prd_pr_id' => $params['prd_pr_id'],
+			'prd_vehicle_id' => $params['prd_vehicle_id']
 		);
 
-		if ($params['mode'] == 'add') return $this->add($new_params, TRUE);
-		else return $this->edit($new_params, "pr_id = {$params['txt_id']}");
+		return $this->add($new_params, TRUE);
+
+		// if ($params['mode'] == 'add') 
+		// {
+		// }
+		// else 
+		// {
+		// 	$cek = $this->db->query("select * from partner_detail where prd_pr_id = {$data['prd_pr_id']} AND prd_vehicle_id != {$data['prd_vehicle_id']}");
+		// 	return $this->edit(array('prd_is_active' => 'N'), "prd_pr_id != {$data['prd_pr_id']} OR prd_vehicle_id != {$data['prd_vehicle_id']}");
+		// } 
 	}
 
 	public function delete_data($params = array())
