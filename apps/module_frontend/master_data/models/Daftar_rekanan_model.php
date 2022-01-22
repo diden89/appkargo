@@ -121,7 +121,24 @@ class Daftar_rekanan_model extends NOOBS_Model
 			'pr_name' => $params['rekanan_name'],
 			'pr_phone' => $params['pr_phone'],
 			'pr_email' => $params['pr_email'],
-			'pr_vehicle_id' => $params['pr_vehicle_id'],
+			// 'pr_vehicle_id' => $params['pr_vehicle_id'],
+			'pr_ud_id' => $params['txt_user_id']
+		);
+
+		if ($params['mode'] == 'add') return $this->add($new_params, TRUE);
+		else return $this->edit($new_params, "pr_id = {$params['txt_id']}");
+	}
+
+	public function store_data_detail($params = array())
+	{
+		$this->table = 'partner';
+
+		$new_params = array(
+			'pr_code' => $params['kode_rekanan'],
+			'pr_name' => $params['rekanan_name'],
+			'pr_phone' => $params['pr_phone'],
+			'pr_email' => $params['pr_email'],
+			// 'pr_vehicle_id' => $params['pr_vehicle_id'],
 			'pr_ud_id' => $params['txt_user_id']
 		);
 
