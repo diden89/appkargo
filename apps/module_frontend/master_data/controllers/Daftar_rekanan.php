@@ -60,8 +60,8 @@ class Daftar_rekanan extends NOOBS_Controller
 		{
 			$post = $this->input->post(NULL, TRUE);
 			
-			$post['vehicle'] = $this->db_rekanan->get_vehicle_detail($post)->result();
-			// $post['vehicle'] = $this->db_rekanan->get_vehicle($post)->result();
+			// $post['vehicle'] = $this->db_rekanan->get_vehicle_detail($post)->result();
+			$post['vehicle'] = $this->db_rekanan->get_vehicle($post)->result();
 			$post['user_detail'] = $this->db_rekanan->get_user_login($post)->result();
 			
 			if($post['mode'] == 'edit')
@@ -73,7 +73,7 @@ class Daftar_rekanan extends NOOBS_Controller
 				{
 					$post['prd_det'][] = $v->prd_vehicle_id;
 				}
-				print_r($post['prd_det']);exit;
+				// print_r($post['prd_det']);exit;
 				$post['data'] = $this->db_rekanan->get_data_rekanan($post)->row();
 
 			}

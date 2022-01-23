@@ -219,9 +219,9 @@ class Daftar_rekanan_model extends NOOBS_Model
 
 		$this->db->where('ve.ve_is_active', 'Y');
 
-		if (isset($params['pr_id']) && ! empty($params['pr_id']))
+		if (isset($params['data']['pr_id']) && ! empty($params['data']['pr_id']))
 		{
-			$this->db->where('prd.prd_pr_id', strtoupper($params['pr_id']));
+			$this->db->where('prd.prd_pr_id', strtoupper($params['data']['pr_id']));
 		}
 
 		return $this->db->get();
