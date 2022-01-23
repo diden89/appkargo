@@ -73,7 +73,7 @@ class Daftar_rekanan extends NOOBS_Controller
 				{
 					$post['prd_det'][] = $v->prd_vehicle_id;
 				}
-				// print_r($post['prd_det']);exit;
+				// print_r($post['vehicle']);exit;
 				$post['data'] = $this->db_rekanan->get_data_rekanan($post)->row();
 
 			}
@@ -102,7 +102,7 @@ class Daftar_rekanan extends NOOBS_Controller
 			$post['vehicle'] = $vehicle;
 
 			$user_detail = $this->db_rekanan->get_user_login($post);
-			if($user_detail->num_rows > 0)
+			if($user_detail->num_rows() > 0)
 			{
 				$post['user_detail'] = $user_detail->row();
 			}
@@ -113,7 +113,6 @@ class Daftar_rekanan extends NOOBS_Controller
 			$post['txt_id'] = $post['data']['pr_id'];
 			$post['data'] = $this->db_rekanan->get_data_rekanan($post)->row();
 
-			// print_r($post);exit;
 			$this->_view('daftar_rekanan_detail_view', $post);
 		}
 		else $this->show_404();
@@ -127,10 +126,10 @@ class Daftar_rekanan extends NOOBS_Controller
 		if (isset($_POST['action']) && $_POST['action'] == 'store_data')
 		{
 			unset($post['action']);
-		
+
 			$store_data = $this->db_rekanan->store_data($post,TRUE);
-			echo $store_data;exit;
-			echo json_encode(array('success' => $store_data));
+
+			echo json_encode(array('success' => TRUE));
 		}
 		else $this->show_404();
 	}

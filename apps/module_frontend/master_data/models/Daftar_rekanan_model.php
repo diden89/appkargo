@@ -34,29 +34,7 @@ class Daftar_rekanan_model extends NOOBS_Model
 		return $this->create_result($params);
  	}
 
- // 	public function load_data_rekanan($params = array())
-	// {
-	// 	$this->db->from('partner as pr');
-	// 	$this->db->join('partner_detail as prd','prd.prd_pr_id = pr.pr_id','LEFT');
-	// 	$this->db->join('vehicle as ve','ve.ve_id = prd.prd_vehicle_id','LEFT');
-	
-	// 	if (isset($params['txt_item']) && ! empty($params['txt_item']))
-	// 	{
-	// 		$this->db->like('UPPER(pr.pr_name)', strtoupper($params['txt_item']));
-	// 		$this->db->like_or('UPPER(pr.pr_code)', strtoupper($params['txt_item']));
-	// 	}
-
-	// 	if (isset($params['txt_id']) && ! empty($params['txt_id']))
-	// 	{
-	// 		$this->db->where('pr.pr_id', strtoupper($params['txt_id']));
-	// 	}
-
-	// 	$this->db->where('pr.pr_is_active', 'Y');
-	// 	$this->db->order_by('pr.pr_name', 'ASC');
-
-	// 	return $this->create_result($params);
- // 	}
-
+ 
  	public function get_data_rekanan($params = array())
 	{
 		$this->db->select('*');
@@ -81,6 +59,11 @@ class Daftar_rekanan_model extends NOOBS_Model
 		if (isset($params['data']['pr_id']) && ! empty($params['data']['pr_id']))
 		{
 			$this->db->where('prd_pr_id', strtoupper($params['data']['pr_id']));
+		}
+
+		if (isset($params['txt_id']) && ! empty($params['txt_id']))
+		{
+			$this->db->where('prd_pr_id', strtoupper($params['txt_id']));
 		}
 
 		$this->db->where('prd_is_active', 'Y');
@@ -129,6 +112,10 @@ class Daftar_rekanan_model extends NOOBS_Model
 		{
 			$insert_id =  $this->add($new_params, TRUE);
 
+			$params['ins_id'] = $insert_id;
+
+			$del = $this->delete_partner_detail($params);
+
 			foreach($params['pr_vehicle_id'] as $val)
 			{
 				$data = array(
@@ -144,12 +131,14 @@ class Daftar_rekanan_model extends NOOBS_Model
 		{
 			$edit =  $this->edit($new_params, "pr_id = {$params['txt_id']}");
 
-			$del = $this->db->delete('partner_detail', array('prd_pr_id' => $params['txt_id']));
+			$params['ins_id'] = $params['txt_id'];
+
+			$del = $this->delete_partner_detail($params);
 
 			foreach($params['pr_vehicle_id'] as $val)
 			{
 				$data = array(
-					'prd_pr_id' => $insert_id,
+					'prd_pr_id' => $params['txt_id'],
 					'prd_vehicle_id' => $val
 				);
 
@@ -170,14 +159,13 @@ class Daftar_rekanan_model extends NOOBS_Model
 
 		return $this->add($new_params, TRUE);
 
-		// if ($params['mode'] == 'add') 
-		// {
-		// }
-		// else 
-		// {
-		// 	$cek = $this->db->query("select * from partner_detail where prd_pr_id = {$data['prd_pr_id']} AND prd_vehicle_id != {$data['prd_vehicle_id']}");
-		// 	return $this->edit(array('prd_is_active' => 'N'), "prd_pr_id != {$data['prd_pr_id']} OR prd_vehicle_id != {$data['prd_vehicle_id']}");
-		// } 
+	}
+
+	public function delete_partner_detail($params = array())
+	{
+		$this->table = 'partner_detail';
+	
+		return $this->delete('prd_pr_id', $params['ins_id']);
 	}
 
 	public function delete_data($params = array())
@@ -202,6 +190,12 @@ class Daftar_rekanan_model extends NOOBS_Model
 		if($params['mode'] == 'add')
 		{
 			$this->db->where('ve_id not in (select prd_vehicle_id from partner_detail where prd_is_active = "Y")');
+		}
+
+		if($params['mode'] == 'edit')
+		{
+			$this->db->where('ve_id not in (select prd_vehicle_id from partner_detail where prd_is_active = "Y")');
+			$this->db->or_where("ve_id in (select prd_vehicle_id from partner_detail where prd_is_active = 'Y' and prd_pr_id = {$params['data']['pr_id']})");
 		}
 
 		if (isset($params['ve_id']) && ! empty($params['ve_id']))

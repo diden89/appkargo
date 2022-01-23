@@ -280,6 +280,11 @@ class Report_income_partner_model extends NOOBS_Model
 		$this->db->from('partner');
 		
 		$this->db->where('pr_is_active', 'Y');
+
+		if ($params['user_group'] == '5')
+		{
+			$this->db->where('pr_ud_id',$params['user_id']);
+		}
 		$this->db->order_by('pr_code', 'ASC');
 
 		return $this->db->get();
