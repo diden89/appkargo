@@ -37,7 +37,12 @@ class Report_income_partner extends NOOBS_Controller
 			'<script src="'.base_url('vendors/jquery_acollapsetable/jquery.aCollapTable.js').'"></script>'
 		);
 
-		$this->store_params['partner'] = $this->db_rip->get_option_partner()->result();
+		$ses = $this->session->userdata();
+		
+		$post['user_id'] = $ses['user_id'];
+		$post['user_group'] = $ses['user_group'];
+
+		$this->store_params['partner'] = $this->db_rip->get_option_partner($post)->result();
 
 		$this->view('report_income_partner_view');
 	}
