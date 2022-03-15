@@ -11,15 +11,26 @@
 class Report_laba_rugi_model extends NOOBS_Model
 {
 
-	public function get_akun_header()
+	public function get_akun_header($where = array())
 	{
+		foreach($where as $wh)
+		{
+			$this->db->or_where('rah_name', $wh);
+		}
+
+		$this->db->order_by('rah_seq', 'DESC');
+
 		return $this->db->get('ref_akun_header');
 	}
 
-	public function get_akun_detail($id)
+	public function get_akun_detail($id = "",$params = array())
 	{
+		$this->db->select("rad.rad_name,rad.rad_id, rad.rad_parent_id, (select sum(trx_total) from ref_transaksi where rad.rad_id in(trx_rad_id_to) and MONTH(trx_created_date) = '{$params['month']}') as total");
+		$this->db->from('ref_akun_detail as rad');
+
 		$this->db->where('rad_akun_header_id', $id);
-		return $this->db->get('ref_akun_detail');
+
+		return $this->db->get();
 	}
 	
 	public function load_data_daftar_sales_order($params = array())

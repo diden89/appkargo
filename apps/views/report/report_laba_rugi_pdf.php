@@ -64,7 +64,17 @@
 		</tr>
 	</table>
 	<hr>
-	
+	<table>
+	<?php
+	foreach($akun as $a)
+	{
+		foreach($a as $d)
+		{
+			echo $d;
+		}
+	}
+	?>
+	</table>
 </body>
 </html>
 

@@ -56,29 +56,41 @@ class Report_laba_rugi extends NOOBS_Controller
 
 		$data['header_title'] = 'Laporan Laba Rugi';
 
+		// $data['akun'] = $this->_build_data();
+		// print_r($data);exit;
 
-		$akun_header = $this->db_llr->get_akun_header()->result();
+		$akun_header = $this->db_llr->get_akun_header(array("PENDAPATAN", 'BIAYA'))->result();
 		$i = 0;
 		foreach($akun_header as $header => $rah)
 		{
-			// $data['akun']['header'][$i] = $rah->rah_name;
-			$akun_detail = $this->db_llr->get_akun_detail($rah->rah_id)->result();
-			$r = 0;
-			foreach($akun_detail as $detail => $rad)
-			{
+			$akun_detail = $this->db_llr->get_akun_detail($rah->rah_id,$params)->result();
+			// $r = 0;
+			// foreach($akun_detail as $detail => $rad)
+			// {
 				// $data['akun'][$rah->rah_name][$i] = $rah->rah_name;
-				$data['akun'][$rah->rah_name][$r] = $rad->rad_name;
-				$r++;
-			}
+				// $data['akun'][$rah->rah_name][$r] = $rad->rad_name;
+			// 	$r++;
+			// }
+
+			$data['akun'][$rah->rah_name][] = $this->_build_data($akun_detail);
 			$i++;
 		}
-		// echo $data['akun'][0];
-		foreach($data['akun'] as $d => $k)
-		{
-			print_r($k);
-		}
-		exit;
-		print_r($data['akun']);exit;
+		// foreach($data['akun'] as $dat)
+		// {
+		// 	foreach($dat as $d)
+		// 	{
+		// 		print_r($d);
+		// 	}
+
+		// }
+		// exit;
+		// // echo $data['akun'][0];
+		// foreach($data['akun'] as $d => $k)
+		// {
+		// 	print_r($k);
+		// }
+		// exit;
+		// print_r($data['akun']);exit;
 
 		if($data_company->num_rows() > 0)
 		{
@@ -110,6 +122,72 @@ class Report_laba_rugi extends NOOBS_Controller
 
 		$pdf_creator->Output('Laporan Laba Rugi_'.date('YmdHis').'.pdf', 'I');
 
+	}
+
+	public function _build_data($data)
+	{
+		$tree_detail_list = $this->_buildTree($data,NULL,0);
+
+		return $tree_detail_list;
+	}
+
+	public function _buildTree($datas, $parent_id = NULL, $idx = 0) 
+	{
+	    $akun_detail = "";
+
+		if ($parent_id == '' || $parent_id == ' ' || $parent_id == NULL || $parent_id == 0 || empty($parent_id))
+		{
+			$parent_id = NULL;
+		}
+
+		$idx++;
+
+		foreach ($datas as $data)
+		{
+
+			$dash = ($parent_id !== NULL) ? str_repeat('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;', $idx) .'' :'';
+
+			if ($data->rad_parent_id == $parent_id)
+			{
+				$children = $this->_buildTree($datas, $data->rad_id, $idx);
+
+				if ($children != "")
+				{
+
+					$akun_detail .= '<tr>';
+					$akun_detail .= '<td>'.$dash.$data->rad_name.'</td>';
+					$akun_detail .= '<td></td>';
+					$akun_detail .= '</tr>';
+					
+					if ($idx > 0)
+					{
+						$akun_detail .= $children;
+					}
+				
+				}
+				else
+				{
+					
+					if($parent_id != NULL && $parent_id != '')
+					{
+						$akun_detail .= '<tr>';
+						$akun_detail .= '<td>'.$dash.$data->rad_name.'</td>';
+						$akun_detail .= '<td>'.number_format($data->total).'</td>';
+						$akun_detail .= '</tr>';
+					}
+					else
+					{
+
+						$akun_detail .= '<tr>';
+						$akun_detail .= '<td>'.$dash.$data->rad_name.'</td>';
+						$akun_detail .= '<td>'.number_format($data->total).'</td>';
+						$akun_detail .= '</tr>';
+					}	
+				}
+			}
+		}
+
+		return $akun_detail;
 	}
 
 	public function month_name($params)

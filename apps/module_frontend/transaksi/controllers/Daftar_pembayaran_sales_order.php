@@ -245,6 +245,17 @@ class Daftar_pembayaran_sales_order extends NOOBS_Controller
 					);
 					$insert_to_trx = $this->db_daftar_pso->store_data_ref_trx($trx_params,array('mode' => $post['mode']));
 
+					$trx_params_other = array(
+						'trx_no_trx' => $post['last_notrx'],
+						'trx_key_lock' => $key_lock,
+						'trx_rad_id_from' => '24',
+						'trx_rad_id_to' => '26',
+						'trx_total' => $v,
+						'trx_created_date' => $post['so_created_date']
+
+					);
+					$insert_to_trx_other = $this->db_daftar_pso->store_data_ref_trx($trx_params_other,array('mode' => $post['mode']));
+
 
 					$i++;					
 				}
