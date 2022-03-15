@@ -38,7 +38,7 @@
 											<i class="far fa-calendar-alt"></i>
 										</span>
 									</div>
-									<input type="text" name="from_date" class="form-control" id="from_date" required="required" data-date="1979-09-16T05:25:07Z" data-date-format="dd-mm-yyyy hh:ii:ss" data-link-field="dtp_input1">
+									<input type="text" name="from_date" class="form-control" id="from_date" required="required" data-date-format="dd-mm-yyyy hh:ii:ss" data-link-field="dtp_input1">
 								</div>
 							</div>
 							<div class="input-group col-5">
@@ -49,7 +49,7 @@
 											<i class="far fa-calendar-alt"></i>
 										</span>
 									</div>
-									<input type="text" name="to_date" class="form-control" id="to_date" required="required" data-date="1979-09-16T05:25:07Z" data-date-format="dd-mm-yyyy hh:ii:ss" data-link-field="dtp_input1">
+									<input type="text" name="to_date" class="form-control" id="to_date" required="required" data-date-format="dd-mm-yyyy hh:ii:ss" data-link-field="dtp_input1">
 								</div>
 							</div>
 							<div class="col-2">

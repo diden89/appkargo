@@ -222,6 +222,7 @@
 		},
 		popup: function(mode = 'add', title= 'Add', data = false)
 		{
+			// console.log(data['doc_no_trx'])
 			$.popup({
 				title: 'Form Biaya Operasional DO',
 				id: mode + 'OrderCostPopup',
@@ -273,6 +274,8 @@
 							ORDERCOST.loadDataItemTemporary();
 
 							$('#txt_sales_order').attr('disabled', true);
+							$('#created_date').val(data['doc_created_date']);
+							// $('#txt_sales_order').val(data['so_no_trx']);
 
 						}	
 
@@ -755,6 +758,7 @@ $(document).ready(function() {
 
 	$('#from_date').datetimepicker({
         //language:  'fr',
+        dateFormat: "yy-mm-dd",
         weekStart: 1,
         todayBtn:  1,
 		autoclose: 1,
@@ -762,7 +766,7 @@ $(document).ready(function() {
 		startView: 2,
 		forceParse: 0,
         showMeridian: 1
-    });
+    }).datepicker("setDate", new Date());
 
     $('#to_date').datetimepicker({
         //language:  'fr',

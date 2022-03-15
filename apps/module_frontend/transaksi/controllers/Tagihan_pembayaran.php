@@ -138,7 +138,7 @@ class Tagihan_pembayaran extends NOOBS_Controller
 					'margin_footer' => 15
 				]);
 
-				$pdf_creator->setHtmlFooter($this->session->userdata('username').'|Created Date : '.date('d-m-Y'));
+				// $pdf_creator->setHtmlFooter($this->session->userdata('username').'|Created Date : '.date('d-m-Y'));
 				$pdf_creator->WriteHTML($view);
 
 				$pdf_creator->Output('Tagihan Pembayaran_'.$params['tl_name'].'_'.date('YmdHis').'.pdf', 'I');

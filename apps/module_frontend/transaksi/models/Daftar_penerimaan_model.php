@@ -75,11 +75,11 @@ class Daftar_penerimaan_model extends NOOBS_Model
 
 		if (isset($params['date_range1']) && ! empty($params['date_range1']))
 		{
-			$this->db->where('dod.dod_created_date >=', $params['date_range1']);
-			$this->db->where('dod.dod_created_date <=', $params['date_range2']);
+			// $this->db->where('dod.dod_created_date >=', $params['date_range1']);
+			// $this->db->where('dod.dod_created_date <=', $params['date_range2']);
 		}
 		$this->db->where('dod.dod_is_active = "Y"');
-		// $this->db->where('dod.dod_is_status !=', 'SELESAI');
+		$this->db->where('dod.dod_is_status !=', 'SELESAI');
 		// $this->db->order_by('dod.dod_created_date', 'DESC');
 
 		$tmp = $this->db->get_temp($this->table);
@@ -147,11 +147,11 @@ class Daftar_penerimaan_model extends NOOBS_Model
 
 		if (isset($params['date_range1']) && ! empty($params['date_range1']))
 		{
-			$this->db->where('dotd.dotd_created_date >=', $params['date_range1']);
-			$this->db->where('dotd.dotd_created_date <=', $params['date_range2']);
+			// $this->db->where('dotd.dotd_created_date >=', $params['date_range1']);
+			// $this->db->where('dotd.dotd_created_date <=', $params['date_range2']);
 		}
+		$this->db->where('dotd.dotd_is_status !=', 'SELESAI');
 		$this->db->where('dotd.dotd_is_active = "Y")');
-		// $this->db->where('dotd.dotd_is_status !=', 'SELESAI');
 		$this->db->order_by('dod_created_date', 'DESC');
 		$this->db->order_by('dod_id', 'DESC');
 

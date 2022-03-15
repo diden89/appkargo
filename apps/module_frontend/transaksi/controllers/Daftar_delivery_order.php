@@ -82,7 +82,7 @@ class Daftar_delivery_order extends NOOBS_Controller
 
 					$number++;
 				}
-				// print_r($result);exit;
+				
 				echo json_encode(array('success' => TRUE, 'data' => $result));
 			}
 			else echo json_encode(array('success' => FALSE, 'msg' => 'Data not found!'));
@@ -184,11 +184,11 @@ class Daftar_delivery_order extends NOOBS_Controller
 		{
 			unset($post['action']);
 
-			$load_data_daftar_delivery_order = $this->db_daftar_delivery_order->load_data_daftar_delivery_order($post);
+			$load_do_data = $this->db_daftar_delivery_order->load_do_data($post);
 
-			if ($load_data_daftar_delivery_order->num_rows() > 0) 
+			if ($load_do_data->num_rows() > 0) 
 			{
-				$result = $load_data_daftar_delivery_order->result();
+				$result = $load_do_data->result();
 				$num = 0;
 
 				foreach ($result as $k => $v)
@@ -236,7 +236,7 @@ class Daftar_delivery_order extends NOOBS_Controller
 
 			}
 
-			$result = $this->db_daftar_delivery_order->load_data_daftar_delivery_order($post);
+			$result = $this->db_daftar_delivery_order->load_do_data($post);
 			
 			if ($result->num_rows() > 0) 
 			{
@@ -479,18 +479,21 @@ class Daftar_delivery_order extends NOOBS_Controller
 		if (isset($_POST['action']) && $_POST['action'] == 'delete_data')
 		{
 			$post = $this->input->post(NULL, TRUE);
+			// print_r($post);exit;
 			$params = array();
 			
 			$get_data = $this->db_daftar_delivery_order->load_data_daftar_delivery_order($post)->row();			
 			// print_r($get_data);
 			// exit;
-			$new_amount = $get_data->so_total_amount - $get_data->so_total_amount;
+			$new_amount = $get_data->so_total_amount - $get_data->dod_ongkir;
 			$params['total_amount'] = $new_amount;
 			$params['so_id'] = $get_data->so_id;
-
-			$new_qty = $get_data->dod_shipping_qty - $get_data->sod_realisasi;
+			
+			$new_qty = $get_data->sod_realisasi - $get_data->dod_shipping_qty;
 			$params['new_qty'] = $new_qty;
 			$params['dod_sod_id'] = $get_data->dod_sod_id;
+			// print_r($params);
+			// exit;
 
 			$update_amount = $this->db_daftar_delivery_order->update_amount_sales_order_detail($params);
 

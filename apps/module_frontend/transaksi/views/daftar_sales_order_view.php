@@ -105,7 +105,7 @@
 											<td>
 												<div class="btn-group btn-group-sm" role="group" aria-label="Action Button">
 													<button type="button" class="btn btn-success" data-id="<?php echo $v->so_id; ?>" data-no_trx="<?php echo $v->so_no_trx; ?>" data-rd_id="<?php echo $v->rd_id; ?>" data-rp_id="<?php echo $v->rd_province_id; ?>" data-so_tipe="<?php echo $v->so_tipe; ?>" onclick="daftarSalesOrderList.showItem(this, 'edit');" ><i class="fas fa-edit"></i></button>
-													<button type="button" class="btn btn-danger" data-id="<?php echo $v->so_id; ?>" onclick="daftarSalesOrderList.deleteDataItem(this);" title="Delete Word"><i class="fas fa-trash-alt"></i></button>
+													<button type="button" class="btn btn-danger" data-id="<?php echo $v->so_id; ?>" data-prog="<?php echo $v->tot_prog; ?>" data-no_trx="<?php echo $v->so_no_trx; ?>" onclick="daftarSalesOrderList.deleteDataItem(this);" title="Delete Word"><i class="fas fa-trash-alt"></i></button>
 												</div>
 											</td>
 										</tr>

@@ -120,9 +120,10 @@ const daftarSalesOrderList = {
 		let body = '';
 
 		$.each(data, (idx, item) => {
+
 			body += '<tr>';
-			body += '<td>' + item.no + '</td>';
-			body += '<td>' + item.so_tipe + '</td>';
+			body += '<td>' + item.num + '</td>';
+			body += '<td>' + item.so_tipe_view + '</td>';
 			body += '<td>' + item.so_no_trx + '</td>';
 			body += '<td>' + item.v_vendor_name + '</td>';
 			body += '<td>' + item.so_qty + ' Kg</td>';
@@ -139,7 +140,7 @@ const daftarSalesOrderList = {
 
 			body += '<td><div class="btn-group btn-group-sm" role="group" aria-label="Action Button">';
 				body += '<button type="button" class="btn btn-success" data-id="' + item.so_id + '" data-no_trx="' + item.so_no_trx + '" data-rd_id="' + item.rd_id + '" data-rp_id="' + item.rd_province_id + '" data-so_tipe="' + item.so_tipe + '" onclick="daftarSalesOrderList.showItem(this, \'edit\');"><i class="fas fa-edit"></i></button>';
-				body += '<button type="button" class="btn btn-danger" data-id="' + item.so_id + '"  data-no_trx="' + item.so_no_trx + '" onclick="daftarSalesOrderList.deleteDataItem(this);"><i class="fas fa-trash-alt"></i></button>';
+				body += '<button type="button" class="btn btn-danger" data-id="' + item.so_id + '"  data-prog="' + item.progress_total + '" data-no_trx="' + item.so_no_trx + '" onclick="daftarSalesOrderList.deleteDataItem(this);"><i class="fas fa-trash-alt"></i></button>';
 			body += '</div>';
 			body += '</td>';
 			body += '</tr>';
@@ -588,45 +589,62 @@ const daftarSalesOrderList = {
 	deleteDataItem: function(el) {
 		const me = this;
 		const $this = $(el);
+		var progress = $this.data('prog');
 
-		Swal.fire({
-			title: 'Are you sure?',
-			text: "Data that has been deleted cannot be restored!",
-			type: 'warning',
-			showCancelButton: true,
-			confirmButtonColor: '#17a2b8',
-			cancelButtonColor: '#d33',
-			confirmButtonText: 'Yes, delete this data!'
-		}).then((result) => {
-			if (result.value) {
-				$.ajax({
-					url: siteUrl('transaksi/daftar_sales_order/delete_data_item'),
-					type: 'POST',
-					dataType: 'JSON',
-					data: {
-						action: 'delete_data_item',
-						txt_id: $this.data('id')
-					},
-					success: function(result) {
-						$('#ignoredItemDataTable tbody').html('');
-						
-						if (result.success) {
-							 me._generateItemDataTable(result.data);
-						}						
-						else if (typeof(result.msg) !== 'undefined') {						
-							toastr.error(result.msg);
-						}
-						else {							
+		if(progress > 0)
+		{
+			Swal.fire({
+				title: 'Order Sedang Dipenuhi',
+				text: "Order sedang dipenuhi, anda tidak dapat melanjutkan proses ini!",
+				type: 'warning',
+				showCancelButton: false,
+				confirmButtonColor: '#17a2b8',
+				cancelButtonColor: '#d33',
+				confirmButtonText: 'Close!'
+			})
+		}
+		else
+		{
+			Swal.fire({
+				title: 'Are you sure?',
+				text: "Data that has been deleted cannot be restored!",
+				type: 'warning',
+				showCancelButton: true,
+				confirmButtonColor: '#17a2b8',
+				cancelButtonColor: '#d33',
+				confirmButtonText: 'Yes, delete this data!'
+			}).then((result) => {
+				if (result.value) {
+					$.ajax({
+						url: siteUrl('transaksi/daftar_sales_order/delete_data_item'),
+						type: 'POST',
+						dataType: 'JSON',
+						data: {
+							action: 'delete_data_item',
+							txt_id: $this.data('id'),
+							no_trx: $this.data('no_trx')
+						},
+						success: function(result) {
+							$('#ignoredItemDataTable tbody').html('');
+							
+							if (result.success) {
+								 me._generateItemDataTable(result.data);
+							}						
+							else if (typeof(result.msg) !== 'undefined') {						
+								toastr.error(result.msg);
+							}
+							else {							
+								toastr.error(msgErr);
+							}
+
+						},
+						error: function(error) {
 							toastr.error(msgErr);
 						}
-
-					},
-					error: function(error) {
-						toastr.error(msgErr);
-					}
-				});
-			}
-		});
+					});
+				}
+			});
+		}
 	},
 	deleteDataTemp: function(el) {
 		const me = this;

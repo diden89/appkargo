@@ -14,6 +14,7 @@ class Daftar_sales_order_model extends NOOBS_Model
 	public function load_data_daftar_sales_order($params = array())
 	{
 		// print_r($params);exit;
+
 		$this->db->select('so.*,rd.*,v.v_vendor_name, (select sum(sod_qty) as so_qty from sales_order_detail where sod_no_trx = so.so_no_trx) as so_qty,
 			(CASE 
 			WHEN so_is_pay = "BL" THEN "BELUM LUNAS"
@@ -24,11 +25,6 @@ class Daftar_sales_order_model extends NOOBS_Model
 		$this->db->join('vendor as v','v.v_id = so.so_vendor_id','LEFT');
 		$this->db->join('ref_district as rd','rd.rd_id = so.so_district_id','LEFT');
 		
-		if (isset($params['txt_item']) && ! empty($params['txt_item']))
-		{
-			$this->db->like('UPPER(so.so_no_trx)', strtoupper($params['txt_item']),'both');
-			$this->db->or_like('UPPER(v.v_vendor_name)', strtoupper($params['txt_item']),'both');
-		}
 
 		if (isset($params['txt_id']) && ! empty($params['txt_id']))
 		{
@@ -42,8 +38,19 @@ class Daftar_sales_order_model extends NOOBS_Model
 		}
 
 		$this->db->where('so.so_is_active', 'Y');
-		// $this->db->or_where('so.so_is_pay', 'BL');
+		
+		if (!isset($params['mode']))
+		{
+			$this->db->or_where('so.so_is_status !=', 'SELESAI');
+		}
+		
 		$this->db->like('v.v_unique_access_key', md5($this->session->userdata('user_id')));
+
+		if (isset($params['txt_item']) && ! empty($params['txt_item']))
+		{
+			$this->db->like('UPPER(so.so_no_trx)', strtoupper($params['txt_item']),'both');
+			$this->db->or_like('UPPER(v.v_vendor_name)', strtoupper($params['txt_item']),'both');
+		}
 		$this->db->order_by('so.so_created_date', 'DESC');
 		$this->db->order_by('so.so_id', 'DESC');
 
@@ -218,6 +225,7 @@ class Daftar_sales_order_model extends NOOBS_Model
 		else $this->edit($new_params, "so_id = {$params['txt_id']}");
 
 		unset($params['txt_id']);
+		unset($params['mode']);
 
 		return $this->load_data_daftar_sales_order($params);
 	}
@@ -243,6 +251,25 @@ class Daftar_sales_order_model extends NOOBS_Model
 		else $this->edit($new_params, "sod_id = {$params['so_id']}");
 
 		return $this->load_data_detail_so(array('no_trx' => $params['sod_no_trx']));
+	}
+
+	public function delete_data_item($params = array()) //di pakai
+	{
+
+		$this->table = 'sales_order';
+		$this->delete('so_no_trx',$params['no_trx']);
+
+		return $this->delete_data_item_detail($params);
+	}
+
+	public function delete_data_item_detail($params = array()) //di pakai
+	{
+
+		$this->table = 'sales_order_detail';
+		$this->delete('sod_no_trx',$params['no_trx']);
+
+		return $this->load_data_daftar_sales_order();
+		
 	}
 
 	public function delete_data_daftar_sales_order($params = array())

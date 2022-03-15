@@ -30,6 +30,15 @@ class Daftar_delivery_order_model extends NOOBS_Model
 			$this->db->like('UPPER(dod.dod_no_trx)', strtoupper($params['txt_item']));
 		}
 
+		if (isset($params['txt_list']) && ! empty($params['txt_list']))
+		{
+			$this->db->like('UPPER(dod.dod_no_trx)', strtoupper($params['txt_list']));
+			$this->db->or_like('UPPER(sod.sod_no_trx)', strtoupper($params['txt_list']));
+			$this->db->or_like('UPPER(c.c_name)', strtoupper($params['txt_list']));
+			$this->db->or_like('UPPER(c.c_address)', strtoupper($params['txt_list']));
+			$this->db->or_like('UPPER(ve.ve_license_plate)', strtoupper($params['txt_list']));
+		}
+
 		if (isset($params['txt_id']) && ! empty($params['txt_id']))
 		{
 			$this->db->where('dod.dod_id', strtoupper($params['txt_id']));
@@ -52,9 +61,37 @@ class Daftar_delivery_order_model extends NOOBS_Model
 		}
 
 		$this->db->where('dod.dod_is_active', 'Y');
-		// $this->db->where('dod.dod_is_status !=', 'SELESAI');
+		
+		if (!isset($params['txt_list']))
+		{
+			$this->db->or_where('dod.dod_is_status !=', 'SELESAI');
+		}
+
 		$this->db->order_by('dod.dod_id', 'DESC');
 		// $this->db->order_by('il.il_item_name', 'ASC');
+
+		return $this->db->get();
+ 	}
+
+ 	public function load_do_data($params = array())
+	{
+	
+		$this->db->select('*');
+		$this->db->from('delivery_order_detail as dod');
+		$this->db->join('customer as c','c.c_id = dod.dod_customer_id','LEFT');
+		$this->db->join('sales_order_detail as sod','sod.sod_id = dod.dod_sod_id','LEFT');
+		$this->db->join('sales_order as so','sod.sod_no_trx = so.so_no_trx','LEFT');
+		$this->db->join('ref_sub_district as rsd','rsd.rsd_id = c.c_district_id','LEFT');
+		$this->db->join('vehicle as ve','ve.ve_id = dod.dod_vehicle_id','LEFT');
+		$this->db->join('driver as d','d.d_id = dod.dod_driver_id','LEFT');
+		$this->db->join('item_list as il','il.il_id = sod.sod_item_id','LEFT');
+
+		if (isset($params['so_id']) && ! empty($params['so_id']))
+		{
+			$this->db->where('so.so_id', strtoupper($params['so_id']));
+		}
+		
+		$this->db->order_by('dod.dod_id', 'DESC');
 
 		return $this->db->get();
  	}
@@ -268,9 +305,15 @@ class Daftar_delivery_order_model extends NOOBS_Model
 
 	public function delete_data_daftar_delivery_order($params = array()) //di pakai
 	{
+
+		// $this->table = 'sales_order_detail';
+
+
 		$this->table = 'delivery_order_detail';
 
-		$this->edit(['dod_is_active' => 'N'], "dod_id = {$params['txt_id']}");
+		$this->delete('dod_id',$params['txt_id']);
+
+		// $this->edit(['dod_is_active' => 'N'], "dod_id = {$params['txt_id']}");
 		
 		return $this->load_data_daftar_delivery_order();
 	}
@@ -413,7 +456,7 @@ class Daftar_delivery_order_model extends NOOBS_Model
 
  	public function get_customer_option($params) //dipakai
 	{
-		$query = "select * from customer where c_district_id in (select rsd.rsd_id from ref_sub_district as rsd left join sales_order as so on rsd.rsd_district_id = so.so_district_id where so.so_id = {$params['so_id']} order by c_name ASC) and c_is_active = 'Y'";
+		$query = "select * from customer where c_district_id in (select rsd.rsd_id from ref_sub_district as rsd left join sales_order as so on rsd.rsd_district_id = so.so_district_id where so.so_id = {$params['so_id']} order by c_name ASC) and c_is_active = 'Y' order by c_name ASC";
 		
 		return $this->db->query($query);
  	}

@@ -153,6 +153,7 @@ class Daftar_sales_order extends NOOBS_Controller
 			{
 				$post['data'] = $this->db_daftar_sales_order->load_data_daftar_sales_order($post)->row();
 			}
+			// print_r($post['data']);exit;
 	
 			$this->_view('daftar_sales_order_form_view', $post);
 		}
@@ -357,7 +358,7 @@ class Daftar_sales_order extends NOOBS_Controller
 			if ($store_data_daftar_sales_order->num_rows() > 0) 
 			{
 				$result = $store_data_daftar_sales_order->result();
-				$number = 1;
+				$number = 0;
 
 				foreach ($result as $k => $v)
 				{
@@ -397,13 +398,15 @@ class Daftar_sales_order extends NOOBS_Controller
 
 					if($get_progress_do->num_rows() > 0) {
 						$prog = $get_progress_do->row();
-						$v->tot_prog =  (! empty($prog->total_progress)) ? $prog->total_progress : 0;
+						$v->tot_prog =  (! empty($prog->total_progress)) ? number_format($prog->total_progress) : 0;
+						$v->progress_total =  (! empty($prog->total_progress)) ? $prog->total_progress : 0;
 					}
 					
-					$v->no = $number;
+					$v->num = $number;
 					$v->total_progress = ($v->total !== '0') ? round(($progress->progress * 100) / $total->progress,2) : '0';	
 					$v->so_created_date = date('d-m-Y',strtotime($v->so_created_date));	
 					$v->so_total_amount = number_format($v->so_total_amount);	
+					$v->so_qty = number_format($v->so_qty);	
 					$v->so_tipe_view = ($v->so_tipe == 'tf') ? 'TRANSFER' : 'NEW ORDER';
 					// $v->so_total_terpenuhi = number_format($v->so_total_amount);	
 				}
@@ -451,18 +454,91 @@ class Daftar_sales_order extends NOOBS_Controller
 		if (isset($_POST['action']) && $_POST['action'] == 'delete_data_item')
 		{
 			$post = $this->input->post(NULL, TRUE);
+			// print_r($post);exit;
 			$delete_data_item = $this->db_daftar_sales_order->delete_data_item($post);
 
 			if ($delete_data_item->num_rows() > 0) 
 			{
 				$result = $delete_data_item->result();
-				$number = 1;
+				$num = 0;
+
+				// foreach ($result as $k => $v)
+				// {
+				// 	$v->num = $number;
+
+				// 	$number++;
+				// }
 
 				foreach ($result as $k => $v)
 				{
-					$v->no = $number;
+					$num++;
 
-					$number++;
+
+					if($v->so_tipe == 'so')
+					{
+						$get_progress_so = $this->db_daftar_sales_order->get_progress_so(array('so_id' => $v->so_id,'dod_is_status' => 'SELESAI'));
+
+						$get_total_so = $this->db_daftar_sales_order->get_progress_so(array('so_id' => $v->so_id));
+
+						$get_progress_do = $this->db_daftar_sales_order->get_progress_do(array('so_id' => $v->so_id));
+
+						$get_progress_dos = $this->db_daftar_sales_order->get_progress_dos(array('so_id' => $v->so_id, 'sel'=> 'sum(dos.dos_filled) as total_progress_dos'));
+						
+						$get_amount_dos = $this->db_daftar_sales_order->get_progress_dos(array('so_id' => $v->so_id, 'sel'=> 'sum(dos.dos_ongkir) as total_amount_dos'));					
+					}
+					else
+					{
+						$get_progress_so = $this->db_daftar_sales_order->get_progress_so_transfer(array('so_id' => $v->so_id,'dotd_is_status' => 'SELESAI'));
+
+						$get_total_so = $this->db_daftar_sales_order->get_progress_so_transfer(array('so_id' => $v->so_id));
+
+						$get_progress_do = $this->db_daftar_sales_order->get_progress_do_transfer(array('so_id' => $v->so_id));
+
+						$get_progress_dos = $this->db_daftar_sales_order->get_progress_dos_transfer(array('so_id' => $v->so_id, 'sel'=> 'sum(dots.dots_filled) as total_progress_dos'));
+						
+						$get_amount_dos = $this->db_daftar_sales_order->get_progress_dos_transfer(array('so_id' => $v->so_id, 'sel'=> 'sum(dots.dots_ongkir) as total_amount_dos'));
+					}
+					
+					if($get_progress_do->num_rows() > 0) 
+					{
+						$prog = $get_progress_do->row();
+						$v->tot_prog =  (! empty($prog->total_progress)) ? $prog->total_progress : 0;
+					}
+
+					if($get_progress_dos->num_rows() > 0) 
+					{
+						$prog_dos = $get_progress_dos->row();
+						$v->tot_prog_dos =  (! empty($prog_dos->total_progress_dos)) ? $prog_dos->total_progress_dos : 0;
+					}
+					
+					if($get_amount_dos->num_rows() > 0) 
+					{
+						$amount_dos = $get_amount_dos->row();
+						$v->so_total_amount =  (! empty($amount_dos->total_amount_dos)) ? $amount_dos->total_amount_dos : 0;
+					}
+
+					if($get_progress_so->num_rows() > 0) {
+						$progress = $get_progress_so->row();
+						$v->progress =  $progress->progress;
+					}
+					else
+					{
+						$v->progress = 0;
+					}
+
+					if($get_total_so->num_rows() > 0) {
+						$total = $get_total_so->row();
+						$v->total =  $total->progress;
+					}
+					else
+					{
+						$v->total = 0;
+					}
+					
+					$v->num = $num;
+					$v->total_progress = ($v->total !== '0') ? round(($v->progress * 100) / $v->total,2) : '0';	
+					$v->so_created_date = date('d-m-Y',strtotime($v->so_created_date));
+					$v->so_tipe_view = ($v->so_tipe == 'tf') ? 'TRANSFER' : 'NEW ORDER';
 				}
 				
 				echo json_encode(array('success' => TRUE, 'data' => $result));

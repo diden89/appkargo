@@ -71,7 +71,7 @@ class Delivery_order_cost extends NOOBS_Controller
 		{
 			$post = $this->input->post(NULL, TRUE);
 			// print_r($post);exit;
-			if(! empty($post['so_no_trx']))
+			if(! empty($post['so_no_trx']) || ! empty($post['doc_no_trx']))
 			{
 				$load_data_temporary = $this->db_doc->load_data_temporary($post);
 				// print_r($load_data_temporary);exit;
@@ -115,8 +115,9 @@ class Delivery_order_cost extends NOOBS_Controller
 		if (isset($_POST['action']) && $_POST['action'] == 'load_delivery_order_cost_form')
 		{
 			$post = $this->input->post(NULL, TRUE);
-
+			// print_r($post);exit;
 			$post['sales_order'] = $this->db_doc->get_option_no_trx($post['mode'])->result();
+			// print_r($post['sales_order']);exit;
 			$post['kas_bank'] = $this->db_doc->get_kas_bank()->result();
 			$post['akun_header'] = $this->db_doc->get_akun_header()->result();
 			

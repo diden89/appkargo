@@ -55,7 +55,15 @@ class Delivery_order_cost_model extends NOOBS_Model
 
 		if (isset($params['so_no_trx']) && ! empty($params['so_no_trx']))
 		{
+			$this->db->where('doc.doc_so_no_trx', $params['so_no_trx']);
+			// $this->db->where('docd.docd_doc_no_trx', $params['doc_no_trx']);
+			// $this->db->where('docd.docd_vehicle_id', $params['vehicle_id']);
+		}
+
+		if (isset($params['doc_no_trx']) && ! empty($params['doc_no_trx']))
+		{
 			$this->db->where('docd.docd_doc_no_trx', $params['doc_no_trx']);
+			// $this->db->where('doc.doc_so_no_trx', $params['doc_no_trx']);
 			// $this->db->where('docd.docd_vehicle_id', $params['vehicle_id']);
 		}
 
@@ -299,15 +307,16 @@ class Delivery_order_cost_model extends NOOBS_Model
  	public function get_option_no_trx($mode)
 	{
 		
-		$this->db->from('sales_order');
+		$this->db->from('sales_order as so');
+		$this->db->join('vendor as v','so.so_vendor_id = v.v_id','LEFT');
 
 		if($mode == 'add')
 		{
-			$this->db->where('so_no_trx not in (select doc_so_no_trx from delivery_order_cost where doc_is_active = "Y")');
+			$this->db->where('so.so_no_trx not in (select doc_so_no_trx from delivery_order_cost where doc_is_active = "Y")');
 		}
 
-		$this->db->where('so_is_active' , 'Y');
-		$this->db->where('so_is_status !=' , 'SELESAI');
+		$this->db->where('so.so_is_active' , 'Y');
+		$this->db->where('so.so_is_status !=' , 'SELESAI');
 		
 		return $this->db->get();
 		// return $query;

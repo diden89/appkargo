@@ -26,7 +26,7 @@
 		  border: 1px solid #dddddd;
 		  text-align: left;
 		  padding: 8px;
-		  font-size: 10px;
+		  font-size: 9px;
 		}
 
 		.td-th {
@@ -132,7 +132,7 @@
 <p style="margin-top: 0pt; margin-left: 283.5pt; margin-bottom: 0pt; text-align: center; line-height: normal; font-size: 11px;"><strong>Diketahui,</strong></p>
 <p style="margin-top: 0pt; margin-left: 283.5pt; margin-bottom: 0pt; text-align: center; line-height: normal; font-size: 11px;"><strong>&nbsp;</strong></p>
 <p style="margin-top: 0pt; margin-left: 283.5pt; margin-bottom: 0pt; text-align: center; line-height: normal; font-size: 11px;"><strong>&nbsp;</strong></p>
-<p style="margin-top: 0pt; margin-left: 283.5pt; margin-bottom: 0pt; text-align: center; line-height: normal; font-size: 11px;"><strong>&nbsp;</strong></p>
+<!-- <p style="margin-top: 0pt; margin-left: 283.5pt; margin-bottom: 0pt; text-align: center; line-height: normal; font-size: 11px;"><strong>&nbsp;</strong></p> -->
 <p style="margin-top: 0pt; margin-left: 283.5pt; margin-bottom: 0pt; text-align: center; line-height: normal; font-size: 11px;"><strong><u><?php echo strtoupper($owner);?></u></strong></p>
 <p style="margin-top: 0pt; margin-left: 283.5pt; margin-bottom: 0pt; text-align: center; line-height: normal; font-size: 11px;"><strong>Pimpinan <?php echo $company_title;?></strong></p>
 <p style="margin-top: 0pt; margin-bottom: 10pt;">&nbsp;</p>

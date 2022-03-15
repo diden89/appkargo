@@ -15,12 +15,15 @@ const daftarDeliveryOrderList = {
 
 		$('#btnSearchItem').click(function(e) {
 			e.preventDefault();
-			me.loadDataItem(this);
+			var src = $('#txtList').val();
+			
+			me.loadDataDo(src);
 		});
+		
 		$('#btnReloadItem').click(function(e) {
 			$('#txtList').val('')
 			e.preventDefault();
-			me.loadDataItem(this);
+			me.loadDataDo("");
 		});
 
 		$('#txtList').keydown(function(e) {
@@ -55,15 +58,15 @@ const daftarDeliveryOrderList = {
 	},
 	loadDataDo: function(el) {
 		const me = this;
-		const $this = $(el);
-		
+				
 		$.ajax({
 			url: siteUrl('transaksi/daftar_delivery_order/load_data_daftar_delivery_order'),
 			type: 'POST',
 			dataType: 'JSON',
 			data: {
 				action: 'load_data_daftar_delivery_order',
-				so_no_trx: el.so_no_trx
+				so_no_trx: el.so_no_trx,
+				txt_list : el
 			},
 			success: function(result) {
 				$('#ignoredItemDataTable tbody').html('');
@@ -79,15 +82,15 @@ const daftarDeliveryOrderList = {
 	},
 	loadDataItem: function(el) {
 		const me = this;
-		const $this = $(el);
-		console.log(el.so_no_trx)
+		
 		$.ajax({
 			url: siteUrl('transaksi/daftar_delivery_order/load_data_daftar_delivery_order'),
 			type: 'POST',
 			dataType: 'JSON',
 			data: {
 				action: 'load_data_daftar_delivery_order',
-				so_no_trx: el.so_no_trx
+				so_no_trx: el.so_no_trx,
+
 			},
 			success: function(result) {
 				$('#temporaryDataTable tbody').html('');
@@ -125,7 +128,7 @@ const daftarDeliveryOrderList = {
 			if(item.dod_is_status !== 'SELESAI') {
 				body += '<div class="btn-group btn-group-sm" role="group" aria-label="Action Button">';
 					body += '<button type="button" class="btn btn-success" data-id="' + item.dod_id + '" data-no_trx="' + item.dod_no_trx + '" data-so_no_trx="' + item.so_no_trx + '" data-dod_customer_id="' + item.dod_customer_id + '" data-dod_driver_id="' + item.dod_driver_id + '" data-dod_sod_id="' + item.dod_sod_id + '" data-dod_vehicle_id="' + item.dod_vehicle_id + '" data-dod_shipping_qty="' + item.dod_shipping_qty + '" onclick="daftarDeliveryOrderList.showItem(this, \'edit\');"><i class="fas fa-edit"></i></button>';
-					body += '<button type="button" class="btn btn-danger" data-id="' + item.dod_id + '"  data-no_trx="' + item.dod_no_trx + '" onclick="daftarDeliveryOrderList.deleteDataDo(this);"><i class="fas fa-trash-alt"></i></button>';
+					body += '<button type="button" class="btn btn-danger" data-id="' + item.dod_id + '"  data-no_trx="' + item.dod_no_trx + '" onclick="daftarDeliveryOrderList.deleteDataItem(this);"><i class="fas fa-trash-alt"></i></button>';
 					// body += '<button type="button" class="btn btn-primary" data-id="' + item.dod_id + '" data-no_trx="' + item.dod_no_trx + '" data-is_status="' + item.dod_is_status + '" data-so_id="' + item.so_id + '" data-so_no_trx="' + item.so_no_trx + '" onclick="daftarDeliveryOrderList.updateStatus(this, \'edit\');"><i class="fas fa-exchange-alt"></i></button>';
 				body += '</div>';
 			}
