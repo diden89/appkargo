@@ -95,51 +95,51 @@ $(document).ready(function() {
 								REKANAN.popup('edit', 'Edit', rowData);
 							}
 						},
-						{
-							text: '',
-							class: 'btn-danger',
-							id: 'btnDelete',
-							icon: 'far fa-trash-alt',
-							click: function(row, rowData) {
-								Swal.fire({
-									title: 'Are you sure?',
-									text: "Data that has been deleted cannot be restored!",
-									type: 'warning',
-									showCancelButton: true,
-									confirmButtonColor: '#17a2b8',
-									cancelButtonColor: '#d33',
-									confirmButtonText: 'Yes, delete this data!'
-								}).then((result) => {
-									if (result.value) {
-										$.ajax({
-											url: siteUrl('master_data/daftar_rekanan/delete_data'),
-											type: 'POST',
-											dataType: 'JSON',
-											data: {
-												action: 'delete_data',
-												txt_id: rowData.pr_id
-											},
-											success: function(result) {
-												if (result.success) {
-													toastr.success("Data succesfully deleted.");
-												} else if (typeof(result.msg) !== 'undefined') {
-													toastr.error(result.msg);
-												} else {
-													toastr.error(msgErr);
-												}
+						// {
+						// 	text: '',
+						// 	class: 'btn-danger',
+						// 	id: 'btnDelete',
+						// 	icon: 'far fa-trash-alt',
+						// 	click: function(row, rowData) {
+						// 		Swal.fire({
+						// 			title: 'Are you sure?',
+						// 			text: "Data that has been deleted cannot be restored!",
+						// 			type: 'warning',
+						// 			showCancelButton: true,
+						// 			confirmButtonColor: '#17a2b8',
+						// 			cancelButtonColor: '#d33',
+						// 			confirmButtonText: 'Yes, delete this data!'
+						// 		}).then((result) => {
+						// 			if (result.value) {
+						// 				$.ajax({
+						// 					url: siteUrl('master_data/daftar_rekanan/delete_data'),
+						// 					type: 'POST',
+						// 					dataType: 'JSON',
+						// 					data: {
+						// 						action: 'delete_data',
+						// 						txt_id: rowData.pr_id
+						// 					},
+						// 					success: function(result) {
+						// 						if (result.success) {
+						// 							toastr.success("Data succesfully deleted.");
+						// 						} else if (typeof(result.msg) !== 'undefined') {
+						// 							toastr.error(result.msg);
+						// 						} else {
+						// 							toastr.error(msgErr);
+						// 						}
 												
-												REKANAN.gridRekanan.reloadData({
-													txt_id: $('#txtName').val()
-												});
-											},
-											error: function(error) {
-												toastr.error(msgErr);
-											}
-										});
-									}
-								});
-							}
-						},
+						// 						REKANAN.gridRekanan.reloadData({
+						// 							txt_id: $('#txtName').val()
+						// 						});
+						// 					},
+						// 					error: function(error) {
+						// 						toastr.error(msgErr);
+						// 					}
+						// 				});
+						// 			}
+						// 		});
+						// 	}
+						// },
 					],
 				}
 			],
