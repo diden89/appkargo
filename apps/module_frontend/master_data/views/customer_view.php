@@ -29,6 +29,7 @@
 							</div>
 						</div>
 						<hr />
+						<?php echo NOOBS_BASE_URL;?>
 						<div id="gridCustomer"></div>
 					</div>
 				</div>
