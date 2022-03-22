@@ -29,6 +29,43 @@ class Main_model extends NOOBS_Model {
 		return $this->db->get('ref_company');
 	}
 
+	public function total_so_bulanan($params)
+	{
+		$this->db->select('count(so_id) as total_so');
+		$this->db->where('so_is_active', 'Y');
+		$this->db->where('so_created_date >=', $params['range_1']);
+		$this->db->where('so_created_date <=', $params['range_2']);
+		
+		return $this->db->get('sales_order');
+	}
+
+	public function total_pendapatan_bulanan($params)
+	{
+		$this->db->select('sum(sop.sop_total_pay) as total_pendapatan');
+		$this->db->from('sales_order_payment as sop');
+		$this->db->join('sales_order as so','sop.sop_so_no_trx = so.so_no_trx','LEFT');
+		$this->db->where('so.so_created_date >=', $params['range_1']);
+		$this->db->where('so.so_created_date <=', $params['range_2']);
+		
+		return $this->db->get();
+	}
+
+	public function total_kendaraan()
+	{
+		$this->db->select('count(ve_id) as total_kendaraan');
+		$this->db->where('ve_is_active','Y');
+		
+		return $this->db->get('vehicle');
+	}
+
+	public function total_rekanan()
+	{
+		$this->db->select('count(pr_id) as total_rekanan');
+		$this->db->where('pr_is_active','Y');
+		
+		return $this->db->get('partner');
+	}
+
 	public function store_biodata($data = array())
 	{
 		$this->table = 'user_detail';

@@ -21,13 +21,73 @@ class Main extends NOOBS_Controller {
 			array('main', 'Home', 'fas fa-home')
 		);
 
-		$this->store_params['source_bot'] = array(
-			'<script src="'.base_url('scripts/main/main.js').'"></script>'
-		);
+
 		$params['range_1'] = date('Y-m-01');
 		$params['range_2'] = date('Y-m-t');
 
-		$total_so = $this->db_main->total_so_bulanan($params)->row();
+		$total_so = $this->db_main->total_so_bulanan($params);
+		if($total_so->num_rows() > 0)
+		{
+			$tot_so = $total_so->row();
+			$total_so_bulanan = $tot_so->total_so;
+		}
+		else
+		{
+			$total_so_bulanan = 0;
+		}
+
+		$total_pendapatan = $this->db_main->total_pendapatan_bulanan($params);
+		if($total_pendapatan->num_rows() > 0)
+		{
+			$tot_pend = $total_pendapatan->row();
+			$total_pendapatan_bulanan = $tot_pend->total_pendapatan;
+		}
+		else
+		{
+			$total_pendapatan_bulanan = 0;
+		}
+
+		$total_kendaraan = $this->db_main->total_kendaraan($params);
+		if($total_kendaraan->num_rows() > 0)
+		{
+			$tot_kendaraan = $total_kendaraan->row();
+			$total_transport = $tot_kendaraan->total_kendaraan;
+		}
+		else
+		{
+			$total_transport = 0;
+		}
+
+		$total_rekanan = $this->db_main->total_rekanan($params);
+		if($total_rekanan->num_rows() > 0)
+		{
+			$tot_rekanan = $total_rekanan->row();
+			$total_partner = $tot_rekanan->total_rekanan;
+		}
+		else
+		{
+			$total_partner = 0;
+		}
+
+		$this->store_params['so_total'] = array(
+			'total' => $total_so_bulanan
+		);
+
+		$this->store_params['pendapatan_total'] = array(
+			'total' => $total_pendapatan_bulanan
+		);
+
+		$this->store_params['kendaraan_total'] = array(
+			'total' => $total_transport
+		);
+
+		$this->store_params['rekanan_total'] = array(
+			'total' => $total_partner
+		);
+		$this->store_params['source_bot'] = array(
+			'<script src="'.base_url('scripts/main/main.js').'"></script>'
+		);
+
 		$this->view('main_view');
 	}
 
