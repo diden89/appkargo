@@ -5,15 +5,15 @@
  * @author diden89
  * @version 1.0
  * @access Public
- * @link /rab_frontend/apps/module_frontend/report/controllers/Report_laba_rugi.php
+ * @link /rab_frontend/apps/module_frontend/report/controllers/Report_laba_rugi_ytd.php
  */
 
-class Report_laba_rugi extends NOOBS_Controller 
+class Report_laba_rugi_ytd extends NOOBS_Controller 
 {
 	function __construct()
 	{
 		parent::__construct();
-		$this->load->model('report/report_laba_rugi_model', 'db_llr');
+		$this->load->model('report/report_laba_rugi_ytd_model', 'db_llr');
 		$this->load->model('transaksi/daftar_sales_order_model', 'db_daftar_sales_order');
 
 	}
@@ -21,11 +21,11 @@ class Report_laba_rugi extends NOOBS_Controller
 	public function index()
 	{
 		$this->store_params['page_active'] = isset($this->store_params['page_active']) ? $this->store_params['page_active'] : 'Home';
-		$this->store_params['header_title'] = 'Laporan Laba Rugi';
+		$this->store_params['header_title'] = 'Laporan Laba Rugi YTD';
 		$this->store_params['pages_title'] = 'Laporan Laba Rugi List';
 		$this->store_params['breadcrumb'] = array(
 			array('', 'Home'),
-			array('report/report_laba_rugi', 'Laporan Laba Rugi')
+			array('report/report_laba_rugi', 'Laporan Laba Rugi YTD')
 		);
 		
 		$this->store_params['source_top'] = array(
@@ -33,11 +33,11 @@ class Report_laba_rugi extends NOOBS_Controller
 		);
 
 		$this->store_params['source_bot'] = array(
-			'<script src="'.base_url('scripts/report/report_laba_rugi.js').'"></script>',
+			'<script src="'.base_url('scripts/report/report_laba_rugi_ytd.js').'"></script>',
 			'<script src="'.base_url('vendors/jquery_acollapsetable/jquery.aCollapTable.js').'"></script>'
 		);
 
-		$this->view('report_laba_rugi_view');
+		$this->view('report_laba_rugi_ytd_view');
 	}
 
 	
@@ -58,7 +58,11 @@ class Report_laba_rugi extends NOOBS_Controller
 
 		// $data['akun'] = $this->_build_data();
 		// print_r($data);exit;
-
+		$params['date_range_1'] = $params['years'].'-01-01';
+		$dd = $params['years'].'-'.$params['month'].'-05';
+		$dt =  date('Y-n-t',strtotime($dd));
+		$params['date_range_2'] = date('Y-m-t', strtotime($dt));
+		
 		$akun_header = $this->db_llr->get_akun_header(array("PENDAPATAN", 'BIAYA'))->result();
 		$i = 0;
 		foreach($akun_header as $header => $rah)
@@ -96,7 +100,7 @@ class Report_laba_rugi extends NOOBS_Controller
 		$data['bulan'] = $this->month_name($params['month']);
 		$data['tahun'] = $params['years'];
 		
-		$view = $this->load->view('report/report_laba_rugi_pdf', $data, TRUE);
+		$view = $this->load->view('report/report_laba_rugi_ytd_pdf', $data, TRUE);
 
 		$this->load->library('pdf_creator');
 

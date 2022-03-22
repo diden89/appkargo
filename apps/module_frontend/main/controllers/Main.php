@@ -24,7 +24,10 @@ class Main extends NOOBS_Controller {
 		$this->store_params['source_bot'] = array(
 			'<script src="'.base_url('scripts/main/main.js').'"></script>'
 		);
+		$params['range_1'] = date('Y-m-01');
+		$params['range_2'] = date('Y-m-t');
 
+		$total_so = $this->db_main->total_so_bulanan($params)->row();
 		$this->view('main_view');
 	}
 

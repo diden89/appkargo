@@ -64,26 +64,34 @@ class Report_laba_rugi extends NOOBS_Controller
 		foreach($akun_header as $header => $rah)
 		{
 			$akun_detail = $this->db_llr->get_akun_detail($rah->rah_id,$params)->result();
-	
-			foreach($akun_detail as $k => $v)
-			{
-				$total[$i][] = $v->total;
-			}
-			$data['total'][] = array_sum($total[$i]);
-			$data['total_name'][] = 'TOTAL '.strtoupper($rah->rah_name);
-
+			// $r = 0;
+			// foreach($akun_detail as $detail => $rad)
+			// {
+				// $data['akun'][$rah->rah_name][$i] = $rah->rah_name;
+				// $data['akun'][$rah->rah_name][$r] = $rad->rad_name;
+			// 	$r++;
+			// }
 
 			$data['akun'][$rah->rah_name][] = $this->_build_data($akun_detail);
 			$i++;
 		}
-		$labarugi = $data['total'][0] * 2;
-		foreach($data['total'] as $tot)
-		{
-			$labarugi -= $tot;
-			// echo $tot;
-		}
-		
-		$data['laba_rugi'] = $labarugi;
+		// foreach($data['akun'] as $dat)
+		// {
+		// 	foreach($dat as $d)
+		// 	{
+		// 		print_r($d);
+		// 	}
+
+		// }
+		// exit;
+		// // echo $data['akun'][0];
+		// foreach($data['akun'] as $d => $k)
+		// {
+		// 	print_r($k);
+		// }
+		// exit;
+		// print_r($data['akun']);exit;
+
 		if($data_company->num_rows() > 0)
 		{
 			$data_company = $data_company->row();
@@ -125,7 +133,6 @@ class Report_laba_rugi extends NOOBS_Controller
 
 	public function _buildTree($datas, $parent_id = NULL, $idx = 0) 
 	{
-	    // $akun_detail = array();
 	    $akun_detail = "";
 
 		if ($parent_id == '' || $parent_id == ' ' || $parent_id == NULL || $parent_id == 0 || empty($parent_id))
@@ -148,7 +155,7 @@ class Report_laba_rugi extends NOOBS_Controller
 				{
 
 					$akun_detail .= '<tr>';
-					$akun_detail .= '<td>'.$dash.strtoupper($data->rad_name).'</td>';
+					$akun_detail .= '<td>'.$dash.$data->rad_name.'</td>';
 					$akun_detail .= '<td></td>';
 					$akun_detail .= '</tr>';
 					
@@ -164,16 +171,16 @@ class Report_laba_rugi extends NOOBS_Controller
 					if($parent_id != NULL && $parent_id != '')
 					{
 						$akun_detail .= '<tr>';
-						$akun_detail .= '<td>'.$dash.strtoupper($data->rad_name).'</td>';
-						$akun_detail .= '<td style="text-align:right;">'.number_format($data->total).'</td>';
+						$akun_detail .= '<td>'.$dash.$data->rad_name.'</td>';
+						$akun_detail .= '<td>'.number_format($data->total).'</td>';
 						$akun_detail .= '</tr>';
 					}
 					else
 					{
 
 						$akun_detail .= '<tr>';
-						$akun_detail .= '<td>'.$dash.strtoupper($data->rad_name).'</td>';
-						$akun_detail .= '<td style="text-align:right;">'.number_format($data->total).'</td>';
+						$akun_detail .= '<td>'.$dash.$data->rad_name.'</td>';
+						$akun_detail .= '<td>'.number_format($data->total).'</td>';
 						$akun_detail .= '</tr>';
 					}	
 				}

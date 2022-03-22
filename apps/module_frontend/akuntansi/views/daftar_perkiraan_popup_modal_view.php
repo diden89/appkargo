@@ -52,13 +52,13 @@
 			</div>
 			<div class="form-group row">
 				<label for="kode_perkiraan" class="col-sm-4 col-form-label">Kode Perkiraan</label>
-				<div class="col-sm-1">
+				<div class="col-sm-2">
 					<input type="text" name="header_code" class="form-control" id="header_code" value="<?php echo (isset($rah_code) && $rah_code !== '') ? $rah_code : '' ; ?>" disabled>
 				</div>
 				<div class="col-sm-1">
 					<label for="kode_perkiraan" class="col-sm-4 col-form-label">-</label>
 				</div>
-				<div class="col-sm-6">
+				<div class="col-sm-5">
 					<input type="text" name="code" class="form-control" id="code" value="<?php echo $mode == 'edit' && $data !== FALSE ? $data->kode_akun : '' ?>" <?php echo $mode == 'edit' ? '' : ''; ?>>
 				</div>
 			</div>

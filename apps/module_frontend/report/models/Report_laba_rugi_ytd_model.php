@@ -5,10 +5,10 @@
  * @author diden89
  * @version 1.0
  * @access Public
- * @link /rab_frontend/apps/module_frontend/report/models/Report_laba_rugi_model.php
+ * @link /rab_frontend/apps/module_frontend/report/models/Report_laba_rugi_ytd_model.php
  */
 
-class Report_laba_rugi_model extends NOOBS_Model
+class Report_laba_rugi_ytd_model extends NOOBS_Model
 {
 
 	public function get_akun_header($where = array())
@@ -25,7 +25,8 @@ class Report_laba_rugi_model extends NOOBS_Model
 
 	public function get_akun_detail($id = "",$params = array())
 	{
-		$this->db->select("rad.rad_name,rad.rad_id, rad.rad_parent_id, (select sum(trx_total) from ref_transaksi where rad.rad_id in(trx_rad_id_to) and MONTH(trx_created_date) = '{$params['month']}' and YEAR(trx_created_date) = '{$params['years']}') as total");
+		// $this->db->select("rad.rad_name,rad.rad_id, rad.rad_parent_id, (select sum(trx_total) from ref_transaksi where rad.rad_id in(trx_rad_id_to) and MONTH(trx_created_date) = '{$params['month']}' and YEAR(trx_created_date) = '{$params['years']}') as total");
+		$this->db->select("rad.rad_name,rad.rad_id, rad.rad_parent_id, (select sum(trx_total) from ref_transaksi where rad.rad_id in(trx_rad_id_to) and trx_created_date >= '{$params['date_range_1']}' and trx_created_date <= '{$params['date_range_2']}') as total");
 		$this->db->from('ref_akun_detail as rad');
 
 		$this->db->where('rad_akun_header_id', $id);

@@ -6,7 +6,7 @@
  * @edit Diden89
  * @version 1.0
  * @access Public
- * @path /appkargo/apps/views/report/report_laba_rugi_pdf.php
+ * @path /appkargo/apps/views/report/report_laba_rugi_ytd_pdf.php
  */
 ?>
 <!DOCTYPE html>
