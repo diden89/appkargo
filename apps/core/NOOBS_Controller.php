@@ -59,6 +59,7 @@ class NOOBS_Controller extends CI_Controller {
 
 	protected function view($body, $view = 'view')
 	{
+		// echo current_url().'asdjkasdjasbd';exit;
 		$this->store_params['title'] = isset($this->store_params['title']) ? $this->store_params['title'] : NOOBS_TITLE;
 		$this->store_params['body'] = $this->load->view($body, $this->store_params, TRUE);
 		$this->store_params['menu'] = $this->_generate_menu();
@@ -77,6 +78,7 @@ class NOOBS_Controller extends CI_Controller {
 
 	protected function _view($view, $params = array())
 	{
+
 		$this->store_params['title'] = isset($this->store_params['title']) ? $this->store_params['title'] : NOOBS_TITLE;
 		
 		if (ENVIRONMENT == 'production')

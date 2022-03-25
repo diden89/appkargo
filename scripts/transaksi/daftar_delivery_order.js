@@ -319,7 +319,8 @@ const daftarDeliveryOrderList = {
 				btnClass: 'warning',
 				btnIcon: 'fas fa-check',
 				onclick: function(popup) {
-					daftarDeliveryOrderList.loadDataDo(this);
+					// console.log(this)
+					daftarDeliveryOrderList.loadDataDo("");
 					popup.close();
 				}
 

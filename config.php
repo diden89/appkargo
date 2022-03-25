@@ -19,6 +19,7 @@
 	$noobs_default_controller = 'main/main';
 	$noobs_module_dir = 'module_frontend';
 	$noobs_module_url = 'appkargo';
+	
 	// print_r($_SERVER['SERVER_ADMIN']);exit;
 	switch ($_SERVER['HTTP_HOST'])
 	{

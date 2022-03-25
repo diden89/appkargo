@@ -14,7 +14,7 @@ class Daftar_penerimaan extends NOOBS_Controller
 	function __construct()
 	{
 		parent::__construct();
-		$this->load->model('transaksi/daftar_penerimaan_model', 'db_daftar_penerimaan');
+		$this->load->model('transaksi/daftar_penerimaan_model', 'db_dp');
 		// print_r($this->session);exit;
 	}
 
@@ -28,7 +28,7 @@ class Daftar_penerimaan extends NOOBS_Controller
 			array('transaksi/daftar_penerimaan', 'Daftar Penerimaan')
 		);
 
-		$cek_driver_akses = $this->db_daftar_penerimaan->cek_driver_akses($params);
+		$cek_driver_akses = $this->db_dp->cek_driver_akses($params);
 
 		if($cek_driver_akses->num_rows() > 0)
 		{
@@ -58,7 +58,7 @@ class Daftar_penerimaan extends NOOBS_Controller
 		{
 			$post = $this->input->post(NULL, TRUE);
 
-			$cek_driver_akses = $this->db_daftar_penerimaan->cek_driver_akses($params);
+			$cek_driver_akses = $this->db_dp->cek_driver_akses($params);
 			// echo $cek_driver_akses->num_rows();exit;
 			if($cek_driver_akses->num_rows() > 0)
 			{
@@ -72,7 +72,7 @@ class Daftar_penerimaan extends NOOBS_Controller
 
 			$post['date_range1'] = (! empty($post['date_range1'])) ? date('Y-m-d',strtotime($post['date_range1'])) : date('Y-m-01');
 			$post['date_range2'] = (! empty($post['date_range2'])) ? date('Y-m-d',strtotime($post['date_range2'])) : date('Y-m-t');
-			$load_data = $this->db_daftar_penerimaan->load_data_daftar_penerimaan($post);
+			$load_data = $this->db_dp->load_data_daftar_penerimaan($post);
 			
 			// print_r($load_data);exit;
 			$number = 1;
@@ -115,7 +115,7 @@ class Daftar_penerimaan extends NOOBS_Controller
 		{
 			$post = $this->input->post(NULL, TRUE);
 			// print_r($post);exit;
-			$cek_driver_akses = $this->db_daftar_penerimaan->cek_driver_akses($new_params);
+			$cek_driver_akses = $this->db_dp->cek_driver_akses($new_params);
 			if($cek_driver_akses->num_rows() > 0)
 			{
 				$post['akses_driver'] = $new_params['user_id'];
@@ -126,11 +126,11 @@ class Daftar_penerimaan extends NOOBS_Controller
 			}
 			if($post['data']['so_tipe'] == 'so') 
 			{
-				$post['val'] = $this->db_daftar_penerimaan->load_data_form_order($post['data'])->row();
+				$post['val'] = $this->db_dp->load_data_form_order($post['data'])->row();
 			}
 			else 
 			{
-				$post['val'] = $this->db_daftar_penerimaan->load_data_form_transfer($post['data'])->row();
+				$post['val'] = $this->db_dp->load_data_form_transfer($post['data'])->row();
 			} 
 			// print_r($post);exit;
 
@@ -146,7 +146,7 @@ class Daftar_penerimaan extends NOOBS_Controller
 		if (isset($_POST['action']) && $_POST['action'] == 'load_data_delivery_detail_do')
 		{
 			$post = $this->input->post(NULL, TRUE);
-			$load_data_detail_do = $this->db_daftar_penerimaan->load_data_detail_do($post);
+			$load_data_detail_do = $this->db_dp->load_data_detail_do($post);
 			if ($load_data_detail_do->num_rows() > 0) 
 			{
 				$result = $load_data_detail_do->result();
@@ -173,20 +173,42 @@ class Daftar_penerimaan extends NOOBS_Controller
 		{
 			$post = $this->input->post(NULL, TRUE);
 			$post['dod_is_status'] = 'SELESAI';
+			$post['total_terpenuhi'] = str_replace(',', '',$post['total_terpenuhi']);
 			// print_r($post);exit;
-			$cek_driver_akses = $this->db_daftar_penerimaan->cek_driver_akses($new_params);
+			$cek_driver_akses = $this->db_dp->cek_driver_akses($new_params);
 			
 			$post['akses_driver'] = ($cek_driver_akses->num_rows() > 0) ? $new_params['user_id'] : "";
 			
 			if($post['tipe'] == 'so')
 			{
-				$input_to_penerimaan_status = $this->db_daftar_penerimaan->store_penerimaan_status_order($post);
+				$input_to_penerimaan_status = $this->db_dp->store_penerimaan_status_order($post);
 
 				// print_r($post);exit;
-				$update_status = $this->db_daftar_penerimaan->store_update_status_penerimaan_order($post); //update status
 
-				$get_total_do = $this->db_daftar_penerimaan->get_total_do($post,'total')->row();
-				$get_total_sod = $this->db_daftar_penerimaan->get_total_sod_total($post)->row();
+
+				// print_r($post);exit;
+				$get_detail_do = $this->db_dp->get_detail_do($post)->row();
+
+				if($post['total_terpenuhi'] !== $get_detail_do->dod_shipping_qty)
+				{
+					$get_detail_so = $this->db_dp->get_detail_so($post)->row();
+
+					$upd_qty = $post['dod_shipping_qty_old'] - $post['total_terpenuhi'];
+
+					$post['upd_qty_realisasi'] = $get_detail_do->sod_realisasi - $upd_qty;
+
+					$post['upd_new_ongkir'] = $get_detail_so->so_total_amount - $post['total_ongkir_upd_hidden'] ;
+					$post['sod_id'] = $get_detail_do->sod_id;
+
+					$update_status_sod = $this->db_dp->store_update_status_sales_order_detail($post);			
+				}
+
+
+				$update_status = $this->db_dp->store_update_status_penerimaan_order($post); //update status
+
+				$get_total_do = $this->db_dp->get_total_do($post,'total')->row();
+				$get_total_sod = $this->db_dp->get_total_sod_total($post)->row();
+
 				
 				// print_r($get_total_do);exit;
 				if($get_total_do->total_order !== 0)
@@ -204,22 +226,22 @@ class Daftar_penerimaan extends NOOBS_Controller
 				} else if($get_ttl == $get_ttl_sod) {
 					$post['is_status'] = $post['dod_is_status'];
 				}
-
-				// print_r($post);exit;
-				$update_status_sales_order = $this->db_daftar_penerimaan->store_update_status_sales_order($post);
+				
+				
+				$update_status_so = $this->db_dp->store_update_status_sales_order($post);
 
 				echo json_encode(array('success' => $update_status));
 			}
 			else
 			{
-				$input_to_penerimaan_status = $this->db_daftar_penerimaan->store_penerimaan_status_transfer($post);
+				$input_to_penerimaan_status = $this->db_dp->store_penerimaan_status_transfer($post);
 
-				$cek_driver_akses = $this->db_daftar_penerimaan->cek_driver_akses($new_params);
+				$cek_driver_akses = $this->db_dp->cek_driver_akses($new_params);
 			
-				$update_status = $this->db_daftar_penerimaan->store_update_status_penerimaan_transfer($post); //update status
+				$update_status = $this->db_dp->store_update_status_penerimaan_transfer($post); //update status
 
-				$get_total_do = $this->db_daftar_penerimaan->get_total_do_transfer($post,'total')->row();
-				$get_total_sod = $this->db_daftar_penerimaan->get_total_sod_total($post)->row();
+				$get_total_do = $this->db_dp->get_total_do_transfer($post,'total')->row();
+				$get_total_sod = $this->db_dp->get_total_sod_total($post)->row();
 				
 				// print_r($get_total_do);exit;
 				if($get_total_do->total_order !== 0)
@@ -239,7 +261,7 @@ class Daftar_penerimaan extends NOOBS_Controller
 				}
 
 				// print_r($post);exit;
-				$update_status_sales_order = $this->db_daftar_penerimaan->store_update_status_sales_order($post);
+				$update_status_sales_order = $this->db_dp->store_update_status_sales_order($post);
 
 				echo json_encode(array('success' => $update_status));
 			}

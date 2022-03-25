@@ -20,6 +20,7 @@
 	<input type="hidden" name="so_no_trx" value="<?=$val->so_no_trx?>" id="so_no_trx">
 	<input type="hidden" name="shipping" value="<?=$val->c_shipping_area?>" id="shipping">
 	<input type="hidden" name="total_ongkir_upd_hidden" value="<?=$val->dos_ongkir?>" id="total_ongkir_upd_hidden">
+	<input type="hidden" name="dod_shipping_qty_old" value="<?=$val->dod_shipping_qty?>" id="dod_shipping_qty_old">
 	<input type="hidden" name="dos_id" value="<?=$val->dos_id?>" id="dos_id">
 
 	<?php if($val->so_tipe == 'tf') {

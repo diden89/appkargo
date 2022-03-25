@@ -97,7 +97,14 @@
 				</div>
 			</div> -->
 			<div class="form-group row">
-				<label for="caption" class="col-sm-4 col-form-label">Kode Akun</label>
+				<label for="caption" class="col-sm-4 col-form-label">Dari Akun</label>
+				<div class="col-sm-8">
+					<select class="form-control select2"  name="akun_detail" id="akun_detail" >
+					</select>
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="caption" class="col-sm-4 col-form-label">Untuk ke Akun</label>
 				<div class="col-sm-8">
 					<select class="form-control select2"  name="akun_detail" id="akun_detail" >
 					</select>

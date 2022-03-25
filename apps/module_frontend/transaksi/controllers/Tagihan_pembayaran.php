@@ -101,7 +101,7 @@ class Tagihan_pembayaran extends NOOBS_Controller
 
 		$data['item'] = $result;
 
-		// print_r($params);exit;
+		// print_r($data);exit;
 		$data['header_title'] = 'TAGIHAN EKSPEDISI';
 
 		if($data_company->num_rows() > 0)

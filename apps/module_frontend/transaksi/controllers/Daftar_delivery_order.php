@@ -430,9 +430,8 @@ class Daftar_delivery_order extends NOOBS_Controller
 			
 			$input_to_delivery_order_status = $this->db_daftar_delivery_order->store_delivery_order_status($post);
 
-			$update_status = $this->db_daftar_delivery_order->store_update_status_delivery_order($post); //update status
-			print_r($post);exit;
-
+			$update_status = $this->db_daftar_delivery_order->store_update_status_delivery_order($post); 
+			
 			$get_total_filled = $this->db_daftar_delivery_order->get_total_filled($post,'total');
 
 			if($get_total_filled->num_rows() > 0) {

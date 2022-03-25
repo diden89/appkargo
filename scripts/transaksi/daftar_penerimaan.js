@@ -131,7 +131,7 @@ $(document).ready(function() {
 					data: 'dos_filled_show',
 				},{	
 					title: 'Tanggal Pengiriman', 
-					data: 'dos_created_date',
+					data: 'dod_created_date',
 				},{	
 					title: 'Status', 
 					data: 'dod_is_status',

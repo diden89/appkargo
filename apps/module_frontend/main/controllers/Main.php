@@ -21,7 +21,6 @@ class Main extends NOOBS_Controller {
 			array('main', 'Home', 'fas fa-home')
 		);
 
-
 		$params['range_1'] = date('Y-m-01');
 		$params['range_2'] = date('Y-m-t');
 
@@ -88,7 +87,14 @@ class Main extends NOOBS_Controller {
 			'<script src="'.base_url('scripts/main/main.js').'"></script>'
 		);
 
-		$this->view('main_view');
+		if($this->session->userdata('user_group') === '1')
+		{
+			$this->view('main_view');
+		}
+		else
+		{
+			$this->view('main_user_view');	
+		}
 	}
 
 	public function profile()

@@ -387,6 +387,27 @@ class Daftar_penerimaan_model extends NOOBS_Model
 		return $this->db->get();
  	}
 
+ 	public function get_detail_do($params = array()) //dipakai
+	{
+		$this->db->select('sod.sod_realisasi,dod.dod_shipping_qty,sod.sod_id');
+		$this->db->from('delivery_order_detail as dod');
+		$this->db->join('sales_order_detail as sod','dod.dod_sod_id = sod.sod_id','LEFT');
+
+		$this->db->where('dod.dod_id', $params['dod_id']);
+		
+		return $this->db->get();
+ 	}
+
+ 	public function get_detail_so($params = array()) //dipakai
+	{
+		$this->db->select('*');
+		$this->db->from('sales_order');
+
+		$this->db->where('so_no_trx', $params['so_no_trx']);
+		
+		return $this->db->get();
+ 	}
+
  	public function get_total_do_transfer($params = array(),$total = false) //dipakai
 	{
 		$this->db->select('SUM(dotd.dotd_shipping_qty) as total_order');
@@ -408,8 +429,11 @@ class Daftar_penerimaan_model extends NOOBS_Model
 		$this->db->select('SUM(sod.sod_qty) as total_sod');
 		$this->db->from('sales_order_detail as sod');
 		
-		$this->db->where('sod.sod_no_trx', $params['so_no_trx']);
-		
+		if(isset($params['so_no_trx']))
+		{
+			$this->db->where('sod.sod_no_trx', $params['so_no_trx']);
+		}
+
 		return $this->db->get();
  	}
 
@@ -492,7 +516,9 @@ class Daftar_penerimaan_model extends NOOBS_Model
 		$this->table = 'delivery_order_detail';
 
 		$new_params = array(
-			'dod_is_status' => $params['dod_is_status']
+			'dod_is_status' => $params['dod_is_status'],
+			'dod_shipping_qty' => $params['total_terpenuhi'],
+			'dod_ongkir' => $params['total_ongkir_upd_hidden'],
 
 		);
 
@@ -519,14 +545,30 @@ class Daftar_penerimaan_model extends NOOBS_Model
 		// return $this->load_data_daftar_penerimaan($post);
 	}
 
+	public function store_update_status_sales_order_detail($params = array()) //dipakai
+	{
+		$this->table = 'sales_order_detail';
+
+		$new_params = array(
+			'sod_realisasi' => $params['upd_qty_realisasi']
+
+		);
+
+		return $this->edit($new_params, "sod_id = {$params['sod_id']}");
+
+		// return $this->load_data_daftar_penerimaan();
+	}
+
 	public function store_update_status_sales_order($params = array()) //dipakai
 	{
 		$this->table = 'sales_order';
 
-		$new_params = array(
-			'so_is_status' => $params['is_status']
+		$new_params['so_is_status'] = $params['is_status'];
 
-		);
+		if(isset($params['upd_new_ongkir']))
+		{
+			$new_params['so_total_amount'] = $params['upd_new_ongkir'];
+		}
 
 		return $this->edit($new_params, "so_id = {$params['so_id']}");
 
