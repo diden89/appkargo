@@ -159,6 +159,7 @@ $avatar = empty($this->session->userdata('user_img')) ? 'unknown.png' : $this->s
 		<script src="<?php echo get_template_url(); ?>plugins/inputmask/jquery.inputmask.bundle.js"></script>
 		<script src="<?php echo get_template_url(); ?>plugins/chart.js/Chart.js"></script>
 		<script src="<?php echo get_template_url(); ?>plugins/bootstrap-switch/js/bootstrap-switch.js"></script>
+		<script src="<?php echo get_template_url(); ?>plugins/chart.js/Chart.min.js"></script>
 		<script src="<?php echo get_template_url(); ?>dist/js/adminlte.js"></script>
 		<script src="<?php echo base_url('vendors/jquery_waitme/waitMe.js'); ?>"></script>
 		<script src="<?php echo base_url('vendors/jquery_treegrid/js/treegrid.js'); ?>"></script>

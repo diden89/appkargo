@@ -97,6 +97,32 @@ class Main extends NOOBS_Controller {
 		}
 	}
 
+	public function generate_chart()
+	{
+		$params['years'] = date('Y');
+		$get_data_penghasilan = $this->db_main->get_data_penghasilan($params);
+		$get_data_pengeluaran = $this->db_main->get_data_pengeluaran($params);
+
+		if($get_data_penghasilan->num_rows() > 0)
+		{
+			if($get_data_pengeluaran->num_rows() > 0)
+			{
+				$result2 = $get_data_pengeluaran->result_array();
+			}
+
+			$result = $get_data_penghasilan->result();
+			$i = 0;
+			foreach($result as $k => $v)
+			{
+				$v->total_pengeluaran = $result2[0]['total'];
+				$i++;
+			}
+
+			$get_data_penghasilan_ytd = $this->db_main->get_data_penghasilan_ytd($params)->row();
+
+			echo json_encode(array('value' => $result, 'total_ytd' => 'Rp. '.number_format($get_data_penghasilan_ytd->total)));
+		}
+	}
 	public function profile()
 	{
 		$token = $this->decrypt_token();

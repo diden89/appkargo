@@ -191,7 +191,7 @@
 				body += '<td>' + item.docd_amount + '</td>';
 				body += '<td>';
 					body += '<div class="btn-group btn-group-sm" role="group" aria-label="Action Button">';
-						body += '<button type="button" class="btn btn-success" data-docd_id="' + item.docd_id + '" data-rad_id="' + item.docd_rad_id + '" data-docd_amount="' + item.docd_amount + '" data-docd_vehicle_id="' + item.docd_vehicle_id + '" data-docd_keterangan="' + item.docd_keterangan + '" data-docd_lock_ref="' + item.docd_lock_ref + '" onclick="ORDERCOST.EditDetailCost(this, \'edit\');"><i class="fas fa-edit"></i></button>';
+						body += '<button type="button" class="btn btn-success" data-docd_id="' + item.docd_id + '" data-rad_id="' + item.docd_rad_id + '" data-docd_amount="' + item.docd_amount + '" data-docd_vehicle_id="' + item.docd_vehicle_id + '" data-docd_keterangan="' + item.docd_keterangan + '" data-docd_lock_ref="' + item.docd_lock_ref + '" data-trx_rad_id_from="' + item.trx_rad_id_from + '" onclick="ORDERCOST.EditDetailCost(this, \'edit\');"><i class="fas fa-edit"></i></button>';
 						body += '<button type="button" class="btn btn-danger" data-docd_id="' + item.docd_id + '" data-docd_lock_ref="' + item.docd_lock_ref + '" data-no_trx="' + item.docd_doc_no_trx + '" onclick="ORDERCOST.deleteDataTemp(this);"><i class="fas fa-trash-alt"></i></button>';
 					body += '</div>';
 				body += '</td>';
@@ -207,10 +207,12 @@
 			 		docd_rad_id = $(el).data('rad_id');
 			 		docd_amount = $(el).data('docd_amount');
 			 		docd_lock_ref = $(el).data('docd_lock_ref');
+			 		trx_rad_id_from = $(el).data('trx_rad_id_from');
 			 		doc_so_no_trx = $('#txt_sales_order').val();
 			 		
 			ORDERCOST.generateVehicle(doc_so_no_trx, docd_vehicle_id);
 			ORDERCOST.generateAkunDetail('4', docd_rad_id);
+			ORDERCOST.generateAkunDetailFrom('1', trx_rad_id_from);
 
 			$('#btnAddDetail').attr('disabled', false);
 
@@ -253,6 +255,7 @@
 					onshow: function(popup) {
 						// ORDERCOST.generateAkunHeader();
 						ORDERCOST.generateAkunDetail('4');
+						ORDERCOST.generateAkunDetailFrom('1');
 
 						 $('#created_date').datetimepicker({
 					        //language:  'fr',
@@ -286,6 +289,7 @@
 							$('#mode').val('add');
 
 							$('#akun_detail').prop('selectedIndex',0);
+							$('#akun_detail_from').prop('selectedIndex',0);
 							$('#vehicle_id').prop('selectedIndex',0);
 							$('#keterangan').val('');
 							$('#total').val('');
@@ -297,6 +301,7 @@
 						$('#btnAddDetail').click(function(){
 							var so_no_trx = $('#txt_sales_order').val();
 								doc_no_trx = $('#doc_no_trx').val();
+								akun_detail_from = $('#akun_detail_from').val();
 								akun_detail = $('#akun_detail').val();
 								total = $('#total').val();
 								keterangan = $('#keterangan').val();
@@ -341,6 +346,7 @@
 												so_no_trx: so_no_trx,
 												created_date: created_date,
 												doc_no_trx: doc_no_trx,
+												akun_detail_from: akun_detail_from,
 												akun_detail: akun_detail,
 												total: total,
 												keterangan: keterangan,
@@ -354,6 +360,7 @@
 
 													ORDERCOST._generateTemporaryDataTable(res.data);
 
+													$('#akun_detail_from').prop('selectedIndex',0);
 													$('#akun_detail').prop('selectedIndex',0);
 													$('#vehicle_id').prop('selectedIndex',0);
 													$('#keterangan').val('');
@@ -571,51 +578,98 @@
 				}
 			});
 		},
-		generateAkunDetail: function(rah_id, rad_id = false) {
-		var akun_detail = $('#akun_detail');
-		
-		$.ajax({
-			url: siteUrl('transaksi/delivery_order_cost/get_akun_detail_option'),
-			type: 'POST',
-			dataType: 'JSON',
-			beforeSend: function() {},
-			complete: function() {},
-			data: {
-				action: 'get_akun_detail_option',
-				rah_id: rah_id
-			},
-			success: function (result) {
-				if (result.success) {
-					var data = result.data;
+		generateAkunDetailFrom: function(rah_id, rad_id = false) {
+			var akun_detail_from = $('#akun_detail_from');
+			
+			$.ajax({
+				url: siteUrl('transaksi/delivery_order_cost/get_akun_detail_option'),
+				type: 'POST',
+				dataType: 'JSON',
+				beforeSend: function() {},
+				complete: function() {},
+				data: {
+					action: 'get_akun_detail_option',
+					rah_id: rah_id,
+					rad_is_bank: 'Y'
+				},
+				success: function (result) {
+					if (result.success) {
+						var data = result.data;
 
-					akun_detail.attr('disabled', false);
+						akun_detail_from.attr('disabled', false);
 
-					akun_detail.html($('<option>', {
-						value: '',
-						text: '--Akun Detail--'
-					}));
-					
-					data.forEach(function (newData) {
-						akun_detail.append($('<option>', {
-							value: newData.rad_id,
-							text: newData.rad_name
+						akun_detail_from.html($('<option>', {
+							value: '',
+							text: '--Akun Detail--'
 						}));
-					});
+						
+						data.forEach(function (newData) {
+							akun_detail_from.append($('<option>', {
+								value: newData.rad_id,
+								text: newData.rad_name
+							}));
+						});
 
-					if (rad_id !== false) akun_detail.val(rad_id);
+						if (rad_id !== false) akun_detail_from.val(rad_id);
 
-				} else {
+					} else {
 
-					akun_detail.html($('<option>', {
-						value: '',
-						text: 'Akun Detail Tidak Ditemukan!'
-					}));
+						akun_detail_from.html($('<option>', {
+							value: '',
+							text: 'Akun Detail Tidak Ditemukan!'
+						}));
+					}
+				},
+				error: function (error) {
+					toastr.error(msgErr);
 				}
-			},
-			error: function (error) {
-				toastr.error(msgErr);
-			}
-		});
+			});
+		},
+		generateAkunDetail: function(rah_id, rad_id = false) {
+			var akun_detail = $('#akun_detail');
+			
+			$.ajax({
+				url: siteUrl('transaksi/delivery_order_cost/get_akun_detail_option'),
+				type: 'POST',
+				dataType: 'JSON',
+				beforeSend: function() {},
+				complete: function() {},
+				data: {
+					action: 'get_akun_detail_option',
+					rah_id: rah_id
+				},
+				success: function (result) {
+					if (result.success) {
+						var data = result.data;
+
+						akun_detail.attr('disabled', false);
+
+						akun_detail.html($('<option>', {
+							value: '',
+							text: '--Akun Detail--'
+						}));
+						
+						data.forEach(function (newData) {
+							akun_detail.append($('<option>', {
+								value: newData.rad_id,
+								text: newData.rad_name
+							}));
+						});
+
+						if (rad_id !== false) akun_detail.val(rad_id);
+
+					} else {
+
+						akun_detail.html($('<option>', {
+							value: '',
+							text: 'Akun Detail Tidak Ditemukan!'
+						}));
+					}
+				},
+				error: function (error) {
+					toastr.error(msgErr);
+				}
+			});
 		},
 		getTotalAmount: function(no_trx = false) {
 			$.ajax({

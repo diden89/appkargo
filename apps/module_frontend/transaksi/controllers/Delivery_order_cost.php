@@ -278,7 +278,7 @@ class Delivery_order_cost extends NOOBS_Controller
 			// print_r($post);
 			$store_temporary_data = $this->db_doc->store_temporary_data($post);
 			
-			$post['trx_rad_id_from'] = '3';
+			$post['trx_rad_id_from'] = $post['akun_detail_from'] ;
 
 			$store_data_ref_trx = $this->db_doc->store_data_ref_trx($post);
 

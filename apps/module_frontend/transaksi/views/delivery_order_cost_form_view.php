@@ -99,7 +99,7 @@
 			<div class="form-group row">
 				<label for="caption" class="col-sm-4 col-form-label">Dari Akun</label>
 				<div class="col-sm-8">
-					<select class="form-control select2"  name="akun_detail" id="akun_detail" >
+					<select class="form-control select2"  name="akun_detail_from" id="akun_detail_from" >
 					</select>
 				</div>
 			</div>
