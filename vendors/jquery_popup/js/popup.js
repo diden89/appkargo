@@ -1,7 +1,7 @@
 /*!
  * @package jQuery-popup
  * @copyright Noobscript
- * @author Andy1t
+ * @author algazasolution
  * @version 1.0
  * @access Public
  * @link /rab_frontend/vendors/jquery_popup/js/popup.js
@@ -31,7 +31,7 @@
 
 		this.version = 'v1.0';
 		this.author = {
-			Leader: 'Andy1t'
+			Leader: 'algazasolution'
 		};
 
 		var that = this;

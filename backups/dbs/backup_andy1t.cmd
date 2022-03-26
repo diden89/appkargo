@@ -1,3 +1,3 @@
 @echo off
-php backup_andy1t.php
+php backup_algazasolution.php
 exit

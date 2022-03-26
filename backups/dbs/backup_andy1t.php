@@ -1,8 +1,8 @@
 <?php
 $db = "merekdagang";
 $datetime = date("Ymd");
-$filename = "{$db}_".$datetime."_andy1t_all.sql";
-// $filename_zip = "{$db}_".$datetime."_andy1t_all.7z";
+$filename = "{$db}_".$datetime."_algazasolution_all.sql";
+// $filename_zip = "{$db}_".$datetime."_algazasolution_all.7z";
 
 // $pathtodelete = date('Y') - 1;
 // if (realpath($pathtodelete) !== FALSE && is_dir($pathtodelete)) system("rmdir ".escapeshellarg($pathtodelete) . " /s /q");

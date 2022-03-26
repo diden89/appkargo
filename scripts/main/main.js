@@ -1,7 +1,7 @@
 /*!
  * @package APPKARGO
  * @copyright Noobscript
- * @author Andy1t
+ * @author algazasolution
  * @version 1.0
  * @access Public
  * @link /rab_frontend/scripts/main/main.js
@@ -20,6 +20,7 @@ $(document).ready(function () {
             var value2 = [];
             
             $("#total_pendapatan").html(data.total_ytd);
+            $("#total_pengeluaran").html(data.total_pengeluaran_ytd);
             
             $.each(data.value, (idx, item) => {
                 

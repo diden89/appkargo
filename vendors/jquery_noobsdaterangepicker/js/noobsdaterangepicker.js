@@ -1,7 +1,7 @@
 /*!
  * @package jQuery-noobsdaterangepicker
  * @copyright Noobscript
- * @author Andy1t
+ * @author algazasolution
  * @version 1.0
  * @access Public
  * @link /D/PROJECTS/WEB/GLOBAL/merekdagang/vendors/jquery_noobsdaterangepicker/js/noobsdaterangepicker.js

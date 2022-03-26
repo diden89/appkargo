@@ -33,6 +33,7 @@ class Main_model extends NOOBS_Model {
 	{
 		$this->db->select('DISTINCT(MONTHNAME(sop_created_date)) as bulan, sum(sop_total_pay) as total');
 		$this->db->where('YEAR(sop_created_date)', $params['years']);
+		$this->db->order_by('MONTH(sop_created_date)','ASC');
 		$this->db->group_by('MONTHNAME(sop_created_date)');
 		
 		return $this->db->get('sales_order_payment');
@@ -53,7 +54,19 @@ class Main_model extends NOOBS_Model {
 		$this->db->join('ref_akun_detail as rad','rad.rad_id = trx.trx_rad_id_to');
 		$this->db->where('rad.rad_akun_header_id', '4');
 		$this->db->where('YEAR(trx.trx_created_date)', $params['years']);
+		$this->db->order_by('MONTH(trx.trx_created_date)','ASC');
 		$this->db->group_by('MONTHNAME(trx.trx_created_date)');
+		
+		return $this->db->get();
+	}
+
+	public function get_data_pengeluaran_ytd($params)
+	{
+		$this->db->select('sum(trx.trx_total) as total');
+		$this->db->from('ref_transaksi as trx');
+		$this->db->join('ref_akun_detail as rad','rad.rad_id = trx.trx_rad_id_to');
+		$this->db->where('rad.rad_akun_header_id', '4');
+		$this->db->where('YEAR(trx.trx_created_date)', $params['years']);
 		
 		return $this->db->get();
 	}

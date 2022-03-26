@@ -74,11 +74,11 @@
         <!-- /.row -->
 
     <div class="row">
-        <div class="col-lg-6">
+        <div class="col-lg-12">
           <div class="card">
               <div class="card-header border-0">
                 <div class="d-flex justify-content-between">
-                  <h3 class="card-title">Grafik Penghasilan Jasa</h3>
+                  <h3 class="card-title">Grafik Bintang Logistik</h3>
                 </div>
               </div>
               <div class="card-body">
@@ -87,12 +87,10 @@
                     <span class="text-bold text-lg" id="total_pendapatan"></span>
                     <span>Total Penghasilan</span>
                   </p>
-                 <!--  <p class="ml-auto d-flex flex-column text-right">
-                    <span class="text-success">
-                      <i class="fas fa-arrow-up"></i> 33.1%
-                    </span>
-                    <span class="text-muted">Since last month</span>
-                  </p> -->
+                  <p class="ml-auto d-flex flex-column text-right">
+                    <span class="text-bold text-lg" id="total_pengeluaran"></span>
+                    <span>Total Pengeluaran</span>
+                  </p>
                 </div>
                 <!-- /.d-flex -->
 

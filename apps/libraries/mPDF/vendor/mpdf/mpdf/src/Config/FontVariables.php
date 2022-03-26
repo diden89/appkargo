@@ -151,7 +151,7 @@ class FontVariables
 					'BI' => "FreeMonoBoldOblique.ttf",
 				],
 
-				/*Custom font added by andy1t*/
+				/*Custom font added by algazasolution*/
 				"calibri" => [
 					'R' => "calibri.ttf",
 					'B' => "calibriBold.ttf",

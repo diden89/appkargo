@@ -114,13 +114,14 @@ class Main extends NOOBS_Controller {
 			$i = 0;
 			foreach($result as $k => $v)
 			{
-				$v->total_pengeluaran = $result2[0]['total'];
+				$v->total_pengeluaran = $result2[$i]['total'];
 				$i++;
 			}
 
 			$get_data_penghasilan_ytd = $this->db_main->get_data_penghasilan_ytd($params)->row();
+			$get_data_pengeluaran_ytd = $this->db_main->get_data_pengeluaran_ytd($params)->row();
 
-			echo json_encode(array('value' => $result, 'total_ytd' => 'Rp. '.number_format($get_data_penghasilan_ytd->total)));
+			echo json_encode(array('value' => $result, 'total_ytd' => 'Rp. '.number_format($get_data_penghasilan_ytd->total), 'total_pengeluaran_ytd' => 'Rp. '.number_format($get_data_pengeluaran_ytd->total)));
 		}
 	}
 	public function profile()
