@@ -1,5 +1,5 @@
 <?php
-// echo phpinfo();
+echo phpinfo();
 /*!
  * ---------------------------------------------------------------
  * DO NOT USE NON ALPHA-NUMERIC CHARACTER!
