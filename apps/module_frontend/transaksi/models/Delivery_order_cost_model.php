@@ -46,11 +46,12 @@ class Delivery_order_cost_model extends NOOBS_Model
  	public function load_data_temporary($params = array())
 	{
 		// print_r($params);exit;
-		$this->db->select('*');
+		$this->db->select('*,trx_rad_id_from');
 		$this->db->from('delivery_order_cost_detail as docd');
 		$this->db->join('delivery_order_cost as doc','doc.doc_no_trx = docd.docd_doc_no_trx','LEFT');
 		$this->db->join('ref_akun_detail as rad','docd.docd_rad_id = rad.rad_id','LEFT');
 		$this->db->join('vehicle as v','v.ve_id = docd.docd_vehicle_id','LEFT');
+		$this->db->join('ref_transaksi as rt','rt.trx_key_lock = docd.docd_lock_ref','LEFT');
 		// $this->db->join('driver as d','d.d_id = ','LEFT');
 
 		if (isset($params['so_no_trx']) && ! empty($params['so_no_trx']))
@@ -134,8 +135,14 @@ class Delivery_order_cost_model extends NOOBS_Model
 			$this->db->where('rad.rad_akun_header_id', strtoupper($params['rah_id']));
 		}
 
+		if (isset($params['rad_is_bank']) && ! empty($params['rad_is_bank']))
+		{
+			$this->db->where('rad.rad_is_bank', strtoupper($params['rad_is_bank']));
+		}
+
 		$this->db->where('rad.rad_type', 'D');
 		$this->db->where('rad.rad_is_active', 'Y');
+		$this->db->order_by('rad.rad_seq', 'ASC');
 		
 		return $this->db->get();
  	}

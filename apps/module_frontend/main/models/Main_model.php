@@ -29,6 +29,35 @@ class Main_model extends NOOBS_Model {
 		return $this->db->get('ref_company');
 	}
 
+	public function get_data_penghasilan($params)
+	{
+		$this->db->select('DISTINCT(MONTHNAME(sop_created_date)) as bulan, sum(sop_total_pay) as total');
+		$this->db->where('YEAR(sop_created_date)', $params['years']);
+		$this->db->group_by('MONTHNAME(sop_created_date)');
+		
+		return $this->db->get('sales_order_payment');
+	}
+
+	public function get_data_penghasilan_ytd($params)
+	{
+		$this->db->select('sum(sop_total_pay) as total');
+		$this->db->where('YEAR(sop_created_date)', $params['years']);
+		
+		return $this->db->get('sales_order_payment');
+	}
+
+	public function get_data_pengeluaran($params)
+	{
+		$this->db->select('DISTINCT(MONTHNAME(trx.trx_created_date)) as bulan, sum(trx.trx_total) as total');
+		$this->db->from('ref_transaksi as trx');
+		$this->db->join('ref_akun_detail as rad','rad.rad_id = trx.trx_rad_id_to');
+		$this->db->where('rad.rad_akun_header_id', '4');
+		$this->db->where('YEAR(trx.trx_created_date)', $params['years']);
+		$this->db->group_by('MONTHNAME(trx.trx_created_date)');
+		
+		return $this->db->get();
+	}
+
 	public function total_so_bulanan($params)
 	{
 		$this->db->select('count(so_id) as total_so');
