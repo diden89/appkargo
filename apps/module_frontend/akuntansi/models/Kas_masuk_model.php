@@ -217,7 +217,7 @@ class Kas_masuk_model extends NOOBS_Model
 		if ($params['mode'] == 'add') $this->add($new_params, TRUE);
 		else $this->edit($new_params, "ci_id = {$params['ci_id']}");
 
-		return $this->load_data_kas_masuk();
+		return $this->load_data_kas_masuk($params);
 	}
 
 	public function store_data_ref_trx($params = array(),$cond = array())
@@ -245,7 +245,7 @@ class Kas_masuk_model extends NOOBS_Model
 
 		$this->delete('ci_no_trx',$params['cid_ci_no_trx']);
 		
-		return $this->load_data_kas_masuk();
+		return $this->load_data_kas_masuk($params);
 	}
 
 	public function delete_data_cash_in_detail($params = array())

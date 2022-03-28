@@ -327,6 +327,13 @@ class Kas_masuk extends NOOBS_Controller
 			// print_r($store_data_kas_masuk->result());exit;
 			$store_data_ref_trx = $this->store_data_ref_trx($post);
 
+			$date = date('d-m-Y');
+			$date = strtotime($date);
+			$date = strtotime("-7 day", $date);
+			
+			$params['date_range1'] = date('Y-m-d', $date);
+			$params['date_range2'] = date('Y-m-d');
+
 			$store_data_kas_masuk = $this->db_cash_in->store_data_kas_masuk($post);
 
 			if ($store_data_kas_masuk->num_rows() > 0) 
@@ -377,6 +384,14 @@ class Kas_masuk extends NOOBS_Controller
 							'trx_created_date' => $params['ci_created_date'],	
 						);
 
+						$new_params2 = array(
+							// 'trx_no_trx' => $params['ci_no_trx_temp'],
+							'trx_rad_id_from' => $v->cid_rad_id,
+							'trx_rad_id_to' => $v->cid_rad_id,
+							'trx_total' => $v->cid_total,
+							'trx_created_date' => $params['ci_created_date'],	
+						);
+
 						$cond = array(
 							'trx_key_lock' => $v->cid_key_lock,
 							'mode' => $params['mode'],
@@ -394,15 +409,24 @@ class Kas_masuk extends NOOBS_Controller
 							'trx_key_lock' => $v->cid_key_lock,	
 						);
 
+						$new_params2 = array(
+							'trx_no_trx' => $params['ci_no_trx_temp'],
+							'trx_rad_id_from' => $v->cid_rad_id,
+							'trx_rad_id_to' => $v->cid_rad_id,
+							'trx_total' => $v->cid_total,
+							'trx_created_date' => $params['ci_created_date'],	
+							'trx_key_lock' => $v->cid_key_lock,	
+						);
+
 						$cond = array(
 							'trx_key_lock' => $v->cid_key_lock,
 							'mode' =>'add',
 						);
 					}
 			
-			// print_r($new_params);
-			// print_r($cond);exit;
 					$store_data_kas_masuk = $this->db_cash_in->store_data_ref_trx($new_params,$cond);
+					$store_data_trx_duplikat = $this->db_cash_in->store_data_ref_trx($new_params2,$cond);
+			
 				}
 			}
 
@@ -415,6 +439,13 @@ class Kas_masuk extends NOOBS_Controller
 		if (isset($_POST['action']) && $_POST['action'] == 'delete_data_item')
 		{
 			$post = $this->input->post(NULL, TRUE);
+
+			$date = date('d-m-Y');
+			$date = strtotime($date);
+			$date = strtotime("-7 day", $date);
+			
+			$post['date_range1'] = date('Y-m-d', $date);
+			$post['date_range2'] = date('Y-m-d');
 
 			$delete_data_ref_transaksi = $this->db_cash_in->delete_data_ref_transaksi($post);
 			$delete_data_cash_in_detail = $this->db_cash_in->delete_data_cash_in_detail($post);
