@@ -15,6 +15,7 @@ const daftarCashInList = {
 
 		$('#btnSearchItem').click(function(e) {
 			e.preventDefault();
+			console.log(this)
 			me.loadDataItem(this);
 		});
 		$('#btnReloadItem').click(function(e) {
@@ -58,7 +59,7 @@ const daftarCashInList = {
 	loadDataItem: function(el) {
 		const me = this;
 		const $this = $(el);
-
+		console.log(el)
 		$.ajax({
 			url: siteUrl('akuntansi/kas_masuk/load_data_kas_masuk'),
 			type: 'POST',
@@ -91,6 +92,7 @@ const daftarCashInList = {
 				action: 'load_data_cash_in_detail',
 				txt_item: $('#txtList').val(),
 				cid_ci_no_trx:$('#no_trx_id').val(),
+				ci_rad_id : $('#ci_rad_id').val()
 			},
 			success: function(result) {
 				$('#temporaryDataTable tbody').html('');
@@ -197,6 +199,7 @@ const daftarCashInList = {
 			title: title + ' Kas Masuk',
 			id: 'showItem',
 			size: 'large',
+			closeButton: false,
 			proxy: {
 				url: siteUrl('akuntansi/kas_masuk/load_kas_masuk_form'),
 				params: params
@@ -258,7 +261,54 @@ const daftarCashInList = {
 				btnClass: 'secondary',
 				btnIcon: 'fas fa-times',
 				onclick: function(popup) {
-					popup.close();
+					console.log($('#no_trx_id').val())
+					if(mode == 'add')
+					{						
+						Swal.fire({
+							title: 'Transaksi belum disimpan!!',
+							text: "Maaf transaksi anda belum disimpan, apakah perubahan terakhir akan disimpan?",
+							type: 'warning',
+							showCancelButton: true,
+							confirmButtonColor: '#d33',
+							cancelButtonColor: '#17a2b8',
+							cancelButtonText: 'Ya!',
+							confirmButtonText: 'Tidak!'
+						}).then((result) => {
+							if (result.value) {
+								$.ajax({
+									url: siteUrl('akuntansi/kas_masuk/delete_data_temp_cash_in'),
+									type: 'POST',
+									dataType: 'JSON',
+									data: {
+										action: 'delete_data_temp_cash_in',
+										cid_ci_no_trx: $('#no_trx_id').val()
+									},
+									success: function(result) {
+										popup.close();
+										$('#ignoredItemDataTable tbody').html('');
+										if (result.success) {
+											 me._generateItemDataTable(result.data);
+										}						
+										else if (typeof(result.msg) !== 'undefined') {						
+											toastr.error(result.msg);
+										}
+										else {							
+											toastr.error(msgErr);
+										}
+
+									},
+									error: function(error) {
+										toastr.error(msgErr);
+									}
+								});
+							}
+						});
+					}
+					else
+					{
+						popup.close();
+					}
+					
 				}
 			}],
 			listeners: {
@@ -269,6 +319,7 @@ const daftarCashInList = {
 
 						ci_rad_id = $('#ci_rad_id').val();
 						ci_no_trx = $('#ci_no_trx').val();
+
 						$.ajax({
 							url: siteUrl('akuntansi/kas_masuk/get_amount_kas'),
 							type: 'POST',

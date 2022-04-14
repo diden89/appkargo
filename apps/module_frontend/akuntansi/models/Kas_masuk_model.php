@@ -25,6 +25,13 @@ class Kas_masuk_model extends NOOBS_Model
 			$this->db->like('UPPER(ci.ci_no_trx)', strtoupper($params['no_trx']));
 		}
 
+		if (isset($params['txt_item']) && ! empty($params['txt_item']))
+		{
+			$this->db->like('UPPER(ci.ci_no_trx)', strtoupper($params['txt_item']));
+			$this->db->or_like('UPPER(ci.ci_keterangan)', strtoupper($params['txt_item']));
+			$this->db->or_like('UPPER(rad.rad_name)', strtoupper($params['txt_item']));
+		}
+
 		if (isset($params['txt_id']) && ! empty($params['txt_id']))
 		{
 			$this->db->where('ci.ci_id', strtoupper($params['txt_id']));
@@ -40,6 +47,22 @@ class Kas_masuk_model extends NOOBS_Model
 		$this->db->order_by('ci.ci_created_date', 'DESC');
 		$this->db->order_by('ci.ci_id', 'DESC');
 
+		return $this->db->get();
+ 	}
+
+ 	public function get_data_cash_in_detail($params = array())
+	{
+		$this->db->select('*');
+		$this->db->from('cash_in_detail as cid');
+		$this->db->join('ref_akun_detail as rad','rad.rad_id = cid.cid_rad_id','LEFT');
+
+		if (isset($params['cid_ci_no_trx']) && ! empty($params['cid_ci_no_trx']))
+		{
+			$this->db->where('cid.cid_ci_no_trx', strtoupper($params['cid_ci_no_trx']));
+		}
+	
+		$this->db->where('cid.cid_is_active', 'Y');
+		
 		return $this->db->get();
  	}
 
@@ -140,7 +163,27 @@ class Kas_masuk_model extends NOOBS_Model
 		{
 			$this->db->where('cid.cid_ci_no_trx', strtoupper($params['cid_ci_no_trx']));
 		}
+		if (isset($params['ci_rad_id']) && ! empty($params['ci_rad_id']))
+		{
+			$this->db->where('trx.trx_rad_id_to', strtoupper($params['ci_rad_id']));
+		}
 
+		$this->db->where('cid.cid_is_active', 'Y');
+		
+		return $this->db->get();
+ 	}
+
+ 	public function get_cash_in_detail($params = array())
+	{
+		$this->db->select('*');
+		$this->db->from('cash_in_detail as cid');
+		$this->db->join('ref_akun_detail as rad','rad.rad_id = cid.cid_rad_id','LEFT');
+		
+		if (isset($params['cid_ci_no_trx']) && ! empty($params['cid_ci_no_trx']))
+		{
+			$this->db->where('cid.cid_ci_no_trx', strtoupper($params['cid_ci_no_trx']));
+		}
+	
 		$this->db->where('cid.cid_is_active', 'Y');
 		
 		return $this->db->get();
@@ -199,7 +242,7 @@ class Kas_masuk_model extends NOOBS_Model
 			$this->add($new_params, TRUE);
 		}
 
-		return $this->load_data_cash_in_detail(array('cid_ci_no_trx' => $params['cid_no_trx']));
+		return $this->get_data_cash_in_detail(array('cid_ci_no_trx' => $params['cid_no_trx']));
 	}
 
 	public function store_data_kas_masuk($params = array())
@@ -226,7 +269,7 @@ class Kas_masuk_model extends NOOBS_Model
 		$this->table = 'ref_transaksi';
 
 		if ($cond['mode'] == 'add') return $this->add($params, TRUE);
-		else return $this->edit($params, "trx_key_lock = '{$cond['trx_key_lock']}'");
+		else return $this->edit($params, "trx_id = '{$cond['trx_id']}'");
 
 		// return $this->load_data_kas_masuk();
 	}
@@ -243,8 +286,10 @@ class Kas_masuk_model extends NOOBS_Model
 	{
 		$this->table = 'cash_in';
 
-		$this->delete('ci_no_trx',$params['cid_ci_no_trx']);
+		$this->delete('ci_no_trx',$params['no_trx']);
 		
+		unset($params['no_trx']);
+
 		return $this->load_data_kas_masuk($params);
 	}
 
@@ -258,7 +303,7 @@ class Kas_masuk_model extends NOOBS_Model
 		}
 		else
 		{
-			return $this->delete('cid_ci_no_trx',$params['cid_ci_no_trx']);
+			return $this->delete('cid_ci_no_trx',$params['no_trx']);
 		}
 	}
 
@@ -272,7 +317,7 @@ class Kas_masuk_model extends NOOBS_Model
 		}
 		else
 		{
-			return $this->delete('trx_no_trx',$params['cid_ci_no_trx']);
+			return $this->delete('trx_no_trx',$params['no_trx']);
 		}
 	}
 

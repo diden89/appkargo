@@ -65,14 +65,12 @@ class Kas_masuk extends NOOBS_Controller
 		if (isset($_POST['action']) && $_POST['action'] == 'load_kas_masuk_form')
 		{
 			$post = $this->input->post(NULL, TRUE);
-			$params = array(
-				'table' => 'province'
-			);
 
 			$post['kas_bank'] = $this->db_cash_in->get_kas_bank()->result();
 			$post['akun_header'] = $this->db_cash_in->get_akun_header()->result();
+
 			$get_last_notrx = $this->db_cash_in->get_last_notrx();
-			
+
 			if($get_last_notrx->num_rows() > 0)
 			{
 				$notrx = $get_last_notrx->row();
@@ -203,7 +201,7 @@ class Kas_masuk extends NOOBS_Controller
 			}
 
 			$selisih = $amount_to - $amount_from;
-
+			// echo $selisih;exit;
 			echo json_encode(array('success' => TRUE, 'amount' => number_format($selisih)));
 			
 		}
@@ -268,7 +266,16 @@ class Kas_masuk extends NOOBS_Controller
 	{
 		if (isset($_POST['action']) && $_POST['action'] == 'load_data_kas_masuk')
 		{
+
 			$post = $this->input->post(NULL, TRUE);
+
+			$date = date('d-m-Y');
+			$date = strtotime($date);
+			$date = strtotime("-7 day", $date);
+			
+			$post['date_range1'] = date('Y-m-d', $date);
+			$post['date_range2'] = date('Y-m-d');
+
 			$load_data_kas_masuk = $this->db_cash_in->load_data_kas_masuk($post);
 			// print_r($_POST);exit;
 			if ($load_data_kas_masuk->num_rows() > 0) 
@@ -279,7 +286,9 @@ class Kas_masuk extends NOOBS_Controller
 				foreach ($result as $k => $v)
 				{
 					$v->no = $number;
-
+					$v->ci_created_date = date('d-m-Y',strtotime($v->ci_created_date));
+					$v->ci_total = number_format($v->ci_total);
+					
 					$number++;
 				}
 
@@ -295,6 +304,7 @@ class Kas_masuk extends NOOBS_Controller
 		if (isset($_POST['action']) && $_POST['action'] == 'load_data_cash_in_detail')
 		{
 			$post = $this->input->post(NULL, TRUE);
+			// print_r($post);exit;
 			$load_data_detail_so = $this->db_cash_in->load_data_cash_in_detail($post);
 			if ($load_data_detail_so->num_rows() > 0) 
 			{
@@ -309,7 +319,7 @@ class Kas_masuk extends NOOBS_Controller
 					$number++;
 				}
 				
-			// print_r($post);exit;
+			// print_r($result);exit;
 				echo json_encode(array('success' => TRUE, 'data' => $result));
 			}
 			else echo json_encode(array('success' => FALSE, 'msg' => 'Data not found!'));
@@ -319,10 +329,10 @@ class Kas_masuk extends NOOBS_Controller
 
 	public function store_data_kas_masuk()
 	{
-		// print_r($_POST);exit;
 		if (isset($_POST['action']) && $_POST['action'] == 'store_data_kas_masuk')
 		{
 			$post = $this->input->post(NULL, TRUE);
+		// print_r($post);exit;
 
 			// print_r($store_data_kas_masuk->result());exit;
 			$store_data_ref_trx = $this->store_data_ref_trx($post);
@@ -361,75 +371,114 @@ class Kas_masuk extends NOOBS_Controller
 	{
 		if (isset($params['action']) && $params['action'] == 'store_data_kas_masuk')
 		{
-			// $params = $this->input->post(NULL, TRUE);
-			// print_r($params);exit;
 			$params['cid_ci_no_trx'] = $params['ci_no_trx_temp'];
 			
-
-			$cek_temp_data = $this->db_cash_in->load_data_cash_in_detail($params);
-
+			$cek_temp_data = $this->db_cash_in->get_cash_in_detail($params);
+			
 			if($cek_temp_data->num_rows() > 0) 
 			{
 				$temp_result = $cek_temp_data->result();
 				foreach($temp_result as $k => $v)
 				{
 					$cek_trx_data = $this->db_cash_in->cek_ref_transaksi($v->cid_key_lock);
+					
 					if($cek_trx_data->num_rows() > 0)
 					{
-						$new_params = array(
-							// 'trx_no_trx' => $params['ci_no_trx_temp'],
-							'trx_rad_id_from' => $v->cid_rad_id,
-							'trx_rad_id_to' => $params['ci_rad_id'],
-							'trx_total' => $v->cid_total,
-							'trx_created_date' => $params['ci_created_date'],	
-						);
+						$trx_result = $cek_trx_data->result();
+						$n=0;
+						foreach($trx_result as $trx_key => $val_trx)
+						{
+							if($n==0)
+							{
+								$val['rad_id_to'] = $params['ci_rad_id'];
+							}
+							else
+							{
+								$val['rad_id_to'] =  $v->cid_rad_id;
+							}
 
-						$new_params2 = array(
-							// 'trx_no_trx' => $params['ci_no_trx_temp'],
-							'trx_rad_id_from' => $v->cid_rad_id,
-							'trx_rad_id_to' => $v->cid_rad_id,
-							'trx_total' => $v->cid_total,
-							'trx_created_date' => $params['ci_created_date'],	
-						);
+							$new_params = array(
+								'trx_rad_id_from' => $v->cid_rad_id,
+								'trx_rad_id_to' => $val['rad_id_to'],
+								'trx_total' => $v->cid_total,
+								'trx_created_date' => $params['ci_created_date'],	
+							);	
+													
+							$cond = array(
+								'trx_id' => $val_trx->trx_id,
+								'mode' => $params['mode'],
+							);
 
-						$cond = array(
-							'trx_key_lock' => $v->cid_key_lock,
-							'mode' => $params['mode'],
-						);				
-
+							$store_data_kas_masuk = $this->db_cash_in->store_data_ref_trx($new_params,$cond);
+							$n++;				
+						}
 					}
 					else
 					{
-						$new_params = array(
-							'trx_no_trx' => $params['ci_no_trx_temp'],
-							'trx_rad_id_from' => $v->cid_rad_id,
-							'trx_rad_id_to' => $params['ci_rad_id'],
-							'trx_total' => $v->cid_total,
-							'trx_created_date' => $params['ci_created_date'],	
-							'trx_key_lock' => $v->cid_key_lock,	
-						);
+						for($i=0;$i<=1;$i++)
+						{
+							if($i==0)
+							{
+								$val['rad_id_to'] = $params['ci_rad_id'];
+							}
+							else
+							{
+								$val['rad_id_to'] =  $v->cid_rad_id;
+							}
+							$new_params = array(
+								'trx_no_trx' => $params['ci_no_trx_temp'],
+								'trx_rad_id_from' => $v->cid_rad_id,
+								'trx_rad_id_to' => $val['rad_id_to'],
+								'trx_total' => $v->cid_total,
+								'trx_created_date' => $params['ci_created_date'],	
+								'trx_key_lock' => $v->cid_key_lock,	
+							);
 
-						$new_params2 = array(
-							'trx_no_trx' => $params['ci_no_trx_temp'],
-							'trx_rad_id_from' => $v->cid_rad_id,
-							'trx_rad_id_to' => $v->cid_rad_id,
-							'trx_total' => $v->cid_total,
-							'trx_created_date' => $params['ci_created_date'],	
-							'trx_key_lock' => $v->cid_key_lock,	
-						);
+							$cond = array(
+								'mode' =>'add',
+							);
 
-						$cond = array(
-							'trx_key_lock' => $v->cid_key_lock,
-							'mode' =>'add',
-						);
+							$store_data_kas_masuk = $this->db_cash_in->store_data_ref_trx($new_params,$cond);
+						}
 					}
-			
-					$store_data_kas_masuk = $this->db_cash_in->store_data_ref_trx($new_params,$cond);
-					$store_data_trx_duplikat = $this->db_cash_in->store_data_ref_trx($new_params2,$cond);
-			
 				}
 			}
 
+		}
+		else $this->show_404();
+	}
+
+	public function delete_data_temp_cash_in()
+	{
+		if (isset($_POST['action']) && $_POST['action'] == 'delete_data_temp_cash_in')
+		{
+			$post = $this->input->post(NULL, TRUE);
+
+			$date = date('d-m-Y');
+			$date = strtotime($date);
+			$date = strtotime("-7 day", $date);
+			
+			$post['date_range1'] = date('Y-m-d', $date);
+			$post['date_range2'] = date('Y-m-d');
+
+			$delete_data_cash_in_detail = $this->db_cash_in->delete_data_cash_in_detail($post);
+			$delete_data_cash_in = $this->db_cash_in->delete_data_cash_in($post);
+
+			if ($delete_data_cash_in->num_rows() > 0) 
+			{
+				$result = $delete_data_cash_in->result();
+				$number = 1;
+
+				foreach ($result as $k => $v)
+				{
+					$v->no = $number;
+
+					$number++;
+				}
+				
+				echo json_encode(array('success' => TRUE, 'data' => $result));
+			}
+			else echo json_encode(array('success' => FALSE, 'msg' => 'Data not found!'));
 		}
 		else $this->show_404();
 	}
@@ -439,7 +488,7 @@ class Kas_masuk extends NOOBS_Controller
 		if (isset($_POST['action']) && $_POST['action'] == 'delete_data_item')
 		{
 			$post = $this->input->post(NULL, TRUE);
-
+			// print_r($post);exit;
 			$date = date('d-m-Y');
 			$date = strtotime($date);
 			$date = strtotime("-7 day", $date);
@@ -459,6 +508,8 @@ class Kas_masuk extends NOOBS_Controller
 				foreach ($result as $k => $v)
 				{
 					$v->no = $number;
+					$v->ci_created_date = date('d-m-Y',strtotime($v->ci_created_date));
+					$v->ci_total = number_format($v->ci_total);
 
 					$number++;
 				}
