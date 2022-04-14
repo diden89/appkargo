@@ -413,6 +413,41 @@ class Kas_keluar extends NOOBS_Controller
 		else $this->show_404();
 	}
 
+	public function delete_data_temp_cash_out()
+	{
+		if (isset($_POST['action']) && $_POST['action'] == 'delete_data_temp_cash_out')
+		{
+			$post = $this->input->post(NULL, TRUE);
+
+			$date = date('d-m-Y');
+			$date = strtotime($date);
+			$date = strtotime("-7 day", $date);
+			
+			$post['date_range1'] = date('Y-m-d', $date);
+			$post['date_range2'] = date('Y-m-d');
+			
+			$delete_data_cash_out_detail = $this->db_cash_out->delete_data_cash_out_detail($post);
+			$delete_data_cash_out = $this->db_cash_out->delete_data_cash_out($post);
+
+			if ($delete_data_cash_out->num_rows() > 0) 
+			{
+				$result = $delete_data_cash_out->result();
+				$number = 1;
+
+				foreach ($result as $k => $v)
+				{
+					$v->no = $number;
+
+					$number++;
+				}
+				
+				echo json_encode(array('success' => TRUE, 'data' => $result));
+			}
+			else echo json_encode(array('success' => FALSE, 'msg' => 'Data not found!'));
+		}
+		else $this->show_404();
+	}
+
 	public function delete_data_item()
 	{
 		if (isset($_POST['action']) && $_POST['action'] == 'delete_data_item')

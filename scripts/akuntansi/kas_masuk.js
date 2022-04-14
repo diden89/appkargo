@@ -150,7 +150,7 @@ const daftarCashInList = {
 			body += '<td>';
 				body += '<div class="btn-group btn-group-sm" role="group" aria-label="Action Button">';
 					body += '<button type="button" class="btn btn-success" data-id="' + item.cid_id + '" data-cid_rad_id="' + item.cid_rad_id + '" data-header_id="' + item.rad_akun_header_id + '" data-cid_keterangan="' + item.cid_keterangan + '" data-cid_total="' + item.cid_total + '" data-key_lock="' + item.cid_key_lock + '" onclick="daftarCashInList.editDetailSO(this, \'edit\');"><i class="fas fa-edit"></i></button>';
-					body += '<button type="button" class="btn btn-danger" data-id="' + item.cid_id + '" data-key_lock="' + item.cid_key_lock + '" data-no_trx="' + item.cid_ci_no_trx + '" onclick="daftarCashInList.deleteDataTemp(this);"><i class="fas fa-trash-alt"></i></button>';
+					body += '<button type="button" class="btn btn-danger" data-cid_rad_id="' + item.cid_rad_id + '" data-id="' + item.cid_id + '" data-key_lock="' + item.cid_key_lock + '" data-no_trx="' + item.cid_ci_no_trx + '" onclick="daftarCashInList.deleteDataTemp(this);"><i class="fas fa-trash-alt"></i></button>';
 				body += '</div>';
 			body += '</td>';
 			body += '</tr>';
@@ -261,7 +261,7 @@ const daftarCashInList = {
 				btnClass: 'secondary',
 				btnIcon: 'fas fa-times',
 				onclick: function(popup) {
-					console.log($('#no_trx_id').val())
+					
 					if(mode == 'add')
 					{						
 						Swal.fire({
@@ -281,7 +281,7 @@ const daftarCashInList = {
 									dataType: 'JSON',
 									data: {
 										action: 'delete_data_temp_cash_in',
-										cid_ci_no_trx: $('#no_trx_id').val()
+										no_trx: $('#no_trx_id').val()
 									},
 									success: function(result) {
 										popup.close();
@@ -293,7 +293,7 @@ const daftarCashInList = {
 											toastr.error(result.msg);
 										}
 										else {							
-											toastr.error(msgErr);
+											// toastr.error(msgErr);
 										}
 
 									},
@@ -718,7 +718,8 @@ const daftarCashInList = {
 				action: 'delete_data_temp',
 				id: $this.data('id'),
 				key_lock: $this.data('key_lock'),
-				cid_ci_no_trx: $this.data('no_trx')
+				cid_ci_no_trx: $this.data('no_trx'),
+				ci_rad_id: $('#ci_rad_id').val(),
 			},
 			success: function(result) {
 				$('#temporaryDataTable tbody').html('');

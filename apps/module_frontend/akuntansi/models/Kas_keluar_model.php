@@ -245,7 +245,7 @@ class Kas_keluar_model extends NOOBS_Model
 
 		$this->delete('co_no_trx',$params['cod_co_no_trx']);
 		
-		return $this->load_data_kas_keluar();
+		return $this->load_data_kas_keluar($params);
 	}
 
 	public function delete_data_cash_out_detail($params = array())

@@ -197,6 +197,7 @@ const daftarCashOutList = {
 			title: title + ' Kas Keluar',
 			id: 'showItem',
 			size: 'large',
+			closeButton: false,
 			proxy: {
 				url: siteUrl('akuntansi/kas_keluar/load_kas_keluar_form'),
 				params: params
@@ -258,7 +259,52 @@ const daftarCashOutList = {
 				btnClass: 'secondary',
 				btnIcon: 'fas fa-times',
 				onclick: function(popup) {
-					popup.close();
+					if(mode == 'add')
+					{						
+						Swal.fire({
+							title: 'Transaksi belum disimpan!!',
+							text: "Maaf transaksi anda belum disimpan, apakah perubahan terakhir akan disimpan?",
+							type: 'warning',
+							showCancelButton: true,
+							confirmButtonColor: '#d33',
+							cancelButtonColor: '#17a2b8',
+							cancelButtonText: 'Ya!',
+							confirmButtonText: 'Tidak!'
+						}).then((result) => {
+							if (result.value) {
+								$.ajax({
+									url: siteUrl('akuntansi/kas_keluar/delete_data_temp_cash_out'),
+									type: 'POST',
+									dataType: 'JSON',
+									data: {
+										action: 'delete_data_temp_cash_out',
+										cod_co_no_trx: $('#no_trx_id').val()
+									},
+									success: function(result) {
+										popup.close();
+										$('#ignoredItemDataTable tbody').html('');
+										if (result.success) {
+											 me._generateItemDataTable(result.data);
+										}						
+										else if (typeof(result.msg) !== 'undefined') {						
+											toastr.error(result.msg);
+										}
+										else {							
+											// toastr.error(msgErr);
+										}
+
+									},
+									error: function(error) {
+										toastr.error(msgErr);
+									}
+								});
+							}
+						});
+					}
+					else
+					{
+						popup.close();
+					}
 				}
 			}],
 			listeners: {
