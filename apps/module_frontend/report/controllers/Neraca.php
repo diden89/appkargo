@@ -94,10 +94,10 @@ class Neraca extends NOOBS_Controller
 		$akun_header = $this->db_neraca->get_akun_header(array("AKTIVA", 'MODAL'))->result();
 		$i = 0;
 		// print_r($akun_header);exit;
+		$piutang_usaha = 0;
 		foreach($akun_header as $header => $rah)
 		{
 			$akun_detail = $this->db_neraca->get_akun_detail($rah->rah_id,$params)->result();
-	
 			foreach($akun_detail as $k => $v)
 			{
 
@@ -132,9 +132,14 @@ class Neraca extends NOOBS_Controller
 					$selisih = $amount_to - $amount_from;
 					$v->total = $selisih;
 				}
+				if($v->rad_id == '24')
+				{
+					$piutang_usaha = $v->total;
+				}
+
 				if($v->rad_id == '34')
 				{
-					$v->total =$data['laba_rugi'];
+					$v->total = $data['laba_rugi'] + $piutang_usaha;
 				}
 
 				$total[$i][] = $v->total;
