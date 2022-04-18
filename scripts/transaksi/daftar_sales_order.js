@@ -141,6 +141,7 @@ const daftarSalesOrderList = {
 			body += '<td><div class="btn-group btn-group-sm" role="group" aria-label="Action Button">';
 				body += '<button type="button" class="btn btn-success" data-id="' + item.so_id + '" data-no_trx="' + item.so_no_trx + '" data-rd_id="' + item.rd_id + '" data-rp_id="' + item.rd_province_id + '" data-so_tipe="' + item.so_tipe + '" onclick="daftarSalesOrderList.showItem(this, \'edit\');"><i class="fas fa-edit"></i></button>';
 				body += '<button type="button" class="btn btn-danger" data-id="' + item.so_id + '"  data-prog="' + item.progress_total + '" data-no_trx="' + item.so_no_trx + '" onclick="daftarSalesOrderList.deleteDataItem(this);"><i class="fas fa-trash-alt"></i></button>';
+				body += '<a href="'+siteUrl('transaksi/daftar_delivery_order')+'" class="btn btn-warning"><i class="fas fa-check"></i></a>';
 			body += '</div>';
 			body += '</td>';
 			body += '</tr>';

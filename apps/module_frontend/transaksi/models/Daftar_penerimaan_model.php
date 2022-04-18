@@ -389,7 +389,7 @@ class Daftar_penerimaan_model extends NOOBS_Model
 
  	public function get_detail_do($params = array()) //dipakai
 	{
-		$this->db->select('sod.sod_realisasi,dod.dod_shipping_qty,sod.sod_id');
+		$this->db->select('sod.sod_realisasi,dod.dod_shipping_qty,sod.sod_id,sod.sod_no_trx');
 		$this->db->from('delivery_order_detail as dod');
 		$this->db->join('sales_order_detail as sod','dod.dod_sod_id = sod.sod_id','LEFT');
 
@@ -573,6 +573,13 @@ class Daftar_penerimaan_model extends NOOBS_Model
 		return $this->edit($new_params, "so_id = {$params['so_id']}");
 
 		// return $this->load_data_daftar_penerimaan();
+	}
+
+	public function store_data_ref_trx($params = array())
+	{
+		$this->table = 'ref_transaksi';
+
+		return $this->add($params, TRUE);
 	}
 
 	public function update_status_sales_order_detail($params = array()) //dipakai

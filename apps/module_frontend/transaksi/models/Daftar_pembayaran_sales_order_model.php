@@ -188,6 +188,20 @@ class Daftar_pembayaran_sales_order_model extends NOOBS_Model
 		// return $this->load_data_daftar_delivery_order();
 	}
 
+	public function update_status_piutang($no_trx = '') //dipakai
+	{
+		$this->table = 'ref_transaksi';
+
+		$new_params = array(
+			'trx_is_active' => 'N'
+
+		);
+
+		return $this->edit($new_params, "trx_no_trx = \"{$no_trx}\" ");
+
+		// return $this->load_data_daftar_delivery_order();
+	}
+
 	public function store_data_ref_trx($params = array(),$cond = array())
 	{
 		// print_r($params);exit;

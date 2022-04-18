@@ -188,10 +188,10 @@ class Daftar_penerimaan extends NOOBS_Controller
 
 				// print_r($post);exit;
 				$get_detail_do = $this->db_dp->get_detail_do($post)->row();
+				$get_detail_so = $this->db_dp->get_detail_so($post)->row();
 
 				if($post['total_terpenuhi'] !== $get_detail_do->dod_shipping_qty)
 				{
-					$get_detail_so = $this->db_dp->get_detail_so($post)->row();
 
 					$upd_qty = $post['dod_shipping_qty_old'] - $post['total_terpenuhi'];
 
@@ -201,6 +201,10 @@ class Daftar_penerimaan extends NOOBS_Controller
 					$post['sod_id'] = $get_detail_do->sod_id;
 
 					$update_status_sod = $this->db_dp->store_update_status_sales_order_detail($post);			
+				}
+				else
+				{
+					$post['upd_new_ongkir'] = $get_detail_so->so_total_amount;
 				}
 
 
@@ -225,6 +229,20 @@ class Daftar_penerimaan extends NOOBS_Controller
 					$post['is_status'] = 'ON PROGRESS';
 				} else if($get_ttl == $get_ttl_sod) {
 					$post['is_status'] = $post['dod_is_status'];
+
+					//insert piutang
+					$trx_no_trx = str_replace('SO', 'PIUTANG', $get_detail_do->sod_no_trx);
+
+					$new_post = array(
+						'trx_no_trx' => $trx_no_trx,
+						'trx_key_lock' => $trx_no_trx.'_0',
+						'trx_rad_id_from' => '24',
+						'trx_rad_id_to' => '24',
+						'trx_total' => $post['upd_new_ongkir'],
+						'trx_created_date' => date('Y-m-d')
+					);
+					// print_r($new_post);exit;
+					$create_piutang = $this->db_dp->store_data_ref_trx($new_post);
 				}
 				
 				

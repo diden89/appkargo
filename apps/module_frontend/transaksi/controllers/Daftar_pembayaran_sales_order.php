@@ -256,7 +256,10 @@ class Daftar_pembayaran_sales_order extends NOOBS_Controller
 					);
 					$insert_to_trx_other = $this->db_daftar_pso->store_data_ref_trx($trx_params_other,array('mode' => $post['mode']));
 
-
+					//update piutang
+					$piutang_no_trx = str_replace('SO', 'PIUTANG', $post['so_no_trx'][$i]);
+					
+					$update_piutang = $this->db_daftar_pso->update_status_piutang($piutang_no_trx);
 					$i++;					
 				}
 			}

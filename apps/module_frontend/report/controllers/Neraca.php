@@ -70,10 +70,12 @@ class Neraca extends NOOBS_Controller
 		foreach($akun_header_laba_ditahan as $header_laba => $laba_ditahan)
 		{
 			$akun_detail = $this->db_neraca->get_akun_detail($laba_ditahan->rah_id,$params)->result();
-	
+		
 			foreach($akun_detail as $k => $v)
 			{
+				
 				$sum[$n][] = $v->total;
+
 			}
 			$data['total_laba_ditahan'][] = array_sum($sum[$n]);
 			$data['total_name_laba_ditahan'][] = 'TOTAL '.strtoupper($laba_ditahan->rah_name);
@@ -89,8 +91,7 @@ class Neraca extends NOOBS_Controller
 		}
 		$data['laba_rugi'] = $labarugi;
 
-		// print_r($params);exit;
-		$akun_header = $this->db_neraca->get_akun_header(array("AKTIVA", 'MODAl'))->result();
+		$akun_header = $this->db_neraca->get_akun_header(array("AKTIVA", 'MODAL'))->result();
 		$i = 0;
 		// print_r($akun_header);exit;
 		foreach($akun_header as $header => $rah)
@@ -100,11 +101,42 @@ class Neraca extends NOOBS_Controller
 			foreach($akun_detail as $k => $v)
 			{
 
+				if($v->rad_is_bank == 'Y')
+				{
+					$get_amount_to = $this->db_neraca->get_amount_kas($params,array('trx_rad_id_to' => $v->rad_id));
+					$get_amount_from = $this->db_neraca->get_amount_kas($params,array('trx_rad_id_from' => $v->rad_id));
+
+					$amount_to = '';
+					$amount_from = '';
+					
+					if($get_amount_to->num_rows() > 0)
+					{
+						$to = $get_amount_to->row();
+						$amount_to = $to->amount;
+					}
+					else
+					{
+						$amount_to = '0';
+					}
+
+					if($get_amount_from->num_rows() > 0)
+					{
+						$from = $get_amount_from->row();
+						$amount_from = $from->amount;
+					}
+					else
+					{
+						$amount_from = '0';
+					}
+					
+					$selisih = $amount_to - $amount_from;
+					$v->total = $selisih;
+				}
 				if($v->rad_id == '34')
 				{
-					$v->total = $data['laba_rugi'];
-
+					$v->total =$data['laba_rugi'];
 				}
+
 				$total[$i][] = $v->total;
 			}
 			$data['total'][] = array_sum($total[$i]);
@@ -116,7 +148,7 @@ class Neraca extends NOOBS_Controller
 		}
 
 
-		// print_r($data['total']);exit;
+		// print_r($data);exit;
 		$total_kewajiban = $data['total'][0] * 2;
 		foreach($data['total'] as $total_modal)
 		{
@@ -125,7 +157,8 @@ class Neraca extends NOOBS_Controller
 		}
 		
 		$data['total_kewajiban'] = $total_kewajiban;
-
+		// print_r($data);exit;
+		
 		if($data_company->num_rows() > 0)
 		{
 			$data_company = $data_company->row();

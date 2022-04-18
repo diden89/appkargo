@@ -33,20 +33,44 @@ class Neraca_model extends NOOBS_Model
 	public function get_akun_detail($id = "",$params = array())
 	{
 		// $this->db->select("rad.rad_name,rad.rad_id, rad.rad_parent_id, (select sum(trx_total) from ref_transaksi where rad.rad_id in(trx_rad_id_to) and MONTH(trx_created_date) = '{$params['month']}' and YEAR(trx_created_date) = '{$params['years']}') as total");
-		if($id == 1)
-		{
-			$this->db->select("rad.rad_name,rad.rad_id, rad.rad_parent_id, ((select sum(trx_total) from ref_transaksi where rad.rad_id in(trx_rad_id_to) and trx_created_date >= '{$params['date_range_1']}' and trx_created_date <= '{$params['date_range_2']}')-(select sum(trx_total) from ref_transaksi where rad.rad_id in(trx_rad_id_from) and trx_created_date >= '{$params['date_range_1']}' and trx_created_date <= '{$params['date_range_2']}')) as total");
-		}
-		else
-		{
-			$this->db->select("rad.rad_name,rad.rad_id, rad.rad_parent_id, (select sum(trx_total) from ref_transaksi where rad.rad_id in(trx_rad_id_to) and trx_created_date >= '{$params['date_range_1']}' and trx_created_date <= '{$params['date_range_2']}')as total");
-		}
+	
+		$this->db->select("rad.rad_name,rad.rad_id, rad.rad_parent_id,rad.rad_is_bank, (select sum(trx_total) from ref_transaksi where rad.rad_id in(trx_rad_id_to) and trx_created_date >= '{$params['date_range_1']}' and trx_created_date <= '{$params['date_range_2']}' and trx_is_active= 'Y')as total");
+		
 		$this->db->from('ref_akun_detail as rad');
 
 		$this->db->where('rad_akun_header_id', $id);
 
 		return $this->db->get();
 	}
+
+	public function get_amount_kas($params = array(),$set)
+	{
+		$this->db->select('sum(trx_total) as amount');
+
+		if (isset($set) && ! empty($set))
+		{
+			$this->db->where($set);
+		}
+	
+		// $this->db->where('month(trx_created_date) >=', date('n'));
+		if (isset($params['date_range_1']))
+		{
+			$this->db->where('month(trx_created_date) >=', date('n',strtotime($params['date_range_1'])));
+			$this->db->where('month(trx_created_date) <=',date('n',strtotime($params['date_range_2'])));
+			$this->db->where('year(trx_created_date) >=', date('Y',strtotime($params['date_range_1'])));
+			$this->db->where('year(trx_created_date) <=', date('Y',strtotime($params['date_range_2'])));
+			$this->db->where($set);
+		}
+		else
+		{
+			$this->db->where('month(trx_created_date) >=', '1');
+			$this->db->where('month(trx_created_date) <=', '12');
+			$this->db->where('year(trx_created_date) <=', date('Y'));
+		}
+
+		$this->db->where('trx_is_active', 'Y');
+		return $this->db->get('ref_transaksi');
+ 	}
 	
 	public function load_data_daftar_sales_order($params = array())
 	{
