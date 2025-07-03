@@ -187,6 +187,8 @@ class NOOBS_Controller extends CI_Controller {
 		$get_user_sub_group_menu = $this->db_main->get_user_sub_group_menu();
 
 		$all_menu = $get_all_menu->result();
+		
+		// print_r($get_user_sub_group_menu);exit;
 
 		$user_menu = array();
 
@@ -196,15 +198,18 @@ class NOOBS_Controller extends CI_Controller {
 			{
 				$user_menu[] = $v;
 			}
-			elseif ($get_user_group_menu !== FALSE && in_array($v->id, $get_user_group_menu))
-			{
-				$user_menu[] = $v;
-			}
 			elseif ($get_user_sub_group_menu !== FALSE && in_array($v->id, $get_user_sub_group_menu))
 			{
+				// unset($user_menu);
+				$user_menu[] = $v;
+			}
+			elseif ($get_user_group_menu !== FALSE && in_array($v->id, $get_user_group_menu))
+			{
+				// unset($user_menu);
 				$user_menu[] = $v;
 			}
 		}
+		// print_r($user_menu);exit;
 
 		$tree_menu = $this->_generate_tree_menu($user_menu);
 

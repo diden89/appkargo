@@ -47,15 +47,15 @@ class Report_delivery_order extends NOOBS_Controller
 		// print_r($post);exit;
 		if($post['type'] == 'rekap')
 		{
-			$this->rekap_laporan_piutang($post);
+			$this->rekap_laporan_delivery_order($post);
 		}
 		else
 		{
-			$this->detail_laporan_kas_masuk($post);
+			$this->detail_laporan_delivery_order($post);
 		}
 
 	}
-	public function rekap_laporan_piutang($params)
+	public function rekap_laporan_delivery_order($params)
 	{
 		$data = array();
 
@@ -63,19 +63,22 @@ class Report_delivery_order extends NOOBS_Controller
 
 		$load_data_daftar_delivery = $this->db_rdo->load_data_daftar_delivery($params)->data;
 
-		$num = 0;
+		$num = 1;
 		$i=0;
 		foreach($load_data_daftar_delivery as $k => $v)
 		{
+			$v->num = $num;
 
 			$data['item'] = $load_data_daftar_delivery;
+
+			$num++;
 		}
 
 		// print_r($result);exit;
 	
 
-		print_r($data);exit;
-		$data['header_title'] = 'Rekap Piutang';
+		// print_r($data);exit;
+		$data['header_title'] = 'Rekap Laporan Delivery Order';
 
 		if($data_company->num_rows() > 0)
 		{
@@ -90,7 +93,7 @@ class Report_delivery_order extends NOOBS_Controller
 		$data['date_range_2'] = (isset($params['date_range_2'])) ? $params['date_range_2'] : '';
 		
 		$view = $this->load->view('report/report_delivery_order_rekap_pdf', $data, TRUE);
-
+		// echo $view;exit;
 		$this->load->library('pdf_creator');
 
 		$pdf_creator = $this->pdf_creator->load([
@@ -108,7 +111,7 @@ class Report_delivery_order extends NOOBS_Controller
 		$pdf_creator->Output('Report Piutang_'.date('YmdHis').'_rekap.pdf', 'I');
 	}
 
-	public function detail_laporan_kas_masuk($params)
+	public function detail_laporan_delivery_order($params)
 	{
 		$data = array();
 

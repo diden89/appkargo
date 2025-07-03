@@ -268,7 +268,7 @@ class Daftar_sales_order_model extends NOOBS_Model
 		$this->table = 'sales_order_detail';
 		$this->delete('sod_no_trx',$params['no_trx']);
 
-		return $this->load_data_daftar_sales_order();
+		return $this->load_data_daftar_sales_order($params);
 		
 	}
 

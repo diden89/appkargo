@@ -123,10 +123,10 @@ class Daftar_sales_order extends NOOBS_Controller
 
 	public function load_daftar_sales_order_form()
 	{
-
 		if (isset($_POST['action']) && $_POST['action'] == 'load_daftar_sales_order_form')
 		{
 			$post = $this->input->post(NULL, TRUE);
+		
 			$params = array(
 				'table' => 'province'
 			);
@@ -153,7 +153,7 @@ class Daftar_sales_order extends NOOBS_Controller
 			{
 				$post['data'] = $this->db_daftar_sales_order->load_data_daftar_sales_order($post)->row();
 			}
-			// print_r($post['data']);exit;
+			// print_r($post['/data']);exit;
 	
 			$this->_view('daftar_sales_order_form_view', $post);
 		}
@@ -345,8 +345,8 @@ class Daftar_sales_order extends NOOBS_Controller
 
 	public function store_data_daftar_sales_order()
 	{
-		// print_r($_POST);exit;
-		if (isset($_POST['action']) && $_POST['action'] == 'store_data_daftar_sales_order')
+		
+		if (isset($_POST['action']) && $_POST['action'] == 'store_data_daftar_sales_order' && $_POST['v_vendor_id'] !== "" && isset($_POST['txt_province']) && isset($_POST['txt_region']))
 		{
 			$post = $this->input->post(NULL, TRUE);
 			$date = date('Y-m-d');

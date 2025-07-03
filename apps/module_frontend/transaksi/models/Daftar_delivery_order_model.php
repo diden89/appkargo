@@ -62,10 +62,16 @@ class Daftar_delivery_order_model extends NOOBS_Model
 
 		$this->db->where('dod.dod_is_active', 'Y');
 		
-		if (!isset($params['txt_list']))
+		if (!isset($params['txt_list']) || empty($params['txt_list']))
 		{
 			$this->db->or_where('dod.dod_is_status !=', 'SELESAI');
 		}
+
+		// if (empty($params['txt_list']))
+		// {
+		// 	$this->db->or_where('dod.dod_is_status', 'SELESAI');
+		// }
+
 
 		$this->db->order_by('dod.dod_id', 'DESC');
 		// $this->db->order_by('il.il_item_name', 'ASC');

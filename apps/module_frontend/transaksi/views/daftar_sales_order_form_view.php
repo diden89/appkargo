@@ -8,6 +8,7 @@
  * @access Public
  * @path /rab_frontend/apps/module_frontend/transaksi/views/customer_form_view.php
  */
+// echo $data->so_no_trx;exit;
 ?>
 
 <form role="form" id="addDaftarSalesOrder" autocomplete="off">

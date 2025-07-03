@@ -33,7 +33,7 @@ class Main_model extends NOOBS_Model {
 	{
 		$this->db->select('DISTINCT(MONTHNAME(sop_created_date)) as bulan, sum(sop_total_pay) as total');
 		$this->db->where('YEAR(sop_created_date)', $params['years']);
-		$this->db->order_by('MONTH(sop_created_date)','ASC');
+		$this->db->order_by('MONTHNAME(sop_created_date)','ASC');
 		$this->db->group_by('MONTHNAME(sop_created_date)');
 		
 		return $this->db->get('sales_order_payment');
@@ -54,7 +54,7 @@ class Main_model extends NOOBS_Model {
 		$this->db->join('ref_akun_detail as rad','rad.rad_id = trx.trx_rad_id_to');
 		$this->db->where('rad.rad_akun_header_id', '4');
 		$this->db->where('YEAR(trx.trx_created_date)', $params['years']);
-		$this->db->order_by('MONTH(trx.trx_created_date)','ASC');
+		$this->db->order_by('MONTHNAME(trx.trx_created_date)','ASC');
 		$this->db->group_by('MONTHNAME(trx.trx_created_date)');
 		
 		return $this->db->get();
@@ -195,7 +195,7 @@ class Main_model extends NOOBS_Model {
 		$decrypt_token = $this->decrypt_token();
 
 		$ud_id = $decrypt_token['ud_id'];
-
+		// echo $ud_id."as";
 		$this->db->select("mag_rm_id as id");
 
 		$this->db->from('menu_access_group mag');

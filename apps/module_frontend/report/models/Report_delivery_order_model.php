@@ -146,7 +146,7 @@ class Report_delivery_order_model extends NOOBS_Model
 		// $this->db->where('dotd.dotd_is_status !=', 'SELESAI');
 		// $this->db->order_by('dod_created_date', 'DESC');
 		// $this->db->order_by('dod_id', 'DESC');
-		$this->db->group_by('d_id');
+		// $this->db->group_by('d_id');
 
 		return $this->create_result($params);
  	}

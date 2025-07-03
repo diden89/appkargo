@@ -120,7 +120,7 @@ class Main extends NOOBS_Controller {
 
 			$get_data_penghasilan_ytd = $this->db_main->get_data_penghasilan_ytd($params)->row();
 			$get_data_pengeluaran_ytd = $this->db_main->get_data_pengeluaran_ytd($params)->row();
-
+			// print_r($result);exit;
 			echo json_encode(array('value' => $result, 'total_ytd' => 'Rp. '.number_format($get_data_penghasilan_ytd->total), 'total_pengeluaran_ytd' => 'Rp. '.number_format($get_data_pengeluaran_ytd->total)));
 		}
 	}

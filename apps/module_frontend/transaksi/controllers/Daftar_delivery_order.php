@@ -66,6 +66,14 @@ class Daftar_delivery_order extends NOOBS_Controller
 		if (isset($_POST['action']) && $_POST['action'] == 'load_data_daftar_delivery_order')
 		{
 			$post = $this->input->post(NULL, TRUE);
+			$date = date('d-m-Y H:i:s');
+			$date = strtotime($date);
+			$date = strtotime("-7 day", $date);
+			// echo date('d-m-Y H:i:s', $date);
+
+			$post['date_range1'] = date('Y-m-d', $date);
+			$post['date_range2'] = date('Y-m-d');
+			
 			$load_data_daftar_delivery_order = $this->db_daftar_delivery_order->load_data_daftar_delivery_order($post);
 			// print_r($_POST);exit;
 			if ($load_data_daftar_delivery_order->num_rows() > 0) 

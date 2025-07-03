@@ -53,6 +53,7 @@ class Daftar_delivery_order_transfer_model extends NOOBS_Model
 		}
 
 		$this->db->where('dotd.dotd_is_active', 'Y');
+		$this->db->or_where('dotd.dotd_is_status !=', 'SELESAI');
 		$this->db->order_by('dotd.dotd_id', 'DESC');
 
 		return $this->db->get();
@@ -422,7 +423,7 @@ class Daftar_delivery_order_transfer_model extends NOOBS_Model
 
 	public function get_customer_option_to($params) //dipakai
 	{
-		$query = "select * from customer where c_district_id in (select rsd.rsd_id from ref_sub_district as rsd left join sales_order as so on rsd.rsd_district_id = so.so_district_id where so.so_id = {$params['so_id']} order by c_name ASC) and c_is_active = 'Y' and c_id not in ({$params['c_id_from']})";
+		$query = "select * from customer where c_district_id in (select rsd.rsd_id from ref_sub_district as rsd left join sales_order as so on rsd.rsd_district_id = so.so_district_id where so.so_id = {$params['so_id']} order by c_name ASC) and c_is_active = 'Y' and c_id not in ('{$params['c_id_from']}')";
 		
 		return $this->db->query($query);
  	}

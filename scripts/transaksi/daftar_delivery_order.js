@@ -58,7 +58,7 @@ const daftarDeliveryOrderList = {
 	},
 	loadDataDo: function(el) {
 		const me = this;
-				
+			
 		$.ajax({
 			url: siteUrl('transaksi/daftar_delivery_order/load_data_daftar_delivery_order'),
 			type: 'POST',
