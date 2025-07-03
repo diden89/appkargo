@@ -24,7 +24,7 @@ $avatar = empty($this->session->userdata('user_img')) ? 'unknown.png' : $this->s
 		<link rel="stylesheet" href="<?php echo base_url('vendors/trademark/style.css'); ?>">
 		<link rel="stylesheet" href="<?php echo get_template_url(); ?>plugins/jquery-ui/jquery-ui.css">
 		<link rel="stylesheet" href="<?php echo get_template_url(); ?>plugins/jquery-ui/jquery-ui.structure.css">
-		<link rel="stylesheet" href="<?php echo get_template_url(); ?>plugins/daterangepicker/daterangepicker.css">
+	 	<link rel="stylesheet" href="<?php echo get_template_url(); ?>plugins/daterangepicker/daterangepicker.css">
 		<link rel="stylesheet" href="<?php echo get_template_url(); ?>plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
 		<link rel="stylesheet" href="<?php echo get_template_url(); ?>plugins/toastr/toastr.min.css">
 		<link rel="stylesheet" href="<?php echo get_template_url(); ?>plugins/overlayScrollbars/css/OverlayScrollbars.css">
