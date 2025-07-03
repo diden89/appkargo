@@ -6,7 +6,7 @@
  * ---------------------------------------------------------------
  */
 	$noobs_title = 'Aplikasi Kargo';
-	$noobs_title_1 = 'Aplikasi Kargo';
+	$noobs_title_1 = 'Aplikasi Kar asdaskdjsadgo';
 	$noobs_title_2 = 'Selamat Datang di Aplikasi Kargo';
 
 /*!
