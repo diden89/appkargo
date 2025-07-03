@@ -57,16 +57,16 @@ class Main extends NOOBS_Controller {
 			$total_transport = 0;
 		}
 
-		$total_rekanan = $this->db_main->total_rekanan($params);
-		if($total_rekanan->num_rows() > 0)
-		{
-			$tot_rekanan = $total_rekanan->row();
-			$total_partner = $tot_rekanan->total_rekanan;
-		}
-		else
-		{
-			$total_partner = 0;
-		}
+		// $total_rekanan = $this->db_main->total_rekanan($params);
+		// if($total_rekanan->num_rows() > 0)
+		// {
+		// 	$tot_rekanan = $total_rekanan->row();
+		// 	$total_partner = $tot_rekanan->total_rekanan;
+		// }
+		// else
+		// {
+		// 	$total_partner = 0;
+		// }
 
 		$this->store_params['so_total'] = array(
 			'total' => $total_so_bulanan
@@ -80,9 +80,9 @@ class Main extends NOOBS_Controller {
 			'total' => $total_transport
 		);
 
-		$this->store_params['rekanan_total'] = array(
-			'total' => $total_partner
-		);
+		// $this->store_params['rekanan_total'] = array(
+		// 	'total' => $total_partner
+		// );
 		$this->store_params['source_bot'] = array(
 			'<script src="'.base_url('scripts/main/main.js').'"></script>'
 		);
